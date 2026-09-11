@@ -459,303 +459,111 @@ class PartialGrowthCurveFitter:
 
 Drag the controls to adjust in-season crop vigor, simulate a late planting shift, set an end-of-season target total, and switch between the three algorithms:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">🌾 Partial Curve Morphing & Target Fitting Sandbox</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #10b981;">Observed Vigor Factor (25% Growth): <b id="ui-vigor">1.25x</b></label>
-      <input type="range" id="ctrl-vigor" min="0.6" max="1.8" value="1.25" step="0.05" oninput="runCurveFitting()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #f59e0b;">Phenology Delay / Shift ($\Delta t$ days): <b id="ui-shift">+5 days</b></label>
-      <input type="range" id="ctrl-shift" min="-15" max="15" value="5" step="1" oninput="runCurveFitting()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #ec4899;">Target Season Total Biomass: <b id="ui-target">19.0 t/ha</b></label>
-      <input type="range" id="ctrl-target" min="10" max="25" value="19" step="0.5" oninput="runCurveFitting()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #38bdf8;">Fitting Algorithm Mode:</label>
-      <select id="ctrl-algo" onchange="runCurveFitting()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
-        <option value="affine">1. Affine Least-Squares Morphing</option>
-        <option value="bridge" selected>2. Affine + Hermite C¹ Blending Bridge</option>
-        <option value="qp">3. Constrained Target QP Optimization</option>
-      </select>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🌾 Partial curve morphing and target fitting sandbox
 
-  <!-- Canvas Chart -->
-  <div style="background: #0f172a; border-radius: 8px; padding: 12px; margin-bottom: 14px; position: relative;">
-    <canvas id="curveCanvas" width="760" height="340" style="width: 100%; height: auto; display: block;"></canvas>
-    
-    <div style="display: flex; gap: 16px; justify-content: center; margin-top: 10px; font-size: 0.8em; flex-wrap: wrap;">
-      <span style="color: #64748b;">── Historical Template</span>
-      <span style="color: #10b981;">● Known 25% Obs</span>
-      <span style="color: #38bdf8; font-weight: bold;">── Fitted Full Forecast</span>
-      <span style="color: #ef4444; border-left: 2px dashed #ef4444; padding-left: 4px;">Boundary (Day 35)</span>
-      <span style="color: #ec4899;">★ Target Total</span>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof vigor = Inputs.range([0.6, 1.8], {value: 1.25, step: 0.05, label: "Observed Vigor Factor (25% Growth)"})
+viewof shift = Inputs.range([-15, 15], {value: 5, step: 1, label: "Phenology Delay / Shift (Δt days)"})
+viewof targetTotal = Inputs.range([10, 25], {value: 19, step: 0.5, label: "Target Season Total Biomass (t/ha)"})
+viewof algo = Inputs.select(new Map([
+  ["1. Affine Least-Squares Morphing", "affine"],
+  ["2. Affine + Hermite C¹ Blending Bridge", "bridge"],
+  ["3. Constrained Target QP Optimization", "qp"]
+]), {value: "bridge", label: "Fitting Algorithm Mode"})
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; border-top: 3px solid #10b981;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Known Obs (Day 35)</div>
-      <div id="stat-obs" style="font-size: 1.2em; font-weight: 700; color: #10b981;">3.42 t/ha</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; border-top: 3px solid #38bdf8;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Boundary Jump ($\Delta y$)</div>
-      <div id="stat-jump" style="font-size: 1.2em; font-weight: 700; color: #38bdf8;">0.00 t/ha (Smooth)</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; border-top: 3px solid #ec4899;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Predicted Final Yield</div>
-      <div id="stat-yield" style="font-size: 1.2em; font-weight: 700; color: #ec4899;">18.95 t/ha</div>
-    </div>
-  </div>
+// Historical sigmoid reference curve (corn biomass, 0 to 140 days).
+// L = 16 t/ha ceiling, k = 0.065 growth rate, t0 = day 65 inflection.
+histProfile = t => 16.0 / (1.0 + Math.exp(-0.065 * (t - 65.0)))
 
-  <div id="diag-msg" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
-    Hermite blending bridge guarantees C¹ continuity at Day 35 while preserving the late-season phenological shape.
-  </div>
-</div>
-```
+T_MAX = 140
+T_CUT = 35 // 25% of 140
 
+// Synthetic observations, day 0 to the cutoff in 3-day steps.
+obs = d3.range(0, T_CUT + 1, 3).map(t => ({t, y: Math.max(0, vigor * histProfile(t - shift))}))
 
-```{=html}
-<script>
-// Historical Sigmoid Reference Curve (Corn Biomass, 0 to 140 Days)
-function histProfile(t) {
-  const L = 16.0; // Max biomass t/ha
-  const k = 0.065; // Growth rate
-  const t0 = 65.0; // Midpoint inflection day
-  return L / (1.0 + Math.exp(-k * (t - t0)));
-}
+yCut = obs[obs.length - 1].y
+dyCut = (obs[obs.length - 1].y - obs[obs.length - 2].y) / (obs[obs.length - 1].t - obs[obs.length - 2].t)
 
-function runCurveFitting() {
-  const vigor = parseFloat(document.getElementById('ctrl-vigor').value);
-  const shift = parseFloat(document.getElementById('ctrl-shift').value);
-  const target = parseFloat(document.getElementById('ctrl-target').value);
-  const mode = document.getElementById('ctrl-algo').value;
+fit = {
+  const base = d3.range(0, T_MAX + 1).map(t => vigor * histProfile(t - shift));
 
-  document.getElementById('ui-vigor').innerText = vigor.toFixed(2) + 'x';
-  document.getElementById('ui-shift').innerText = (shift >= 0 ? '+' : '') + shift + ' days';
-  document.getElementById('ui-target').innerText = target.toFixed(1) + ' t/ha';
+  if (algo === "affine")
+    return {y: base, jump: Math.abs(yCut - vigor * histProfile(T_CUT))};
 
-  const canvas = document.getElementById('curveCanvas');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width;
-  const H = canvas.height;
-
-  ctx.clearRect(0, 0, W, H);
-
-  const T_MAX = 140;
-  const T_CUT = 35; // 25% of 140
-  const N_PTS = 141;
-
-  const t_arr = [];
-  const y_hist = [];
-  for (let i = 0; i < N_PTS; i++) {
-    t_arr.push(i);
-    y_hist.push(histProfile(i));
-  }
-
-  // Generate synthetic observed points (Day 0 to 35) with vigor and shift + slight noise
-  const obs_pts = [];
-  for (let t = 0; t <= T_CUT; t += 3) {
-    const true_val = vigor * histProfile(t - shift);
-    obs_pts.push({ t: t, y: Math.max(0, true_val) });
-  }
-
-  const y_cut_obs = obs_pts[obs_pts.length - 1].y;
-  const dy_cut_obs = (obs_pts[obs_pts.length - 1].y - obs_pts[obs_pts.length - 2].y) / (obs_pts[obs_pts.length - 1].t - obs_pts[obs_pts.length - 2].t);
-
-  // Compute forecast curve
-  const y_forecast = [];
-  let jump_val = 0.0;
-
-  if (mode === 'affine') {
-    // Mode 1: Affine morphing
-    for (let t = 0; t <= T_MAX; t++) {
-      if (t <= T_CUT) {
-        y_forecast.push(vigor * histProfile(t - shift));
-      } else {
-        y_forecast.push(vigor * histProfile(t - shift));
-      }
-    }
-    const model_cut = vigor * histProfile(T_CUT);
-    jump_val = Math.abs(y_cut_obs - model_cut);
-  } else if (mode === 'bridge') {
-    // Mode 2: Affine + Hermite Blending Bridge
+  if (algo === "bridge") {
     const tau = 18.0;
-    const base_model = [];
-    for (let t = 0; t <= T_MAX; t++) {
-      base_model.push(vigor * histProfile(t - shift));
-    }
-    const delta_0 = y_cut_obs - base_model[T_CUT];
-    const dy_model = (base_model[T_CUT + 1] - base_model[T_CUT - 1]) / 2.0;
-    const delta_p0 = dy_cut_obs - dy_model;
-
-    for (let t = 0; t <= T_MAX; t++) {
-      if (t <= T_CUT) {
-        y_forecast.push(base_model[t]);
-      } else {
-        const dt = t - T_CUT;
-        const bridge = (delta_0 + delta_p0 * dt) * Math.exp(-(dt * dt) / (2 * tau * tau));
-        y_forecast.push(base_model[t] + bridge);
-      }
-    }
-    jump_val = 0.0;
-  } else {
-    // Mode 3: Constrained Target QP
-    // Calculate required remaining integral
-    let known_sum = 0;
-    for (let t = 0; t <= T_CUT; t++) {
-      known_sum += vigor * histProfile(t - shift);
-    }
-    const target_remaining = Math.max(1.0, target * T_MAX * 0.5 - known_sum);
-    
-    // Scale future template proportionally and apply hermite match
-    let future_hist_sum = 0;
-    for (let t = T_CUT + 1; t <= T_MAX; t++) {
-      future_hist_sum += histProfile(t);
-    }
-    const gamma = target_remaining / future_hist_sum;
-
-    for (let t = 0; t <= T_MAX; t++) {
-      if (t <= T_CUT) {
-        y_forecast.push(vigor * histProfile(t - shift));
-      } else {
-        const dt = t - T_CUT;
-        const blend = 1.0 - Math.exp(-dt / 12.0);
-        const y_target_shape = y_cut_obs + (gamma * histProfile(t) - gamma * histProfile(T_CUT));
-        y_forecast.push((1.0 - blend) * (y_cut_obs + dy_cut_obs * dt) + blend * y_target_shape);
-      }
-    }
-    jump_val = 0.0;
+    const d0 = yCut - base[T_CUT];
+    const dp0 = dyCut - (base[T_CUT + 1] - base[T_CUT - 1]) / 2.0;
+    return {jump: 0.0, y: base.map((v, t) => {
+      if (t <= T_CUT) return v;
+      const dt = t - T_CUT;
+      return v + (d0 + dp0 * dt) * Math.exp(-(dt * dt) / (2 * tau * tau));
+    })};
   }
 
-  const final_yield = y_forecast[y_forecast.length - 1];
-
-  document.getElementById('stat-obs').innerText = y_cut_obs.toFixed(2) + ' t/ha';
-  document.getElementById('stat-jump').innerText = jump_val < 0.01 ? '0.00 t/ha (Smooth C¹)' : jump_val.toFixed(2) + ' t/ha (Discontinuous)';
-  document.getElementById('stat-jump').style.color = jump_val < 0.01 ? '#10b981' : '#ef4444';
-  document.getElementById('stat-yield').innerText = final_yield.toFixed(2) + ' t/ha';
-
-  // --- DRAWING CANVAS ---
-  const padL = 45;
-  const padR = 25;
-  const padT = 25;
-  const padB = 35;
-
-  const plotW = W - padL - padR;
-  const plotH = H - padT - padB;
-  const Y_MAX_PLOT = 26.0;
-
-  const mapX = (t) => padL + (t / T_MAX) * plotW;
-  const mapY = (y) => padT + plotH - (y / Y_MAX_PLOT) * plotH;
-
-  // Gridlines & Axes
-  ctx.strokeStyle = '#334155';
-  ctx.lineWidth = 1;
-
-  for (let y = 0; y <= Y_MAX_PLOT; y += 5) {
-    const py = mapY(y);
-    ctx.beginPath();
-    ctx.moveTo(padL, py);
-    ctx.lineTo(padL + plotW, py);
-    ctx.stroke();
-
-    ctx.fillStyle = '#64748b';
-    ctx.font = '11px sans-serif';
-    ctx.fillText(y + ' t/ha', 6, py + 4);
-  }
-
-  for (let t = 0; t <= T_MAX; t += 20) {
-    const px = mapX(t);
-    ctx.beginPath();
-    ctx.moveTo(px, padT);
-    ctx.lineTo(px, padT + plotH);
-    ctx.stroke();
-
-    ctx.fillStyle = '#64748b';
-    ctx.font = '11px sans-serif';
-    ctx.fillText('Day ' + t, px - 16, padT + plotH + 18);
-  }
-
-  // Draw 25% Boundary Line
-  const cutX = mapX(T_CUT);
-  ctx.strokeStyle = '#ef4444';
-  ctx.setLineDash([5, 4]);
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(cutX, padT);
-  ctx.lineTo(cutX, padT + plotH);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Draw Historical Template Curve
-  ctx.strokeStyle = '#64748b';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  for (let i = 0; i < N_PTS; i++) {
-    const px = mapX(t_arr[i]);
-    const py = mapY(y_hist[i]);
-    if (i === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  }
-  ctx.stroke();
-
-  // Draw Fitted Forecast Curve
-  ctx.strokeStyle = '#38bdf8';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  for (let i = 0; i < N_PTS; i++) {
-    const px = mapX(t_arr[i]);
-    const py = mapY(y_forecast[i]);
-    if (i === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  }
-  ctx.stroke();
-
-  // Draw Observed Points
-  for (let pt of obs_pts) {
-    const px = mapX(pt.t);
-    const py = mapY(pt.y);
-    ctx.fillStyle = '#10b981';
-    ctx.beginPath();
-    ctx.arc(px, py, 4.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  }
-
-  // Target Marker
-  if (mode === 'qp') {
-    const px = mapX(T_MAX);
-    const py = mapY(target);
-    ctx.fillStyle = '#ec4899';
-    ctx.beginPath();
-    ctx.arc(px, py, 6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Diagnostic
-  let diag = '';
-  if (mode === 'affine') {
-    diag = '⚠️ Mode 1: Affine morphing scales the historical shape to match observations, but introduces an offset step-discontinuity at the Day 35 cutoff.';
-  } else if (mode === 'bridge') {
-    diag = '✨ Mode 2: Hermite blending bridge guarantees exact value and slope continuity at Day 35, smoothly decaying the residual back to the biological baseline.';
-  } else {
-    diag = '🎯 Mode 3: Constrained QP reconciles the known 25% points with an external harvest target total while minimizing curve bending energy.';
-  }
-  document.getElementById('diag-msg').innerText = diag;
+  // Constrained target QP: scale the future template so the season total lands
+  // on the external target, then relax onto it from the boundary tangent.
+  const knownSum = d3.sum(base.slice(0, T_CUT + 1));
+  const targetRemaining = Math.max(1.0, targetTotal * T_MAX * 0.5 - knownSum);
+  const gamma = targetRemaining / d3.sum(d3.range(T_CUT + 1, T_MAX + 1).map(t => histProfile(t)));
+  return {jump: 0.0, y: base.map((v, t) => {
+    if (t <= T_CUT) return v;
+    const dt = t - T_CUT;
+    const blend = 1.0 - Math.exp(-dt / 12.0);
+    const shape = yCut + (gamma * histProfile(t) - gamma * histProfile(T_CUT));
+    return (1.0 - blend) * (yCut + dyCut * dt) + blend * shape;
+  })};
 }
 
-window.addEventListener('load', runCurveFitting);
-setTimeout(runCurveFitting, 350);
-</script>
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Known Obs (Day 35)", yCut.toFixed(2) + " t/ha", "#10b981")}
+  ${card("Boundary Jump (Δy)",
+         fit.jump < 0.01 ? "0.00 t/ha (Smooth C¹)" : fit.jump.toFixed(2) + " t/ha (Discontinuous)",
+         fit.jump < 0.01 ? "#10b981" : "#ef4444")}
+  ${card("Predicted Final Yield", fit.y[T_MAX].toFixed(2) + " t/ha", "#ec4899")}
+</div>`
+
+curves = d3.range(0, T_MAX + 1).flatMap(t => [
+  {t, y: histProfile(t), kind: "Historical template"},
+  {t, y: fit.y[t], kind: "Fitted full forecast"}
+])
+
+Plot.plot({
+  height: 340,
+  marginLeft: 55,
+  // Plot paints its own white ground otherwise, which the dark card fights.
+  style: {background: "transparent", color: "#cbd5e1"},
+  x: {domain: [0, T_MAX], label: "Day of season →", grid: true},
+  y: {domain: [0, 26], label: "↑ biomass (t/ha)", grid: true},
+  color: {legend: true,
+          domain: ["Historical template", "Known 25% obs", "Fitted full forecast",
+                   "Boundary (Day 35)", "Target total"],
+          range: ["#64748b", "#10b981", "#38bdf8", "#ef4444", "#ec4899"]},
+  marks: [
+    Plot.ruleX([T_CUT], {stroke: () => "Boundary (Day 35)", strokeWidth: 2, strokeDasharray: "5 4"}),
+    Plot.line(curves, {x: "t", y: "y", stroke: "kind",
+                       strokeWidth: d => d.kind === "Fitted full forecast" ? 3 : 2}),
+    Plot.dot(obs, {x: "t", y: "y", fill: () => "Known 25% obs", stroke: "#fff", strokeWidth: 1.5, r: 4.5}),
+    algo === "qp"
+      ? Plot.dot([{t: T_MAX, y: targetTotal}], {x: "t", y: "y", fill: () => "Target total", r: 6})
+      : null
+  ]
+})
+
+html`<div style="font-size:0.9em;background:rgba(56,189,248,0.1);border-left:4px solid #38bdf8;padding:10px;border-radius:4px;">${({
+  affine: "⚠️ Mode 1: Affine morphing scales the historical shape to match observations, but introduces an offset step-discontinuity at the Day 35 cutoff.",
+  bridge: "✨ Mode 2: Hermite blending bridge guarantees exact value and slope continuity at Day 35, smoothly decaying the residual back to the biological baseline.",
+  qp: "🎯 Mode 3: Constrained QP reconciles the known 25% points with an external harvest target total while minimizing curve bending energy."
+})[algo]}</div>`
 ```
+:::
 
 
 ## Key takeaways
@@ -769,7 +577,7 @@ setTimeout(runCurveFitting, 350);
 ## Data and Code Availability
 
 - **Python Reference Implementations**: Complete Jupyter Notebooks and reusable SciPy scripts are hosted on GitHub: [`kamingfung/partial-curve-fitting`](https://github.com/kamingfung).
-- **Interactive Sandbox**: The live browser visualizer above is implemented in vanilla HTML5 Canvas and runs entirely client-side without external dependencies.
+- **Interactive Sandbox**: The live browser visualizer above is implemented in Observable JS and runs entirely client-side without external dependencies.
 
 ## References
 

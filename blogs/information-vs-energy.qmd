@@ -191,32 +191,60 @@ The photon, the gluons and the $W^\pm, Z^0$ bosons are therefore **gauge connect
 
 Adjust the local phase $\alpha(x)$ at Point 2. The ordinary gradient records a mismatch; the **gauge connection** $A_\mu(x)$ carries the phase across and restores invariance.
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600;">Point 1 Phase (θ₁): <span id="theta1-val" style="color: #38bdf8;">0°</span></label>
-      <input type="range" id="slider-theta1" min="0" max="360" value="0" oninput="updateGaugeVisualizer()" style="width: 100%; accent-color: #38bdf8;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600;">Point 2 Phase Shift (α(x)): <span id="theta2-val" style="color: #f59e0b;">90°</span></label>
-      <input type="range" id="slider-theta2" min="0" max="360" value="90" oninput="updateGaugeVisualizer()" style="width: 100%; accent-color: #f59e0b;">
-    </div>
-    <div style="display: flex; flex-direction: column; justify-content: center;">
-      <label style="font-size: 0.85em; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer;">
-        <input type="checkbox" id="gauge-enable" checked onchange="updateGaugeVisualizer()" style="accent-color: #10b981; width: 18px; height: 18px;">
-        Enable Gauge Connection A_μ
-      </label>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🔗 Local phase and the connection that reconciles it
 
-  <canvas id="gauge-canvas" width="700" height="260" style="width: 100%; height: auto; background: #0b1120; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+```{ojs}
+//| echo: false
+viewof theta1 = Inputs.range([0, 360], {value: 0, step: 1, label: "Point 1 phase θ₁ (°)"})
+viewof theta2 = Inputs.range([0, 360], {value: 90, step: 1, label: "Point 2 phase shift α(x) (°)"})
+viewof gaugeOn = Inputs.toggle({value: true, label: "Enable gauge connection A_μ"})
 
-  <div id="gauge-explanation" style="font-size: 0.85em; color: #94a3b8; margin-top: 12px; line-height: 1.5; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 6px;">
-    Loading gauge connection status...
-  </div>
-</div>
+// The only physics here: the phase discrepancy the connection has to carry.
+dTheta = (theta2 - theta1 + 360) % 360
+
+// Shared by the Landauer cell further down: one page, one OJS namespace.
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Phase mismatch Δθ", `${dTheta.toFixed(0)}°`, "#f59e0b")}
+  ${card("Derivative", gaugeOn ? "Dμψ invariant" : "∂μψ ≠ 0", gaugeOn ? "#10b981" : "#ef4444")}
+  ${card("Local U(1) symmetry", gaugeOn ? "✓ Preserved" : "✗ Broken", gaugeOn ? "#10b981" : "#ef4444")}
+</div>`
+
+dial = (cx, deg, colour, label) => {
+  const a = (deg * Math.PI) / 180, r = 50;
+  const x = cx + r * 0.85 * Math.cos(a), y = 130 - r * 0.85 * Math.sin(a);
+  return `<circle cx="${cx}" cy="130" r="${r}" fill="none" stroke="#475569" stroke-width="2"/>
+    <line x1="${cx}" y1="130" x2="${x}" y2="${y}" stroke="${colour}" stroke-width="3"/>
+    <circle cx="${x}" cy="${y}" r="4" fill="${colour}"/>
+    <circle cx="${cx}" cy="130" r="3" fill="#fff"/>
+    <text x="${cx}" y="${130 + r + 22}" text-anchor="middle" fill="#cbd5e1" font-size="13">${label}</text>`;
+}
+
+html`<svg viewBox="0 0 700 260" style="width:100%;height:auto;background:#0b1120;border:1px solid #1e293b;border-radius:8px;font-family:system-ui,sans-serif">
+  <line x1="180" y1="130" x2="520" y2="130" stroke="#334155" stroke-width="2"/>
+  <line x1="240" y1="130" x2="460" y2="130" stroke="${gaugeOn ? "#10b981" : "#ef4444"}"
+        stroke-width="${gaugeOn ? 4 : 3}" stroke-dasharray="${gaugeOn ? "none" : "6 6"}"/>
+  ${dial(180, theta1, "#38bdf8", "Point x₁: ψ(x₁)")}
+  ${dial(520, theta2, "#f59e0b", "Point x₂: ψ(x₂)")}
+  <text x="350" y="105" text-anchor="middle" fill="${gaugeOn ? "#10b981" : "#ef4444"}" font-size="12">
+    ${gaugeOn ? `Gauge field A_μ compensates Δθ = ${dTheta.toFixed(0)}°` : `Phase mismatch! ∂_μ ψ ≠ 0`}</text>
+  <text x="350" y="162" text-anchor="middle" fill="${gaugeOn ? "#10b981" : "#ef4444"}" font-size="12">
+    ${gaugeOn ? `Covariant derivative D_μ ψ = 0 (invariant!)` : `Non-invariant phase error: ${dTheta.toFixed(0)}°`}</text>
+</svg>`
+
+html`<p style="font-size:0.85em;color:#94a3b8;line-height:1.5;background:rgba(0,0,0,0.25);padding:10px;border-radius:6px;margin-top:12px;">${
+  gaugeOn
+    ? html`<strong style="color:#10b981">✓ Gauge invariance preserved:</strong> the gauge field A<sub>μ</sub> transmits a phase compensation of Δθ = ${dTheta.toFixed(0)}° between x₁ and x₂. The covariant derivative D<sub>μ</sub> = ∂<sub>μ</sub> − i q A<sub>μ</sub> eliminates the phase discrepancy, generating what macroscopic observers perceive as the <strong>electromagnetic force</strong>.`
+    : html`<strong style="color:#ef4444">✗ Symmetry broken:</strong> without a gauge connection field A<sub>μ</sub>, the local phase variation across space causes the ordinary derivative ∂<sub>μ</sub>ψ to acquire an arbitrary term i(∂<sub>μ</sub>α)ψ. Physical laws would depend on arbitrary local clock choices.`
+}</p>`
 ```
+
+:::
 
 
 ### Feynman diagrams as data packets
@@ -331,40 +359,46 @@ $$\Delta E_{\text{min}} \approx 1.3806 \times 10^{-23} \times 300 \times 0.6931 
 
 Compute the minimum heat released by erasing bits at temperatures from the cosmic microwave background ($2.73\text{ K}$) to a hot processor.
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600;">Information Erased ($N$ bits):</label>
-      <input type="number" id="landauer-bits" value="1000000" min="1" step="1000" oninput="calculateLandauer()" style="width: 100%; background: #0f172a; border: 1px solid #475569; color: #fff; padding: 6px 10px; border-radius: 6px;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600;">Temperature ($T$ in Kelvin):</label>
-      <input type="number" id="landauer-temp" value="300" min="0.001" step="10" oninput="calculateLandauer()" style="width: 100%; background: #0f172a; border: 1px solid #475569; color: #fff; padding: 6px 10px; border-radius: 6px;">
-    </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-end;">
-      <button onclick="setLandauerPreset(2.73)" style="background: #334155; border: none; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Deep Space (2.7K)</button>
-      <button onclick="setLandauerPreset(77)" style="background: #334155; border: none; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Liquid N2 (77K)</button>
-      <button onclick="setLandauerPreset(300)" style="background: #2563eb; border: none; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Room Temp (300K)</button>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🔥 Landauer's bound calculator
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; background: #020617; padding: 14px; border-radius: 8px; border: 1px solid #1e293b;">
-    <div>
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Minimum Heat Energy Dissipated</div>
-      <div id="landauer-joules" style="font-size: 1.25em; font-weight: 700; color: #38bdf8; margin-top: 4px;">2.87 × 10⁻¹⁵ J</div>
-    </div>
-    <div>
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Equivalent Electron Volts</div>
-      <div id="landauer-ev" style="font-size: 1.25em; font-weight: 700; color: #10b981; margin-top: 4px;">17.9 keV</div>
-    </div>
-    <div>
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Entropy Discharged to Cosmos</div>
-      <div id="landauer-entropy" style="font-size: 1.25em; font-weight: 700; color: #f59e0b; margin-top: 4px;">9.57 × 10⁻¹⁸ J/K</div>
-    </div>
-  </div>
-</div>
+```{ojs}
+//| echo: false
+// No [min, max] or step: Inputs.number reports undefined for an input that
+// violates them, and the 2.73 K preset is off any sane step grid.
+viewof bits = Inputs.number({value: 1e6, label: "Information erased N (bits)"})
+viewof temp = Inputs.bind(
+  Inputs.number({label: "Temperature T (kelvin)"}),
+  viewof tempPreset)
+viewof tempPreset = Inputs.radio([2.73, 77, 300], {
+  value: 300,
+  label: "Presets",
+  format: t => t === 2.73 ? "Deep space (2.7 K)" : t === 77 ? "Liquid N₂ (77 K)" : "Room temp (300 K)"
+})
+
+kB = 1.380649e-23        // J/K, CODATA 2018
+q_e = 1.602176634e-19    // J per eV
+
+N = Number(bits) || 0
+T = Number(temp) || 0
+
+joules = N * kB * T * Math.LN2
+ev = joules / q_e
+entropy = N * kB * Math.LN2
+
+evLabel = ev < 1e3 ? ev.toFixed(3) + " eV"
+  : ev < 1e6 ? (ev / 1e3).toFixed(3) + " keV"
+  : ev < 1e9 ? (ev / 1e6).toFixed(3) + " MeV"
+  : (ev / 1e9).toFixed(3) + " GeV"
+
+html`<div class="sim-readouts">
+  ${card("Minimum heat energy dissipated", joules.toExponential(3) + " J", "#38bdf8")}
+  ${card("Equivalent electron volts", evLabel, "#10b981")}
+  ${card("Entropy discharged to cosmos", entropy.toExponential(3) + " J/K", "#f59e0b")}
+</div>`
 ```
+
+:::
 
 
 ### Holography and $ER = EPR$
@@ -582,175 +616,10 @@ Maximise the entanglement between two black holes' microstates and a smooth worm
 | **Spacetime Origin** | Fixed, immutable background stage | Emergent quantum entanglement network ($ER = EPR$) |
 | **Limiting Principle** | Conservation of Energy ($\Delta E = 0$) | Bekenstein Information Bound ($I \le \frac{2\pi R E}{\hbar c \ln 2}$) |
 
-```{=html}
-<script>
-// --- GAUGE VISUALIZER ---
-const gCanvas = document.getElementById('gauge-canvas');
-const gCtx = gCanvas.getContext('2d');
-
-function updateGaugeVisualizer() {
-  const theta1 = parseFloat(document.getElementById('slider-theta1').value);
-  const theta2 = parseFloat(document.getElementById('slider-theta2').value);
-  const gaugeEnabled = document.getElementById('gauge-enable').checked;
-
-  document.getElementById('theta1-val').innerText = `${theta1}°`;
-  document.getElementById('theta2-val').innerText = `${theta2}°`;
-
-  gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
-
-  const p1 = { x: 180, y: 130 };
-  const p2 = { x: 520, y: 130 };
-  const r = 50;
-
-  // Background connecting line
-  gCtx.strokeStyle = '#334155';
-  gCtx.lineWidth = 2;
-  gCtx.beginPath();
-  gCtx.moveTo(p1.x, p1.y);
-  gCtx.lineTo(p2.x, p2.y);
-  gCtx.stroke();
-
-  // Draw Point 1 Phase Wheel
-  drawPhaseWheel(p1.x, p1.y, r, theta1, '#38bdf8', 'Point x₁: ψ(x₁)');
-
-  // Draw Point 2 Phase Wheel
-  drawPhaseWheel(p2.x, p2.y, r, theta2, '#f59e0b', 'Point x₂: ψ(x₂)');
-
-  // Draw Gauge Connection or Phase Error
-  const diff = (theta2 - theta1 + 360) % 360;
-  const midX = (p1.x + p2.x) / 2;
-  const midY = (p1.y + p2.y) / 2;
-
-  if (gaugeEnabled) {
-    // Gauge connection active
-    gCtx.strokeStyle = '#10b981';
-    gCtx.lineWidth = 4;
-    gCtx.beginPath();
-    gCtx.moveTo(p1.x + r + 10, p1.y);
-    gCtx.lineTo(p2.x - r - 10, p2.y);
-    gCtx.stroke();
-
-    // Transmitting photon / gauge wave
-    gCtx.fillStyle = '#10b981';
-    gCtx.font = '12px system-ui';
-    gCtx.fillText(`Gauge Field A_μ Compensates Δθ = ${diff.toFixed(0)}°`, midX - 110, midY - 20);
-    gCtx.fillText(`Covariant Derivative D_μ ψ = 0 (Invariant!)`, midX - 95, midY + 30);
-
-    document.getElementById('gauge-explanation').innerHTML = `
-      <strong style="color: #10b981;">✓ Gauge Invariance Preserved:</strong> 
-      The gauge field $A_\\mu$ transmits a phase compensation of $\\Delta \\theta = ${diff.toFixed(0)}^\\circ$ between $x_1$ and $x_2$. 
-      The covariant derivative $D_\\mu = \\partial_\\mu - i q A_\\mu$ eliminates the phase discrepancy, generating what macroscopic observers perceive as the <strong>electromagnetic force</strong>!
-    `;
-  } else {
-    // Gauge connection broken
-    gCtx.strokeStyle = '#ef4444';
-    gCtx.setLineDash([6, 6]);
-    gCtx.lineWidth = 3;
-    gCtx.beginPath();
-    gCtx.moveTo(p1.x + r + 10, p1.y);
-    gCtx.lineTo(p2.x - r - 10, p2.y);
-    gCtx.stroke();
-    gCtx.setLineDash([]);
-
-    gCtx.fillStyle = '#ef4444';
-    gCtx.font = '12px system-ui';
-    gCtx.fillText(`Phase Mismatch! ∂_μ ψ ≠ 0`, midX - 65, midY - 15);
-    gCtx.fillText(`Non-invariant Phase Error: ${diff.toFixed(0)}°`, midX - 80, midY + 30);
-
-    document.getElementById('gauge-explanation').innerHTML = `
-      <strong style="color: #ef4444;">✗ Symmetry Broken:</strong> 
-      Without a gauge connection field $A_\\mu$, the local phase variation across space causes the ordinary derivative $\\partial_\\mu \\psi$ to acquire an arbitrary term $i(\\partial_\\mu \\alpha)\\psi$. Physical laws would depend on arbitrary local clock choices.
-    `;
-  }
-}
-
-function drawPhaseWheel(cx, cy, r, angleDeg, color, label) {
-  const angleRad = (angleDeg * Math.PI) / 180;
-
-  // Outer circle
-  gCtx.strokeStyle = '#475569';
-  gCtx.lineWidth = 2;
-  gCtx.beginPath();
-  gCtx.arc(cx, cy, r, 0, Math.PI * 2);
-  gCtx.stroke();
-
-  // Phase vector arrow
-  const vx = cx + r * 0.85 * Math.cos(angleRad);
-  const vy = cy - r * 0.85 * Math.sin(angleRad);
-
-  gCtx.strokeStyle = color;
-  gCtx.lineWidth = 3;
-  gCtx.beginPath();
-  gCtx.moveTo(cx, cy);
-  gCtx.lineTo(vx, vy);
-  gCtx.stroke();
-
-  // Vector tip dot
-  gCtx.fillStyle = color;
-  gCtx.beginPath();
-  gCtx.arc(vx, vy, 4, 0, Math.PI * 2);
-  gCtx.fill();
-
-  // Center dot
-  gCtx.fillStyle = '#fff';
-  gCtx.beginPath();
-  gCtx.arc(cx, cy, 3, 0, Math.PI * 2);
-  gCtx.fill();
-
-  // Label
-  gCtx.fillStyle = '#cbd5e1';
-  gCtx.font = '13px system-ui';
-  gCtx.fillText(label, cx - 45, cy + r + 22);
-}
-
-// --- LANDAUER CALCULATOR ---
-function calculateLandauer() {
-  const bits = parseFloat(document.getElementById('landauer-bits').value) || 0;
-  const temp = parseFloat(document.getElementById('landauer-temp').value) || 0;
-
-  const kB = 1.380649e-23; // J/K
-  const ln2 = Math.LN2;
-  const q_e = 1.602176634e-19; // J per eV
-
-  const joules = bits * kB * temp * ln2;
-  const ev = joules / q_e;
-  const entropy = bits * kB * ln2;
-
-  document.getElementById('landauer-joules').innerText = joules.toExponential(3) + ' J';
-  
-  if (ev < 1e3) {
-    document.getElementById('landauer-ev').innerText = ev.toFixed(3) + ' eV';
-  } else if (ev < 1e6) {
-    document.getElementById('landauer-ev').innerText = (ev / 1e3).toFixed(3) + ' keV';
-  } else if (ev < 1e9) {
-    document.getElementById('landauer-ev').innerText = (ev / 1e6).toFixed(3) + ' MeV';
-  } else {
-    document.getElementById('landauer-ev').innerText = (ev / 1e9).toFixed(3) + ' GeV';
-  }
-
-  document.getElementById('landauer-entropy').innerText = entropy.toExponential(3) + ' J/K';
-}
-
-function setLandauerPreset(t) {
-  document.getElementById('landauer-temp').value = t;
-  calculateLandauer();
-}
-
-window.addEventListener('load', () => {
-  updateGaugeVisualizer();
-  calculateLandauer();
-});
-setTimeout(() => {
-  updateGaugeVisualizer();
-  calculateLandauer();
-}, 400);
-</script>
-```
-
 
 ### Data and code availability
 
-- **Interactive Visualizers**: The phase synchronization visualizer and Landauer's bound calculator are implemented in pure vanilla JavaScript/HTML5 Canvas, executed entirely client-side.
+- **Interactive Visualizers**: The phase synchronization visualizer and Landauer's bound calculator are written as Observable JS (OJS) cells, executed entirely client-side.
 - **Source Code**: All markdown documents, equations, and interactive models are open source on GitHub: [`kamingfung/kamingfung.github.io`](https://github.com/kamingfung/kamingfung.github.io).
 - **Physical Constants**: Calculations utilize CODATA recommended values for Boltzmann constant $k_B$, elementary charge $e$, and speed of light $c$[^11].
 

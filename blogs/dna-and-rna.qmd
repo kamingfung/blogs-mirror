@@ -314,69 +314,31 @@ Over 3.8 billion years ago, life began in an **RNA World**. Later, life evolved 
 
 Enter any DNA sequence, or pick a preset gene. The tool transcribes the DNA into mRNA and decodes the codons into a coloured polypeptide chain. Change a single nucleotide to see the effect of **silent**, **missense** and **frameshift mutations**.
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
-  <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 14px;">
-    <label style="font-size: 0.9em; font-weight: 600;">DNA Coding Strand ($5' \to 3'$):</label>
-    <div style="display: flex; gap: 6px;">
-      <button onclick="setDnaPreset('insulin')" style="background: #2563eb; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Preset: Insulin Segment</button>
-      <button onclick="setDnaPreset('gfp')" style="background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Preset: GFP (Fluorescent)</button>
-      <button onclick="setDnaPreset('sickle')" style="background: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Preset: Sickle Cell Mutation</button>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🧬 Transcribe, translate, mutate
 
-  <input type="text" id="dna-input" value="ATG GCC AAA TTT GGT TAA" oninput="runTranslation()" style="width: 100%; background: #0f172a; border: 1px solid #475569; color: #38bdf8; font-family: monospace; font-size: 1.1em; letter-spacing: 2px; padding: 10px 14px; border-radius: 6px; text-transform: uppercase; margin-bottom: 14px;">
+```{ojs}
+//| echo: false
+viewof preset = Inputs.select(
+  new Map([
+    ["Default example", "ATG GCC AAA TTT GGT TAA"],
+    ["Insulin segment", "ATG TTT GTG AAC CAA CAC CTG TGC GGC TCA CAC CTG TAA"],
+    ["GFP (fluorescent)", "ATG AGT AAA GGA GAA GAA CTT TTC ACT GGA GTT GTC TAA"],
+    // Sickle cell GAG (Glu) -> GTG (Val) mutation
+    ["Sickle cell mutation", "ATG GTG CAC CTG ACT CCT GTG GAG AAG TCT GCC GTT ACT TAA"]
+  ]),
+  {label: "Preset gene"}
+)
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px;">
-    <div style="background: #020617; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">1. Transcribed mRNA ($5' \to 3'$)</div>
-      <div id="mrna-output" style="font-family: monospace; font-size: 1.05em; color: #fbbf24; font-weight: 700; margin-top: 4px; word-break: break-all; letter-spacing: 2px;">AUGGCCAAAUUUGGUUAA</div>
-    </div>
-    <div style="background: #020617; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">2. Translated Polypeptide</div>
-      <div id="protein-output" style="font-family: system-ui; font-size: 1.0em; font-weight: 600; color: #34d399; margin-top: 4px;">Met — Ala — Lys — Phe — Gly — [STOP]</div>
-    </div>
-  </div>
+viewof typed = Inputs.text({value: preset, label: "DNA coding strand (5′ → 3′)", width: 640})
 
-  <div style="font-size: 0.8em; color: #94a3b8; margin-bottom: 8px;">Codon Assembly Chain:</div>
-  <div id="codon-chips" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px;"></div>
-</div>
-```
+// Anything that is not A, T, G or C is ignored, as in a real sequence file.
+dna = typed.toUpperCase().replace(/[^ATGC]/g, "")
+mrna = dna.replace(/T/g, "U")
+codons = mrna.match(/.{3}/g) ?? []
+residues = codons.map(c => geneticCode[c] || {aa: "???", code: "???", type: "unknown"})
 
-
-### Animated double helix
-
-The complementary double helix rotates as base pairs ($A=T, G \equiv C$) zip together through hydrogen bonding.
-
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-    <div style="font-size: 0.9em; font-weight: 600;">Double Helix Hydrogen-Bonded Molecular Grid</div>
-    <div style="font-size: 0.8em; color: #94a3b8;">Click canvas to add a base pair pulse</div>
-  </div>
-  <canvas id="dna-helix-canvas" width="740" height="260" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
-  <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.8em; margin-top: 10px;">
-    <span style="color: #38bdf8;">■ Adenine (A)</span>
-    <span style="color: #f87171;">■ Thymine (T)</span>
-    <span style="color: #34d399;">■ Guanine (G)</span>
-    <span style="color: #fbbf24;">■ Cytosine (C)</span>
-  </div>
-</div>
-```
-
-
-## Key takeaways
-
-- DNA is the archive: double-stranded, 2'-deoxyribose sugar, thymine ($T$), and it never leaves the nucleus.
-- RNA is the messenger and the tool: single-stranded, ribose sugar, uracil ($U$), it travels to the cytoplasm and can fold into catalytic ribozymes.
-- The one extra oxygen on ribose is why RNA hydrolyses in minutes to hours while DNA stays readable for millennia.
-- The workflow is $\text{DNA} \xrightarrow{\text{Transcription}} \text{mRNA} \xrightarrow{\text{Translation}} \text{Protein}$, read three bases at a time from `AUG` to a stop codon.
-- The code is universal: every human, animal, plant and virus uses the same 64-codon dictionary, and its redundancy is what makes many point mutations silent.
-
-```{=html}
-<script>
-// --- SIMULATOR 1: CODON TRANSLATOR ---
-const geneticCode = {
+geneticCode = ({
   'AUG': { aa: 'Met (Start)', code: 'Met', type: 'start' },
   'UUU': { aa: 'Phe', code: 'Phe', type: 'hydrophobic' }, 'UUC': { aa: 'Phe', code: 'Phe', type: 'hydrophobic' },
   'UUA': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' }, 'UUG': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' },
@@ -412,75 +374,66 @@ const geneticCode = {
   'UAA': { aa: '[STOP]', code: 'STOP', type: 'stop' },
   'UAG': { aa: '[STOP]', code: 'STOP', type: 'stop' },
   'UGA': { aa: '[STOP]', code: 'STOP', type: 'stop' }
-};
+})
 
-function runTranslation() {
-  const inputEl = document.getElementById('dna-input');
-  if (!inputEl) return;
-  
-  let rawDna = inputEl.value.toUpperCase().replace(/[^ATGC]/g, '');
-  inputEl.value = rawDna;
+chipColour = ({start: '#059669', stop: '#dc2626', hydrophobic: '#1e3a8a',
+               polar: '#0284c7', basic: '#7c3aed', acidic: '#b45309'})
 
-  // 1. Transcribe DNA to mRNA (T -> U)
-  const mrna = rawDna.replace(/T/g, 'U');
-  document.getElementById('mrna-output').innerText = mrna.match(/.{1,3}/g)?.join(' ') || '';
+card = (label, value, style) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="${style}">${value}</div>
+</div>`
 
-  // 2. Translate Codons
-  const codons = [];
-  for (let i = 0; i < mrna.length; i += 3) {
-    if (i + 3 <= mrna.length) {
-      codons.push(mrna.substring(i, i + 3));
-    }
-  }
+html`<div class="sim-readouts">
+  ${card("1. Transcribed mRNA (5′ → 3′)",
+         mrna.match(/.{1,3}/g)?.join(" ") ?? "",
+         "font-family:monospace;color:#fbbf24;word-break:break-all;letter-spacing:2px")}
+  ${card("2. Translated polypeptide",
+         residues.length > 0 ? residues.map(r => r.aa).join(" — ") : "No valid codons",
+         "color:#34d399")}
+</div>`
 
-  const aaList = [];
-  const chipsContainer = document.getElementById('codon-chips');
-  chipsContainer.innerHTML = '';
+html`<div style="font-size:0.8em;color:#94a3b8;margin-bottom:8px">Codon assembly chain:</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;min-height:48px">${residues.map((r, i) => html`
+  <div style="background:${chipColour[r.type] ?? '#334155'};color:#fff;padding:6px 10px;border-radius:6px;
+              font-size:0.85em;font-family:monospace;display:flex;flex-direction:column;align-items:center">
+    <strong>${codons[i]}</strong><span style="font-size:0.8em;opacity:0.9">${r.code}</span>
+  </div>`)}</div>`
+```
+:::
 
-  codons.forEach((codon, idx) => {
-    const match = geneticCode[codon] || { aa: '???', code: '???', type: 'unknown' };
-    aaList.push(match.aa);
 
-    let bgColor = '#334155';
-    let textColor = '#fff';
-    if (match.type === 'start') { bgColor = '#059669'; }
-    else if (match.type === 'stop') { bgColor = '#dc2626'; }
-    else if (match.type === 'hydrophobic') { bgColor = '#1e3a8a'; }
-    else if (match.type === 'polar') { bgColor = '#0284c7'; }
-    else if (match.type === 'basic') { bgColor = '#7c3aed'; }
-    else if (match.type === 'acidic') { bgColor = '#b45309'; }
+### Animated double helix
 
-    const chip = document.createElement('div');
-    chip.style.background = bgColor;
-    chip.style.color = textColor;
-    chip.style.padding = '6px 10px';
-    chip.style.borderRadius = '6px';
-    chip.style.fontSize = '0.85em';
-    chip.style.fontFamily = 'monospace';
-    chip.style.display = 'flex';
-    chip.style.flexDirection = 'column';
-    chip.style.alignItems = 'center';
-    chip.innerHTML = `<strong>${codon}</strong><span style="font-size: 0.8em; opacity: 0.9;">${match.code}</span>`;
-    chipsContainer.appendChild(chip);
-  });
+The complementary double helix rotates as base pairs ($A=T, G \equiv C$) zip together through hydrogen bonding.
 
-  document.getElementById('protein-output').innerText = aaList.length > 0 ? aaList.join(' — ') : 'No valid codons';
-}
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <div style="font-size: 0.9em; font-weight: 600;">Double Helix Hydrogen-Bonded Molecular Grid</div>
+    <div style="font-size: 0.8em; color: #94a3b8;">Click canvas to add a base pair pulse</div>
+  </div>
+  <canvas id="dna-helix-canvas" width="740" height="260" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+  <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.8em; margin-top: 10px;">
+    <span style="color: #38bdf8;">■ Adenine (A)</span>
+    <span style="color: #f87171;">■ Thymine (T)</span>
+    <span style="color: #34d399;">■ Guanine (G)</span>
+    <span style="color: #fbbf24;">■ Cytosine (C)</span>
+  </div>
+</div>
+```
 
-function setDnaPreset(preset) {
-  const input = document.getElementById('dna-input');
-  if (!input) return;
-  if (preset === 'insulin') {
-    input.value = "ATG TTT GTG AAC CAA CAC CTG TGC GGC TCA CAC CTG TAA";
-  } else if (preset === 'gfp') {
-    input.value = "ATG AGT AAA GGA GAA GAA CTT TTC ACT GGA GTT GTC TAA";
-  } else if (preset === 'sickle') {
-    // Sickle cell GAG (Glu) -> GTG (Val) mutation
-    input.value = "ATG GTG CAC CTG ACT CCT GTG GAG AAG TCT GCC GTT ACT TAA";
-  }
-  runTranslation();
-}
 
+## Key takeaways
+
+- DNA is the archive: double-stranded, 2'-deoxyribose sugar, thymine ($T$), and it never leaves the nucleus.
+- RNA is the messenger and the tool: single-stranded, ribose sugar, uracil ($U$), it travels to the cytoplasm and can fold into catalytic ribozymes.
+- The one extra oxygen on ribose is why RNA hydrolyses in minutes to hours while DNA stays readable for millennia.
+- The workflow is $\text{DNA} \xrightarrow{\text{Transcription}} \text{mRNA} \xrightarrow{\text{Translation}} \text{Protein}$, read three bases at a time from `AUG` to a stop codon.
+- The code is universal: every human, animal, plant and virus uses the same 64-codon dictionary, and its redundancy is what makes many point mutations silent.
+
+```{=html}
+<script>
 // --- SIMULATOR 2: 2D ANIMATED DNA DOUBLE HELIX CANVAS ---
 let dnaHelixAnimId = null;
 let helixAngle = 0;
@@ -566,7 +519,6 @@ function drawDnaHelix() {
 }
 
 function initDnaVisuals() {
-  runTranslation();
   if (dnaHelixAnimId) cancelAnimationFrame(dnaHelixAnimId);
   dnaHelixAnimId = requestAnimationFrame(drawDnaHelix);
 }

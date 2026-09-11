@@ -158,362 +158,200 @@ At high porosity ($\rho^*/\rho_s \approx 0.15–0.25$, typical for ventilated ca
 
 Select a lattice architecture, change the load mode (pure shear, axial compression, or bending moment), and inspect the **Von Mises stress distribution** and **elastic modulus response**.
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
-    <h4 style="margin: 0; color: #38bdf8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;">
-      <span>🔬 Finite Element Lattice Deformation & Stress Engine</span>
-    </h4>
-    <span style="font-size: 0.8em; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 4px 10px; border-radius: 4px; font-family: monospace;">
-      K · u = F (Direct Stiffness Method)
-    </span>
-  </div>
+::: {.sim-card}
+#### 🔬 Finite Element Lattice Deformation & Stress Engine
 
-  <!-- Lattice Selection Tabs -->
-  <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
-    <button id="btn-lat-tri" onclick="setLatticeType('triangular')" style="background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">▲ Triangular Truss (Kagome)</button>
-    <button id="btn-lat-hex" onclick="setLatticeType('hexagonal')" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">⬡ Hexagonal Honeycomb</button>
-    <button id="btn-lat-vor" onclick="setLatticeType('voronoi')" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">🌀 Voronoi Reticular (2014)</button>
-    <button id="btn-lat-sq" onclick="setLatticeType('square')" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">⊞ Orthogonal Square Grid</button>
-  </div>
+$$\mathbf{K} \cdot \mathbf{u} = \mathbf{F} \quad \text{(Direct Stiffness Method)}$$
 
-  <!-- Interactive Parameter Sliders -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px; background: rgba(0,0,0,0.25); padding: 14px; border-radius: 8px;">
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Loading Mode:</label>
-      <select id="load-mode-select" onchange="updateLatticeSim()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #475569; padding: 6px 10px; border-radius: 6px; font-size: 0.88em; margin-top: 4px;">
-        <option value="shear">Pure Shear Stress (τ_xy)</option>
-        <option value="compression">Axial Compression (σ_yy)</option>
-        <option value="bending">Torsional / Bending Moment (M_z)</option>
-        <option value="multiaxial">Combined Multiaxial Load</option>
-      </select>
-    </div>
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Applied Force Magnitude: <b id="force-val" style="color: #f59e0b;">50 N</b></label>
-      <input type="range" id="slider-force" min="10" max="100" step="5" value="50" oninput="updateLatticeSim()" style="width: 100%; accent-color: #f59e0b; margin-top: 6px;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Lattice Porosity: <b id="porosity-val" style="color: #10b981;">80%</b></label>
-      <input type="range" id="slider-porosity" min="60" max="90" step="2" value="80" oninput="updateLatticeSim()" style="width: 100%; accent-color: #10b981; margin-top: 6px;">
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof latticeType = Inputs.radio(new Map([
+  ["▲ Triangular Truss (Kagome)", "triangular"],
+  ["⬡ Hexagonal Honeycomb", "hexagonal"],
+  ["🌀 Voronoi Reticular (2014)", "voronoi"],
+  ["⊞ Orthogonal Square Grid", "square"]
+]), {value: "triangular", label: "Lattice architecture"})
 
-  <!-- Real-Time Biomechanical KPI Cards -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Max Deflection (δ)</div>
-      <div id="readout-deflection" style="font-size: 1.1em; font-weight: 700; color: #38bdf8; margin-top: 2px;">0.42 mm</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Effective Shear Modulus</div>
-      <div id="readout-gmod" style="font-size: 1.1em; font-weight: 700; color: #10b981; margin-top: 2px;">8.45 MPa</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Elastic Isotropy Index</div>
-      <div id="readout-isotropy" style="font-size: 1.1em; font-weight: 700; color: #a78bfa; margin-top: 2px;">0.98 (Isotropic)</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Peak Von Mises Stress</div>
-      <div id="readout-stress" style="font-size: 1.1em; font-weight: 700; color: #fbbf24; margin-top: 2px;">14.2 MPa</div>
-    </div>
-  </div>
+viewof mode = Inputs.select(new Map([
+  ["Pure Shear Stress (τ_xy)", "shear"],
+  ["Axial Compression (σ_yy)", "compression"],
+  ["Torsional / Bending Moment (M_z)", "bending"],
+  ["Combined Multiaxial Load", "multiaxial"]
+]), {label: "Loading mode"})
 
-  <!-- Live FEA Canvas -->
-  <canvas id="lattice-fea-canvas" width="720" height="340" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+viewof force = Inputs.range([10, 100], {value: 50, step: 5, label: "Applied force magnitude (N)"})
+viewof porosity = Inputs.range([60, 90], {value: 80, step: 2, label: "Lattice porosity (%)"})
 
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 0.8em; color: #64748b; margin-top: 10px;">
-    <span>🔵 <b>Low Stress</b> &rarr; 🟢 <b>Moderate Stress</b> &rarr; 🟡 <b>High Stress</b> &rarr; 🔴 <b>Yield Limit</b></span>
-    <span>Dashed lines: Undeformed mesh | Solid colored struts: Deformed state</span>
-  </div>
-</div>
-```
+relDensity = (100 - porosity) / 100
 
-
-```{=html}
-<script>
-let currentLattice = 'triangular';
-
-function setLatticeType(type) {
-  currentLattice = type;
-  const btnTri = document.getElementById('btn-lat-tri');
-  const btnHex = document.getElementById('btn-lat-hex');
-  const btnVor = document.getElementById('btn-lat-vor');
-  const btnSq = document.getElementById('btn-lat-sq');
-
-  [btnTri, btnHex, btnVor, btnSq].forEach(b => b && (b.style.background = '#334155'));
-  if (type === 'triangular' && btnTri) btnTri.style.background = '#0284c7';
-  if (type === 'hexagonal' && btnHex) btnHex.style.background = '#059669';
-  if (type === 'voronoi' && btnVor) btnVor.style.background = '#7c3aed';
-  if (type === 'square' && btnSq) btnSq.style.background = '#d97706';
-
-  updateLatticeSim();
+// Biomechanical constitutive approximation based on published literature.
+props = {
+  if (latticeType === "triangular")     // stretching dominated: G ~ E_s * rho
+    return {shearMod: 14.5 * relDensity, compMod: 16.0 * relDensity, isotropy: 0.98, stressConc: 1.15};
+  if (latticeType === "hexagonal")      // bending dominated in shear, high compressive plateau
+    return {shearMod: 6.2 * Math.pow(relDensity, 1.8), compMod: 22.0 * relDensity, isotropy: 0.72, stressConc: 1.45};
+  if (latticeType === "voronoi")        // stochastic reticular
+    return {shearMod: 8.8 * Math.pow(relDensity, 1.5), compMod: 14.0 * Math.pow(relDensity, 1.3), isotropy: 0.88, stressConc: 1.65};
+  // orthogonal grid: zero diagonal shear resistance without joint bending stiffness
+  return {shearMod: 2.4 * Math.pow(relDensity, 2.2), compMod: 26.0 * relDensity, isotropy: 0.45, stressConc: 2.10};
 }
 
-function updateLatticeSim() {
-  const force = parseFloat(document.getElementById('slider-force').value);
-  const porosity = parseFloat(document.getElementById('slider-porosity').value);
-  const mode = document.getElementById('load-mode-select').value;
+effectiveMod = mode === "shear" ? props.shearMod
+             : mode === "compression" ? props.compMod
+             : (props.shearMod + props.compMod) / 2
+deflection = force / (effectiveMod * 12.0)
+peakStress = (force / (relDensity * 18.0)) * props.stressConc
 
-  document.getElementById('force-val').innerText = force + ' N';
-  document.getElementById('porosity-val').innerText = porosity + '%';
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
 
-  // Biomechanical constitutive approximation based on published literature
-  let shearMod = 8.5;
-  let compMod = 12.0;
-  let isotropy = 0.98;
-  let stressConc = 1.15;
+html`<div class="sim-readouts">
+  ${card("Max Deflection (δ)", deflection.toFixed(2) + " mm", "#38bdf8")}
+  ${card("Effective Shear Modulus", props.shearMod.toFixed(2) + " MPa", "#10b981")}
+  ${card("Elastic Isotropy Index", props.isotropy.toFixed(2) + (props.isotropy > 0.9 ? " (Isotropic)" : " (Anisotropic)"), "#a78bfa")}
+  ${card("Peak Von Mises Stress", peakStress.toFixed(1) + " MPa", "#fbbf24")}
+</div>`
 
-  const relDensity = (100 - porosity) / 100;
-
-  if (currentLattice === 'triangular') {
-    // Stretching dominated: G ~ E_s * rho
-    shearMod = 14.5 * relDensity;
-    compMod = 16.0 * relDensity;
-    isotropy = 0.98;
-    stressConc = 1.15;
-  } else if (currentLattice === 'hexagonal') {
-    // Bending dominated in shear, high compressive plateau
-    shearMod = 6.2 * Math.pow(relDensity, 1.8);
-    compMod = 22.0 * relDensity;
-    isotropy = 0.72;
-    stressConc = 1.45;
-  } else if (currentLattice === 'voronoi') {
-    // Stochastic reticular
-    shearMod = 8.8 * Math.pow(relDensity, 1.5);
-    compMod = 14.0 * Math.pow(relDensity, 1.3);
-    isotropy = 0.88;
-    stressConc = 1.65;
-  } else if (currentLattice === 'square') {
-    // Orthogonal grid: zero diagonal shear resistance without joint bending stiffness
-    shearMod = 2.4 * Math.pow(relDensity, 2.2);
-    compMod = 26.0 * relDensity;
-    isotropy = 0.45;
-    stressConc = 2.10;
-  }
-
-  // Calculate deflection based on mode
-  let effectiveMod = (mode === 'shear') ? shearMod : (mode === 'compression' ? compMod : (shearMod + compMod) / 2);
-  let deflection = (force / (effectiveMod * 12.0));
-  let peakStress = (force / (relDensity * 18.0)) * stressConc;
-
-  document.getElementById('readout-deflection').innerText = deflection.toFixed(2) + ' mm';
-  document.getElementById('readout-gmod').innerText = shearMod.toFixed(2) + ' MPa';
-  document.getElementById('readout-isotropy').innerText = isotropy.toFixed(2) + (isotropy > 0.9 ? ' (Isotropic)' : ' (Anisotropic)');
-  document.getElementById('readout-stress').innerText = peakStress.toFixed(1) + ' MPa';
-
-  drawLatticeCanvas(currentLattice, mode, force, deflection, peakStress);
-}
-
-function drawLatticeCanvas(latType, mode, force, deflection, peakStress) {
-  const canvas = document.getElementById('lattice-fea-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-  const scale = 1.2;
-
-  // Generate lattice nodes and connectivity
-  let nodes = [];
-  let edges = [];
-
-  if (latType === 'triangular') {
+// Nodes and connectivity, in the original 720 × 340 canvas frame.
+mesh = {
+  const cx = 360, cy = 170, scale = 1.2;
+  const nodes = [], edges = [];
+  if (latticeType === "triangular") {
     const rows = 4, cols = 7, spacing = 65 * scale;
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = (c - (cols - 1) / 2 + (r % 2 === 1 ? 0.5 : 0)) * spacing + cx;
-        const y = (r - (rows - 1) / 2) * (spacing * 0.866) + cy;
-        nodes.push({ origX: x, origY: y, x: x, y: y, row: r, col: c });
-      }
-    }
-    for (let i = 0; i < nodes.length; i++) {
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++)
+        nodes.push({origX: (c - (cols - 1) / 2 + (r % 2 === 1 ? 0.5 : 0)) * spacing + cx,
+                    origY: (r - (rows - 1) / 2) * (spacing * 0.866) + cy});
+    for (let i = 0; i < nodes.length; i++)
       for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].origX - nodes[j].origX;
-        const dy = nodes[i].origY - nodes[j].origY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 10 && dist < spacing * 1.15) {
-          edges.push([i, j]);
-        }
+        const dist = Math.hypot(nodes[i].origX - nodes[j].origX, nodes[i].origY - nodes[j].origY);
+        if (dist > 10 && dist < spacing * 1.15) edges.push([i, j]);
       }
-    }
-  } else if (latType === 'square') {
+  } else if (latticeType === "square") {
     const rows = 4, cols = 7, spacing = 55 * scale;
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = (c - (cols - 1) / 2) * spacing + cx;
-        const y = (r - (rows - 1) / 2) * spacing + cy;
-        nodes.push({ origX: x, origY: y, x: x, y: y, row: r, col: c });
-      }
-    }
-    for (let i = 0; i < nodes.length; i++) {
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++)
+        nodes.push({origX: (c - (cols - 1) / 2) * spacing + cx,
+                    origY: (r - (rows - 1) / 2) * spacing + cy});
+    for (let i = 0; i < nodes.length; i++)
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = Math.abs(nodes[i].origX - nodes[j].origX);
         const dy = Math.abs(nodes[i].origY - nodes[j].origY);
-        if ((dx < 5 && Math.abs(dy - spacing) < 5) || (dy < 5 && Math.abs(dx - spacing) < 5)) {
-          edges.push([i, j]);
-        }
+        if ((dx < 5 && Math.abs(dy - spacing) < 5) || (dy < 5 && Math.abs(dx - spacing) < 5)) edges.push([i, j]);
       }
-    }
-  } else if (latType === 'hexagonal') {
+  } else if (latticeType === "hexagonal") {
     const rows = 4, cols = 6, r_hex = 32 * scale;
-    for (let r = 0; r < rows; r++) {
+    for (let r = 0; r < rows; r++)
       for (let c = 0; c < cols; c++) {
         const hx = (c - (cols - 1) / 2) * (r_hex * 3) + (r % 2 === 1 ? r_hex * 1.5 : 0) + cx;
         const hy = (r - (rows - 1) / 2) * (r_hex * 0.866) + cy;
         for (let k = 0; k < 6; k++) {
           const ang = (k * Math.PI) / 3;
-          const nx = hx + r_hex * Math.cos(ang);
-          const ny = hy + r_hex * Math.sin(ang);
-          let found = -1;
-          for (let n = 0; n < nodes.length; n++) {
-            if (Math.hypot(nodes[n].origX - nx, nodes[n].origY - ny) < 8) { found = n; break; }
-          }
-          if (found === -1) {
-            nodes.push({ origX: nx, origY: ny, x: nx, y: ny, row: r, col: c });
-          }
+          const nx = hx + r_hex * Math.cos(ang), ny = hy + r_hex * Math.sin(ang);
+          if (!nodes.some(n => Math.hypot(n.origX - nx, n.origY - ny) < 8)) nodes.push({origX: nx, origY: ny});
         }
       }
-    }
-    for (let i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++)
       for (let j = i + 1; j < nodes.length; j++) {
         const dist = Math.hypot(nodes[i].origX - nodes[j].origX, nodes[i].origY - nodes[j].origY);
         if (dist > 10 && dist < r_hex * 1.1) edges.push([i, j]);
       }
-    }
-  } else if (latType === 'voronoi') {
+  } else {
     // Deterministic pseudo-random Voronoi pattern
     const rows = 4, cols = 7, spacing = 58 * scale;
-    const seed = [0.2, -0.4, 0.5, -0.3, 0.4, -0.2, 0.1, 0.3, -0.5, 0.2, -0.1, 0.4, -0.3, 0.2, -0.4, 0.5, 0.1, -0.2, 0.3, -0.4, 0.2, 0.5, -0.3, 0.1, -0.2, 0.4, -0.5, 0.3];
+    const seed = [0.2, -0.4, 0.5, -0.3, 0.4, -0.2, 0.1, 0.3, -0.5, 0.2, -0.1, 0.4, -0.3, 0.2,
+                  -0.4, 0.5, 0.1, -0.2, 0.3, -0.4, 0.2, 0.5, -0.3, 0.1, -0.2, 0.4, -0.5, 0.3];
     let idx = 0;
-    for (let r = 0; r < rows; r++) {
+    for (let r = 0; r < rows; r++)
       for (let c = 0; c < cols; c++) {
-        const jx = (seed[idx % seed.length] || 0) * 16;
-        const jy = (seed[(idx + 3) % seed.length] || 0) * 16;
+        const jx = (seed[idx % seed.length] || 0) * 16, jy = (seed[(idx + 3) % seed.length] || 0) * 16;
         idx++;
-        const x = (c - (cols - 1) / 2) * spacing + jx + cx;
-        const y = (r - (rows - 1) / 2) * spacing + jy + cy;
-        nodes.push({ origX: x, origY: y, x: x, y: y, row: r, col: c });
+        nodes.push({origX: (c - (cols - 1) / 2) * spacing + jx + cx,
+                    origY: (r - (rows - 1) / 2) * spacing + jy + cy});
       }
-    }
-    for (let i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++)
       for (let j = i + 1; j < nodes.length; j++) {
         const dist = Math.hypot(nodes[i].origX - nodes[j].origX, nodes[i].origY - nodes[j].origY);
-        if (dist > 15 && dist < spacing * 1.35) {
-          edges.push([i, j]);
-        }
+        if (dist > 15 && dist < spacing * 1.35) edges.push([i, j]);
       }
-    }
   }
-
-  // Apply displacement field based on boundary conditions (bottom fixed, top loaded)
-  const minY = Math.min(...nodes.map(n => n.origY));
-  const maxY = Math.max(...nodes.map(n => n.origY));
-  const height = maxY - minY || 1;
-
-  nodes.forEach(n => {
-    const factor = (n.origY - minY) / height; // 0 at bottom, 1 at top
-    if (mode === 'shear') {
-      n.x = n.origX + factor * deflection * 18;
-      n.y = n.origY;
-    } else if (mode === 'compression') {
-      n.x = n.origX + (n.origX - cx) * 0.08 * factor * (deflection * 0.5);
-      n.y = n.origY - factor * deflection * 16;
-    } else if (mode === 'bending') {
-      const angle = (factor * deflection * 0.08);
-      const rx = n.origX - cx;
-      const ry = n.origY - minY;
-      n.x = cx + rx * Math.cos(angle) - ry * Math.sin(angle);
-      n.y = minY + rx * Math.sin(angle) + ry * Math.cos(angle);
-    } else if (mode === 'multiaxial') {
-      n.x = n.origX + factor * deflection * 12;
-      n.y = n.origY - factor * deflection * 10;
-    }
-  });
-
-  // Draw undeformed reference mesh (dashed slate)
-  ctx.strokeStyle = 'rgba(71, 85, 105, 0.35)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4, 4]);
-  edges.forEach(([i, j]) => {
-    ctx.beginPath();
-    ctx.moveTo(nodes[i].origX, nodes[i].origY);
-    ctx.lineTo(nodes[j].origX, nodes[j].origY);
-    ctx.stroke();
-  });
-  ctx.setLineDash([]);
-
-  // Draw deformed struts with Von Mises stress color grading
-  edges.forEach(([i, j]) => {
-    const origLen = Math.hypot(nodes[i].origX - nodes[j].origX, nodes[i].origY - nodes[j].origY);
-    const defLen = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
-    const strain = Math.abs(defLen - origLen) / (origLen || 1);
-    
-    // Normalized stress value [0, 1]
-    const stressRatio = Math.min(1.0, (strain * 15.0 * (peakStress / 20.0)));
-    
-    let strokeColor = '#38bdf8'; // low: sky blue
-    if (stressRatio > 0.25) strokeColor = '#34d399'; // emerald
-    if (stressRatio > 0.55) strokeColor = '#fbbf24'; // amber
-    if (stressRatio > 0.80) strokeColor = '#ef4444'; // red
-
-    ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = 3.5;
-    ctx.beginPath();
-    ctx.moveTo(nodes[i].x, nodes[i].y);
-    ctx.lineTo(nodes[j].x, nodes[j].y);
-    ctx.stroke();
-  });
-
-  // Draw pin nodes
-  nodes.forEach(n => {
-    ctx.fillStyle = '#0f172a';
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-  });
-
-  // Draw boundary support indicators (bottom fixed ground)
-  nodes.filter(n => Math.abs(n.origY - minY) < 5).forEach(n => {
-    ctx.strokeStyle = '#94a3b8';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(n.x - 6, n.y - 6);
-    ctx.lineTo(n.x + 6, n.y - 6);
-    ctx.stroke();
-  });
-
-  // Draw applied load vector arrows at top
-  const topNodes = nodes.filter(n => Math.abs(n.origY - maxY) < 8);
-  topNodes.forEach(n => {
-    ctx.strokeStyle = '#f59e0b';
-    ctx.fillStyle = '#f59e0b';
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    if (mode === 'shear') {
-      ctx.moveTo(n.x - 22, n.y);
-      ctx.lineTo(n.x, n.y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(n.x, n.y); ctx.lineTo(n.x - 6, n.y - 4); ctx.lineTo(n.x - 6, n.y + 4); ctx.fill();
-    } else if (mode === 'compression') {
-      ctx.moveTo(n.x, n.y + 22);
-      ctx.lineTo(n.x, n.y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(n.x, n.y); ctx.lineTo(n.x - 4, n.y + 6); ctx.lineTo(n.x + 4, n.y + 6); ctx.fill();
-    }
-  });
+  return {nodes, edges};
 }
 
-window.addEventListener('load', updateLatticeSim);
-if (typeof document$ !== 'undefined') document$.subscribe(updateLatticeSim);
-setTimeout(updateLatticeSim, 200);
-</script>
+// Displacement field from the boundary conditions (one edge fixed, the opposite one loaded).
+deformed = {
+  const cx = 360;
+  const minY = Math.min(...mesh.nodes.map(n => n.origY));
+  const maxY = Math.max(...mesh.nodes.map(n => n.origY));
+  const height = maxY - minY || 1;
+  const nodes = mesh.nodes.map(n => {
+    const factor = (n.origY - minY) / height;
+    if (mode === "shear")
+      return {...n, x: n.origX + factor * deflection * 18, y: n.origY};
+    if (mode === "compression")
+      return {...n, x: n.origX + (n.origX - cx) * 0.08 * factor * (deflection * 0.5),
+                    y: n.origY - factor * deflection * 16};
+    if (mode === "bending") {
+      const angle = factor * deflection * 0.08, rx = n.origX - cx, ry = n.origY - minY;
+      return {...n, x: cx + rx * Math.cos(angle) - ry * Math.sin(angle),
+                    y: minY + rx * Math.sin(angle) + ry * Math.cos(angle)};
+    }
+    return {...n, x: n.origX + factor * deflection * 12, y: n.origY - factor * deflection * 10};
+  });
+  return {nodes, minY, maxY};
+}
+
+// Von Mises stress colour grading from axial strain.
+struts = mesh.edges.map(([i, j]) => {
+  const a = deformed.nodes[i], b = deformed.nodes[j];
+  const origLen = Math.hypot(a.origX - b.origX, a.origY - b.origY);
+  const defLen = Math.hypot(a.x - b.x, a.y - b.y);
+  const strain = Math.abs(defLen - origLen) / (origLen || 1);
+  const ratio = Math.min(1.0, strain * 15.0 * (peakStress / 20.0));
+  return {a, b, stress: ratio > 0.80 ? "#ef4444" : ratio > 0.55 ? "#fbbf24" : ratio > 0.25 ? "#34d399" : "#38bdf8"};
+})
+
+supports = deformed.nodes.filter(n => Math.abs(n.origY - deformed.minY) < 5)
+loads = (mode === "shear" || mode === "compression")
+  ? deformed.nodes.filter(n => Math.abs(n.origY - deformed.maxY) < 8)
+  : []
+
+Plot.plot({
+  width: 760,
+  height: 380,
+  margin: 0,
+  // Plot paints its own white ground otherwise, which the dark card fights.
+  style: {background: "transparent", color: "#cbd5e1"},
+  x: {domain: [-20, 740], axis: null},
+  y: {domain: [360, -20], axis: null},
+  color: {type: "identity"},
+  marks: [
+    // Undeformed reference mesh.
+    Plot.link(struts, {x1: d => d.a.origX, y1: d => d.a.origY, x2: d => d.b.origX, y2: d => d.b.origY,
+                       stroke: "rgba(71, 85, 105, 0.35)", strokeWidth: 1, strokeDasharray: "4 4"}),
+    // Deformed struts.
+    Plot.link(struts, {x1: d => d.a.x, y1: d => d.a.y, x2: d => d.b.x, y2: d => d.b.y,
+                       stroke: "stress", strokeWidth: 3.5}),
+    // Pin nodes.
+    Plot.dot(deformed.nodes, {x: "x", y: "y", r: 4, fill: "#0f172a", stroke: "#ffffff", strokeWidth: 2}),
+    // Fixed-support indicators.
+    Plot.link(supports, {x1: d => d.x - 6, y1: d => d.y - 6, x2: d => d.x + 6, y2: d => d.y - 6,
+                         stroke: "#94a3b8", strokeWidth: 1.5}),
+    // Applied load vectors.
+    Plot.arrow(loads, {
+      x1: d => mode === "shear" ? d.x - 22 : d.x,
+      y1: d => mode === "shear" ? d.y : d.y + 22,
+      x2: "x", y2: "y", stroke: "#f59e0b", strokeWidth: 2.5, headLength: 8
+    })
+  ]
+})
 ```
+
+🔵 **Low Stress** → 🟢 **Moderate Stress** → 🟡 **High Stress** → 🔴 **Yield Limit**. Dashed
+lines are the undeformed mesh; solid coloured struts are the deformed state.
+:::
 
 
 ## Why triangles fit a curved limb
