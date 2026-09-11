@@ -98,93 +98,64 @@ In our study published in *Atmospheric Chemistry and Physics*[^4], we implemente
 
 Explore how temperature, cloud liquid water content, and radical concentrations govern the branch point between traditional $\text{SO}_2$ formation and the $\text{HPMTF}$ autoxidation channel:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">🌊 Marine Sulfur Chemical Flux Partitioning</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">Temperature (K): <b id="temp-val">285 K</b></label>
-      <input type="range" id="sim-temp" min="260" max="305" value="285" step="1" oninput="updateDmsSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">Cloud Liquid Water Content ($g/m^3$): <b id="lwc-val">0.20</b></label>
-      <input type="range" id="sim-lwc" min="0.0" max="1.0" value="0.20" step="0.02" oninput="updateDmsSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">OH Radical Conc. ($10^6 \text{ molec/cm}^3$): <b id="oh-val">1.5</b></label>
-      <input type="range" id="sim-oh" min="0.2" max="5.0" value="1.5" step="0.1" oninput="updateDmsSim()" style="width: 100%;">
-    </div>
-  </div>
+::: {.sim-card}
+#### 🌊 Marine Sulfur Chemical Flux Partitioning
 
-  <div style="background: #0f172a; border-radius: 8px; padding: 16px; margin-bottom: 14px;">
-    <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 6px;">
-      <span>HPMTF Channel (Autoxidation)</span>
-      <b id="hpmtf-pct" style="color: #f59e0b;">38.4%</b>
-    </div>
-    <div style="background: #334155; border-radius: 4px; height: 12px; overflow: hidden; margin-bottom: 12px;">
-      <div id="hpmtf-bar" style="background: #f59e0b; width: 38.4%; height: 100%;"></div>
-    </div>
+```{ojs}
+//| echo: false
+viewof T = Inputs.range([260, 305], {value: 285, step: 1, label: "Temperature (K)"})
+viewof LWC = Inputs.range([0.0, 1.0], {value: 0.20, step: 0.02, label: "Cloud liquid water content (g/m³)"})
+viewof OH = Inputs.range([0.2, 5.0], {value: 1.5, step: 0.1, label: "OH radical conc. (10⁶ molec/cm³)"})
 
-    <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 6px;">
-      <span>Direct SO₂ / MSA Channel (Traditional)</span>
-      <b id="so2-pct" style="color: #38bdf8;">61.6%</b>
-    </div>
-    <div style="background: #334155; border-radius: 4px; height: 12px; overflow: hidden;">
-      <div id="so2-bar" style="background: #38bdf8; width: 61.6%; height: 100%;"></div>
-    </div>
-  </div>
+// Reaction kinetics approximation: the autoxidation H-shift is strongly
+// temperature dependent (~exp(-Ea/RT)); the traditional channel tracks OH.
+kAuto = 0.25 * Math.exp(0.045 * (T - 280))
+kTrad = 0.35 + 0.1 * OH
 
-  <div id="sim-diagnostic" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
-    Warmer tropical temperatures accelerate the intramolecular H-shift rate, boosting HPMTF formation to over 45% of total DMS flux.
-  </div>
-</div>
+hpmtfRatio = Math.min(0.75, Math.max(0.10, kAuto / (kAuto + kTrad)))
+so2Ratio = 1.0 - hpmtfRatio
+
+partition = [
+  {channel: "HPMTF Channel (Autoxidation)", pct: Number((hpmtfRatio * 100).toFixed(1))},
+  {channel: "Direct SO₂ / MSA Channel (Traditional)", pct: Number((so2Ratio * 100).toFixed(1))}
+]
+
+note = T < 273
+  ? "❄️ Polar / Sub-polar Regime: Slower isomerization suppresses HPMTF autoxidation; traditional OH-addition dominates, prolonging DMS lifetime."
+  : LWC > 0.4
+  ? "☁️ Cloudy Marine Boundary Layer: High liquid water content rapidly scavenges HPMTF into cloud droplets, bypassing gas-phase SO₂ and directly feeding aqueous sulfate."
+  : "☀️ Pristine Tropical / Subtropical Marine Air: Fast H-shift autoxidation routes over 40% of DMS through HPMTF, enabling sulfur lofting to the upper troposphere."
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Temperature", T + " K (" + (T - 273.15).toFixed(1) + "°C)", "#cbd5e1")}
+  ${card("HPMTF Channel (Autoxidation)", partition[0].pct.toFixed(1) + "%", "#f59e0b")}
+  ${card("Direct SO₂ / MSA Channel", partition[1].pct.toFixed(1) + "%", "#38bdf8")}
+</div>`
+
+Plot.plot({
+  height: 150,
+  marginLeft: 10,
+  marginRight: 60,
+  style: {background: "transparent", color: "#cbd5e1"},
+  x: {domain: [0, 100], label: "share of DMS sulfur flux (%)", grid: true},
+  y: {label: null, axis: null},
+  color: {legend: true,
+          domain: partition.map(d => d.channel),
+          range: ["#f59e0b", "#38bdf8"]},
+  marks: [
+    Plot.barX(partition, {y: "channel", x: "pct", fill: "channel"}),
+    Plot.text(partition, {y: "channel", x: "pct", text: d => d.pct.toFixed(1) + "%", dx: 24, fill: "#cbd5e1"})
+  ]
+})
+
+html`<div style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">${note}</div>`
 ```
-
-
-```{=html}
-<script>
-function updateDmsSim() {
-  const T = parseFloat(document.getElementById('sim-temp').value);
-  const LWC = parseFloat(document.getElementById('sim-lwc').value);
-  const OH = parseFloat(document.getElementById('sim-oh').value);
-
-  document.getElementById('temp-val').innerText = T + ' K (' + (T - 273.15).toFixed(1) + '°C)';
-  document.getElementById('lwc-val').innerText = LWC.toFixed(2);
-  document.getElementById('oh-val').innerText = OH.toFixed(1);
-
-  // Reaction kinetics approximation:
-  // k_autoxidation strongly temperature dependent ~ exp(-Ea/RT)
-  const k_auto = 0.25 * Math.exp(0.045 * (T - 280));
-  const k_trad = 0.35 + 0.1 * OH;
-  
-  const total = k_auto + k_trad;
-  const hpmtf_ratio = Math.min(0.75, Math.max(0.10, k_auto / total));
-  const so2_ratio = 1.0 - hpmtf_ratio;
-
-  const hpmtf_pct = (hpmtf_ratio * 100).toFixed(1);
-  const so2_pct = (so2_ratio * 100).toFixed(1);
-
-  document.getElementById('hpmtf-pct').innerText = hpmtf_pct + '%';
-  document.getElementById('so2-pct').innerText = so2_pct + '%';
-  document.getElementById('hpmtf-bar').style.width = hpmtf_pct + '%';
-  document.getElementById('so2-bar').style.width = so2_pct + '%';
-
-  let diag = '';
-  if (T < 273) {
-    diag = '❄️ Polar / Sub-polar Regime: Slower isomerization suppresses HPMTF autoxidation; traditional OH-addition dominates, prolonging DMS lifetime.';
-  } else if (LWC > 0.4) {
-    diag = '☁️ Cloudy Marine Boundary Layer: High liquid water content rapidly scavenges HPMTF into cloud droplets, bypassing gas-phase SO₂ and directly feeding aqueous sulfate.';
-  } else {
-    diag = '☀️ Pristine Tropical / Subtropical Marine Air: Fast H-shift autoxidation routes over 40% of DMS through HPMTF, enabling sulfur lofting to the upper troposphere.';
-  }
-  document.getElementById('sim-diagnostic').innerText = diag;
-}
-window.addEventListener('load', updateDmsSim);
-setTimeout(updateDmsSim, 300);
-</script>
-```
-
+:::
 
 ### Climate implications and the radiative baseline
 

@@ -108,86 +108,44 @@ To separate the pathways, we implemented a source-resolved **Volatility Basis Se
 
 Cut each sector separately and compare lives saved against the cooling given up:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">🔬 Source-Specific OA Policy Tradeoff Simulator</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #ef4444;">Fossil Fuel (ffOA) Cut: <b id="ff-val">50%</b></label>
-      <input type="range" id="sim-ff" min="0" max="100" value="50" step="5" oninput="updateOaSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #f59e0b;">Residential/Biomass (bbOA) Cut: <b id="bb-val">30%</b></label>
-      <input type="range" id="sim-bb" min="0" max="100" value="30" step="5" oninput="updateOaSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #10b981;">Biogenic Terpene Feedback Shift: <b id="bio-val">0%</b></label>
-      <input type="range" id="sim-bio" min="-50" max="50" value="0" step="5" oninput="updateOaSim()" style="width: 100%;">
-    </div>
-  </div>
+::: {.sim-card}
+#### 🔬 Source-Specific OA Policy Tradeoff Simulator
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #ef4444;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Annual Lives Saved</div>
-      <div id="oa-deaths" style="font-size: 1.4em; font-weight: 700; color: #10b981; margin-top: 4px;">522,000</div>
-    </div>
-    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Net Climate Forcing Shift</div>
-      <div id="oa-forcing" style="font-size: 1.4em; font-weight: 700; color: #f59e0b; margin-top: 4px;">+0.10 W/m²</div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof ffPct = Inputs.range([0, 100], {value: 50, step: 5, label: "Fossil fuel (ffOA) cut (%)"})
+viewof bbPct = Inputs.range([0, 100], {value: 30, step: 5, label: "Residential/biomass (bbOA) cut (%)"})
+viewof bioPct = Inputs.range([-50, 50], {value: 0, step: 5, label: "Biogenic terpene feedback shift (%)"})
 
-  <div id="oa-text" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
-    Slashing fossil fuel emissions yields massive, immediate public health benefits in urban centers while producing a minimal loss of aerosol masking cooling.
-  </div>
-</div>
+ffCut = ffPct / 100
+bbCut = bbPct / 100
+bioShift = bioPct / 100
+
+// Baseline attributable mortality by sector (CESM2 source-resolved VBS run).
+savedDeaths = Math.round(810000 * ffCut + 390000 * bbCut - 80000 * bioShift)
+
+// Losing negative forcing shows up as a positive delta.
+netForcing = (0.13 * ffCut + 0.12 * bbCut + -0.32 * bioShift).toFixed(2)
+
+note = ffCut > 0.6
+  ? "🌟 Aggressive fossil fuel phase-out eliminates over half a million deaths per year in Asia and Europe, proving clean energy is the ultimate health intervention."
+  : bbCut > 0.5
+  ? "🔥 Clean cookstove transitions in Africa and South Asia drastically reduce indoor smoke mortality and brown carbon warming."
+  : "Balanced source-specific emission management optimizes the trade-off between clean air standards and global radiative equilibrium."
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Annual Lives Saved", savedDeaths.toLocaleString() + " lives", "#10b981")}
+  ${card("Net Climate Forcing Shift", (netForcing > 0 ? "+" : "") + netForcing + " W/m²", "#f59e0b")}
+</div>`
+
+html`<div style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">${note}</div>`
 ```
-
-
-```{=html}
-<script>
-function updateOaSim() {
-  const ffCut = parseFloat(document.getElementById('sim-ff').value) / 100;
-  const bbCut = parseFloat(document.getElementById('sim-bb').value) / 100;
-  const bioShift = parseFloat(document.getElementById('sim-bio').value) / 100;
-
-  document.getElementById('ff-val').innerText = Math.round(ffCut * 100) + '%';
-  document.getElementById('bb-val').innerText = Math.round(bbCut * 100) + '%';
-  document.getElementById('bio-val').innerText = (bioShift > 0 ? '+' : '') + Math.round(bioShift * 100) + '%';
-
-  // Base mortalities
-  const ffDeaths = 810000;
-  const bbDeaths = 390000;
-  const bioDeaths = 80000;
-
-  const savedDeaths = Math.round(ffDeaths * ffCut + bbDeaths * bbCut - bioDeaths * bioShift);
-  
-  // Forcing calculation (loss of negative forcing = positive delta)
-  const ffForcingDelta = 0.13 * ffCut;
-  const bbForcingDelta = 0.12 * bbCut;
-  const bioForcingDelta = -0.32 * bioShift;
-
-  const netForcing = (ffForcingDelta + bbForcingDelta + bioForcingDelta).toFixed(2);
-
-  document.getElementById('oa-deaths').innerText = savedDeaths.toLocaleString() + ' lives';
-  document.getElementById('oa-forcing').innerText = (netForcing > 0 ? '+' : '') + netForcing + ' W/m²';
-
-  let txt = '';
-  if (ffCut > 0.6) {
-    txt = '🌟 Aggressive fossil fuel phase-out eliminates over half a million deaths per year in Asia and Europe, proving clean energy is the ultimate health intervention.';
-  } else if (bbCut > 0.5) {
-    txt = '🔥 Clean cookstove transitions in Africa and South Asia drastically reduce indoor smoke mortality and brown carbon warming.';
-  } else {
-    txt = 'Balanced source-specific emission management optimizes the trade-off between clean air standards and global radiative equilibrium.';
-  }
-  document.getElementById('oa-text').innerText = txt;
-}
-window.addEventListener('load', updateOaSim);
-setTimeout(updateOaSim, 300);
-</script>
-```
-
+:::
 
 ### Data and code
 

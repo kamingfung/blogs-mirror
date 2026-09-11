@@ -103,88 +103,54 @@ Coupling changes the emission budget, then the aerosol burden, then the forcing:
 
 Ammonium nitrate needs both ammonia and nitric acid, so move the fertiliser slider and the $\text{NO}_x$ scenario separately and watch which one limits the aerosol:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">🌐 Coupled Land-Atmosphere Nitrogen-Climate Gauge</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #10b981;">Global Fertilizer Application: <b id="fert-val">100% (Baseline)</b></label>
-      <input type="range" id="sim-cesm-fert" min="50" max="200" value="100" step="10" oninput="updateCesmSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #38bdf8;">Industrial NOx Emission Scenario:</label>
-      <select id="sim-cesm-nox" onchange="updateCesmSim()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
-        <option value="1.0" selected>Current High NOx (Abundant HNO3)</option>
-        <option value="0.5">Strict Clean Air NOx Controls (-50%)</option>
-        <option value="0.2">Deep Decarbonization NOx (-80%)</option>
-      </select>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🌐 Coupled Land-Atmosphere Nitrogen-Climate Gauge
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
-      <div style="font-size: 0.75em; color: #94a3b8;">NH₃ Volatilization</div>
-      <div id="res-nh3-flux" style="font-size: 1.3em; font-weight: 700; color: #f59e0b;">42.3 Tg N/yr</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
-      <div style="font-size: 0.75em; color: #94a3b8;">NH₄NO₃ Aerosol Burden</div>
-      <div id="res-aero-mass" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">0.31 Tg</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #6366f1;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Global Radiative Forcing</div>
-      <div id="res-rf-net" style="font-size: 1.3em; font-weight: 700; color: #6366f1;">-0.24 W/m²</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Regional Cooling Mask</div>
-      <div id="res-cool-mask" style="font-size: 1.3em; font-weight: 700; color: #10b981;">-0.25 °C</div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof fertPct = Inputs.range([50, 200], {value: 100, step: 10, label: "Global fertilizer application (%)"})
+// Inputs.select silently hangs the whole OJS program when the Map values are
+// numbers, so the option values stay strings, exactly as the <select> did.
+viewof noxOption = Inputs.select(new Map([
+  ["Current High NOx (Abundant HNO3)", "1.0"],
+  ["Strict Clean Air NOx Controls (-50%)", "0.5"],
+  ["Deep Decarbonization NOx (-80%)", "0.2"]
+]), {value: "1.0", label: "Industrial NOx emission scenario"})
 
-  <div id="cesm-diag" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
-    At baseline fertilization, agricultural aerosol formation exerts a noticeable regional cooling masking effect over East Asia.
-  </div>
-</div>
+noxScale = Number(noxOption)
+
+fertScale = fertPct / 100
+
+nh3Flux = (42.3 * fertScale).toFixed(1)
+
+// Ammonium nitrate needs both NH3 and HNO3, hence the joint 0.75-power scaling.
+aeroMass = (0.31 * Math.pow(fertScale * noxScale, 0.75)).toFixed(2)
+
+// Forcing and cooling are scaled off the *rounded* burden, as in the original.
+rfNet = (-0.24 * aeroMass / 0.31).toFixed(2)
+coolMask = (-0.25 * aeroMass / 0.31).toFixed(2)
+
+note = noxScale < 0.4
+  ? "⚡ Deep Industrial NOx Abatement: Slashes atmospheric nitric acid, decoupling agricultural ammonia from nitrate aerosol formation and unmasking regional greenhouse warming."
+  : fertScale > 1.4
+  ? "🌾 Heavy Agricultural Expansion: Surging ammonia emissions drive intense regional aerosol cooling over agricultural breadbaskets, but at the cost of severe particulate air pollution."
+  : "🌍 Balanced Coupling: Land-atmosphere nitrogen interactions produce -0.24 W/m² global cooling while sustaining downwind ecosystem nitrogen deposition."
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("NH₃ Volatilization", nh3Flux + " Tg N/yr", "#f59e0b")}
+  ${card("NH₄NO₃ Aerosol Burden", aeroMass + " Tg", "#38bdf8")}
+  ${card("Global Radiative Forcing", rfNet + " W/m²", "#6366f1")}
+  ${card("Regional Cooling Mask", coolMask + " °C", "#10b981")}
+</div>`
+
+html`<div style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">${note}</div>`
 ```
-
-
-```{=html}
-<script>
-function updateCesmSim() {
-  const fertScale = parseFloat(document.getElementById('sim-cesm-fert').value) / 100;
-  const noxScale = parseFloat(document.getElementById('sim-cesm-nox').value);
-
-  document.getElementById('fert-val').innerText = Math.round(fertScale * 100) + '%';
-
-  const base_nh3 = 42.3;
-  const nh3_flux = (base_nh3 * fertScale).toFixed(1);
-  
-  // Aerosol formation is limited by BOTH NH3 and NOx (HNO3)
-  const aero_factor = Math.min(fertScale, noxScale * 1.2);
-  const aero_mass = (0.31 * Math.pow(fertScale * noxScale, 0.75)).toFixed(2);
-  const rf_net = (-0.24 * aero_mass / 0.31).toFixed(2);
-  const cool_mask = (-0.25 * aero_mass / 0.31).toFixed(2);
-
-  document.getElementById('res-nh3-flux').innerText = nh3_flux + ' Tg N/yr';
-  document.getElementById('res-aero-mass').innerText = aero_mass + ' Tg';
-  document.getElementById('res-rf-net').innerText = rf_net + ' W/m²';
-  document.getElementById('res-cool-mask').innerText = cool_mask + ' °C';
-
-  let diag = '';
-  if (noxScale < 0.4) {
-    diag = '⚡ Deep Industrial NOx Abatement: Slashes atmospheric nitric acid, decoupling agricultural ammonia from nitrate aerosol formation and unmasking regional greenhouse warming.';
-  } else if (fertScale > 1.4) {
-    diag = '🌾 Heavy Agricultural Expansion: Surging ammonia emissions drive intense regional aerosol cooling over agricultural breadbaskets, but at the cost of severe particulate air pollution.';
-  } else {
-    diag = '🌍 Balanced Coupling: Land-atmosphere nitrogen interactions produce -0.24 W/m² global cooling while sustaining downwind ecosystem nitrogen deposition.';
-  }
-  document.getElementById('cesm-diag').innerText = diag;
-}
-window.addEventListener('load', updateCesmSim);
-setTimeout(updateCesmSim, 300);
-</script>
-```
-
+:::
 
 ### Data and code
 

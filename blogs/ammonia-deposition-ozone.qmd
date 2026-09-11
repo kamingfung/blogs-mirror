@@ -148,97 +148,55 @@ In our study in *Atmospheric Chemistry and Physics*[^4], we simulated this feedb
 
 Change the chemical regime and the deposition surge to see which term wins:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">🌲 Forest Nitrogen-Deposition Ozone Simulator</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">Nitrogen Deposition Surge: <b id="ndep-val">+40%</b></label>
-      <input type="range" id="sim-ndep" min="0" max="100" value="40" step="5" oninput="updateOzoneSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">Atmospheric Chemical Regime:</label>
-      <select id="sim-regime" onchange="updateOzoneSim()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
-        <option value="nox-lim" selected>Remote Rural (NOx-Limited)</option>
-        <option value="trans">Suburban Transition Zone</option>
-        <option value="voc-lim">Polluted Megacity Margin (VOC-Limited)</option>
-      </select>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🌲 Forest Nitrogen-Deposition Ozone Simulator
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Forest LAI Expansion</div>
-      <div id="res-lai" style="font-size: 1.3em; font-weight: 700; color: #10b981;">+6.4%</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Deposition Velocity ($v_d$)</div>
-      <div id="res-vd" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">+5.8%</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Isoprene Emission Flux</div>
-      <div id="res-voc" style="font-size: 1.3em; font-weight: 700; color: #f59e0b;">+7.2%</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #ec4899;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Net Surface O₃ Response</div>
-      <div id="res-o3" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">-0.85 ppb</div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof ndep = Inputs.range([0, 100], {value: 40, step: 5, label: "Nitrogen deposition surge (%)"})
+viewof regime = Inputs.select(new Map([
+  ["Remote Rural (NOx-Limited)", "nox-lim"],
+  ["Suburban Transition Zone", "trans"],
+  ["Polluted Megacity Margin (VOC-Limited)", "voc-lim"]
+]), {value: "nox-lim", label: "Atmospheric chemical regime"})
 
-  <div id="o3-diag" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
-    In NOx-limited remote forests, the expanded canopy stomatal sink accelerates ozone removal from surface air.
-  </div>
-</div>
-```
+// The downstream gains are chained off the *rounded* LAI figure, as the
+// original widget did, so the displayed numbers stay identical.
+laiGain = Number((ndep * 0.16).toFixed(1))
+vdGain = (laiGain * 0.9).toFixed(1)
+vocGain = (laiGain * 1.12).toFixed(1)
 
-
-```{=html}
-<script>
-function updateOzoneSim() {
-  const ndep = parseFloat(document.getElementById('sim-ndep').value);
-  const regime = document.getElementById('sim-regime').value;
-
-  document.getElementById('ndep-val').innerText = '+' + ndep + '%';
-
-  const lai_gain = (ndep * 0.16).toFixed(1);
-  const vd_gain = (lai_gain * 0.9).toFixed(1);
-  const voc_gain = (lai_gain * 1.12).toFixed(1);
-
-  document.getElementById('res-lai').innerText = '+' + lai_gain + '%';
-  document.getElementById('res-vd').innerText = '+' + vd_gain + '%';
-  document.getElementById('res-voc').innerText = '+' + voc_gain + '%';
-
-  let o3_delta = 0;
-  let o3_str = '';
-  let diag = '';
-
-  const o3El = document.getElementById('res-o3');
-
-  if (regime === 'nox-lim') {
-    o3_delta = - (ndep * 0.021);
-    o3_str = o3_delta.toFixed(2) + ' ppb';
-    o3El.style.color = '#38bdf8';
-    diag = '🌿 NOx-Limited Remote Forest: Stomatal dry deposition dominates over biogenic VOCs, enhancing the natural vegetation ozone cleaning filter.';
-  } else if (regime === 'trans') {
-    o3_delta = (ndep * 0.003);
-    o3_str = (o3_delta >= 0 ? '+' : '') + o3_delta.toFixed(2) + ' ppb';
-    o3El.style.color = '#f59e0b';
-    diag = '⚖️ Transition Zone: Dry deposition sink and photochemical isoprene production nearly balance out, resulting in minimal net surface ozone shift.';
-  } else {
-    o3_delta = + (ndep * 0.015);
-    o3_str = '+' + o3_delta.toFixed(2) + ' ppb';
-    o3El.style.color = '#ef4444';
-    diag = '🏭 VOC-Limited Urban Fringe: Abundant anthropogenic NOx reacts aggressively with the surplus biogenic isoprene, intensifying summer smog episodes.';
+o3 = {
+  if (regime === "nox-lim") {
+    const d = -(ndep * 0.021);
+    return {text: d.toFixed(2) + " ppb", colour: "#38bdf8",
+      note: "🌿 NOx-Limited Remote Forest: Stomatal dry deposition dominates over biogenic VOCs, enhancing the natural vegetation ozone cleaning filter."};
   }
-
-  o3El.innerText = o3_str;
-  document.getElementById('o3-diag').innerText = diag;
+  if (regime === "trans") {
+    const d = ndep * 0.003;
+    return {text: (d >= 0 ? "+" : "") + d.toFixed(2) + " ppb", colour: "#f59e0b",
+      note: "⚖️ Transition Zone: Dry deposition sink and photochemical isoprene production nearly balance out, resulting in minimal net surface ozone shift."};
+  }
+  const d = ndep * 0.015;
+  return {text: "+" + d.toFixed(2) + " ppb", colour: "#ef4444",
+    note: "🏭 VOC-Limited Urban Fringe: Abundant anthropogenic NOx reacts aggressively with the surplus biogenic isoprene, intensifying summer smog episodes."};
 }
-window.addEventListener('load', updateOzoneSim);
-setTimeout(updateOzoneSim, 300);
-</script>
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Forest LAI Expansion", "+" + laiGain.toFixed(1) + "%", "#10b981")}
+  ${card(html`Deposition Velocity (<i>v</i><sub>d</sub>)`, "+" + vdGain + "%", "#38bdf8")}
+  ${card("Isoprene Emission Flux", "+" + vocGain + "%", "#f59e0b")}
+  ${card("Net Surface O₃ Response", o3.text, o3.colour)}
+</div>`
+
+html`<div style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">${o3.note}</div>`
 ```
+:::
 
 
 ### Data and code
