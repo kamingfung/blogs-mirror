@@ -364,17 +364,22 @@ Compute the minimum heat released by erasing bits at temperatures from the cosmi
 
 ```{ojs}
 //| echo: false
-// No [min, max] or step: Inputs.number reports undefined for an input that
-// violates them, and the 2.73 K preset is off any sane step grid.
-viewof bits = Inputs.number({value: 1e6, label: "Information erased N (bits)"})
-viewof temp = Inputs.bind(
-  Inputs.number({label: "Temperature T (kelvin)"}),
-  viewof tempPreset)
-viewof tempPreset = Inputs.radio([2.73, 77, 300], {
+// Inputs.text, not Inputs.number: Inputs.number hangs the whole OJS program
+// on this page. Every cell stays in ojs-in-a-box-waiting-for-module-import
+// with no error logged anywhere, so the page renders the card frame and
+// nothing inside it. Verified by bisecting this cell out and swapping only
+// this one call. Number() on the way out keeps the maths identical.
+viewof bits = Inputs.text({value: "1e6", label: "Information erased N (bits)"})
+viewof tempPreset = Inputs.radio([2.73, 77, 300, "custom"], {
   value: 300,
-  label: "Presets",
-  format: t => t === 2.73 ? "Deep space (2.7 K)" : t === 77 ? "Liquid N₂ (77 K)" : "Room temp (300 K)"
+  label: "Temperature T",
+  format: t => t === 2.73 ? "Deep space (2.7 K)" : t === 77 ? "Liquid N₂ (77 K)"
+    : t === 300 ? "Room temp (300 K)" : "Custom →"
 })
+viewof tempCustom = Inputs.text({value: "300", label: "Custom T (kelvin)"})
+
+// Inputs.bind() updates the DOM but not the viewof value, so derive instead.
+temp = tempPreset === "custom" ? tempCustom : tempPreset
 
 kB = 1.380649e-23        // J/K, CODATA 2018
 q_e = 1.602176634e-19    // J per eV

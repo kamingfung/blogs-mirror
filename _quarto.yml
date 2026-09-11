@@ -18,9 +18,25 @@ website:
   title: "Blogs"
   description: "Course-style notes on atmospheric science, forecasting and scientific computing."
   site-url: https://blogs-mirror.kamingfung.workers.dev
+  # palette.yml assigns indigo the role "header and footer bars". Without a
+  # navbar nothing painted it, so the site lost the blue the MkDocs header
+  # carries. background: primary reads $primary from the generated palette.
+  navbar:
+    background: primary
+    title: "Blogs"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: series/index.qmd
+        text: Series
+    right:
+      - icon: github
+        href: https://github.com/kamingfung/blogs-mirror
+        aria-label: Source on GitHub
   search:
-    location: sidebar
+    location: navbar
   page-footer:
+    background: primary
     left: "Mirror of [blogs.kamingfung.workers.dev](https://blogs.kamingfung.workers.dev)"
     right: "Built with [Quarto](https://quarto.org)"
 
