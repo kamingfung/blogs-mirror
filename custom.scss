@@ -79,3 +79,43 @@ main.content table {
 .quarto-listing .listing-description {
   opacity: 0.8;
 }
+
+// Simulator cards. The ported widgets are hand-written HTML that assumes a
+// dark panel; an OJS rewrite gets the same frame from here instead of from
+// 40 lines of inline style attributes.
+.sim-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 24px 0;
+  color: #f8fafc;
+
+  h4 { color: #38bdf8; margin-top: 0; }
+  // Observable Inputs and Plot both read currentColor off the container.
+  form, .observablehq--inspect { color: #cbd5e1; }
+  figure { background: transparent; }
+}
+.sim-readouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.sim-readout {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+}
+.sim-readout-label {
+  font-size: 0.72em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+.sim-readout-value {
+  font-size: 1.05em;
+  font-weight: 700;
+  margin-top: 2px;
+}

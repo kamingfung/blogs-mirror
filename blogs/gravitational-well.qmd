@@ -38,281 +38,96 @@ where:
 
 The negative sign is paramount: it signifies a **bound state**. At infinitely far distances ($r \to \infty$), the potential approaches $0$. As you approach the mass ($r \to 0$), the potential plunges towards $-\infty$.
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
-    <h4 style="margin: 0; color: #38bdf8; font-size: 1.05em; display: flex; align-items: center; gap: 8px;">
-      <span>🌌 Analytical Gravitational & Effective Potential Landscape</span>
-    </h4>
-    <span style="font-size: 0.8em; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 3px 8px; border-radius: 4px; font-family: monospace;">
-      U_eff(r) = -GMm/r + L²/(2mr²)
-    </span>
-  </div>
+::: {.sim-card}
+#### 🌌 Analytical gravitational and effective potential landscape
 
-  <!-- Interactive Controls -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Total Energy (E): <b id="well-e-val" style="color: #f59e0b;">-0.28</b></label>
-      <input type="range" id="well-slider-e" min="-0.65" max="0.30" step="0.01" value="-0.28" oninput="updatePotentialWell()" style="width: 100%; accent-color: #f59e0b;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Angular Momentum (L): <b id="well-l-val" style="color: #10b981;">1.10</b></label>
-      <input type="range" id="well-slider-l" min="0.0" max="1.60" step="0.05" value="1.10" oninput="updatePotentialWell()" style="width: 100%; accent-color: #10b981;">
-    </div>
-  </div>
+$$U_{\text{eff}}(r) = -\frac{GMm}{r} + \frac{L^2}{2mr^2}$$
 
-  <!-- Real-time Mathematical Readout Cards -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Orbital State</div>
-      <div id="readout-state" style="font-size: 1.05em; font-weight: 700; color: #10b981; margin-top: 2px;">Bound Orbit</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Periapsis (r_min)</div>
-      <div id="readout-rmin" style="font-size: 1.05em; font-weight: 700; color: #38bdf8; margin-top: 2px;">0.74 AU</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Apoapsis (r_max)</div>
-      <div id="readout-rmax" style="font-size: 1.05em; font-weight: 700; color: #38bdf8; margin-top: 2px;">2.83 AU</div>
-    </div>
-    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
-      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Well Minimum (U_min)</div>
-      <div id="readout-umin" style="font-size: 1.05em; font-weight: 700; color: #a78bfa; margin-top: 2px;">-0.41</div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof E = Inputs.range([-0.65, 0.30], {value: -0.28, step: 0.01, label: "Total energy E"})
+viewof L = Inputs.range([0.0, 1.60], {value: 1.10, step: 0.05, label: "Angular momentum L"})
 
-  <!-- Analytical Curve Canvas -->
-  <canvas id="potential-well-canvas" width="720" height="340" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+// Normalised units: GMm = 1, m = 1.
+GMm = 1.0
+rWellMin = L > 0 ? (L * L) / GMm : 0
+UWellMin = L > 0 ? -(GMm * GMm) / (2 * L * L) : -Infinity
 
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 0.8em; color: #64748b; margin-top: 10px;">
-    <span>🔵 <strong style="color: #38bdf8;">U_eff(r)</strong> (Effective Potential) | 🟣 <strong style="color: #a78bfa;">-GM/r</strong> (Gravitational) | 🟢 <strong style="color: #34d399;">L²/(2mr²)</strong> (Centrifugal)</span>
-    <span>🟠 <strong style="color: #f59e0b;">E (Total Energy Level)</strong></span>
-  </div>
-</div>
+// Classical turning points solve 2E r² + 2GMm r − L² = 0.
+orbit = {
+  const disc = 4 * GMm ** 2 + 8 * E * L ** 2;
+  if (L === 0)
+    return {state: "Radial plunge", colour: "#ef4444", rmin: "0.00 (crash)",
+            rmax: E < 0 ? (-GMm / E).toFixed(2) + " AU" : "∞ (escape)", pts: []};
+  if (E < UWellMin)
+    return {state: "Forbidden energy", colour: "#94a3b8", rmin: "N/A", rmax: "N/A", pts: []};
+  if (Math.abs(E - UWellMin) < 0.01)
+    return {state: "Circular orbit", colour: "#38bdf8", rmin: rWellMin.toFixed(2) + " AU",
+            rmax: rWellMin.toFixed(2) + " AU", pts: [rWellMin]};
+  if (E < 0) {
+    const s = Math.sqrt(disc);
+    let a = (-2 * GMm + s) / (4 * E), b = (-2 * GMm - s) / (4 * E);
+    if (a > b) [a, b] = [b, a];
+    return {state: "Bound ellipse", colour: "#10b981", rmin: a.toFixed(2) + " AU",
+            rmax: b.toFixed(2) + " AU", pts: [a, b]};
+  }
+  if (E === 0) {
+    const r1 = (L * L) / (2 * GMm);
+    return {state: "Parabolic escape", colour: "#f59e0b", rmin: r1.toFixed(2) + " AU",
+            rmax: "∞ (zero v∞)", pts: [r1]};
+  }
+  const s = Math.sqrt(disc), r1 = (-2 * GMm + s) / (4 * E);
+  return {state: "Hyperbolic flyby", colour: "#8b5cf6", rmin: r1.toFixed(2) + " AU",
+          rmax: "∞ (unbound)", pts: [r1]};
+}
+
+curves = {
+  const out = [];
+  for (let i = 0; i <= 400; i++) {
+    const r = 0.35 + (5.5 - 0.35) * (i / 400);
+    out.push({r, u: -GMm / r + (L * L) / (2 * r * r), kind: "U_eff(r)"});
+    out.push({r, u: -GMm / r, kind: "−GM/r"});
+    out.push({r, u: (L * L) / (2 * r * r), kind: "L²/2r²"});
+  }
+  return out;
+}
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Orbital state", orbit.state, orbit.colour)}
+  ${card("Periapsis (r_min)", orbit.rmin, "#38bdf8")}
+  ${card("Apoapsis (r_max)", orbit.rmax, "#38bdf8")}
+  ${card("Well minimum (U_min)", L > 0 ? UWellMin.toFixed(2) : "−∞ (plunge)", "#a78bfa")}
+</div>`
+
+Plot.plot({
+  height: 340,
+  marginLeft: 55,
+  // Plot paints its own white ground otherwise, which the dark card fights.
+  style: {background: "transparent", color: "#cbd5e1"},
+  x: {domain: [0.35, 5.5], label: "r (AU) →", grid: true},
+  y: {domain: [-1.2, 0.6], label: "↑ U(r)", grid: true},
+  color: {legend: true,
+          domain: ["U_eff(r)", "−GM/r", "L²/2r²"],
+          range: ["#38bdf8", "#a78bfa", "#34d399"]},
+  marks: [
+    Plot.ruleY([0], {strokeOpacity: 0.4}),
+    Plot.line(curves, {x: "r", y: "u", stroke: "kind", strokeWidth: d => d.kind === "U_eff(r)" ? 2.5 : 1.2}),
+    Plot.ruleY([E], {stroke: "#f59e0b", strokeWidth: 2, strokeDasharray: "4 3"}),
+    Plot.dot(orbit.pts.map(r => ({r, u: E})), {x: "r", y: "u", fill: "#f59e0b", r: 5}),
+    Plot.text(orbit.pts.map(r => ({r, u: E})), {x: "r", y: "u", text: d => d.r.toFixed(2), dy: -12, fill: "#f59e0b"})
+  ]
+})
 ```
 
-
-```{=html}
-<script>
-function updatePotentialWell() {
-  const E = parseFloat(document.getElementById('well-slider-e').value);
-  const L = parseFloat(document.getElementById('well-slider-l').value);
-
-  document.getElementById('well-e-val').innerText = (E >= 0 ? '+' : '') + E.toFixed(2);
-  document.getElementById('well-l-val').innerText = L.toFixed(2);
-
-  // Exact physics calculations (normalized units GMm = 1, m = 1)
-  const GMm = 1.0;
-  const m = 1.0;
-  
-  // Potential minimum: r_min_well = L^2 / GMm
-  const r_well_min = L > 0 ? (L * L) / GMm : 0;
-  const U_well_min = L > 0 ? - (GMm * GMm) / (2 * L * L) : -Infinity;
-
-  const uminEl = document.getElementById('readout-umin');
-  uminEl.innerText = L > 0 ? U_well_min.toFixed(2) : '-∞ (Plunge)';
-
-  // Calculate classical turning points: E = -GMm/r + L^2/(2m r^2)
-  // 2E r^2 + 2GMm r - L^2 = 0
-  const stateEl = document.getElementById('readout-state');
-  const rminEl = document.getElementById('readout-rmin');
-  const rmaxEl = document.getElementById('readout-rmax');
-
-  let r1 = null;
-  let r2 = null;
-
-  if (L === 0) {
-    stateEl.innerText = "Radial Plunge";
-    stateEl.style.color = "#ef4444";
-    rminEl.innerText = "0.00 (Crash)";
-    rmaxEl.innerText = E < 0 ? (-GMm / E).toFixed(2) + " AU" : "∞ (Escape)";
-  } else if (E < U_well_min) {
-    stateEl.innerText = "Forbidden Energy";
-    stateEl.style.color = "#94a3b8";
-    rminEl.innerText = "N/A";
-    rmaxEl.innerText = "N/A";
-  } else if (Math.abs(E - U_well_min) < 0.01) {
-    stateEl.innerText = "Circular Orbit";
-    stateEl.style.color = "#38bdf8";
-    rminEl.innerText = r_well_min.toFixed(2) + " AU";
-    rmaxEl.innerText = r_well_min.toFixed(2) + " AU";
-    r1 = r_well_min;
-    r2 = r_well_min;
-  } else if (E < 0) {
-    // Bound elliptical orbit
-    const disc = 4 * GMm * GMm + 8 * E * (L * L);
-    if (disc >= 0) {
-      const sqrtD = Math.sqrt(disc);
-      r1 = (-2 * GMm + sqrtD) / (4 * E);
-      r2 = (-2 * GMm - sqrtD) / (4 * E);
-      if (r1 > r2) { const tmp = r1; r1 = r2; r2 = tmp; }
-      stateEl.innerText = "Bound Ellipse";
-      stateEl.style.color = "#10b981";
-      rminEl.innerText = r1.toFixed(2) + " AU";
-      rmaxEl.innerText = r2.toFixed(2) + " AU";
-    }
-  } else if (E === 0) {
-    // Parabolic escape
-    r1 = (L * L) / (2 * GMm);
-    stateEl.innerText = "Parabolic Escape";
-    stateEl.style.color = "#f59e0b";
-    rminEl.innerText = r1.toFixed(2) + " AU";
-    rmaxEl.innerText = "∞ (Zero v_inf)";
-  } else {
-    // Hyperbolic flyby
-    const disc = 4 * GMm * GMm + 8 * E * (L * L);
-    const sqrtD = Math.sqrt(disc);
-    r1 = (-2 * GMm + sqrtD) / (4 * E);
-    stateEl.innerText = "Hyperbolic Flyby";
-    stateEl.style.color = "#8b5cf6";
-    rminEl.innerText = r1.toFixed(2) + " AU";
-    rmaxEl.innerText = "∞ (Unbound)";
-  }
-
-  drawPotentialWellCanvas(E, L, U_well_min, r1, r2);
-}
-
-function drawPotentialWellCanvas(E, L, U_min, r1, r2) {
-  const canvas = document.getElementById('potential-well-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const padLeft = 60, padRight = 30, padTop = 30, padBottom = 40;
-  const w = canvas.width - padLeft - padRight;
-  const h = canvas.height - padTop - padBottom;
-
-  const rMinPlot = 0.35, rMaxPlot = 5.5;
-  const uMinPlot = -1.2, uMaxPlot = 0.6;
-
-  function toX(r) {
-    return padLeft + ((r - rMinPlot) / (rMaxPlot - rMinPlot)) * w;
-  }
-  function toY(u) {
-    return padTop + ((uMaxPlot - u) / (uMaxPlot - uMinPlot)) * h;
-  }
-
-  // Draw Grid Lines
-  ctx.strokeStyle = '#1e293b';
-  ctx.lineWidth = 1;
-  for (let r = 1; r <= 5; r++) {
-    const gx = toX(r);
-    ctx.beginPath(); ctx.moveTo(gx, padTop); ctx.lineTo(gx, padTop + h); ctx.stroke();
-    ctx.fillStyle = '#64748b';
-    ctx.font = '11px system-ui';
-    ctx.fillText(r + ' AU', gx - 12, padTop + h + 18);
-  }
-  for (let u = -1.0; u <= 0.5; u += 0.5) {
-    const gy = toY(u);
-    ctx.beginPath(); ctx.moveTo(padLeft, gy); ctx.lineTo(padLeft + w, gy); ctx.stroke();
-    ctx.fillStyle = '#64748b';
-    ctx.font = '11px system-ui';
-    ctx.fillText(u.toFixed(1), 16, gy + 4);
-  }
-
-  // Zero Energy Reference Line (E = 0)
-  const yZero = toY(0);
-  ctx.strokeStyle = '#475569';
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([6, 4]);
-  ctx.beginPath(); ctx.moveTo(padLeft, yZero); ctx.lineTo(padLeft + w, yZero); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = '#94a3b8';
-  ctx.font = '11px system-ui';
-  ctx.fillText('Zero Energy (E = 0: Escape Threshold)', padLeft + w - 210, yZero - 6);
-
-  // 1. Plot Pure Gravitational Potential (-1/r)
-  ctx.strokeStyle = 'rgba(167, 139, 250, 0.4)';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  for (let r = rMinPlot; r <= rMaxPlot; r += 0.05) {
-    const u_g = - 1.0 / r;
-    const px = toX(r), py = toY(Math.max(uMinPlot - 0.2, u_g));
-    if (r === rMinPlot) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-  }
-  ctx.stroke();
-
-  // 2. Plot Centrifugal Potential (L^2 / 2r^2)
-  if (L > 0) {
-    ctx.strokeStyle = 'rgba(52, 211, 153, 0.35)';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    for (let r = rMinPlot; r <= rMaxPlot; r += 0.05) {
-      const u_c = (L * L) / (2 * r * r);
-      if (u_c <= uMaxPlot + 0.2) {
-        const px = toX(r), py = toY(u_c);
-        if (r === rMinPlot) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-      }
-    }
-    ctx.stroke();
-  }
-
-  // 3. Shaded Bound Trapping Zone
-  if (r1 !== null && r2 !== null && E < 0) {
-    const x1 = Math.max(padLeft, toX(r1));
-    const x2 = Math.min(padLeft + w, toX(r2));
-    const yE = toY(E);
-
-    ctx.fillStyle = 'rgba(56, 189, 248, 0.12)';
-    ctx.beginPath();
-    ctx.moveTo(x1, yE);
-    for (let r = r1; r <= r2; r += 0.02) {
-      const u_eff = - 1.0 / r + (L * L) / (2 * r * r);
-      ctx.lineTo(toX(r), toY(u_eff));
-    }
-    ctx.lineTo(x2, yE);
-    ctx.closePath();
-    ctx.fill();
-
-    // Turning point markers
-    ctx.fillStyle = '#38bdf8';
-    ctx.beginPath(); ctx.arc(x1, yE, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(x2, yE, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.font = '10px system-ui';
-    ctx.fillText('r_peri', x1 - 12, yE - 8);
-    ctx.fillText('r_apo', x2 - 8, yE - 8);
-  }
-
-  // 4. Plot Effective Potential Curve U_eff(r)
-  ctx.strokeStyle = '#38bdf8';
-  ctx.lineWidth = 3.5;
-  ctx.beginPath();
-  let firstPoint = true;
-  for (let r = rMinPlot; r <= rMaxPlot; r += 0.02) {
-    const u_eff = - 1.0 / r + (L * L) / (2 * r * r);
-    if (u_eff <= uMaxPlot + 0.5 && u_eff >= uMinPlot - 0.5) {
-      const px = toX(r), py = toY(u_eff);
-      if (firstPoint) { ctx.moveTo(px, py); firstPoint = false; } else ctx.lineTo(px, py);
-    }
-  }
-  ctx.stroke();
-
-  // 5. Total Energy Level E Horizontal Bar
-  const yE = toY(E);
-  if (yE >= padTop && yE <= padTop + h) {
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    ctx.moveTo(padLeft, yE);
-    ctx.lineTo(padLeft + w, yE);
-    ctx.stroke();
-
-    ctx.fillStyle = '#f59e0b';
-    ctx.font = 'bold 11px system-ui';
-    ctx.fillText('E = ' + (E >= 0 ? '+' : '') + E.toFixed(2), padLeft + 10, yE - 6);
-  }
-}
-
-// Lifecycle registration
-if (typeof document$ !== 'undefined') {
-  document$.subscribe(() => {
-    updatePotentialWell();
-  });
-}
-window.addEventListener('load', updatePotentialWell);
-setTimeout(updatePotentialWell, 200);
-</script>
-```
+The dashed orange line is the total energy $E$. Where it cuts the blue curve are the
+turning points: the orbit is confined between them. Drop $L$ to zero and the
+centrifugal barrier disappears, leaving nothing between the particle and $r = 0$.
+:::
 
 
 ### Orbiting versus escaping
