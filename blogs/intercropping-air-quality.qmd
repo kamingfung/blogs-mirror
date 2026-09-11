@@ -258,78 +258,43 @@ In our paper in *Environmental Research Letters*[^4], we coupled agronomic field
 
 The chain is linear in adoption, so the slider scales grain, fertiliser, $\text{NH}_3$ and avoided $\text{PM}_{2.5}$ mortality together:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #10b981;">🌾 National Intercropping Scenario Calculator</h4>
-  
-  <div style="margin-bottom: 16px;">
-    <label style="font-size: 0.85em; color: #94a3b8;">Nationwide Cropland Adoption Rate: <b id="adopt-val" style="color: #10b981;">50%</b></label>
-    <input type="range" id="sim-adopt" min="0" max="100" value="50" step="5" oninput="updateIntercropSim()" style="width: 100%;">
-  </div>
+::: {.sim-card}
+#### 🌾 National intercropping scenario calculator
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
-    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Total Grain Boost</div>
-      <div id="res-grain" style="font-size: 1.4em; font-weight: 700; color: #10b981; margin-top: 4px;">+3.3 Mt</div>
-    </div>
-    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Synthetic N Cut</div>
-      <div id="res-fert" style="font-size: 1.4em; font-weight: 700; color: #38bdf8; margin-top: 4px;">-0.70 Tg N</div>
-    </div>
-    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">NH₃ Emissions Slashed</div>
-      <div id="res-nh3" style="font-size: 1.4em; font-weight: 700; color: #f59e0b; margin-top: 4px;">-230 kt N</div>
-    </div>
-    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #ec4899;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Avoided Deaths / Year</div>
-      <div id="res-health" style="font-size: 1.4em; font-weight: 700; color: #ec4899; margin-top: 4px;">~3,550 lives</div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof adoptPct = Inputs.range([0, 100], {value: 50, step: 5, label: "Nationwide cropland adoption rate (%)"})
 
-  <div id="sim-text" style="font-size: 0.9em; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 10px; border-radius: 4px;">
-    At 50% adoption, intercropping produces substantial public health benefits while bolstering domestic protein feed security through expanded soybean output.
-  </div>
-</div>
+// The chain is linear in adoption, so these are the 100 % nationwide totals.
+adopt = adoptPct / 100
+maxGrain = 6.6    // Mt
+maxFert = 1.40    // Tg N
+maxNh3 = 460      // kt N
+maxHealth = 7100  // deaths
+
+note = adopt === 0
+  ? "Baseline intensive monoculture: high synthetic nitrogen dependency and severe downwind PM2.5 air pollution."
+  : adopt < 0.3
+  ? "Targeted adoption in high-ammonia hotspots (North China Plain & Sichuan Basin) yields immediate health dividends."
+  : adopt < 0.7
+  ? "Widespread adoption provides massive fertilizer cost savings for smallholder farmers alongside major public health improvements."
+  : "Full nationwide adoption transforms China into a global model of sustainable agro-ecological intensification."
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Total grain boost", `+${(maxGrain * adopt).toFixed(1)} Mt`, "#10b981")}
+  ${card("Synthetic N cut", `-${(maxFert * adopt).toFixed(2)} Tg N`, "#38bdf8")}
+  ${card("NH₃ emissions slashed", `-${Math.round(maxNh3 * adopt)} kt N`, "#f59e0b")}
+  ${card("Avoided deaths / year", `~${Math.round(maxHealth * adopt).toLocaleString()} lives`, "#ec4899")}
+</div>`
+
+html`<div style="font-size:0.9em;background:rgba(16,185,129,0.1);border-left:4px solid #10b981;padding:10px;border-radius:4px">${note}</div>`
 ```
-
-
-```{=html}
-<script>
-function updateIntercropSim() {
-  const adopt = parseFloat(document.getElementById('sim-adopt').value) / 100;
-  document.getElementById('adopt-val').innerText = Math.round(adopt * 100) + '%';
-
-  const max_grain = 6.6; // Mt
-  const max_fert = 1.40; // Tg N
-  const max_nh3 = 460; // kt N
-  const max_health = 7100; // deaths
-
-  const grain = (max_grain * adopt).toFixed(1);
-  const fert = (max_fert * adopt).toFixed(2);
-  const nh3 = Math.round(max_nh3 * adopt);
-  const health = Math.round(max_health * adopt);
-
-  document.getElementById('res-grain').innerText = '+' + grain + ' Mt';
-  document.getElementById('res-fert').innerText = '-' + fert + ' Tg N';
-  document.getElementById('res-nh3').innerText = '-' + nh3 + ' kt N';
-  document.getElementById('res-health').innerText = '~' + health.toLocaleString() + ' lives';
-
-  let text = '';
-  if (adopt === 0) {
-    text = 'Baseline intensive monoculture: high synthetic nitrogen dependency and severe downwind PM2.5 air pollution.';
-  } else if (adopt < 0.3) {
-    text = 'Targeted adoption in high-ammonia hotspots (North China Plain & Sichuan Basin) yields immediate health dividends.';
-  } else if (adopt < 0.7) {
-    text = 'Widespread adoption provides massive fertilizer cost savings for smallholder farmers alongside major public health improvements.';
-  } else {
-    text = 'Full nationwide adoption transforms China into a global model of sustainable agro-ecological intensification.';
-  }
-  document.getElementById('sim-text').innerText = text;
-}
-window.addEventListener('load', updateIntercropSim);
-setTimeout(updateIntercropSim, 300);
-</script>
-```
+:::
 
 
 ### Data and code

@@ -129,118 +129,60 @@ In our synthesis in *Frontiers in Climate*[^3], we set out a resilience roadmap 
 
 Set warming and surface ozone, then step the adaptation level up to see how much of the loss each tier recovers:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #10b981;">🌽 Global Crop Stress & Adaptation Simulator</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #ef4444;">Warming Anomaly: <b id="warm-val">+1.5 °C</b></label>
-      <input type="range" id="sim-warm" min="0.0" max="4.0" value="1.5" step="0.5" oninput="updateCropSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #f59e0b;">Surface Ozone (ppb): <b id="ozo-val">55 ppb</b></label>
-      <input type="range" id="sim-ozo" min="30" max="90" value="55" step="5" oninput="updateCropSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #10b981;">Agro-Ecological Adaptation Level:</label>
-      <select id="sim-adapt-level" onchange="updateCropSim()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
-        <option value="0">None (Conventional Monoculture)</option>
-        <option value="1" selected>Moderate (Intercropping + Drip Water)</option>
-        <option value="2">Advanced (Full Climate-Resilient Package)</option>
-      </select>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🌽 Global crop stress & adaptation simulator
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Soybean Yield</div>
-      <div id="yield-soy" style="font-size: 1.3em; font-weight: 700; color: #f59e0b;">-8.4%</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Wheat Yield</div>
-      <div id="yield-wheat" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">-7.2%</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Maize Yield</div>
-      <div id="yield-maize" style="font-size: 1.3em; font-weight: 700; color: #10b981;">-6.1%</div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #ec4899;">
-      <div style="font-size: 0.75em; color: #94a3b8;">Net Food Supply Resilience</div>
-      <div id="res-score" style="font-size: 1.3em; font-weight: 700; color: #10b981;">Moderate</div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof warm = Inputs.range([0.0, 4.0], {value: 1.5, step: 0.5, label: "Warming anomaly (°C)"})
+viewof ozo = Inputs.range([30, 90], {value: 55, step: 5, label: "Surface ozone (ppb)"})
+viewof adapt = Inputs.select(new Map([
+  ["None (Conventional Monoculture)", 0],
+  ["Moderate (Intercropping + Drip Water)", 1],
+  ["Advanced (Full Climate-Resilient Package)", 2]
+]), {value: 1, label: "Agro-ecological adaptation level"})
 
-  <div id="crop-diag" style="font-size: 0.9em; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 10px; border-radius: 4px;">
-    Moderate agro-ecological adaptation buffers against surface ozone damage and stabilizes grain production.
-  </div>
-</div>
+// Ozone damage only accrues above the 35 ppb phytotoxic threshold.
+ozoExcess = Math.max(0, ozo - 35)
+
+// Each tier hands back a fixed number of percentage points per crop.
+buffer = adapt === 1 ? {soy: 5.5, wheat: 4.5, maize: 6.0}
+       : adapt === 2 ? {soy: 11.0, wheat: 9.5, maize: 12.0}
+       : {soy: 0, wheat: 0, maize: 0}
+
+losses = ({
+  soy: -(warm * 4.5 + ozoExcess * 0.35) + buffer.soy,
+  wheat: -(warm * 5.0 + ozoExcess * 0.28) + buffer.wheat,
+  maize: -(warm * 6.2 + ozoExcess * 0.14) + buffer.maize
+})
+
+formatLoss = v => (v >= 0 ? "+" + v.toFixed(1) : v.toFixed(1)) + "%"
+lossColour = v => v < -10 ? "#ef4444" : (v < 0 ? "#f59e0b" : "#10b981")
+
+resilience = adapt === 0 && (warm > 2.0 || ozo > 65)
+  ? {score: "Critical Risk", colour: "#ef4444",
+     diag: "🚨 Critical Food Security Threat: Unmitigated compound heat and ozone episodes cause massive yield collapse across major cereal and legume crops."}
+  : adapt === 2
+  ? {score: "High Resilience", colour: "#10b981",
+     diag: "🌟 Climate-Smart Farming: Comprehensive agronomic adaptations, intercropping, and stress-tolerant cultivars completely neutralize compound atmospheric losses."}
+  : {score: "Buffered", colour: "#38bdf8",
+     diag: "🛡️ Moderate Resilience: Agro-ecological techniques provide effective protection against seasonal volatility and ozone peaks."}
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Soybean yield", formatLoss(losses.soy), lossColour(losses.soy))}
+  ${card("Wheat yield", formatLoss(losses.wheat), lossColour(losses.wheat))}
+  ${card("Maize yield", formatLoss(losses.maize), lossColour(losses.maize))}
+  ${card("Net food supply resilience", resilience.score, resilience.colour)}
+</div>`
+
+html`<div style="font-size:0.9em;background:rgba(16,185,129,0.1);border-left:4px solid #10b981;padding:10px;border-radius:4px">${resilience.diag}</div>`
 ```
-
-
-```{=html}
-<script>
-function updateCropSim() {
-  const warm = parseFloat(document.getElementById('sim-warm').value);
-  const ozo = parseFloat(document.getElementById('sim-ozo').value);
-  const adapt = parseInt(document.getElementById('sim-adapt-level').value);
-
-  document.getElementById('warm-val').innerText = '+' + warm.toFixed(1) + ' °C';
-  document.getElementById('ozo-val').innerText = ozo + ' ppb';
-
-  const ozo_excess = Math.max(0, ozo - 35);
-
-  // Baseline losses
-  let soy_loss = - (warm * 4.5 + ozo_excess * 0.35);
-  let wheat_loss = - (warm * 5.0 + ozo_excess * 0.28);
-  let maize_loss = - (warm * 6.2 + ozo_excess * 0.14);
-
-  // Adaptation buffer
-  if (adapt === 1) {
-    soy_loss += 5.5;
-    wheat_loss += 4.5;
-    maize_loss += 6.0;
-  } else if (adapt === 2) {
-    soy_loss += 11.0;
-    wheat_loss += 9.5;
-    maize_loss += 12.0;
-  }
-
-  const formatLoss = (val) => (val >= 0 ? '+' + val.toFixed(1) : val.toFixed(1)) + '%';
-
-  const soyEl = document.getElementById('yield-soy');
-  const wheatEl = document.getElementById('yield-wheat');
-  const maizeEl = document.getElementById('yield-maize');
-  const scoreEl = document.getElementById('res-score');
-
-  soyEl.innerText = formatLoss(soy_loss);
-  wheatEl.innerText = formatLoss(wheat_loss);
-  maizeEl.innerText = formatLoss(maize_loss);
-
-  soyEl.style.color = soy_loss < -10 ? '#ef4444' : (soy_loss < 0 ? '#f59e0b' : '#10b981');
-  wheatEl.style.color = wheat_loss < -10 ? '#ef4444' : (wheat_loss < 0 ? '#f59e0b' : '#10b981');
-  maizeEl.style.color = maize_loss < -10 ? '#ef4444' : (maize_loss < 0 ? '#f59e0b' : '#10b981');
-
-  let diag = '';
-  if (adapt === 0 && (warm > 2.0 || ozo > 65)) {
-    scoreEl.innerText = 'Critical Risk';
-    scoreEl.style.color = '#ef4444';
-    diag = '🚨 Critical Food Security Threat: Unmitigated compound heat and ozone episodes cause massive yield collapse across major cereal and legume crops.';
-  } else if (adapt === 2) {
-    scoreEl.innerText = 'High Resilience';
-    scoreEl.style.color = '#10b981';
-    diag = '🌟 Climate-Smart Farming: Comprehensive agronomic adaptations, intercropping, and stress-tolerant cultivars completely neutralize compound atmospheric losses.';
-  } else {
-    scoreEl.innerText = 'Buffered';
-    scoreEl.style.color = '#38bdf8';
-    diag = '🛡️ Moderate Resilience: Agro-ecological techniques provide effective protection against seasonal volatility and ozone peaks.';
-  }
-  document.getElementById('crop-diag').innerText = diag;
-}
-window.addEventListener('load', updateCropSim);
-setTimeout(updateCropSim, 300);
-</script>
-```
+:::
 
 
 ### Data and code

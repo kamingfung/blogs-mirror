@@ -197,85 +197,79 @@ Look at Sample 1: The model predicted $0.10$ when true was $0.01$ ($10\times$ ov
 
 Drag the sliders to compare how MSE and cross-entropy penalize a prediction across the unit interval:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">⚡ Interactive Loss & Gradient Simulator</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #10b981;">True Target Value ($y \in [0, 1]$): <b id="ui-y">0.05</b></label>
-      <input type="range" id="ctrl-y" min="0.01" max="0.99" value="0.05" step="0.01" oninput="updateLossSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #38bdf8;">Model Prediction ($\hat{y} \text{ or } p$): <b id="ui-p">0.25</b></label>
-      <input type="range" id="ctrl-p" min="0.001" max="1.30" value="0.25" step="0.01" oninput="updateLossSim()" style="width: 100%;">
-    </div>
-  </div>
+::: {.sim-card}
+#### ⚡ Interactive Loss & Gradient Simulator
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; border-top: 3px solid #ef4444;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Standard MSE Loss</div>
-      <div id="val-mse-loss" style="font-size: 1.3em; font-weight: 700; color: #ef4444; margin-top: 4px;">0.0400</div>
-      <div style="font-size: 0.75em; color: #64748b; margin-top: 2px;">Hessian: <b style="color: #cbd5e1;">2.0 (Constant)</b></div>
-    </div>
-    <div style="background: #0f172a; padding: 12px; border-radius: 8px; border-top: 3px solid #10b981;">
-      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Cross-Entropy Loss</div>
-      <div id="val-ce-loss" style="font-size: 1.3em; font-weight: 700; color: #10b981; margin-top: 4px;">0.3421</div>
-      <div style="font-size: 0.75em; color: #64748b; margin-top: 2px;">Hessian: <b id="val-ce-hess" style="color: #cbd5e1;">0.1875</b></div>
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof y = Inputs.range([0.01, 0.99], {value: 0.05, step: 0.01, label: "True target y ∈ [0, 1]"})
+viewof p = Inputs.range([0.001, 1.30], {value: 0.25, step: 0.01, label: "Model prediction ŷ or p"})
 
-  <div id="loss-diag" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
-    When the true value is near 0 (y=0.05), an overprediction of 0.25 is penalized 8.5x more aggressively under Cross-Entropy than MSE!
-  </div>
-</div>
-```
+mse = (p - y) ** 2
 
-
-```{=html}
-<script>
-function updateLossSim() {
-  const y = parseFloat(document.getElementById('ctrl-y').value);
-  const p = parseFloat(document.getElementById('ctrl-p').value);
-
-  document.getElementById('ui-y').innerText = y.toFixed(2);
-  document.getElementById('ui-p').innerText = p.toFixed(2) + (p > 1.0 ? ' ⚠️ (Out of Bounds!)' : '');
-
-  // MSE
-  const mse = Math.pow(p - y, 2);
-  
-  // Cross Entropy (clipped slightly to prevent log(0))
-  let ce = 0;
-  if (p <= 0 || p >= 1.0) {
-    ce = 9.9999; // Extreme out of bounds
-  } else {
-    ce = - (y * Math.log(p) + (1.0 - y) * Math.log(1.0 - p));
-  }
-
-  const p_clamp = Math.min(0.999, Math.max(0.001, p));
-  const hess = p_clamp * (1.0 - p_clamp);
-
-  document.getElementById('val-mse-loss').innerText = mse.toFixed(4);
-  document.getElementById('val-ce-loss').innerText = p >= 1.0 || p <= 0 ? '∞ (Undefined / Out of Bounds)' : ce.toFixed(4);
-  document.getElementById('val-ce-hess').innerText = hess.toFixed(4) + ' (Self-Stabilizing)';
-
-  let diag = '';
-  if (p > 1.0) {
-    diag = '🚨 MSE predicted ' + p.toFixed(2) + ' which is greater than 100%! Cross-entropy mathematically forbids this impossible state.';
-  } else if (y < 0.1 && p > 0.2) {
-    diag = '🔍 Near-Zero Discrepancy: True y is ' + y.toFixed(2) + ', but prediction is ' + p.toFixed(2) + '. Cross-Entropy applies steep logarithmic penalty to eliminate tail false positives.';
-  } else if (y > 0.9 && p < 0.8) {
-    diag = '📈 Near-One Saturation: True y is ' + y.toFixed(2) + '. Cross-Entropy pushes logits aggressively to avoid underestimating high-magnitude events.';
-  } else {
-    diag = '✅ In the mid-range (0.4-0.6), Cross-Entropy and MSE provide smooth, balanced gradient steps.';
-  }
-  document.getElementById('loss-diag').innerText = diag;
+// Cross-entropy is undefined outside (0, 1); the Hessian clips as the original did.
+ce = p <= 0 || p >= 1.0 ? 9.9999 : -(y * Math.log(p) + (1.0 - y) * Math.log(1.0 - p))
+hess = {
+  const c = Math.min(0.999, Math.max(0.001, p));
+  return c * (1.0 - c);
 }
-window.addEventListener('load', updateLossSim);
-setTimeout(updateLossSim, 300);
-</script>
+
+diag = p > 1.0
+  ? `🚨 MSE predicted ${p.toFixed(2)} which is greater than 100%! Cross-entropy mathematically forbids this impossible state.`
+  : y < 0.1 && p > 0.2
+  ? `🔍 Near-Zero Discrepancy: True y is ${y.toFixed(2)}, but prediction is ${p.toFixed(2)}. Cross-Entropy applies steep logarithmic penalty to eliminate tail false positives.`
+  : y > 0.9 && p < 0.8
+  ? `📈 Near-One Saturation: True y is ${y.toFixed(2)}. Cross-Entropy pushes logits aggressively to avoid underestimating high-magnitude events.`
+  : "✅ In the mid-range (0.4-0.6), Cross-Entropy and MSE provide smooth, balanced gradient steps."
+
+card = (label, value, colour) => html`<div class="sim-readout">
+  <div class="sim-readout-label">${label}</div>
+  <div class="sim-readout-value" style="color:${colour}">${value}</div>
+</div>`
+
+html`<div class="sim-readouts">
+  ${card("Standard MSE loss", mse.toFixed(4), "#ef4444")}
+  ${card("MSE Hessian", "2.0 (Constant)", "#cbd5e1")}
+  ${card("Cross-entropy loss", p >= 1.0 || p <= 0 ? "∞ (Out of Bounds)" : ce.toFixed(4), "#10b981")}
+  ${card("CE Hessian (Self-Stabilizing)", hess.toFixed(4), "#cbd5e1")}
+  ${card("Gradient g = p − y", (p - y).toFixed(4), "#38bdf8")}
+</div>`
+
+curves = {
+  const out = [];
+  for (let i = 0; i <= 400; i++) {
+    const q = 0.002 + (0.998 - 0.002) * (i / 400);
+    out.push({q, v: (q - y) ** 2, kind: "MSE (ŷ − y)²"});
+    out.push({q, v: -(y * Math.log(q) + (1.0 - y) * Math.log(1.0 - q)), kind: "cross-entropy (nats)"});
+  }
+  return out;
+}
+
+Plot.plot({
+  height: 300,
+  marginLeft: 50,
+  style: {background: "transparent", color: "#cbd5e1"},
+  x: {domain: [0, 1.3], label: "prediction ŷ or p →", grid: true},
+  y: {domain: [0, 3], label: "↑ loss", grid: true},
+  color: {legend: true,
+          domain: ["MSE (ŷ − y)²", "cross-entropy (nats)"],
+          range: ["#ef4444", "#10b981"]},
+  marks: [
+    Plot.ruleX([1], {stroke: "#94a3b8", strokeDasharray: "5 4"}),
+    Plot.line(curves, {x: "q", y: "v", stroke: "kind", strokeWidth: 2.4}),
+    Plot.ruleX([y], {stroke: "#f59e0b", strokeDasharray: "2 4"}),
+    Plot.dot([{q: p, v: mse, kind: "MSE (ŷ − y)²"},
+              {q: p, v: ce, kind: "cross-entropy (nats)"}],
+             {x: "q", y: "v", fill: "kind", r: 5})
+  ]
+})
+
+html`<div style="font-size:0.9em;background:rgba(56,189,248,0.1);border-left:4px solid #38bdf8;padding:10px;border-radius:4px;">${diag}</div>`
 ```
 
+The orange rule marks the target $y$, where both losses bottom out; the grey rule
+at $\hat{y} = 1$ is the wall cross-entropy cannot cross and MSE happily walks through.
+:::
 
 ## Using it in LightGBM
 

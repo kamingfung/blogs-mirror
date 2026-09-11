@@ -157,95 +157,44 @@ In our clinical study published in *Scientific Reports*[^3], we utilized a dedic
 
 Test how intraoperative perfusion metrics translate into post-operative patient risk scores:
 
-```{=html}
-<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
-  <h4 style="margin-top: 0; color: #38bdf8;">🧠 Intraoperative CHS Risk Stratification Gauge</h4>
-  
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">rCBF Surge vs Baseline: <b id="cbf-val">+35%</b></label>
-      <input type="range" id="sim-cbf" min="0" max="150" value="35" step="5" oninput="updateMriSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">Post-op rMTT Ratio: <b id="mtt-val">0.80</b></label>
-      <input type="range" id="sim-mtt" min="0.30" max="1.00" value="0.80" step="0.05" oninput="updateMriSim()" style="width: 100%;">
-    </div>
-    <div>
-      <label style="font-size: 0.85em; color: #94a3b8;">Pre-op Baseline Ischemia: <b id="isch-val">Moderate</b></label>
-      <select id="sim-isch" onchange="updateMriSim()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
-        <option value="1">Mild (Compensated)</option>
-        <option value="2" selected>Moderate (Elevated OEF)</option>
-        <option value="3">Severe (Critical Hemodynamic Exhaustion)</option>
-      </select>
-    </div>
-  </div>
+::: {.sim-card}
+#### 🧠 Intraoperative CHS risk stratification gauge
 
-  <div style="background: #0f172a; border-radius: 8px; padding: 16px; margin-bottom: 14px;">
-    <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 6px;">
-      <span>Predicted CHS Risk Probability</span>
-      <b id="chs-prob" style="color: #10b981;">8.2% (Low Risk)</b>
-    </div>
-    <div style="background: #334155; border-radius: 4px; height: 14px; overflow: hidden; margin-bottom: 12px;">
-      <div id="chs-bar" style="background: #10b981; width: 8.2%; height: 100%;"></div>
-    </div>
-    
-    <div id="chs-recom" style="font-size: 0.9em; padding: 10px; border-radius: 4px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981;">
-      Standard post-operative recovery protocol. Maintain systolic blood pressure at baseline (120–140 mmHg).
-    </div>
-  </div>
+```{ojs}
+//| echo: false
+viewof cbfSurge = Inputs.range([0, 150], {value: 35, step: 5, label: "rCBF surge vs baseline (%)"})
+viewof mttRatio = Inputs.range([0.30, 1.00], {value: 0.80, step: 0.05, label: "Post-op rMTT ratio"})
+viewof ischLevel = Inputs.select(new Map([
+  ["Mild (Compensated)", 1],
+  ["Moderate (Elevated OEF)", 2],
+  ["Severe (Critical Hemodynamic Exhaustion)", 3]
+]), {value: 2, label: "Pre-op baseline ischemia"})
+
+// Logistic regression model risk calculation.
+z = -4.5 + (cbfSurge / 100) * 3.8 - (mttRatio - 0.7) * 4.2 + (ischLevel - 1) * 1.2
+prob = 1.0 / (1.0 + Math.exp(-z))
+probPct = (prob * 100).toFixed(1)
+
+// Decision bands are the published cut-offs: 0.25 and 0.60.
+verdict = prob < 0.25
+  ? {label: `${probPct}% (Low Risk)`, colour: "#10b981",
+     advice: "✅ Standard post-operative protocol: Maintain normotensive blood pressure (SBP 120–140 mmHg). Continue routine neuro-ICU monitoring."}
+  : prob < 0.60
+  ? {label: `${probPct}% (Moderate Risk - Alert)`, colour: "#f59e0b",
+     advice: "⚠️ Moderate CHS Warning: Initiate strict blood pressure control (SBP &lt; 130 mmHg). Administer free radical scavengers and perform serial follow-up PWI."}
+  : {label: `${probPct}% (Critical CHS Emergency)`, colour: "#ef4444",
+     advice: "🚨 Critical CHS Danger: Aggressive pharmacologic sedation, strict intensive hypotensive management (SBP 100–120 mmHg), and continuous propofol suppression to prevent catastrophic intracerebral hemorrhage."}
+
+html`<div style="display:flex;justify-content:space-between;font-size:0.85em;margin:16px 0 6px">
+  <span>Predicted CHS risk probability</span>
+  <b style="color:${verdict.colour}">${verdict.label}</b>
 </div>
+<div style="background:#334155;border-radius:4px;height:14px;overflow:hidden;margin-bottom:12px">
+  <div style="background:${verdict.colour};width:${probPct}%;height:100%"></div>
+</div>
+<div style="font-size:0.9em;padding:10px;border-radius:4px;background:${verdict.colour}1a;border-left:4px solid ${verdict.colour}">${verdict.advice}</div>`
 ```
-
-
-```{=html}
-<script>
-function updateMriSim() {
-  const cbfSurge = parseFloat(document.getElementById('sim-cbf').value);
-  const mttRatio = parseFloat(document.getElementById('sim-mtt').value);
-  const ischLevel = parseInt(document.getElementById('sim-isch').value);
-
-  document.getElementById('cbf-val').innerText = '+' + cbfSurge + '%';
-  document.getElementById('mtt-val').innerText = mttRatio.toFixed(2);
-  document.getElementById('isch-val').innerText = ischLevel === 1 ? 'Mild' : (ischLevel === 2 ? 'Moderate' : 'Severe');
-
-  // Logistic regression model risk calculation
-  const z = -4.5 + (cbfSurge / 100) * 3.8 - (mttRatio - 0.7) * 4.2 + (ischLevel - 1) * 1.2;
-  const prob = 1.0 / (1.0 + Math.exp(-z));
-  const probPct = (prob * 100).toFixed(1);
-
-  document.getElementById('chs-bar').style.width = probPct + '%';
-
-  const probEl = document.getElementById('chs-prob');
-  const barEl = document.getElementById('chs-bar');
-  const recomEl = document.getElementById('chs-recom');
-
-  if (prob < 0.25) {
-    probEl.innerText = probPct + '% (Low Risk)';
-    probEl.style.color = '#10b981';
-    barEl.style.background = '#10b981';
-    recomEl.style.background = 'rgba(16, 185, 129, 0.1)';
-    recomEl.style.borderLeftColor = '#10b981';
-    recomEl.innerText = '✅ Standard post-operative protocol: Maintain normotensive blood pressure (SBP 120–140 mmHg). Continue routine neuro-ICU monitoring.';
-  } else if (prob < 0.60) {
-    probEl.innerText = probPct + '% (Moderate Risk - Alert)';
-    probEl.style.color = '#f59e0b';
-    barEl.style.background = '#f59e0b';
-    recomEl.style.background = 'rgba(245, 158, 11, 0.1)';
-    recomEl.style.borderLeftColor = '#f59e0b';
-    recomEl.innerText = '⚠️ Moderate CHS Warning: Initiate strict blood pressure control (SBP < 130 mmHg). Administer free radical scavengers and perform serial follow-up PWI.';
-  } else {
-    probEl.innerText = probPct + '% (Critical CHS Emergency)';
-    probEl.style.color = '#ef4444';
-    barEl.style.background = '#ef4444';
-    recomEl.style.background = 'rgba(239, 68, 68, 0.1)';
-    recomEl.style.borderLeftColor = '#ef4444';
-    recomEl.innerText = '🚨 Critical CHS Danger: Aggressive pharmacologic sedation, strict intensive hypotensive management (SBP 100–120 mmHg), and continuous propofol suppression to prevent catastrophic intracerebral hemorrhage.';
-  }
-}
-window.addEventListener('load', updateMriSim);
-setTimeout(updateMriSim, 300);
-</script>
-```
+:::
 
 
 ---
