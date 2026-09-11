@@ -341,7 +341,6 @@ function updateHarmonyTones() {
   if (ratioSlider) toneRatio = parseFloat(ratioSlider.value);
 
   const f2 = baseF1 * toneRatio;
-  const beat = Math.abs(f1 - f2);
 
   document.getElementById('disp-f1').innerText = baseF1.toFixed(1);
   document.getElementById('disp-ratio').innerText = toneRatio.toFixed(3);
