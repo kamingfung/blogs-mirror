@@ -1,0 +1,780 @@
+---
+title: Information exchange versus energy
+description: Gauge fields, virtual particles and Landauer's principle, and the case that energy and spacetime are bookkeeping over quantum information.
+date: 2026-08-26
+categories:
+- physics
+- quantum mechanics
+- quantum information
+- particle physics
+- astrophysics
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/everyday-physics/index.html">Physics of Everyday Things</a><span class="sep">·</span>Part 8 · Information and energy</p><p class="mh-facts"><span class="lvl lvl-advanced">Advanced</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">Landauer&#x27;s limit</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Energy depends on the observer and is not conserved in an expanding universe, so it cannot be what physics is made of. This module builds the alternative: gauge fields exist because local phase choices must be compared at finite speed, the Coulomb force is an average over exchanged virtual photons, erasing a bit costs at least $k_B T \ln 2$, and black hole entropy, Ryu-Takayanagi and $ER = EPR$ tie geometry to entanglement. Afterwards you should be able to explain why physicists treat energy as bookkeeping and information as the ledger.
+:::
+
+School physics is an arena of **forces** and **energy**: a ball converts potential energy into kinetic energy, opposite charges attract, and energy is the currency that flows between systems. A seminar on quantum field theory (QFT) or quantum gravity speaks instead of **gauge connections**, **quantum channels**, **correlation functions**, **entanglement entropy** and **information bounds**; John Archibald Wheeler compressed the shift into "it from bit"[^1]. This module explains why the language changed.
+
+## Energy is bookkeeping
+
+In 1918 Emmy Noether proved[^2] that
+
+$$\text{Continuous Symmetry of Action } S \iff \text{Conserved Physical Current}$$
+
+- **Spatial translation symmetry** (the same physics one metre to the left) $\implies$ conservation of **linear momentum** $\mathbf{p}$.
+- **Rotational symmetry** (no preferred direction) $\implies$ conservation of **angular momentum** $\mathbf{L}$.
+- **Time translation symmetry** (the same laws tomorrow as today) $\implies$ conservation of **energy** $E$.
+
+```{mermaid}
+flowchart TD
+    Symmetry["Spacetime Symmetries of the Action S"]
+    
+    Symmetry --> Time["Time Invariance: t → t + δt"]
+    Symmetry --> Space["Space Invariance: x → x + δx"]
+    Symmetry --> Angle["Rotation Invariance: θ → θ + δθ"]
+    Symmetry --> Phase["Internal Phase Invariance: ψ → e^(iα) ψ"]
+
+    Time --> Energy["Conserved: Energy (Hamiltonian H)"]
+    Space --> Momentum["Conserved: Linear Momentum p"]
+    Angle --> AngMom["Conserved: Angular Momentum L"]
+    Phase --> Charge["Conserved: Electric / Gauge Charge Q"]
+
+    class Symmetry indigo
+    class Time plum
+    class Phase sage
+    class Energy olive
+    class Charge ochre
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+### Why energy fails as a primitive
+
+1. **Observer dependence**: in special relativity energy is the time component of the four-momentum $p^\mu = (E/c, p_x, p_y, p_z)$; change your velocity and its value changes.
+2. **Breakdown in general relativity**: an expanding FLRW universe is **not** time-translation invariant. Photons redshift as space stretches, and **energy is not globally conserved**.
+3. **No structural content**: knowing a system holds $100\text{ J}$ says nothing about whether it is a living cell, a supercomputer or a puff of steam.
+
+To understand *how* particles interact and *what* structures can exist, we need to know how **quantum states distinguish themselves from one another**. That is information.
+
+## Forces as information exchange
+
+### Local phase freedom demands a gauge field
+
+A matter particle such as an electron or quark is described by a complex field $\psi(x)$:
+
+$$\psi(x) = R(x) e^{i \theta(x)}$$
+
+The probability density at $x$ is
+
+$$P(x) = |\psi(x)|^2 = \psi^*(x) \psi(x) = R(x)^2$$
+
+Multiplying $\psi(x)$ by a global phase $e^{i \alpha}$, with $\alpha$ constant across the universe, leaves it unchanged:
+
+$$\psi'(x) = e^{i \alpha} \psi(x) \implies |\psi'(x)|^2 = (e^{-i \alpha}\psi^*(x))(e^{i \alpha}\psi(x)) = |\psi(x)|^2$$
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 340" style="width:100%;max-width:740px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Two panels comparing a global phase rotation, where two distant dials must turn by the same angle instantaneously, with a local phase rotation, where each dial turns freely and a gauge connection field carries the comparison between them.">
+  <defs>
+    <marker id="f1a" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--ink-rust)"/></marker>
+    <marker id="f1b" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-indigo)"/></marker>
+  </defs>
+  <text x="190" y="36" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">Global phase: one &#945; for all of space</text>
+  <rect x="140" y="52" width="100" height="30" rx="8" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text x="190" y="72" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">&#945; = const</text>
+  <path d="M 160 84 L 116 128" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" stroke-dasharray="5 5"/>
+  <path d="M 220 84 L 260 128" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" stroke-dasharray="5 5"/>
+  <circle cx="104" cy="178" r="46" fill="var(--ink-indigo)" fill-opacity="0.10" stroke="var(--md-default-fg-color--light)" stroke-width="1.8"/>
+  <path d="M 104 178 L 128.2 169.2 A 25.8 25.8 0 0 0 106.2 152.3 Z" fill="var(--ink-rust)" fill-opacity="0.20" stroke="none"/>
+  <line x1="104" y1="178" x2="140.3" y2="164.8" stroke="var(--md-default-fg-color--light)" stroke-width="2" stroke-dasharray="4 4"/>
+  <line x1="104" y1="178" x2="107.4" y2="139.5" stroke="var(--ink-rust)" stroke-width="3"/>
+  <circle cx="107.4" cy="139.5" r="4.5" fill="var(--ink-rust)"/>
+  <text x="124.7" y="155.0" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">&#945;</text>
+  <circle cx="104" cy="178" r="3" fill="var(--md-default-fg-color)"/>
+  <circle cx="272" cy="178" r="46" fill="var(--ink-indigo)" fill-opacity="0.10" stroke="var(--md-default-fg-color--light)" stroke-width="1.8"/>
+  <path d="M 272 178 L 247.8 186.8 A 25.8 25.8 0 0 0 269.8 203.7 Z" fill="var(--ink-rust)" fill-opacity="0.20" stroke="none"/>
+  <line x1="272" y1="178" x2="235.7" y2="191.2" stroke="var(--md-default-fg-color--light)" stroke-width="2" stroke-dasharray="4 4"/>
+  <line x1="272" y1="178" x2="268.6" y2="216.5" stroke="var(--ink-rust)" stroke-width="3"/>
+  <circle cx="268.6" cy="216.5" r="4.5" fill="var(--ink-rust)"/>
+  <text x="251.3" y="209.0" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">&#945;</text>
+  <circle cx="272" cy="178" r="3" fill="var(--md-default-fg-color)"/>
+  <text x="104" y="250" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Point A</text>
+  <text x="272" y="250" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Point B, 2 Mpc away</text>
+  <text x="190" y="278" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">both needles must turn by the same &#945;</text>
+  <text x="190" y="300" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Unphysical as a requirement</text>
+  <text x="190" y="320" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">no signal can enforce it at spacelike separation</text>
+  <line x1="372" y1="24" x2="372" y2="322" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" stroke-dasharray="6 6" opacity="0.5"/>
+  <text x="556" y="36" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">Local phase: every point picks its own &#945;(x)</text>
+  <circle cx="462" cy="178" r="46" fill="var(--ink-indigo)" fill-opacity="0.10" stroke="var(--md-default-fg-color--light)" stroke-width="1.8"/>
+  <path d="M 462 178 L 486.2 169.2 A 25.8 25.8 0 0 0 464.2 152.3 Z" fill="var(--ink-rust)" fill-opacity="0.20" stroke="none"/>
+  <line x1="462" y1="178" x2="498.3" y2="164.8" stroke="var(--md-default-fg-color--light)" stroke-width="2" stroke-dasharray="4 4"/>
+  <line x1="462" y1="178" x2="465.4" y2="139.5" stroke="var(--ink-rust)" stroke-width="3"/>
+  <circle cx="465.4" cy="139.5" r="4.5" fill="var(--ink-rust)"/>
+  <text x="482.7" y="155.0" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">&#945;</text>
+  <circle cx="462" cy="178" r="3" fill="var(--md-default-fg-color)"/>
+  <circle cx="648" cy="178" r="46" fill="var(--ink-indigo)" fill-opacity="0.10" stroke="var(--md-default-fg-color--light)" stroke-width="1.8"/>
+  <path d="M 648 178 L 623.8 186.8 A 25.8 25.8 0 0 0 627.7 193.9 Z" fill="var(--ink-rust)" fill-opacity="0.20" stroke="none"/>
+  <line x1="648" y1="178" x2="611.7" y2="191.2" stroke="var(--md-default-fg-color--light)" stroke-width="2" stroke-dasharray="4 4"/>
+  <line x1="648" y1="178" x2="617.6" y2="201.8" stroke="var(--ink-rust)" stroke-width="3"/>
+  <circle cx="617.6" cy="201.8" r="4.5" fill="var(--ink-rust)"/>
+  <text x="618.2" y="198.5" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">&#945;</text>
+  <circle cx="648" cy="178" r="3" fill="var(--md-default-fg-color)"/>
+  <path d="M 512 178 q 7 -11 14 0 q 7 11 14 0 q 7 -11 14 0 q 7 11 14 0 q 7 -11 14 0 q 7 11 14 0" fill="none" stroke="var(--ink-indigo)" stroke-width="2.6" marker-end="url(#f1b)"/>
+  <text x="556" y="138" text-anchor="middle" fill="var(--ink-indigo)" font-size="14.5" font-weight="600">A<tspan dy="4" font-size="11">&#956;</tspan></text>
+  <text x="462" y="250" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Point A</text>
+  <text x="648" y="250" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Point B</text>
+  <text x="556" y="278" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">the needles disagree, and that is allowed</text>
+  <text x="556" y="300" text-anchor="middle" fill="var(--ink-indigo)" font-size="13.5" font-weight="600">A connection carries the comparison at c</text>
+  <text x="556" y="320" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">that channel is what we call electromagnetism</text>
+</svg>
+<figcaption><strong>Figure 1 | A global phase convention is a hidden claim about faster-than-light coordination; a local one forces a force field into existence.</strong> Multiplying every field by the same $e^{i\alpha}$ leaves $|\psi|^2$ untouched, so the symmetry looks free &mdash; but it demands that two spacelike-separated dials (left) agree on $\alpha$ instantaneously. Grant each point its own $\alpha(x)$ instead (right) and the needles legitimately disagree, which breaks $\partial_\mu\psi$ by the extra term $i(\partial_\mu\alpha)\psi$. Restoring consistency requires a field $A_\mu(x)$ (blue) that transports the phase comparison between neighbouring points at finite speed: the gauge boson is not added to the theory, it is the price of locality.</figcaption>
+</figure>
+```
+
+
+#### The conflict with special relativity
+
+No influence propagates faster than $c$, so an electron in your laboratory cannot instantly agree on a reference phase $\alpha$ with one in Andromeda. The symmetry must be **local**: the phase must be free to rotate independently at every point in spacetime:
+
+$$\psi(x) \to \psi'(x) = e^{i \alpha(x)} \psi(x)$$
+
+The derivative $\partial_\mu \psi(x)$ that enters the equation of motion then picks up an extra term:
+
+$$\partial_\mu \psi'(x) = \partial_\mu \left( e^{i \alpha(x)} \psi(x) \right) = e^{i \alpha(x)} \partial_\mu \psi(x) + i (\partial_\mu \alpha(x)) e^{i \alpha(x)} \psi(x)$$
+
+The extra term $i (\partial_\mu \alpha(x))$ breaks the invariance. The equation of motion only survives if a **compensating field** $A_\mu(x)$ cancels the phase discrepancy.
+
+```{mermaid}
+flowchart TD
+    Demand["Demand: Local Freedom of Quantum Phase θ(x)<br/>Each point can choose its own reference clock"]
+    
+    DerivBreak["Ordinary derivative ∂_μ ψ breaks down<br/>Mismatch across neighboring spacetime points"]
+    
+    Introduce["Introduce a Gauge Connection Field A_μ(x)<br/>Transmits phase comparison information between points"]
+    
+    Dcov["Construct Covariant Derivative: D_μ = ∂_μ - i q A_μ"]
+    
+    ForceBorn["Gauge Boson Emerges (Photon, Gluon, W/Z)<br/>What we called 'Force' is the Phase Synchronization Channel!"]
+
+    Demand --> DerivBreak --> Introduce --> Dcov --> ForceBorn
+
+    class Demand indigo
+    class DerivBreak rust
+    class Introduce ochre
+    class Dcov plum
+    class ForceBorn olive
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+Replacing $\partial_\mu$ with the **gauge covariant derivative** (extended to non-Abelian fields by Yang and Mills in 1954[^3]),
+
+$$D_\mu = \partial_\mu - i q A_\mu(x)$$
+
+where $A_\mu(x)$ transforms as $A_\mu'(x) = A_\mu(x) + \frac{1}{q} \partial_\mu \alpha(x)$, the equation becomes invariant.
+
+The photon, the gluons and the $W^\pm, Z^0$ bosons are therefore **gauge connections**: they carry the local phase choices of matter fields across spacetime so that neighbouring observers stay consistent.
+
+Adjust the local phase $\alpha(x)$ at Point 2. The ordinary gradient records a mismatch; the **gauge connection** $A_\mu(x)$ carries the phase across and restores invariance.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Point 1 Phase (θ₁): <span id="theta1-val" style="color: #38bdf8;">0°</span></label>
+      <input type="range" id="slider-theta1" min="0" max="360" value="0" oninput="updateGaugeVisualizer()" style="width: 100%; accent-color: #38bdf8;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Point 2 Phase Shift (α(x)): <span id="theta2-val" style="color: #f59e0b;">90°</span></label>
+      <input type="range" id="slider-theta2" min="0" max="360" value="90" oninput="updateGaugeVisualizer()" style="width: 100%; accent-color: #f59e0b;">
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+      <label style="font-size: 0.85em; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+        <input type="checkbox" id="gauge-enable" checked onchange="updateGaugeVisualizer()" style="accent-color: #10b981; width: 18px; height: 18px;">
+        Enable Gauge Connection A_μ
+      </label>
+    </div>
+  </div>
+
+  <canvas id="gauge-canvas" width="700" height="260" style="width: 100%; height: auto; background: #0b1120; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+
+  <div id="gauge-explanation" style="font-size: 0.85em; color: #94a3b8; margin-top: 12px; line-height: 1.5; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 6px;">
+    Loading gauge connection status...
+  </div>
+</div>
+```
+
+
+### Feynman diagrams as data packets
+
+Classically, two repelling electrons sit in a static potential $V(r) = \frac{k e^2}{r}$. In quantum electrodynamics (QED) there is no static force; the interaction is a scattering amplitude $\mathcal{M}$ computed from Feynman diagrams[^4]:
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" style="width:100%;max-width:700px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A t-channel Feynman diagram: two horizontal electron lines meeting vertices joined by a wavy vertical virtual photon that carries momentum, polarisation and phase between them.">
+  <defs>
+    <marker id="f2f" markerWidth="10" markerHeight="8" refX="5" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--md-default-fg-color)"/></marker>
+    <marker id="f2n" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <line x1="70" y1="118" x2="350" y2="118" stroke="var(--md-default-fg-color)" stroke-width="2.4" marker-mid="url(#f2f)"/>
+  <polygon points="196 113, 208 118, 196 123" fill="var(--md-default-fg-color)"/>
+  <line x1="350" y1="118" x2="630" y2="118" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <polygon points="478 113, 490 118, 478 123" fill="var(--md-default-fg-color)"/>
+  <line x1="70" y1="238" x2="350" y2="238" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <polygon points="196 233, 208 238, 196 243" fill="var(--md-default-fg-color)"/>
+  <line x1="350" y1="238" x2="630" y2="238" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <polygon points="478 233, 490 238, 478 243" fill="var(--md-default-fg-color)"/>
+  <path d="M 350 118 q 13 10 0 20 q -13 10 0 20 q 13 10 0 20 q -13 10 0 20 q 13 10 0 20 q -13 10 0 20" fill="none" stroke="var(--ink-rust)" stroke-width="2.6"/>
+  <circle cx="350" cy="118" r="6.5" fill="var(--ink-rust)"/>
+  <circle cx="350" cy="238" r="6.5" fill="var(--ink-rust)"/>
+  <text x="62" y="112" text-anchor="end" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">e&#8315; (p&#8321;)</text>
+  <text x="638" y="112" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">e&#8315; (p&#8323;)</text>
+  <text x="62" y="232" text-anchor="end" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">e&#8315; (p&#8322;)</text>
+  <text x="638" y="232" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">e&#8315; (p&#8324;)</text>
+  <path d="M 300 96 q 26 8 44 16" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#f2n)"/>
+  <text x="294" y="92" text-anchor="end" fill="var(--md-default-fg-color)" font-size="13">vertex 1: emits</text>
+  <path d="M 300 260 q 26 -8 44 -16" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#f2n)"/>
+  <text x="294" y="266" text-anchor="end" fill="var(--md-default-fg-color)" font-size="13">vertex 2: absorbs</text>
+  <text x="386" y="150" fill="var(--ink-rust)" font-size="14.5" font-weight="600">virtual photon &#947;</text>
+  <text x="386" y="172" fill="var(--md-default-fg-color--light)" font-size="13">payload: q = p&#8321; &#8722; p&#8323;, polarisation, phase</text>
+  <text x="386" y="194" fill="var(--md-default-fg-color--light)" font-size="13">propagator: D(q) = &#8722;i &#951;/(q&#178; + i&#949;)</text>
+  <text x="386" y="216" fill="var(--md-default-fg-color--light)" font-size="13">off shell: q&#178; &#8800; 0, so it is never observed</text>
+  <text x="350" y="36" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">No potential well appears anywhere in this calculation</text>
+  <text x="350" y="58" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">only two local transitions and one message between them</text>
+  <text x="350" y="304" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">summing amplitudes over every such exchange reproduces V(r) = e&#178;/4&#960;&#949;&#8320;r in the non-relativistic limit</text>
+</svg>
+<figcaption><strong>Figure 2 | The Coulomb force is not in the theory; it is what a sum over exchanged messages looks like from far away.</strong> In QED nothing pushes: electron 1 makes a local transition at vertex 1 and hands off a virtual photon carrying four-momentum $q^\mu = p_1^\mu - p_3^\mu$, polarisation and phase, which electron 2 absorbs at vertex 2. The photon is off shell ($q^2 \neq 0$), so it is a term in an amplitude rather than a detectable particle, and its propagator $D_{\mu\nu}(q) = -i\eta_{\mu\nu}/(q^2 + i\epsilon)$ is the weight given to that message. Only after summing over all such exchanges does the coarse-grained result collapse into the inverse-square potential taught as a force.</figcaption>
+</figure>
+```
+
+
+The interaction is a **discrete exchange of quantum numbers and four-momentum**:
+1. Electron 1 makes a local transition at vertex 1, emitting a virtual gauge boson.
+2. The boson propagates, carrying momentum $q^\mu = (\Delta E, \Delta \mathbf{p})$, polarisation and phase.
+3. Electron 2 absorbs it at vertex 2 and updates its momentum.
+
+Summed over many such exchanges, the coarse-grained average reproduces Coulomb's inverse-square law:
+
+$$\langle \text{Scattering Amplitude} \rangle \xrightarrow{\text{non-relativistic limit}} V(r) = \frac{e^2}{4 \pi \epsilon_0 r}$$
+
+What we call force is the statistical limit of many discrete exchanges.
+
+## Information is physical, and so is spacetime
+
+### Landauer's principle
+
+Shannon defined information abstractly, for telecommunications:
+
+$$H = - \sum_{i} p_i \log_2 p_i$$
+
+In 1961 Rolf Landauer at IBM showed it is physical[^5].
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 344" style="width:100%;max-width:660px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A double-well potential holding two states labelled 0 and 1 is reset into a single well holding one state, with heat arrows carrying the discarded entropy into a thermal bath.">
+  <defs>
+    <marker id="f3h" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+    <marker id="f3g" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--md-default-fg-color)"/></marker>
+  </defs>
+  <text x="330" y="34" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">Erasure is a compression of phase space, and phase space cannot be compressed for free</text>
+  <polyline points="60.8,98.4 63.0,110.6 65.2,121.6 67.4,131.5 69.6,140.4 71.8,148.3 74.0,155.3 76.2,161.5 78.4,166.8 80.6,171.3 82.8,175.2 85.0,178.3 87.3,180.9 89.5,182.9 91.7,184.3 93.9,185.3 96.1,185.9 98.3,186.0 100.5,185.8 102.7,185.2 104.9,184.4 107.1,183.3 109.3,182.1 111.5,180.6 113.7,179.0 115.9,177.2 118.1,175.4 120.3,173.5 122.5,171.5 124.7,169.5 126.9,167.6 129.1,165.6 131.3,163.7 133.5,161.9 135.8,160.2 138.0,158.5 140.2,157.0 142.4,155.6 144.6,154.3 146.8,153.2 149.0,152.2 151.2,151.4 153.4,150.8 155.6,150.4 157.8,150.1 160.0,150.0 162.2,150.1 164.4,150.4 166.6,150.8 168.8,151.4 171.0,152.2 173.2,153.2 175.4,154.3 177.6,155.6 179.8,157.0 182.0,158.5 184.2,160.2 186.5,161.9 188.7,163.7 190.9,165.6 193.1,167.6 195.3,169.5 197.5,171.5 199.7,173.5 201.9,175.4 204.1,177.2 206.3,179.0 208.5,180.6 210.7,182.1 212.9,183.3 215.1,184.4 217.3,185.2 219.5,185.8 221.7,186.0 223.9,185.9 226.1,185.3 228.3,184.3 230.5,182.9 232.7,180.9 235.0,178.3 237.2,175.2 239.4,171.3 241.6,166.8 243.8,161.5 246.0,155.3 248.2,148.3 250.4,140.4 252.6,131.5 254.8,121.6 257.0,110.6 259.2,98.4" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <circle cx="98" cy="175" r="11" fill="var(--ink-indigo)" fill-opacity="0.22" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="98" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="700">0</text>
+  <circle cx="222" cy="175" r="11" fill="var(--ink-indigo)" fill-opacity="0.22" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="222" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="700">1</text>
+  <text x="160" y="222" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Before: 2 microstates</text>
+  <text x="160" y="242" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">register holds 1 bit, volume 2&#937;</text>
+  <line x1="290" y1="168" x2="366" y2="168" stroke="var(--md-default-fg-color)" stroke-width="2.6" marker-end="url(#f3g)"/>
+  <text x="328" y="152" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">reset</text>
+  <polyline points="390.8,95.7 393.0,99.7 395.2,103.5 397.4,107.3 399.6,111.0 401.8,114.6 404.0,118.2 406.2,121.6 408.4,124.9 410.6,128.2 412.8,131.4 415.0,134.4 417.3,137.4 419.5,140.3 421.7,143.1 423.9,145.9 426.1,148.5 428.3,151.0 430.5,153.5 432.7,155.8 434.9,158.1 437.1,160.3 439.3,162.4 441.5,164.4 443.7,166.3 445.9,168.2 448.1,169.9 450.3,171.5 452.5,173.1 454.7,174.6 456.9,176.0 459.1,177.3 461.3,178.5 463.5,179.6 465.8,180.6 468.0,181.5 470.2,182.4 472.4,183.1 474.6,183.8 476.8,184.4 479.0,184.9 481.2,185.3 483.4,185.6 485.6,185.8 487.8,186.0 490.0,186.0 492.2,186.0 494.4,185.8 496.6,185.6 498.8,185.3 501.0,184.9 503.2,184.4 505.4,183.8 507.6,183.1 509.8,182.4 512.0,181.5 514.2,180.6 516.5,179.6 518.7,178.5 520.9,177.3 523.1,176.0 525.3,174.6 527.5,173.1 529.7,171.5 531.9,169.9 534.1,168.2 536.3,166.3 538.5,164.4 540.7,162.4 542.9,160.3 545.1,158.1 547.3,155.8 549.5,153.5 551.7,151.0 553.9,148.5 556.1,145.9 558.3,143.1 560.5,140.3 562.7,137.4 565.0,134.4 567.2,131.4 569.4,128.2 571.6,124.9 573.8,121.6 576.0,118.2 578.2,114.6 580.4,111.0 582.6,107.3 584.8,103.5 587.0,99.7 589.2,95.7" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <circle cx="490" cy="175" r="11" fill="var(--ink-indigo)" fill-opacity="0.22" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="490" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="700">0</text>
+  <text x="490" y="222" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">After: 1 microstate</text>
+  <text x="490" y="242" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">&#916;S<tspan dy="3" font-size="10.5">register</tspan><tspan dy="-3" font-size="12.5"> = &#8722;k</tspan><tspan dy="3" font-size="10.5">B</tspan><tspan dy="-3" font-size="12.5"> ln 2, volume &#937;</tspan></text>
+  <line x1="440" y1="258" x2="440" y2="294" stroke="var(--ink-rust)" stroke-width="2.6" marker-end="url(#f3h)"/>
+  <line x1="490" y1="258" x2="490" y2="294" stroke="var(--ink-rust)" stroke-width="2.6" marker-end="url(#f3h)"/>
+  <line x1="540" y1="258" x2="540" y2="294" stroke="var(--ink-rust)" stroke-width="2.6" marker-end="url(#f3h)"/>
+  <rect x="378" y="298" width="224" height="28" rx="4" fill="var(--ink-rust)" fill-opacity="0.13" stroke="var(--ink-rust)" stroke-width="1.6"/>
+  <text x="490" y="317" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">thermal environment at T</text>
+  <text x="352" y="278" text-anchor="end" fill="var(--ink-rust)" font-size="13" font-weight="600">entropy must go somewhere</text>
+  <text x="352" y="304" text-anchor="end" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">Q &#8805; k<tspan dy="3" font-size="11">B</tspan><tspan dy="-3" font-size="14.5">T ln 2</tspan></text>
+  <text x="352" y="324" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8776; 2.9 &#215; 10&#8315;&#178;&#185; J, or 0.018 eV, per bit at 300 K</text>
+</svg>
+<figcaption><strong>Figure 3 | Landauer's bound is the Second Law applied to a bookkeeping operation.</strong> A one-bit register is a double-well potential: two distinguishable microstates, phase-space volume $2\Omega$. Resetting it to $0$ regardless of its prior contents maps both wells onto one, halving that volume, so the register's entropy falls by $k_B \ln 2$. Since the total entropy of an isolated system cannot decrease, the deficit is exported as heat to the environment (magenta), giving $Q \ge k_B T \ln 2$ &mdash; about $0.018\text{ eV}$ per bit at $300\text{ K}$. Note what the bound does not depend on: not the voltage, not the technology, only the temperature and the number of distinctions destroyed.</figcaption>
+</figure>
+```
+
+
+#### The bound
+
+Erasing or overwriting $1 \text{ bit}$ halves the phase-space volume of microstates. By the Second Law that entropy must go into the environment as heat:
+
+$$\Delta E \ge k_B T \ln 2$$
+
+At room temperature ($T = 300\text{ K}$):
+
+$$\Delta E_{\text{min}} \approx 1.3806 \times 10^{-23} \times 300 \times 0.6931 \approx 2.87 \times 10^{-21}\text{ Joules} \approx 0.0179\text{ eV}$$
+
+Compute the minimum heat released by erasing bits at temperatures from the cosmic microwave background ($2.73\text{ K}$) to a hot processor.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Information Erased ($N$ bits):</label>
+      <input type="number" id="landauer-bits" value="1000000" min="1" step="1000" oninput="calculateLandauer()" style="width: 100%; background: #0f172a; border: 1px solid #475569; color: #fff; padding: 6px 10px; border-radius: 6px;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Temperature ($T$ in Kelvin):</label>
+      <input type="number" id="landauer-temp" value="300" min="0.001" step="10" oninput="calculateLandauer()" style="width: 100%; background: #0f172a; border: 1px solid #475569; color: #fff; padding: 6px 10px; border-radius: 6px;">
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-end;">
+      <button onclick="setLandauerPreset(2.73)" style="background: #334155; border: none; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Deep Space (2.7K)</button>
+      <button onclick="setLandauerPreset(77)" style="background: #334155; border: none; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Liquid N2 (77K)</button>
+      <button onclick="setLandauerPreset(300)" style="background: #2563eb; border: none; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Room Temp (300K)</button>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; background: #020617; padding: 14px; border-radius: 8px; border: 1px solid #1e293b;">
+    <div>
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Minimum Heat Energy Dissipated</div>
+      <div id="landauer-joules" style="font-size: 1.25em; font-weight: 700; color: #38bdf8; margin-top: 4px;">2.87 × 10⁻¹⁵ J</div>
+    </div>
+    <div>
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Equivalent Electron Volts</div>
+      <div id="landauer-ev" style="font-size: 1.25em; font-weight: 700; color: #10b981; margin-top: 4px;">17.9 keV</div>
+    </div>
+    <div>
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Entropy Discharged to Cosmos</div>
+      <div id="landauer-entropy" style="font-size: 1.25em; font-weight: 700; color: #f59e0b; margin-top: 4px;">9.57 × 10⁻¹⁸ J/K</div>
+    </div>
+  </div>
+</div>
+```
+
+
+### Holography and $ER = EPR$
+
+#### Bekenstein-Hawking entropy
+
+Jacob Bekenstein[^6] and Stephen Hawking[^7] found that dropping an object of energy $E$ into a black hole raises its capacity to store information in proportion to its **surface area**, not its volume:
+
+$$S_{\text{BH}} = \frac{k_B c^3 A}{4 G \hbar} = \frac{k_B A}{4 \ell_P^2}$$
+
+where $\ell_P = \sqrt{\frac{G \hbar}{c^3}} \approx 1.616 \times 10^{-35}\text{ m}$ is the Planck length.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 374" style="width:100%;max-width:700px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A black hole horizon shown as a circle, with a patch of its surface magnified into a grid of Planck-area pixels each holding a single bit.">
+  <defs>
+    <marker id="f4n" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <circle cx="170" cy="160" r="96" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.6"/>
+  <text x="170" y="154" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">interior volume V</text>
+  <text x="170" y="176" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">no independent bits here</text>
+  <rect x="237.6" y="93.9" width="22" height="22" fill="none" stroke="var(--ink-rust)" stroke-width="2.2"/>
+  <path d="M 260.6 96.9 L 392 82" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <path d="M 260.6 114.9 L 392 180" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text x="170" y="286" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">Horizon of area A</text>
+  <text x="170" y="306" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">the only place the entropy lives</text>
+  <text x="498" y="52" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">One Planck pixel, one bit</text>
+  <rect x="396" y="80" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="413" y="102" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="430" y="80" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="447" y="102" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="464" y="80" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="481" y="102" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="498" y="80" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="515" y="102" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="532" y="80" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="549" y="102" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="566" y="80" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="583" y="102" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="396" y="114" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="413" y="136" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="430" y="114" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="447" y="136" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="464" y="114" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="481" y="136" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="498" y="114" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="515" y="136" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="532" y="114" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="549" y="136" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="566" y="114" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="583" y="136" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="396" y="148" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="413" y="170" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="430" y="148" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="447" y="170" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="464" y="148" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="481" y="170" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="498" y="148" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="515" y="170" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">1</text>
+  <rect x="532" y="148" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="549" y="170" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <rect x="566" y="148" width="34" height="34" fill="var(--ink-rust)" fill-opacity="0.08" stroke="var(--ink-rust)" stroke-width="1.4"/>
+  <text x="583" y="170" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-family="ui-monospace,monospace">0</text>
+  <text x="498" y="212" text-anchor="middle" fill="var(--ink-rust)" font-size="13.5" font-weight="600">each tile is 4&#8467;<tspan dy="3" font-size="10.5">P</tspan><tspan dy="-3" font-size="13.5">&#178; &#8776; 1.0 &#215; 10&#8315;&#8311;&#8304; m&#178;</tspan></text>
+  <text x="498" y="234" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8467;<tspan dy="3" font-size="10.5">P</tspan><tspan dy="-3" font-size="12.5"> = &#8730;(G&#8463;/c&#179;) &#8776; 1.6 &#215; 10&#8315;&#179;&#8309; m</tspan></text>
+  <text x="350" y="336" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">S = k<tspan dy="3" font-size="11">B</tspan><tspan dy="-3" font-size="15">A / 4&#8467;</tspan><tspan dy="3" font-size="11">P</tspan><tspan dy="-3" font-size="15">&#178;, so capacity scales with area, not with volume</tspan></text>
+  <text x="350" y="358" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">double the radius and the storage quadruples while the interior it bounds grows eightfold</text>
+</svg>
+<figcaption><strong>Figure 4 | A black hole's memory is written on its surface, which is why space cannot hold as much as its volume suggests.</strong> Bekenstein and Hawking found $S_{\text{BH}} = k_B A / 4\ell_P^2$: the entropy of a black hole is set by horizon area, in units of the Planck area, as though the horizon were tiled by pixels each carrying one bit (magenta). The interior contributes no independent degrees of freedom of its own. Because a black hole is the densest object a region can contain, this is a ceiling on any region: bits grow as $R^2$ while volume grows as $R^3$, so a large enough volume of information collapses before it can be stored. That mismatch is the Holographic Principle.</figcaption>
+</figure>
+```
+
+
+The most information any region can hold before collapsing into a black hole scales with its boundary area $A$. This is the **holographic principle**.
+
+#### The Ryu-Takayanagi formula
+
+In 1997 Juan Maldacena formulated the **AdS/CFT correspondence**[^8]: a gravitational theory in $(d+1)$-dimensional curved spacetime is identical to a quantum field theory with **no gravity** on its $d$-dimensional boundary.
+
+Shinsei Ryu and Tadashi Takayanagi showed that geometry in the interior (the bulk) is computed from the **entanglement entropy** $S_A$ of the boundary qubits[^9]:
+
+$$S_A = \frac{\text{Area}(\gamma_A)}{4 G_N \hbar}$$
+
+where $\gamma_A$ is the minimal surface in the bulk anchored to region $A$.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 396" style="width:100%;max-width:700px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A disc representing the gravitational bulk, with a highlighted arc of its boundary circle marking region A and a minimal geodesic surface arcing through the interior between the endpoints of that arc.">
+  <defs>
+    <marker id="f6n" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <path d="M 344.7 119.7 A 140 140 0 0 0 115.3 119.7 A 199.9 199.9 0 0 0 344.7 119.7 Z" fill="var(--ink-indigo)" fill-opacity="0.12" stroke="none"/>
+  <circle cx="230" cy="200" r="140" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="2.6"/>
+  <path d="M 344.7 119.7 A 140 140 0 0 0 115.3 119.7" fill="none" stroke="var(--ink-rust)" stroke-width="5"/>
+  <path d="M 344.7 119.7 A 199.9 199.9 0 0 1 115.3 119.7" fill="none" stroke="var(--ink-indigo)" stroke-width="3.2"/>
+  <circle cx="344.7" cy="119.7" r="4.5" fill="var(--md-default-fg-color)"/>
+  <circle cx="115.3" cy="119.7" r="4.5" fill="var(--md-default-fg-color)"/>
+  <text x="230" y="46" text-anchor="middle" fill="var(--ink-rust)" font-size="14.5" font-weight="600">boundary region A</text>
+  <text x="230" y="102" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">entanglement wedge of A</text>
+  <text x="230" y="182" text-anchor="middle" fill="var(--ink-indigo)" font-size="14" font-weight="600">minimal surface &#947;<tspan dy="3" font-size="11">A</tspan></text>
+  <text x="230" y="264" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">bulk: curved spacetime, with gravity</text>
+  <text x="230" y="284" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">one extra dimension</text>
+  <text x="230" y="380" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">boundary: a quantum field theory with no gravity at all</text>
+  <path d="M 396 66 q -34 -6 -62 -14" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.3" marker-end="url(#f6n)"/>
+  <text x="402" y="62" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">The dictionary entry</text>
+  <text x="402" y="112" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">Ryu&#8211;Takayanagi</text>
+  <text x="402" y="136" fill="var(--md-default-fg-color--light)" font-size="13.5">S<tspan dy="3" font-size="11">A</tspan><tspan dy="-3" font-size="13.5"> = Area(&#947;</tspan><tspan dy="3" font-size="11">A</tspan><tspan dy="-3" font-size="13.5">) / 4G</tspan><tspan dy="3" font-size="11">N</tspan><tspan dy="-3" font-size="13.5">&#8463;</tspan></text>
+  <text x="402" y="186" fill="var(--ink-rust)" font-size="14" font-weight="600">left side: pure information</text>
+  <text x="402" y="208" fill="var(--md-default-fg-color--light)" font-size="12.5">the entanglement entropy of the</text>
+  <text x="402" y="226" fill="var(--md-default-fg-color--light)" font-size="12.5">qubits in A, computed with no</text>
+  <text x="402" y="244" fill="var(--md-default-fg-color--light)" font-size="12.5">reference to any geometry</text>
+  <text x="402" y="284" fill="var(--ink-indigo)" font-size="14" font-weight="600">right side: pure geometry</text>
+  <text x="402" y="306" fill="var(--md-default-fg-color--light)" font-size="12.5">the area of the smallest bulk</text>
+  <text x="402" y="324" fill="var(--md-default-fg-color--light)" font-size="12.5">surface anchored to the edges</text>
+  <text x="402" y="342" fill="var(--md-default-fg-color--light)" font-size="12.5">of A &#8212; a length, in this slice</text>
+  <text x="402" y="364" fill="var(--md-default-fg-color)" font-size="12.5" font-style="italic">Add entanglement, get area.</text>
+</svg>
+<figcaption><strong>Figure 5 | The holographic dictionary translates a fact about qubits into a fact about area, with no term left over.</strong> In AdS/CFT a gravitational theory in the bulk disc is the same theory as a gravity-free quantum field theory on its boundary circle. Ryu and Takayanagi made the correspondence concrete: the entanglement entropy of a boundary region $A$ (magenta) equals the area of the minimal bulk surface $\gamma_A$ anchored to its endpoints (blue), divided by $4G_N\hbar$. The shaded entanglement wedge is the part of the interior that $A$'s qubits alone suffice to describe. Read left to right the formula is a way to compute entropy; read right to left it says that distance, area and therefore geometry are what correlation looks like from inside.</figcaption>
+</figure>
+```
+
+
+#### $ER = EPR$
+
+In 2013 Maldacena and Leonard Susskind proposed $ER = EPR$[^10], identifying two 1935 results of Einstein's:
+
+- **EPR**: Einstein-Podolsky-Rosen quantum entanglement between two particles ($|\psi\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)$).
+- **ER**: Einstein-Rosen bridges (spacetime wormholes) connecting two regions.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 358" style="width:100%;max-width:740px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Two spacetime regions joined by a narrowing wormhole throat shown above two entangled qubits joined by a dashed correlation link, with a companion panel where erasing the entanglement leaves both the bridge and the link broken.">
+  <defs>
+    <marker id="f5u" markerWidth="9" markerHeight="7" refX="1" refY="3.5" orient="auto-start-reverse"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color)"/></marker>
+    <marker id="f5d" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color)"/></marker>
+  </defs>
+  <text x="48" y="112" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">ER</text>
+  <text x="48" y="130" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5">geometry</text>
+  <text x="48" y="292" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">EPR</text>
+  <text x="48" y="310" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5">qubits</text>
+  <path d="M 186.8 89.1 Q 270 118 353.2 89.1 L 353.2 150.9 Q 270 122 186.8 150.9 Z" fill="var(--ink-indigo)" fill-opacity="0.10" stroke="none"/>
+  <path d="M 186.8 89.1 Q 270 118 353.2 89.1" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <path d="M 186.8 150.9 Q 270 122 353.2 150.9" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <circle cx="150" cy="120" r="48" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <text x="150" y="125" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+  <circle cx="390" cy="120" r="48" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <text x="390" y="125" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">B</text>
+  <text x="270" y="58" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">Einstein&#8211;Rosen bridge</text>
+  <text x="270" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">one smooth geometry, two mouths</text>
+  <line x1="270" y1="216" x2="270" y2="266" stroke="var(--md-default-fg-color)" stroke-width="2.2" marker-start="url(#f5u)" marker-end="url(#f5d)"/>
+  <text x="288" y="238" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">ER = EPR</text>
+  <text x="288" y="258" fill="var(--md-default-fg-color--light)" font-size="12">same object, two languages</text>
+  <circle cx="150" cy="300" r="15" fill="var(--ink-rust)" fill-opacity="0.20" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <text x="150" y="305" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">A</text>
+  <circle cx="390" cy="300" r="15" fill="var(--ink-rust)" fill-opacity="0.20" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <text x="390" y="305" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">B</text>
+  <line x1="167" y1="300" x2="373" y2="300" stroke="var(--ink-rust)" stroke-width="2.6" stroke-dasharray="8 5"/>
+  <text x="270" y="284" text-anchor="middle" fill="var(--ink-rust)" font-size="13.5" font-weight="600">S(A:B) maximal</text>
+  <text x="270" y="326" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">a shared state, not a channel:</text>
+  <text x="270" y="344" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">nothing travels along this line</text>
+  <line x1="474" y1="30" x2="474" y2="352" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" stroke-dasharray="6 6" opacity="0.5"/>
+  <text x="612" y="58" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Now erase the correlation</text>
+  <circle cx="556" cy="120" r="34" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <text x="556" y="125" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">A</text>
+  <circle cx="668" cy="120" r="34" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <text x="668" y="125" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">B</text>
+  <line x1="594" y1="120" x2="606" y2="120" stroke="var(--ink-rust)" stroke-width="2.4" stroke-dasharray="6 4"/>
+  <line x1="618" y1="120" x2="630" y2="120" stroke="var(--ink-rust)" stroke-width="2.4" stroke-dasharray="6 4"/>
+  <path d="M 606 110 L 624 130 M 624 110 L 606 130" stroke="var(--ink-rust)" stroke-width="2.6"/>
+  <text x="612" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">no bridge, no path between them</text>
+  <circle cx="556" cy="300" r="14" fill="var(--ink-rust)" fill-opacity="0.20" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <text x="556" y="305" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="600">A</text>
+  <circle cx="668" cy="300" r="14" fill="var(--ink-rust)" fill-opacity="0.20" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <text x="668" y="305" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="600">B</text>
+  <path d="M 606 290 L 624 310 M 624 290 L 606 310" stroke="var(--ink-rust)" stroke-width="2.6"/>
+  <text x="612" y="284" text-anchor="middle" fill="var(--ink-rust)" font-size="13.5" font-weight="600">S(A:B) &#8594; 0</text>
+  <text x="612" y="326" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">geometry and correlation</text>
+  <text x="612" y="344" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">vanish together</text>
+</svg>
+<figcaption><strong>Figure 6 | Entanglement and a wormhole are not two phenomena that resemble each other; they are one phenomenon described twice.</strong> Maldacena and Susskind's $ER = EPR$ identifies the Einstein-Rosen bridge joining two black holes (top) with the Einstein-Podolsky-Rosen entanglement of their microstates (bottom, magenta). The identification has teeth because it makes a prediction on both sides at once: reduce the mutual information $S(A:B)$ towards zero and the throat narrows and pinches off, so there is no longer any geometry between the regions (right). The dashed entanglement link is deliberately not an arrow &mdash; a shared state transmits nothing, which is exactly why a traversable wormhole does not follow.</figcaption>
+</figure>
+```
+
+
+```{mermaid}
+graph LR
+    subgraph Microscopic["Quantum Information Layer (EPR)"]
+        QubitA["Qubit State A"] <===>|Quantum Entanglement Correlations| QubitB["Qubit State B"]
+    end
+
+    subgraph Macroscopic["Emergent Geometry & Gravity (ER)"]
+        SpaceA["Spacetime Region A"] <===>|Smooth Wormhole / Geodesic Metric| SpaceB["Spacetime Region B"]
+    end
+
+    Microscopic <===>|ER = EPR Duality| Macroscopic
+
+    class QubitA indigo
+    class QubitB indigo
+    class SpaceA olive
+    class SpaceB olive
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+Maximise the entanglement between two black holes' microstates and a smooth wormhole opens between them; disentangle them and it pinches off. **Spacetime is not a container in which particles interact; it is woven out of entanglement**, or in Mark Van Raamsdonk's words, "spacetime geometry is the geometric manifestation of quantum entanglement."
+
+### The shift in one table
+
+| Concept | Classical Mechanics (18th-19th Century) | Quantum Information Physics (21st Century) |
+| :--- | :--- | :--- |
+| **Primary Currency** | Mechanical Energy $E = T + V$ | Quantum Information / Entanglement $S = -\text{Tr}(\rho \ln \rho)$ |
+| **Origin of Forces** | Pushes and pulls across distance | Local gauge invariance & phase synchronization |
+| **Interaction Medium** | Continuous scalar/vector potential | Quantum channels & gauge bosons |
+| **Black Hole Content** | Mass $M$ and singularity | Surface information storage ($S = A / 4 G \hbar$) |
+| **Spacetime Origin** | Fixed, immutable background stage | Emergent quantum entanglement network ($ER = EPR$) |
+| **Limiting Principle** | Conservation of Energy ($\Delta E = 0$) | Bekenstein Information Bound ($I \le \frac{2\pi R E}{\hbar c \ln 2}$) |
+
+```{=html}
+<script>
+// --- GAUGE VISUALIZER ---
+const gCanvas = document.getElementById('gauge-canvas');
+const gCtx = gCanvas.getContext('2d');
+
+function updateGaugeVisualizer() {
+  const theta1 = parseFloat(document.getElementById('slider-theta1').value);
+  const theta2 = parseFloat(document.getElementById('slider-theta2').value);
+  const gaugeEnabled = document.getElementById('gauge-enable').checked;
+
+  document.getElementById('theta1-val').innerText = `${theta1}°`;
+  document.getElementById('theta2-val').innerText = `${theta2}°`;
+
+  gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+
+  const p1 = { x: 180, y: 130 };
+  const p2 = { x: 520, y: 130 };
+  const r = 50;
+
+  // Background connecting line
+  gCtx.strokeStyle = '#334155';
+  gCtx.lineWidth = 2;
+  gCtx.beginPath();
+  gCtx.moveTo(p1.x, p1.y);
+  gCtx.lineTo(p2.x, p2.y);
+  gCtx.stroke();
+
+  // Draw Point 1 Phase Wheel
+  drawPhaseWheel(p1.x, p1.y, r, theta1, '#38bdf8', 'Point x₁: ψ(x₁)');
+
+  // Draw Point 2 Phase Wheel
+  drawPhaseWheel(p2.x, p2.y, r, theta2, '#f59e0b', 'Point x₂: ψ(x₂)');
+
+  // Draw Gauge Connection or Phase Error
+  const diff = (theta2 - theta1 + 360) % 360;
+  const midX = (p1.x + p2.x) / 2;
+  const midY = (p1.y + p2.y) / 2;
+
+  if (gaugeEnabled) {
+    // Gauge connection active
+    gCtx.strokeStyle = '#10b981';
+    gCtx.lineWidth = 4;
+    gCtx.beginPath();
+    gCtx.moveTo(p1.x + r + 10, p1.y);
+    gCtx.lineTo(p2.x - r - 10, p2.y);
+    gCtx.stroke();
+
+    // Transmitting photon / gauge wave
+    gCtx.fillStyle = '#10b981';
+    gCtx.font = '12px system-ui';
+    gCtx.fillText(`Gauge Field A_μ Compensates Δθ = ${diff.toFixed(0)}°`, midX - 110, midY - 20);
+    gCtx.fillText(`Covariant Derivative D_μ ψ = 0 (Invariant!)`, midX - 95, midY + 30);
+
+    document.getElementById('gauge-explanation').innerHTML = `
+      <strong style="color: #10b981;">✓ Gauge Invariance Preserved:</strong> 
+      The gauge field $A_\\mu$ transmits a phase compensation of $\\Delta \\theta = ${diff.toFixed(0)}^\\circ$ between $x_1$ and $x_2$. 
+      The covariant derivative $D_\\mu = \\partial_\\mu - i q A_\\mu$ eliminates the phase discrepancy, generating what macroscopic observers perceive as the <strong>electromagnetic force</strong>!
+    `;
+  } else {
+    // Gauge connection broken
+    gCtx.strokeStyle = '#ef4444';
+    gCtx.setLineDash([6, 6]);
+    gCtx.lineWidth = 3;
+    gCtx.beginPath();
+    gCtx.moveTo(p1.x + r + 10, p1.y);
+    gCtx.lineTo(p2.x - r - 10, p2.y);
+    gCtx.stroke();
+    gCtx.setLineDash([]);
+
+    gCtx.fillStyle = '#ef4444';
+    gCtx.font = '12px system-ui';
+    gCtx.fillText(`Phase Mismatch! ∂_μ ψ ≠ 0`, midX - 65, midY - 15);
+    gCtx.fillText(`Non-invariant Phase Error: ${diff.toFixed(0)}°`, midX - 80, midY + 30);
+
+    document.getElementById('gauge-explanation').innerHTML = `
+      <strong style="color: #ef4444;">✗ Symmetry Broken:</strong> 
+      Without a gauge connection field $A_\\mu$, the local phase variation across space causes the ordinary derivative $\\partial_\\mu \\psi$ to acquire an arbitrary term $i(\\partial_\\mu \\alpha)\\psi$. Physical laws would depend on arbitrary local clock choices.
+    `;
+  }
+}
+
+function drawPhaseWheel(cx, cy, r, angleDeg, color, label) {
+  const angleRad = (angleDeg * Math.PI) / 180;
+
+  // Outer circle
+  gCtx.strokeStyle = '#475569';
+  gCtx.lineWidth = 2;
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, r, 0, Math.PI * 2);
+  gCtx.stroke();
+
+  // Phase vector arrow
+  const vx = cx + r * 0.85 * Math.cos(angleRad);
+  const vy = cy - r * 0.85 * Math.sin(angleRad);
+
+  gCtx.strokeStyle = color;
+  gCtx.lineWidth = 3;
+  gCtx.beginPath();
+  gCtx.moveTo(cx, cy);
+  gCtx.lineTo(vx, vy);
+  gCtx.stroke();
+
+  // Vector tip dot
+  gCtx.fillStyle = color;
+  gCtx.beginPath();
+  gCtx.arc(vx, vy, 4, 0, Math.PI * 2);
+  gCtx.fill();
+
+  // Center dot
+  gCtx.fillStyle = '#fff';
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, 3, 0, Math.PI * 2);
+  gCtx.fill();
+
+  // Label
+  gCtx.fillStyle = '#cbd5e1';
+  gCtx.font = '13px system-ui';
+  gCtx.fillText(label, cx - 45, cy + r + 22);
+}
+
+// --- LANDAUER CALCULATOR ---
+function calculateLandauer() {
+  const bits = parseFloat(document.getElementById('landauer-bits').value) || 0;
+  const temp = parseFloat(document.getElementById('landauer-temp').value) || 0;
+
+  const kB = 1.380649e-23; // J/K
+  const ln2 = Math.LN2;
+  const q_e = 1.602176634e-19; // J per eV
+
+  const joules = bits * kB * temp * ln2;
+  const ev = joules / q_e;
+  const entropy = bits * kB * ln2;
+
+  document.getElementById('landauer-joules').innerText = joules.toExponential(3) + ' J';
+  
+  if (ev < 1e3) {
+    document.getElementById('landauer-ev').innerText = ev.toFixed(3) + ' eV';
+  } else if (ev < 1e6) {
+    document.getElementById('landauer-ev').innerText = (ev / 1e3).toFixed(3) + ' keV';
+  } else if (ev < 1e9) {
+    document.getElementById('landauer-ev').innerText = (ev / 1e6).toFixed(3) + ' MeV';
+  } else {
+    document.getElementById('landauer-ev').innerText = (ev / 1e9).toFixed(3) + ' GeV';
+  }
+
+  document.getElementById('landauer-entropy').innerText = entropy.toExponential(3) + ' J/K';
+}
+
+function setLandauerPreset(t) {
+  document.getElementById('landauer-temp').value = t;
+  calculateLandauer();
+}
+
+window.addEventListener('load', () => {
+  updateGaugeVisualizer();
+  calculateLandauer();
+});
+setTimeout(() => {
+  updateGaugeVisualizer();
+  calculateLandauer();
+}, 400);
+</script>
+```
+
+
+### Data and code availability
+
+- **Interactive Visualizers**: The phase synchronization visualizer and Landauer's bound calculator are implemented in pure vanilla JavaScript/HTML5 Canvas, executed entirely client-side.
+- **Source Code**: All markdown documents, equations, and interactive models are open source on GitHub: [`kamingfung/kamingfung.github.io`](https://github.com/kamingfung/kamingfung.github.io).
+- **Physical Constants**: Calculations utilize CODATA recommended values for Boltzmann constant $k_B$, elementary charge $e$, and speed of light $c$[^11].
+
+## Key takeaways
+
+- Energy is the conserved quantity of time-translation symmetry; it changes with the observer's velocity and is not conserved in an expanding universe, so it is a ledger entry, not a primitive.
+- Forces are the price of locality: giving each point its own phase $\alpha(x)$ breaks $\partial_\mu\psi$, and the field $A_\mu$ that repairs it is the photon, gluon or $W/Z$ boson.
+- The Coulomb potential $V(r) = e^2/4\pi\epsilon_0 r$ is the non-relativistic average over exchanged virtual photons.
+- Landauer's bound $\Delta E \ge k_B T \ln 2$, about $0.018\text{ eV}$ per bit at $300\text{ K}$, makes erasing information a thermodynamic act.
+- Black hole entropy scales with horizon area, Ryu-Takayanagi equates boundary entanglement entropy with bulk minimal area, and $ER = EPR$ identifies a wormhole with the entanglement of its mouths: geometry is what correlation looks like from inside.
+
+[^1]: Wheeler, J. A. Information, physics, quantum: The search for links. *Proc. 3rd Int. Symp. Foundations of Quantum Mechanics*, Tokyo, 354–368 (1989).
+[^2]: Noether, E. Invariante Variationsprobleme. *Nachr. D. Ges. Wiss. Göttingen, Math.-Phys. Kl.* **1918**, 235–257 (1918). https://doi.org/10.1007/BF02392404
+[^3]: Yang, C. N. & Mills, R. L. Conservation of isotopic spin and isotopic gauge invariance. *Phys. Rev.* **96**, 191–195 (1954). https://doi.org/10.1103/PhysRev.96.191
+[^4]: Feynman, R. P. Space-time approach to quantum electrodynamics. *Phys. Rev.* **76**, 769–789 (1949). https://doi.org/10.1103/PhysRev.76.769
+[^5]: Landauer, R. Irreversibility and heat generation in the computing process. *IBM J. Res. Dev.* **5**, 183–191 (1961). https://doi.org/10.1147/rd.53.0183
+[^6]: Bekenstein, J. D. Black holes and entropy. *Phys. Rev. D* **7**, 2333–2346 (1973). https://doi.org/10.1103/PhysRevD.7.2333
+[^7]: Hawking, S. W. Particle creation by black holes. *Commun. Math. Phys.* **43**, 199–220 (1975). https://doi.org/10.1007/BF02345020
+[^8]: Maldacena, J. The large-N limit of superconformal field theories and supergravity. *Adv. Theor. Math. Phys.* **2**, 231–252 (1998). https://doi.org/10.4310/ATMP.1998.v2.n2.a1
+[^9]: Ryu, S. & Takayanagi, T. Holographic derivation of entanglement entropy from AdS/CFT. *Phys. Rev. Lett.* **96**, 181602 (2006). https://doi.org/10.1103/PhysRevLett.96.181602
+[^10]: Maldacena, J. & Susskind, L. Cool horizons for entangled black holes. *Fortschr. Phys.* **61**, 781–811 (2013). https://doi.org/10.1002/prop.201300020
+[^11]: Tiesinga, E., Mohr, P. J., Newell, D. B. & Taylor, B. N. CODATA recommended values of the fundamental physical constants: 2018. *Rev. Mod. Phys.* **93**, 025010 (2021). https://doi.org/10.1103/RevModPhys.93.025010
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/how-wheels-cheat-friction.html"><span>Previous</span>How wheels cheat friction</a><a class="mf-up" href="/series/everyday-physics/index.html"><span>Series</span>Physics of Everyday Things</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

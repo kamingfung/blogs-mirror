@@ -1,0 +1,11 @@
+/_site/
+/.quarto/
+/.venv/
+/_palette-light.scss
+/_palette-dark.scss
+/_sidebar.yml
+.DS_Store
+__pycache__/
+
+**/*.quarto_ipynb
+/curriculum.css

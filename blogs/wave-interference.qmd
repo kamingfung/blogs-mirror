@@ -1,0 +1,107 @@
+---
+title: Interference
+description: Superposition, constructive and destructive interference, and the phase relationship that decides which you get.
+date: 2026-08-27
+categories:
+- physics
+- mathematics
+- signal processing
+- acoustics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/waves/index.html">Waves, Sound and Imaging</a><span class="sep">·</span>Part 2 · Superposition</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School physics and trigonometry.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+When two waves meet they add, point by point. That is the whole rule, and it produces everything from noise cancellation to the double slit.
+:::
+
+## The family of wave phenomena
+
+```{mermaid}
+flowchart TD
+    Phenomena["Fundamental Wave Phenomena"]
+    
+    Phenomena --> Super["1. Superposition & Interference<br/>Linear addition of overlapping waveforms"]
+    Phenomena --> Refl["2. Reflection & Boundary Conditions<br/>Phase reversal on fixed ends (180°)"]
+    Phenomena --> Stand["3. Standing Waves & Resonance<br/>Trapped harmonic patterns with Nodes & Antinodes"]
+    Phenomena --> Diff["4. Diffraction & Refraction<br/>Bending around obstacles & medium boundaries"]
+
+    Super --> Constr["Constructive: A_tot = A1 + A2 (Louder / Brighter)"]
+    Super --> Destr["Destructive: A_tot = |A1 - A2| (Cancellation / Silence)"]
+    Stand --> Harmonics["Harmonic Series: fn = n (v / 2L)<br/>Foundation of all Musical Instruments!"]
+
+    class Phenomena indigo
+    class Super plum
+    class Refl sienna
+    class Stand olive
+    class Diff ochre
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+## Superposition and interference
+
+When two waves travel through the exact same region of space simultaneously, their net displacement is simply the algebraic sum of the individual displacements:
+
+$$y_{\text{total}}(x, t) = y_1(x, t) + y_2(x, t)$$
+
+- **Constructive Interference**: When crest meets crest ($\Delta \phi = 0, 2\pi, 4\pi$), the amplitudes double ($A_{\text{net}} = 2A$).
+- **Destructive Interference**: When crest meets trough ($\Delta \phi = \pi, 3\pi$), the waves cancel out completely ($A_{\text{net}} = 0$). This is the physical basis of **active noise-canceling headphones**.
+
+### The general case
+
+Constructive and destructive interference are the two extremes. For any phase difference $\Delta\phi$ between two waves of equal amplitude $A$, the sum-to-product identity gives
+
+$$A\sin\theta + A\sin(\theta + \Delta\phi) = 2A\cos\!\left(\frac{\Delta\phi}{2}\right) \sin\!\left(\theta + \frac{\Delta\phi}{2}\right)$$
+
+The result is a single wave of the same frequency with amplitude $2A\left|\cos(\Delta\phi/2)\right|$. At $\Delta\phi = 0$ this is $2A$; at $\Delta\phi = \pi$ it is zero; at $\Delta\phi = \pi/2$, a quarter cycle apart, it is $\sqrt{2}\,A$, about $1.4A$. Interference is not a switch between loud and silent but a continuous dial, and the dial is the phase difference.
+
+### Path difference
+
+In practice two waves usually start in phase from two sources and arrive with a phase difference because they have travelled different distances. A path difference $\Delta r$ is worth a phase difference of
+
+$$\Delta\phi = 2\pi \frac{\Delta r}{\lambda}$$
+
+so the arrivals reinforce when $\Delta r$ is a whole number of wavelengths and cancel when it is a half-integer number:
+
+$$\Delta r = m\lambda \;\text{(constructive)}, \qquad \Delta r = \left(m + \tfrac{1}{2}\right)\lambda \;\text{(destructive)}, \qquad m = 0, 1, 2, \dots$$
+
+Two loudspeakers playing the same $686\text{ Hz}$ tone in air ($\lambda = 343/686 = 0.50\text{ m}$) produce a dead spot wherever a listener stands $0.25\text{ m}$ further from one speaker than from the other, and a loud spot wherever the distances match or differ by $0.50\text{ m}$. Walk across the room and the tone pulses in and out. Young's double-slit experiment of 1801 is the same geometry with light: two slits a distance $d$ apart send waves to a screen, and bright fringes appear at angles where $d\sin\theta = m\lambda$. The fringes exist only because light adds as a wave, which is why the experiment settled the argument for the wave theory of light.
+
+### Interference in time
+
+The same algebra applied to two waves of slightly different frequency, rather than different phase, produces **beats**. Their sum has a carrier at the average frequency inside an envelope that rises and falls at $|f_1 - f_2|$: two tuning forks at $440$ and $442\text{ Hz}$ swell and fade twice a second. Piano tuners listen for the beat to slow to zero. That is interference measured along the time axis instead of the space axis, and it is where the mathematics of music module begins.
+
+## Reflection, diffraction and refraction
+
+The other three items on the map above are superposition under a constraint.
+
+**Reflection.** When a wave on a string reaches a clamped end, the end cannot move, so the total displacement there must be zero at every instant. The only way to arrange that is for a reflected wave to leave the clamp exactly cancelling the incident wave at that point: the reflection is inverted, a phase change of $180^\circ$. At a free end there is no such constraint, the end overshoots, and the reflection comes back upright. The incident and reflected waves then overlap along the whole string, and their superposition is the standing wave of the next module.
+
+**Diffraction.** Waves bend around obstacles and spread out from openings by an amount that depends on the ratio of wavelength to obstacle size. Sound at speech frequencies has wavelengths of a metre or so, comparable to a doorway, so you hear a conversation round a corner. Visible light has $\lambda \approx 5 \times 10^{-7}\text{ m}$, far smaller than any everyday object, so shadows have sharp edges and light appears to travel in straight lines. Both are the same phenomenon; only the ratio differs.
+
+**Refraction.** When a wave crosses into a medium where its speed is different, the frequency cannot change, because the boundary is driven at the incoming frequency, so the wavelength must. A wavefront arriving at an angle has one end in the new medium before the other, that end slows or speeds up first, and the front pivots. This is why a straw looks bent in a glass of water and why lenses focus. The rule for the angles, Snell's law, is nothing more than the requirement that the wavefronts stay joined at the boundary.
+
+All four behaviours, interference, reflection, diffraction and refraction, are consequences of a single fact: displacements add. There is no separate physics for each.
+
+## Key takeaways
+
+- Where two waves overlap, the displacement of the medium is the algebraic sum of the two individual displacements; nothing more is needed.
+- Crest on crest (phase difference $0, 2\pi, 4\pi, \dots$) is constructive interference and doubles the amplitude.
+- Crest on trough (phase difference $\pi, 3\pi, \dots$) is destructive interference and cancels the wave; noise-cancelling headphones synthesise exactly this anti-phase signal.
+- A path difference of $m\lambda$ reinforces and one of $(m + \tfrac{1}{2})\lambda$ cancels; that one rule covers two loudspeakers in a room and Young's double slit.
+- Reflection, standing waves, diffraction and refraction are the same superposition rule applied under different boundary conditions.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/the-wave-equation.html"><span>Previous</span>The wave equation</a><a class="mf-up" href="/series/waves/index.html"><span>Series</span>Waves, Sound and Imaging</a><a class="mf-next" href="/blogs/standing-waves.html"><span>Next</span>Standing waves and resonance</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

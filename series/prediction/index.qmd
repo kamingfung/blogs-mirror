@@ -1,0 +1,93 @@
+---
+title: "Weather, Climate and Prediction"
+description: "What can and cannot be predicted about the atmosphere, and the statistics you need to tell the difference."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to advanced</dd></div>
+<div><dt>Parts</dt><dd>11</dd></div>
+<div><dt>Modules</dt><dd>4 of 27 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Comfort with averages and histograms. Python for the notebooks.</dd></div>
+</dl>
+
+## Part 1 · Weather or climate?
+
+<ul class="syl">
+<li class="w"><a href="/blogs/climate-vs-weather/climate-vs-weather.html">Climate vs weather</a><span class="m">Introductory</span></li>
+<li class="g">What a climatology is<span class="m">Introductory · not written</span></li>
+<li class="g">Anomalies<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 2 · Limits of prediction
+
+<ul class="syl">
+<li class="w"><a href="/blogs/rainfall-predictability/why-cant-we-forecast-rain-six-months-out.html">Why can&#x27;t we forecast rain six months out?</a><span class="m">Introductory</span></li>
+<li class="g">Chaos in a toy model<span class="m">Intermediate · not written</span></li>
+<li class="g">Ensemble forecasts<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 3 · Simple models that work
+
+<ul class="syl">
+<li class="w"><a href="/blogs/markov-weather/why-markov-chains-work-for-weather.html">Markov chains for weather</a><span class="m">Introductory</span></li>
+<li class="g">Persistence and climatology baselines<span class="m">Introductory · not written</span></li>
+<li class="g">Skill scores<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 4 · Trend and season
+
+<ul class="syl">
+<li class="w"><a href="/blogs/detrending/detrend_hk_temperature.html">Decomposing Hong Kong temperature</a><span class="m">Intermediate</span></li>
+<li class="g">Moving averages and their pitfalls<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 5 · Modes of variability
+
+<ul class="syl">
+<li class="g">ENSO<span class="m">Introductory · not written</span></li>
+<li class="g">Monsoons<span class="m">Introductory · not written</span></li>
+<li class="g">The NAO and blocking<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Seasonal forecasting
+
+<ul class="syl">
+<li class="g">Why seasonal forecasting is possible at all<span class="m">Intermediate · not written</span></li>
+<li class="g">Teleconnections<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 7 · Extremes
+
+<ul class="syl">
+<li class="g">Return periods<span class="m">Intermediate · not written</span></li>
+<li class="g">Extreme value theory<span class="m">Advanced · not written</span></li>
+<li class="g">Heatwaves in a warming climate<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 8 · Detecting climate change
+
+<ul class="syl">
+<li class="g">Signal and noise in temperature records<span class="m">Intermediate · not written</span></li>
+<li class="g">Attribution<span class="m">Advanced · not written</span></li>
+</ul>
+
+## Part 9 · How weather models work
+
+<ul class="syl">
+<li class="g">Numerical weather prediction<span class="m">Intermediate · not written</span></li>
+<li class="g">Data assimilation<span class="m">Advanced · not written</span></li>
+</ul>
+
+## Part 10 · From global to local
+
+<ul class="syl">
+<li class="g">Downscaling<span class="m">Intermediate · not written</span></li>
+<li class="g">Bias correction<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 11 · Climate scenarios
+
+<ul class="syl">
+<li class="g">CMIP and the SSPs<span class="m">Introductory · not written</span></li>
+<li class="g">Reading a climate projection<span class="m">Intermediate · not written</span></li>
+</ul>

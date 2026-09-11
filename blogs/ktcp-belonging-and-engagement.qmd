@@ -1,0 +1,105 @@
+---
+title: Belonging and engagement
+description: A well-designed course still fails a student who does not think they belong. Four factors behind belonging, and the lever each gives an instructor.
+date: 2026-08-28
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/teaching-leading/index.html">Teaching and Leading</a><span class="sep">·</span>Part 3 · Who is in the room</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/ktcp-backward-design.html">Backward design</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+A course can be perfectly backward-designed and still fail a student who doesn't believe they belong in the room. Rainey et al. (2018), interviewing 201 STEM seniors and leavers, found that **sense of belonging** tracks four concrete and teachable factors — each with an instructor lever you can actually pull, rather than a matter of student disposition.
+:::
+
+The second and fourth KTCP workshops sit next to each other for a reason: you can design the most beautifully backward-designed course in the world, and it will still fail a student who doesn't believe it's meant for them, or who never gets pulled out of passive listening. This post covers both — belonging, and the active-learning research on what actually gets students to participate.
+
+## Belonging isn't a vibe, it's four measurable things
+
+The workshop leaned on a study by Rainey et al. (2018), which interviewed 201 STEM seniors and "leavers" and found that a sense of belonging tracks four concrete, teachable factors:
+
+| Factor | The question it answers | Instructor lever |
+|---|---|---|
+| **Interpersonal relationships** (strongest predictor) | "Do I have real connections in this community?" | Learn names, small-group work, office hours that feel welcoming |
+| **Competence** | "Can I actually do this work?" | Normalize struggle, scaffold difficulty, give process-focused feedback |
+| **Personal interest** | "Do I want to do this?" | Connect content to real-world questions students already care about |
+| **Science identity** | "Is this *my* community — do people like me do this?" | Diverse examples, role models, avoid tokenizing students |
+
+It's also unevenly distributed — white men reported the highest belonging, women of color the lowest, and belonging tracked how well-represented your demographic was within a given sub-field (women fared noticeably better in biology, close to gender parity, than in physics).
+
+Asai (2020) sharpens the point with a number that stopped me: PEER students (Persons Excluded due to Ethnicity or Race) enter STEM at high and *rising* rates, but still leave at the same high rate as they did thirty years ago. That single fact rules out the usual "pipeline" or "not enough interest" explanations — the interest is there, and growing. What isn't fixed is the culture they land in. Asai's argument is pointed: stop trying to "fix the student," and start questioning institutional defaults — grading on a curve, weed-out courses, prerequisite gatekeeping — that quietly filter people out regardless of ability.
+
+That reframing matters because it turns "diversity" from a vague aspiration into an actual design problem, with the same kind of levers as the rest of course design: who gets called on, how struggle is normalized, whether examples and role models look like the whole class rather than a slice of it.
+
+### The exercise: mapping your own identity pie
+
+The workshop's central exercise had us draw a literal pie chart of the identities that make us up, then think about which slices are sources of privilege in our field and which are sources of friction. Mine came out roughly like this:
+
+```{mermaid}
+pie showData
+    title My Identity Pie
+    "Interdisciplinary background (ME + math + atmospheric science)" : 35
+    "Hong Konger" : 25
+    "English as a second language" : 20
+    "Early-career researcher" : 20
+```
+
+The interdisciplinary slice, it turns out, is a real asset for teaching — students in an environmental or Earth-systems course come from wildly different backgrounds, and having sat in several of those disciplines myself made it easier to meet them wherever they started. The ESL slice pushed me to lean harder on visuals and animated illustrations for anything conceptually dense, rather than trusting my phrasing to carry the idea on the first pass. For the class-facing strategy, I picked **competence** — the idea that struggle should be normalized rather than treated as a sign a student doesn't belong — and built a concrete plan around it: collect the mistakes students actually make on assignments, have them explain their own reasoning out loud, and coach them toward finding their own blind spots rather than just handing them the correction.
+
+## Active learning works — but only if it's structured
+
+The fourth workshop makes the case, with numbers, for getting students out of passive listening.
+
+::: {.callout-tip}
+## The headline number
+
+A meta-analysis across **642 STEM studies** found active learning drops failure rates from roughly **34% → 22%** and raises test scores by about **half a standard deviation**, consistently across course levels and disciplines. That's about as strong as evidence gets in education research.
+:::
+
+The more interesting finding, though, is a paradox from Deslauriers et al. (2019): in a controlled comparison, students in active-learning sections *learned more* on objective tests but *felt like they'd learned less* than students in a traditional lecture. Passive listening feels smoother — you're not confused, because you're not doing the cognitively harder work of retrieval and application. That fluency is misleading, and it means an instructor introducing active learning needs to say so out loud, early, or risk students reading the discomfort as evidence the class isn't working.
+
+Tanner's (2013) contribution is the caveat that keeps this connected to the belonging discussion: active learning by itself isn't automatically equitable. Open discussion, without structure, tends to amplify the same confident voices that were already comfortable speaking up. The fix is deliberate structure so "active" doesn't quietly become "active for the students who were already engaged":
+
+- [ ] Set explicit participation norms at the start of the term
+- [ ] Vary *how* students are called on (not just volunteers)
+- [ ] Track who has and hasn't spoken across sessions
+- [ ] Use think-pair-share (or similar) before opening the floor, so everyone has an answer ready
+- [ ] Mix individual, pair, and group work rather than defaulting to whole-class discussion
+- [ ] Learn names — it's the cheapest, highest-leverage belonging move available
+
+Here's the technique catalog from the workshop, with the practical trade-off (prep time vs. class size) that decides which one fits:
+
+| Technique | What happens | Prep effort | Best class size |
+|---|---|---|---|
+| **Peer Instruction** | Poll → discuss with neighbors → re-poll | Low | Large lecture |
+| **Think-Pair-Share** | Solo thought → pair discussion → share out | Low | Any |
+| **Empty Outlines** | Blanks for key terms/equations, filled in live | Low–moderate | Any |
+| **Real-World Framing** | Open/close topics with real-world tie-ins | Low | Any |
+| **Debate** | Assigned sides, prepared arguments, a "decider" judges | Moderate | Small–medium |
+| **Pro/Con Grid** | Research both sides of a live disciplinary debate | High | Small–medium |
+| **Collaborative Problem Solving** | Coached group problem-solving, whole-class ↔ pairs | Moderate | Any |
+| **Gallery Walk** | Small groups rotate through stations, then debrief | Moderate | Medium (10–20) |
+| **Jigsaw** | Expert groups study one piece deeply, then teach it to a mixed group | High | Medium–large |
+
+::: {.callout-note}
+## What I picked
+
+For my own course, I chose three techniques: **empty outlines** for equation-heavy material (so students self-check meaning rather than passively copying), **real-world framing** at the open/close of each topic, and a **pro/con grid** where students research and argue both sides of a live scientific debate — nuclear energy, or solar geoengineering — before comparing notes with a neighbor.
+:::
+
+## Key takeaways
+
+- Belonging tracks four teachable factors (Rainey et al., 2018): interpersonal relationships, competence, personal interest and science identity, and relationships are the strongest predictor.
+- PEER students enter STEM at high and rising rates yet leave at the same rate as thirty years ago (Asai, 2020), which rules out "not enough interest" and points at institutional defaults such as curves and weed-out courses.
+- Active learning cuts failure rates from about 34% to 22% across 642 STEM studies, but students feel they learned less (Deslauriers et al., 2019), so say out loud that the discomfort is the learning.
+- Unstructured discussion amplifies the voices already comfortable speaking; structure (think-pair-share, varied cold-calling, tracking who has spoken) is what makes active learning equitable.
+- Learning names is the cheapest, highest-leverage belonging move available.
+
+**Next in this series:** once students are in the room and engaged, the next question is what they walked in already knowing — and how you build on it without either boring the ones who know too much or losing the ones who don't know enough.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/ktcp-backward-design.html"><span>Previous</span>Backward design</a><a class="mf-up" href="/series/teaching-leading/index.html"><span>Series</span>Teaching and Leading</a><a class="mf-next" href="/blogs/ktcp-prior-knowledge-and-feedback.html"><span>Next</span>Meeting students where they are</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

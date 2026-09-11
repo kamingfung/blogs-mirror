@@ -1,0 +1,15 @@
+<!--
+  Pandoc converts $…$ in prose to \(…\) before MathJax ever sees it, so MathJax
+  only needs the backslash delimiters — except inside a ```{=html} block, which
+  passes through untouched and keeps its literal dollar signs. The ported
+  widgets label their controls that way ("Temperature ($T$ in Kelvin)"), so
+  teach MathJax the dollar form too. Set before Quarto loads MathJax.
+-->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)'], ['$', '$']],
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],
+    },
+  };
+</script>

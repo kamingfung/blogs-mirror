@@ -1,0 +1,46 @@
+---
+title: Cell division, then cell expansion
+description: A fruit's final cell count is fixed in its first few weeks, before it has grown at all. Everything after that is the same cells inflating with water, which is why irrigation timing matters more late than early.
+date: 2026-09-06
+categories:
+- plant biology
+- fruit development
+- horticulture
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a><span class="sep">·</span>Part 2 · From flower to fruit</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/pollination-and-fruit-set.html">Pollination and fruit set</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Fleshy fruit growth runs in two distinct phases that use completely different mechanics. In the first, short phase after fertilisation, cells divide rapidly and set the fruit's total cell count, which caps how large it can ever become. In the second, much longer phase, no new cells form; the existing ones inflate with water under turgor pressure, and this phase supplies most of the fruit's final volume.
+:::
+
+## Phase one: setting the ceiling
+
+For the first one to three weeks after fertilisation, the young fruit's cells divide rapidly, roughly doubling the cell count with each division cycle. This phase is short relative to the whole time the fruit spends on the bush, but it is decisive: the number of cells present when division stops is close to the number of cells the ripe fruit will ever have. A stress during this narrow window, cold, poor pollination, competition from a heavy overall crop, can permanently cap a fruit's cell count and therefore its maximum possible size, in a way that cannot be corrected by better conditions later.
+
+## Phase two: inflating what is already there
+
+Once division stops, growth switches mechanism entirely. Each cell's vacuole, a large water-filled compartment taking up most of the cell's interior, takes on water by osmosis, and the cell wall loosens under the control of expansin proteins just enough to let the cell balloon rather than burst. This is turgor-driven cell expansion, and it does not add cells, it enlarges the ones already present, sometimes by ten times their original volume. Almost all of a fruit's final size comes from this phase, and because it runs on water uptake rather than new cell construction, it is the phase most sensitive to irrigation and to how much sugar and water the rest of the bush's carbon budget can spare for this particular sink.
+
+| Phase | Duration | Mechanism | What limits it |
+| :--- | :--- | :--- | :--- |
+| Cell division | 1–3 weeks after fertilisation | Cells split, roughly doubling in number each cycle | Stress now caps final cell count permanently |
+| Cell expansion | Remainder of fruit development | Existing cells inflate with water under turgor | Water and carbon supply from the rest of the plant |
+
+Some fruits, most notably stone fruits like peach and grape, insert a third stage between these two: a pause while the seed coat or pit hardens, producing the double-sigmoid growth curve those crops are known for. Blueberry has no comparably hard pit to build, and its fruit-weight curve runs closer to a single, uninterrupted rise from division straight into expansion, a shape the next module measures directly.
+
+## Key takeaways
+
+- Fruit growth is two mechanically distinct phases: cell division first, which fixes the eventual cell count, then cell expansion, which inflates those cells with water.
+- Cell division lasts only one to three weeks; a stress inside that window permanently limits how large the fruit can become, regardless of later conditions.
+- Cell expansion supplies most of the fruit's final volume and is the phase most sensitive to water and carbon supply.
+- Fruits with a hard pit or seed coat insert a pause between the two phases, producing a double-sigmoid curve; blueberry lacks that pause, which shapes the growth curve the next module derives.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/pollination-and-fruit-set.html"><span>Previous</span>Pollination and fruit set</a><a class="mf-up" href="/series/plants/index.html"><span>Series</span>Plant biology, one blueberry at a time</a><a class="mf-next" href="/blogs/the-growth-curve-of-a-berry.html"><span>Next</span>The growth curve of a berry</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

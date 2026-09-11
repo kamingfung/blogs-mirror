@@ -1,0 +1,117 @@
+# How clouds form — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. Anything without one is a gap: listed on
+# What's next, never in the nav. Module ids are permanent.
+title: How clouds form
+slug: cloud-formation
+order: 1
+about: 'Water vapour to raindrop: what has to happen, in order, and why each step needs the one before it.'
+assumes: School physics. A little calculus appears in the droplet parts and is always optional.
+parts:
+- title: Water and rising air
+  modules:
+  - id: cloud-formation/how-much-water-can-air-hold
+    title: How much water can air hold?
+    level: introductory
+    path: blogs/how-much-water-air-holds.md
+  - id: cloud-formation/why-does-rising-air-cool
+    title: Why does rising air cool?
+    level: introductory
+    path: blogs/why-rising-air-cools.md
+  - id: cloud-formation/what-lifts-the-air
+    title: What lifts the air
+    level: introductory
+    path: blogs/what-lifts-the-air.md
+    requires:
+    - cloud-formation/why-does-rising-air-cool
+  - id: cloud-formation/fog-cloud-without-lifting
+    title: 'Fog: cloud without lifting'
+    level: introductory
+    requires:
+    - cloud-formation/how-much-water-can-air-hold
+- title: Stability
+  modules:
+  - id: cloud-formation/lapse-rates-and-stability
+    title: Lapse rates and stability
+    level: intermediate
+    requires:
+    - cloud-formation/why-does-rising-air-cool
+  - id: cloud-formation/inversions-and-trapped-pollution
+    title: Inversions and trapped pollution
+    level: intermediate
+    requires:
+    - cloud-formation/lapse-rates-and-stability
+  - id: cloud-formation/lift-a-parcel-yourself
+    title: Lift a parcel yourself
+    level: introductory
+    path: blogs/parcel-lifter.md
+    requires:
+    - cloud-formation/why-does-rising-air-cool
+- title: Droplets
+  modules:
+  - id: cloud-formation/why-are-drops-round
+    title: Why are drops round?
+    level: intermediate
+    path: blogs/drop-shape-in-orbit.md
+  - id: cloud-formation/how-a-drop-deforms-in-air
+    title: How a drop deforms in air
+    level: intermediate
+    path: blogs/drop-shape-in-air.md
+    requires:
+    - cloud-formation/why-are-drops-round
+  - id: cloud-formation/the-kelvin-effect
+    title: 'The Kelvin effect: why small drops evaporate'
+    level: intermediate
+    requires:
+    - cloud-formation/why-are-drops-round
+- title: What clouds form on
+  modules:
+  - id: cloud-formation/what-is-an-aerosol
+    title: What is an aerosol?
+    level: introductory
+    path: blogs/what-is-an-aerosol.md
+  - id: cloud-formation/why-clean-air-makes-no-cloud
+    title: Why clean air doesn't make clouds
+    level: intermediate
+    path: blogs/why-clean-air-makes-no-cloud.md
+    requires:
+    - cloud-formation/what-is-an-aerosol
+  - id: cloud-formation/kohler-theory
+    title: Köhler theory
+    level: intermediate
+    path: blogs/kohler-theory.md
+    requires:
+    - cloud-formation/how-much-water-can-air-hold
+    - cloud-formation/why-clean-air-makes-no-cloud
+    - cloud-formation/the-kelvin-effect
+  - id: cloud-formation/where-ccn-come-from
+    title: Where CCN come from
+    level: introductory
+    path: blogs/where-ccn-come-from.md
+- title: From droplet to rain
+  modules:
+  - id: cloud-formation/why-cloud-droplets-dont-fall
+    title: Why cloud droplets don't fall
+    level: introductory
+    requires:
+    - cloud-formation/how-a-drop-deforms-in-air
+  - id: cloud-formation/how-drops-merge
+    title: How drops merge
+    level: intermediate
+    path: blogs/drop-coalescence.md
+    requires:
+    - cloud-formation/how-a-drop-deforms-in-air
+  - id: cloud-formation/warm-rain
+    title: Warm rain
+    level: intermediate
+    requires:
+    - cloud-formation/why-cloud-droplets-dont-fall
+    - cloud-formation/how-drops-merge
+- title: Naming what you see
+  modules:
+  - id: cloud-formation/cloud-types
+    title: Cloud types
+    level: introductory
+    path: blogs/cloud-types.md
+  - id: cloud-formation/contrails
+    title: Contrails
+    level: introductory

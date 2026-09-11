@@ -1,0 +1,120 @@
+---
+title: "Air, Land and Climate"
+description: "Air pollution, the nitrogen cycle, farming, and how land and atmosphere feed back on each other in Earth system models."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to advanced</dd></div>
+<div><dt>Parts</dt><dd>14</dd></div>
+<div><dt>Modules</dt><dd>6 of 39 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>School chemistry. Parts 1 and 5 of Clouds and Aerosols help but are not required.</dd></div>
+</dl>
+
+## Part 1 · What is in the air
+
+<ul class="syl">
+<li class="g">What PM2.5 is, and why 2.5<span class="m">Introductory · not written</span></li>
+<li class="g">Ozone: good up high, bad nearby<span class="m">Introductory · not written</span></li>
+<li class="g">Units, standards, and what &quot;unhealthy&quot; means<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 2 · Where aerosols come from
+
+<ul class="syl">
+<li class="g">Primary and secondary aerosols<span class="m">Introductory · not written</span></li>
+<li class="w"><a href="/blogs/organic-aerosols-health-climate.html">Organic aerosols: health versus climate</a><span class="m">Advanced</span></li>
+<li class="g">Black carbon<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 3 · Ozone chemistry
+
+<ul class="syl">
+<li class="g">NOx, VOCs and sunlight<span class="m">Intermediate · not written</span></li>
+<li class="g">Why ozone peaks in the afternoon<span class="m">Intermediate · not written</span></li>
+<li class="g">Ozone titration in cities<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 4 · The nitrogen cascade
+
+<ul class="syl">
+<li class="g">Fixed nitrogen<span class="m">Introductory · not written</span></li>
+<li class="g">Where ammonia comes from<span class="m">Introductory · not written</span></li>
+<li class="g">Deposition: how nitrogen leaves the air<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 5 · Ammonia, forests and ozone
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ammonia-deposition-ozone.html">Ammonia deposition and ozone feedbacks</a><span class="m">Advanced</span></li>
+<li class="g">Stomata and dry deposition<span class="m">Intermediate · not written</span></li>
+<li class="g">Leaf area index<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Fertiliser and the atmosphere
+
+<ul class="syl">
+<li class="w"><a href="/blogs/cesm2-fertilizer-climate-feedback.html">Fertiliser nitrogen and aerosol cooling in CESM2</a><span class="m">Advanced</span></li>
+<li class="g">N2O, the forgotten greenhouse gas<span class="m">Intermediate · not written</span></li>
+<li class="g">Emission factors<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 7 · Farming that cleans the air
+
+<ul class="syl">
+<li class="w"><a href="/blogs/intercropping-air-quality.html">Intercropping</a><span class="m">Introductory</span></li>
+<li class="g">Precision fertilisation<span class="m">Intermediate · not written</span></li>
+<li class="g">Manure and livestock<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 8 · Removing carbon on land
+
+<ul class="syl">
+<li class="w"><a href="/blogs/enhanced-rock-weathering-nitrogen.html">Enhanced rock weathering</a><span class="m">Advanced</span></li>
+<li class="g">Biochar<span class="m">Intermediate · not written</span></li>
+<li class="g">Afforestation trade-offs<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 9 · Climate and food
+
+<ul class="syl">
+<li class="w"><a href="/blogs/agriculture-climate-challenges.html">Agriculture under climate extremes</a><span class="m">Introductory</span></li>
+<li class="g">How ozone damages crops<span class="m">Intermediate · not written</span></li>
+<li class="g">Heat stress on crops<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 10 · Earth system models
+
+<ul class="syl">
+<li class="g">What an Earth system model is<span class="m">Introductory · not written</span></li>
+<li class="g">The land model: CLM<span class="m">Intermediate · not written</span></li>
+<li class="g">Coupling land and atmosphere<span class="m">Advanced · not written</span></li>
+</ul>
+
+## Part 11 · Air pollution and health
+
+<ul class="syl">
+<li class="g">Exposure–response curves<span class="m">Intermediate · not written</span></li>
+<li class="g">Counting deaths from air pollution<span class="m">Intermediate · not written</span></li>
+<li class="g">Who is exposed<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 12 · Measuring air quality
+
+<ul class="syl">
+<li class="g">Monitors, sensors and satellites<span class="m">Introductory · not written</span></li>
+<li class="g">Reanalysis and chemical transport models<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 13 · Smoke and fire
+
+<ul class="syl">
+<li class="g">Wildfire smoke<span class="m">Introductory · not written</span></li>
+<li class="g">Crop residue burning<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 14 · Policy
+
+<ul class="syl">
+<li class="g">What the Clean Air Act did<span class="m">Introductory · not written</span></li>
+<li class="g">Co-benefits of climate policy<span class="m">Intermediate · not written</span></li>
+</ul>

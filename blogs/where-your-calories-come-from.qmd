@@ -1,0 +1,82 @@
+---
+title: Where your calories come from
+description: What the evidence supports about splitting energy between carbohydrate, fat and protein, and how little the split matters next to the total.
+date: 2026-09-05
+categories:
+- nutrition
+- metabolism
+- evidence
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 1 · Looking after the machine you think with</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/reading-a-nutrition-study.html">Reading a nutrition study without being fooled</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+The macronutrient split matters far less than two things around it: total energy, and a protein floor. Controlled trials find no meaningful weight difference between low-fat and low-carbohydrate diets once calories and protein are matched. The defensible ranges are wide, roughly 45 to 65 percent of energy from carbohydrate, 20 to 35 from fat, and 10 to 35 from protein, and where you sit inside them is a question of training load and preference, not physiology.
+:::
+
+*Personal record with sources attached. Not medical, dietary or fitness advice.*
+
+I spent years assuming that the ratio was the science and the total was the detail. The literature says the opposite. This module is what I found when I read it as I would read a forecasting paper: what was measured, under what control, and how large the effect was.
+
+## Energy first, and a calorie is almost a calorie
+
+Food energy is counted with the Atwater factors: about 4 kcal per gram of carbohydrate, 9 per gram of fat, 4 per gram of protein.[^1] These are averages over digestibility and they are good to a few percent, which is far better than anyone's tracking.
+
+The one place the three differ metabolically is the cost of processing them. Digesting and storing protein costs 20 to 30 percent of its own energy; carbohydrate 5 to 10 percent; fat 0 to 3 percent.[^2] So 100 kcal of protein leaves you with roughly 75, and 100 kcal of fat with roughly 98. Over a day on a mixed diet this thermic effect is about 10 percent of intake. It is real, it favours protein, and it is small next to the error in estimating intake in the first place.
+
+Everything else about "metabolic advantage" has to be tested rather than assumed, and it has been.
+
+## Carbohydrate against fat: the trials that settled it
+
+Two studies carry most of the weight.
+
+The first locked 19 adults in a metabolic ward and fed them two diets in sequence, each cutting 30 percent of calories, one by removing carbohydrate and one by removing fat, with protein held constant.[^3] Fat restriction produced slightly more body-fat loss over six days, about 89 g per day against 53. The difference was measurable because the ward could measure it, and it was small. The authors' model predicted the gap would shrink to nothing over longer periods. Nobody outside a ward eats with that precision anyway.
+
+The second let 609 adults eat freely on a healthy low-fat or healthy low-carbohydrate diet for twelve months, and tested whether genotype or insulin secretion predicted who did better on which.[^4] Mean weight loss was 5.3 kg on low-fat and 6.0 kg on low-carbohydrate, a difference that was not significant. Neither genotype pattern nor insulin secretion predicted anything. Within each arm, individuals ranged from losing 30 kg to gaining 10. The variance between people swamped the variance between diets.
+
+Read together: when protein is matched, moving energy between carbohydrate and fat changes body composition by an amount you cannot detect without a metabolic ward, and personalising the choice by biomarker does not yet work.
+
+The trial that did find a large effect was not about macronutrients. Twenty adults ate ultra-processed or unprocessed diets, matched for presented calories, sugar, fat, fibre and macronutrients, for two weeks each, eating as much as they wanted.[^5] On the ultra-processed diet they ate about 500 kcal more per day and gained 0.9 kg; on the unprocessed diet they lost 0.9 kg. Same macros. The difference was how much they ate before stopping.
+
+## The split that follows from this
+
+If the ratio is not the lever, the question becomes what constrains it. Three things do.
+
+**Protein is the fixed term.** Set it first, in grams per kilogram of body weight, at whatever the evidence supports for your goal. For maintaining or building muscle that is about 1.6 g per kg per day; the next module covers where that number comes from. At 75 kg that is 120 g, or about 480 kcal.
+
+**Fat has a floor.** Below about 20 percent of energy, diets become hard to sustain and essential fatty acid and fat-soluble vitamin intake gets tight; the 20 to 35 percent range in the Dietary Reference Intakes reflects this.[^1] There is no strong evidence for a benefit above the range either.
+
+**Carbohydrate fills the remainder and scales with training.** Glycogen is the fuel for hard efforts, and someone lifting four times a week or running intervals will feel a low-carbohydrate day in the session. Someone sedentary will not. This is the one place activity changes the answer.
+
+Put together for a 75 kg person eating about 2,400 kcal a day: 120 g protein (20 percent), 80 g fat (30 percent), and the remaining 1,200 kcal as roughly 300 g carbohydrate (50 percent). Every number sits inside the reference ranges. Moving fat to 25 percent and carbohydrate to 55 percent changes nothing measurable.
+
+## What I actually do
+
+I track protein and total energy and let the other two float. Protein because it is the one macronutrient with a dose-response relationship to an outcome I care about, total energy because it is the only variable the trials found to matter for weight. Carbohydrate goes up on training days and down on rest days without any counting; I notice it in the session before I notice it anywhere else.
+
+Two rules from the ultra-processed trial carry more weight than any ratio. Food that arrives in a packet with a nutrition panel is easier to overeat by about 500 kcal a day, and that effect is independent of its macronutrient split. And the place to spend attention is on the things that were actually measured, which are not the things most diet books argue about.
+
+## Key takeaways
+
+- Total energy intake, not the carbohydrate-to-fat ratio, determines weight change when protein is held constant.
+- The thermic effect of food favours protein by 20 to 30 percent, carbohydrate by 5 to 10, fat by almost nothing; the daily total is about 10 percent of intake.
+- A twelve-month free-living trial found no difference between low-fat and low-carbohydrate diets, and no genotype that predicted which would work.
+- Ultra-processed food raised spontaneous intake by about 500 kcal a day with macronutrients matched. That is the effect worth acting on.
+- Set protein in grams per kilogram, keep fat above roughly 20 percent of energy, and let carbohydrate scale with training.
+
+## References
+
+[^1]: Institute of Medicine. *Dietary Reference Intakes for Energy, Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and Amino Acids*. (National Academies Press, Washington, DC, 2005). https://doi.org/10.17226/10490
+[^2]: Westerterp, K. R. Diet induced thermogenesis. *Nutr. Metab. (Lond.)* **1**, 5 (2004). https://doi.org/10.1186/1743-7075-1-5
+[^3]: Hall, K. D. et al. Calorie for calorie, dietary fat restriction results in more body fat loss than carbohydrate restriction in people with obesity. *Cell Metab.* **22**, 427–436 (2015). https://doi.org/10.1016/j.cmet.2015.07.021
+[^4]: Gardner, C. D. et al. Effect of low-fat vs low-carbohydrate diet on 12-month weight loss in overweight adults and the association with genotype pattern or insulin secretion: the DIETFITS randomized clinical trial. *JAMA* **319**, 667–679 (2018). https://doi.org/10.1001/jama.2018.0245
+[^5]: Hall, K. D. et al. Ultra-processed diets cause excess calorie intake and weight gain: an inpatient randomized controlled trial of ad libitum food intake. *Cell Metab.* **30**, 67–77 (2019). https://doi.org/10.1016/j.cmet.2019.05.008
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a><a class="mf-next" href="/blogs/how-much-protein-really.html"><span>Next</span>How much protein, really</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

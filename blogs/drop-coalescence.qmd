@@ -1,0 +1,185 @@
+---
+title: How drops merge
+description: Lubrication-limited air drainage, the capillary bridge singularity, and the partial coalescence cascade.
+date: 2026-08-28
+categories:
+- physics
+- fluid mechanics
+- surface tension
+- thermodynamics
+- microgravity
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 5 · From droplet to rain</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/drop-shape-in-air.html">How a drop deforms in air</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Two drops touching do not merge instantly. A film of air has to drain out first, and what happens next can leave a smaller drop behind.
+:::
+
+## The three stages of coalescence
+
+When a water droplet falls into a pool of water, it does not instantly merge or "dissolve". Because liquid water is composed of the same chemical species, this is not chemical solute dissolution, but **hydrodynamic coalescence**.
+
+```{mermaid}
+sequenceDiagram
+    participant D as Falling Droplet
+    participant F as Nanoscale Air Cushion
+    participant P as Bulk Liquid Pool
+    
+    D->>F: 1. Impact and deformation (Hovering stage)
+    F-->>D: Squeezes air out via lubrication flow
+    Note over D,P: 2. Film thins below 10-50 nm (van der Waals collapse)
+    D->>P: 3. Film ruptures and a capillary bridge nucleates
+    P->>D: 4. Capillary recoil drives upward capillary waves
+    D->>P: 5. Partial pinch-off: Daughter droplet ejected (Cascade)
+```
+
+### Lubrication-limited air drainage
+
+As the droplet approaches the free liquid surface, it traps a microscopic layer of air. The droplet cannot touch the pool until this gas cushion is drained laterally.
+
+The drainage velocity $u(r)$ of the gas layer of thickness $h(t)$ is governed by the Reynolds lubrication equation:
+
+$$\frac{\partial h}{\partial t} = \frac{1}{12 \mu_{\text{air}}} \frac{1}{r} \frac{\partial}{\partial r} \left( r h^3 \frac{\partial P}{\partial r} \right)$$
+
+where $\mu_{\text{air}}$ is dynamic air viscosity ($1.81 \times 10^{-5}\text{ Pa s}$). This lubrication resistance allows millimeter-sized droplets to bounce or skim across the surface for tens to hundreds of milliseconds.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260" style="width:100%;max-width:600px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A droplet hovering above a liquid pool, separated by a nanoscale air film that drains outward on both sides.">
+  <defs>
+    <marker id="wdL" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+    <marker id="wdN" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <path d="M 210 150 C 210 78, 390 78, 390 150 Q 300 186, 210 150 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <text x="300" y="126" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Droplet</text>
+  <line x1="60" y1="206" x2="540" y2="206" stroke="var(--md-default-fg-color)" stroke-width="3"/>
+  <line x1="60" y1="212" x2="540" y2="212" stroke="var(--md-default-fg-color)" stroke-width="1" opacity="0.45"/>
+  <rect x="60" y="214" width="480" height="30" fill="var(--ink-indigo)" fill-opacity="0.10"/>
+  <text x="300" y="236" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">Bulk pool</text>
+  <rect x="206" y="188" width="188" height="16" fill="var(--ink-rust)" fill-opacity="0.14"/>
+  <text x="300" y="200" text-anchor="middle" fill="var(--ink-rust)" font-size="12" font-weight="600">air film</text>
+  <line x1="196" y1="196" x2="96" y2="196" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#wdL)"/>
+  <line x1="404" y1="196" x2="504" y2="196" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#wdL)"/>
+  <text x="96" y="180" fill="var(--ink-rust)" font-size="12.5">drains outward</text>
+  <text x="418" y="180" fill="var(--ink-rust)" font-size="12.5">drains outward</text>
+  <path d="M 470 152 q 46 12 76 30" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#wdN)"/>
+  <text x="440" y="146" fill="var(--md-default-fg-color)" font-size="13">h ≈ 10–100 nm</text>
+  <text x="300" y="44" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">The drop cannot touch the pool until the air escapes</text>
+  <text x="300" y="64" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">lubrication resistance lets it hover, bounce or skim for 10s–100s of ms</text>
+</svg>
+<figcaption><strong>Figure 1 | A trapped gas layer, not the water surface, is what the falling drop first meets.</strong> Approaching the pool, the drop traps a microscopic film of air (magenta) that must drain laterally before contact. Because the drainage rate scales as $h^3$ in the Reynolds lubrication equation, the last tens of nanometres take disproportionately long — which is why millimetre-sized drops can hover, bounce or skim across a surface for tens to hundreds of milliseconds instead of merging on impact.</figcaption>
+</figure>
+```
+
+
+### Capillary bridge formation
+
+When drainage thins the air layer below roughly $10\text{ to }50\text{ nm}$, long-range attractive van der Waals forces destabilize the interface. The film ruptures at a single point, creating a microscopic liquid neck (the **capillary bridge**).
+
+The bridge has an extremely sharp negative radius of curvature ($r_{\text{neck}}$), generating an intense localized capillary suction pressure:
+
+$$\Delta P_{\text{bridge}} \sim -\frac{\gamma}{r_{\text{neck}}}$$
+
+This suction accelerates fluid across the neck at velocities exceeding $10\text{ m s}^{-1}$, rapidly widening the bridge according to the hydrodynamic scaling law:
+
+$$r_{\text{neck}}(t) \propto \left( \frac{\gamma R_0}{\rho} \right)^{1/4} t^{1/2}$$
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" style="width:100%;max-width:600px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A droplet connected to a liquid pool by a narrow capillary bridge, with the neck radius labelled.">
+  <defs>
+    <marker id="wdL" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+    <marker id="wdN" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <path d="M 216 132 C 216 62, 384 62, 384 132 C 384 168, 348 186, 330 196 L 270 196 C 252 186, 216 168, 216 132 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <line x1="60" y1="196" x2="270" y2="196" stroke="var(--md-default-fg-color)" stroke-width="3"/>
+  <line x1="330" y1="196" x2="540" y2="196" stroke="var(--md-default-fg-color)" stroke-width="3"/>
+  <rect x="60" y="198" width="480" height="34" fill="var(--ink-indigo)" fill-opacity="0.10"/>
+  <text x="300" y="224" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">Bulk pool</text>
+  <line x1="270" y1="188" x2="330" y2="188" stroke="var(--ink-rust)" stroke-width="2.6"/>
+  <line x1="270" y1="182" x2="270" y2="194" stroke="var(--ink-rust)" stroke-width="2"/>
+  <line x1="330" y1="182" x2="330" y2="194" stroke="var(--ink-rust)" stroke-width="2"/>
+  <path d="M 452 158 q -46 10 -96 22" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#wdN)"/>
+  <text x="458" y="154" fill="var(--ink-rust)" font-size="13.5" font-weight="600">r₍neck₎</text>
+  <text x="458" y="172" fill="var(--md-default-fg-color--light)" font-size="12.5">the capillary bridge</text>
+  <text x="300" y="42" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Once the film ruptures, surface tension takes over</text>
+  <text x="300" y="62" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">the neck widens fast enough to be inertially, not viscously, limited</text>
+</svg>
+<figcaption><strong>Figure 2 | Rupture is not merging; it opens a neck that then widens under its own curvature.</strong> When the film thins past roughly $10$–$50\text{ nm}$, van der Waals attraction collapses it and a capillary bridge nucleates. The bridge radius $r_{\text{neck}}$ (magenta) carries extreme curvature, so the Laplace pressure driving it open is initially enormous — the neck widens in an inertially limited regime rather than a viscous one, and the interface reorganises far faster than the drop as a whole can respond.</figcaption>
+</figure>
+```
+
+
+### The partial coalescence cascade
+
+As fluid drains into the bulk, capillary waves propagate upward along the droplet surface. 
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 216" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Four stages of partial coalescence: bridge formation, capillary waves converging, neck pinch-off, and a daughter droplet.">
+  <defs>
+    <marker id="wdL" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+    <marker id="wdN" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <path d="M 52 150 h 108 M 200 150 h 108 M 348 150 h 108 M 496 150 h 212" stroke="var(--md-default-fg-color)" stroke-width="2.6"/>
+    <text x="106" y="40" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">a  Bridge forms</text>
+  <text x="106" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">neck opens</text>
+  <path d="M 78 118 C 78 78, 134 78, 134 118 C 134 138, 120 146, 116 150 L 96 150 C 92 146, 78 138, 78 118 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+    <text x="254" y="40" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">b  Capillary waves</text>
+  <text x="254" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">converge upward</text>
+  <path d="M 226 118 C 226 78, 282 78, 282 118 C 282 138, 268 146, 264 150 L 244 150 C 240 146, 226 138, 226 118 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <path d="M 240 132 q 14 -10 28 0" fill="none" stroke="var(--ink-rust)" stroke-width="2"/>
+  <path d="M 244 116 q 10 -8 20 0" fill="none" stroke="var(--ink-rust)" stroke-width="2"/>
+  <line x1="254" y1="112" x2="254" y2="88" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#wdL)"/>
+    <text x="402" y="40" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">c  Neck pinches off</text>
+  <text x="402" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">vertical column severs</text>
+  <path d="M 388 96 C 388 70, 416 70, 416 96 C 416 112, 408 116, 406 122 L 398 122 C 396 116, 388 112, 388 96 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <path d="M 396 126 q 6 8 12 0" fill="none" stroke="var(--ink-rust)" stroke-width="2.4"/>
+  <line x1="402" y1="146" x2="402" y2="132" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#wdL)"/>
+    <text x="602" y="40" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">d  Daughter drop</text>
+  <text x="602" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">a smaller drop rebounds; the cascade repeats</text>
+  <circle cx="602" cy="92" r="17" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <path d="M 578 150 q 24 -12 48 0" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2" opacity="0.55"/>
+</svg>
+<figcaption><strong>Figure 3 | Coalescence is often partial: the drop leaves a smaller copy of itself behind.</strong> <strong>a</strong>, The bridge opens. <strong>b</strong>, Capillary waves generated at the neck race up the drop surface and converge at its apex (magenta). <strong>c</strong>, Their convergence pulls the drop into a vertical column whose neck pinches off before the volume has finished draining. <strong>d</strong>, What separates is a daughter droplet roughly half the parent diameter, which can repeat the whole sequence — a self-similar cascade that continues until viscosity finally dominates and merging completes.</figcaption>
+</figure>
+```
+
+
+1. The converging capillary waves meet at the top apex of the droplet.
+2. The downward drainage momentum competes with the horizontal capillary pinch-off.
+3. If the **Ohnesorge number** ($Oh = \mu / \sqrt{\rho \gamma R_0}$) is below a critical threshold ($Oh \lesssim 0.026$), inertia dominates viscous dissipation. The bottom of the droplet drains into the pool, but the top portion pinches off, ejecting a **daughter droplet** with roughly $50\%$ of the parent droplet's diameter.
+4. This daughter droplet falls back onto the surface, traps a new air film, and repeats the cycle. Under clean conditions, a single water droplet can undergo **4 to 6 successive cascade steps** before viscous damping halts the cascade and complete absorption into a submerged vortex ring occurs.
+
+## Dimensionless numbers
+
+| Dimensionless Group | Formula | Physical Interpretation | Regime Transition |
+| :--- | :--- | :--- | :--- |
+| **Weber Number ($We$)** | $\frac{\rho_a v^2 d}{\gamma}$ | Inertial drag force vs Surface tension force | $We > 12 \implies$ Droplet bag breakup |
+| **Bond / Eötvös Number ($Bo$)** | $\frac{\Delta \rho g d^2}{\gamma}$ | Gravitational body force vs Surface tension force | $Bo \ll 1 \implies$ Spherical geometry dominates |
+| **Ohnesorge Number ($Oh$)** | $\frac{\mu}{\sqrt{\rho \gamma d}}$ | Viscous dissipation vs Capillary-inertial forces | $Oh < 0.026 \implies$ Partial coalescence cascade occurs |
+| **Capillary Number ($Ca$)** | $\frac{\mu v}{\gamma}$ | Viscous shear stress vs Interfacial tension | $Ca \gg 1 \implies$ Viscous elongation and breakup |
+
+## Key takeaways
+
+- A drop meeting a pool first meets a film of air; the Reynolds lubrication equation makes drainage slow as $h^3$, so millimetre drops hover or bounce for tens to hundreds of milliseconds.
+- Below $10$ to $50\text{ nm}$ van der Waals forces rupture the film and a capillary bridge nucleates; its extreme curvature drives the neck open at over $10\text{ m s}^{-1}$, with $r_{\text{neck}} \propto t^{1/2}$.
+- Capillary waves converging at the drop apex can pinch off a daughter drop about half the parent diameter if $Oh \lesssim 0.026$; the cascade repeats four to six times before viscosity ends it.
+- The Weber, Bond, Ohnesorge and capillary numbers each compare surface tension against one competing stress, and each has a threshold that marks a change of regime.
+
+## References
+
+1. **Young, T.** (1805). *An Essay on the Cohesion of Fluids*. Philosophical Transactions of the Royal Society of London, 95, 65–87.
+2. **Pruppacher, H. R., & Klett, J. D.** (2010). *Microphysics of Clouds and Precipitation* (2nd ed.). Springer.
+3. **Thoroddsen, S. T., & Takehara, K.** (2000). *The coalescence cascade of a drop*. Physics of Fluids, 12(6), 1265–1267. [doi:10.1063/1.870380](https://doi.org/10.1063/1.870380)
+4. **Villermaux, E., & Bossa, B.** (2009). *Single-drop fragmentation determines size distribution of raindrops*. Nature Physics, 5(9), 697–702. [doi:10.1038/nphys1340](https://doi.org/10.1038/nphys1340)
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/where-ccn-come-from.html"><span>Previous</span>Where CCN come from</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/cloud-types.html"><span>Next</span>Cloud types</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

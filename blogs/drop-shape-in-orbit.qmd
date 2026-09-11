@@ -1,0 +1,108 @@
+---
+title: Why are drops round?
+description: In orbital free fall there is no hydrostatic gradient, so Young-Laplace forces constant mean curvature, and only a sphere has it.
+date: 2026-08-28
+categories:
+- physics
+- fluid mechanics
+- surface tension
+- thermodynamics
+- microgravity
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 3 · Droplets</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">School physics. A little calculus appears in the droplet parts and is always optional.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+With gravity cancelled, surface tension is the only thing shaping a drop, and it has exactly one answer.
+:::
+
+```{mermaid}
+graph TD
+    subgraph Space["1. Microgravity (Space)"]
+        S1["Net Hydrostatic Gradient ~ 0"] --> S2["Interfacial Free Energy Minimization"]
+        S2 --> S3["Isotropic Laplace Curvature: Perfect Spheres"]
+    end
+    subgraph Atmosphere["2. Falling Raindrops (Atmosphere)"]
+        A1["Gravity vs Aerodynamic Stagnation"] --> A2["Base Flattening (Oblate Spheroid)"]
+        A2 --> A3["Weber Number We > 12: Bag/Shear Rupture"]
+    end
+    subgraph Coalescence["3. Impact with Bulk Pool"]
+        C1["Trapped Nanoscale Air Cushion"] --> C2["Lubrication Drainage & Rupture"]
+        C2 --> C3["Capillary Bridge Nucleation"]
+        C3 --> C4["Vortex Ring & Coalescence Cascade"]
+    end
+```
+
+## Surface tension with gravity removed
+
+In low Earth orbit (such as aboard the International Space Station), free fall cancels out macroscopic gravitational body forces ($\vec{g}_{\text{eff}} \approx 0$). Without a hydrostatic pressure gradient ($\nabla P = \rho \vec{g} \approx 0$), fluid behavior is governed entirely by cohesive intermolecular forces and surface tension.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 290" style="width:100%;max-width:620px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A spherical droplet in microgravity with a radius arrow and uniform outward pressure arrows, illustrating constant mean curvature.">
+  <defs>
+    <marker id="mgO" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--ink-rust)"/></marker>
+    <marker id="mgR" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--md-default-fg-color)"/></marker>
+  </defs>
+  <circle cx="250" cy="150" r="78" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2.6"/>
+  <circle cx="250" cy="150" r="2.6" fill="var(--md-default-fg-color)"/>
+  <line x1="250" y1="150" x2="322" y2="118" stroke="var(--md-default-fg-color)" stroke-width="1.8" marker-end="url(#mgR)"/>
+  <text x="288" y="126" fill="var(--md-default-fg-color)" font-size="14" font-style="italic">r₀</text>
+  <line x1="250" y1="66" x2="250" y2="34" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="328" y1="150" x2="360" y2="150" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="250" y1="234" x2="250" y2="266" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="172" y1="150" x2="140" y2="150" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="305" y1="95" x2="328" y2="72" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="195" y1="205" x2="172" y2="228" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="305" y1="205" x2="328" y2="228" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <line x1="195" y1="95" x2="172" y2="72" stroke="var(--ink-rust)" stroke-width="2.2" marker-end="url(#mgO)"/>
+  <text x="452" y="112" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">Uniform curvature</text>
+  <text x="452" y="134" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13.5">R₁ = R₂ = r₀ everywhere</text>
+  <text x="452" y="170" text-anchor="middle" fill="var(--ink-rust)" font-size="14.5" font-weight="600">Isotropic Laplace step</text>
+  <text x="452" y="192" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13.5">ΔP = 2γ ⁄ r₀, identical at</text>
+  <text x="452" y="210" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13.5">every point on the surface</text>
+</svg>
+<figcaption><strong>Figure 1 | With gravity removed, only one closed shape satisfies the Young-Laplace equation.</strong> In free fall there is no hydrostatic gradient, so the internal pressure $P_{\text{in}}$ is spatially uniform. Young-Laplace then forces the sum of principal curvatures $(1/R_1 + 1/R_2)$ to be identical at every point — and the sphere is the only closed three-dimensional surface with constant mean curvature. The outward arrows (magenta) mark the resulting isotropic pressure step $\Delta P = 2\gamma/r_0$; because it is the same everywhere, nothing breaks the symmetry, and orbital droplets stay spherical up to tens of centimetres across.</figcaption>
+</figure>
+```
+
+
+### The Young-Laplace equation
+
+The mechanical equilibrium of the liquid-gas interface is described by the **Young-Laplace equation**:
+
+$$\Delta P = P_{\text{in}} - P_{\text{out}} = \gamma \left( \frac{1}{R_1} + \frac{1}{R_2} \right)$$
+
+where:
+
+- $\Delta P$ is the Laplace pressure step across the interface ($\text{Pa}$).
+- $\gamma$ is the surface tension of water ($\approx 72.8 \times 10^{-3}\text{ N m}^{-1}$ at $20^\circ\text{C}$).
+- $R_1$ and $R_2$ are the principal radii of curvature at any given point on the surface ($\text{m}$).
+
+Because the internal fluid pressure $P_{\text{in}}$ is spatially uniform in the absence of gravity, the sum of principal curvatures $(1/R_1 + 1/R_2)$ must be identical at every coordinate on the surface. The only closed 3D geometric shape with constant mean curvature everywhere is a **sphere** ($R_1 = R_2 = r_0$):
+
+$$\Delta P = \frac{2\gamma}{r_0}$$
+
+### Free energy minimization
+
+From a thermodynamic perspective, water molecules in the bulk form an extensive network of hydrogen bonds (cohesive energy $\approx 21\text{ kJ mol}^{-1}$). Molecules at the interface lack half of their potential bonding partners, creating an excess surface Gibbs free energy:
+
+$$G_{\text{surface}} = \gamma A$$
+
+To reach the lowest thermodynamic energy state at fixed volume $V$, the droplet minimizes its surface area $A$. The sphere has the lowest possible area-to-volume ratio ($A/V = 3/r_0$), allowing suspended orbital droplets to maintain stable spherical shapes up to tens of centimeters in diameter.
+
+## Key takeaways
+
+- In free fall the hydrostatic gradient vanishes, so the pressure inside a drop is uniform and Young-Laplace forces the same mean curvature at every point on its surface.
+- The sphere is the only closed surface with constant mean curvature, so it is the only shape a gravity-free drop can take; the Laplace pressure step is $\Delta P = 2\gamma/r_0$.
+- Thermodynamics gives the same answer: minimising surface free energy $\gamma A$ at fixed volume picks the shape with the least area, and that is the sphere.
+- Nothing in the argument depends on size, which is why orbital drops stay spherical up to tens of centimetres across.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/parcel-lifter.html"><span>Previous</span>Lift a parcel yourself</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/drop-shape-in-air.html"><span>Next</span>How a drop deforms in air</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

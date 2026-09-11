@@ -1,0 +1,60 @@
+---
+title: "Plant biology, one blueberry at a time"
+description: "How a plant works, followed through a single crop: what a blueberry bush is doing from bud to harvest, and why every yield question starts in the leaf."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>6</dd></div>
+<div><dt>Modules</dt><dd>5 of 19 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>School biology. The forecasting series models this crop&#x27;s data; this series explains where the data comes from.</dd></div>
+</dl>
+
+## Part 1 · What a plant is doing all day
+
+<ul class="syl">
+<li class="w"><a href="/blogs/photosynthesis-in-one-leaf.html">Photosynthesis, in one leaf</a><span class="m">Introductory</span></li>
+<li class="g">Respiration: the cost of being alive<span class="m">Introductory · not written</span></li>
+<li class="w"><a href="/blogs/the-carbon-budget-of-a-bush.html">The carbon budget of a bush</a><span class="m">Intermediate</span></li>
+</ul>
+
+## Part 2 · From flower to fruit
+
+<ul class="syl">
+<li class="w"><a href="/blogs/pollination-and-fruit-set.html">Pollination and fruit set</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/cell-division-then-cell-expansion.html">Cell division, then cell expansion</a><span class="m">Intermediate</span></li>
+<li class="w"><a href="/blogs/the-growth-curve-of-a-berry.html">The growth curve of a berry</a><span class="m">Intermediate</span></li>
+</ul>
+
+## Part 3 · Water and nutrients
+
+<ul class="syl">
+<li class="g">Roots, and why blueberries want acid soil<span class="m">Introductory · not written</span></li>
+<li class="g">Ericoid mycorrhizae<span class="m">Intermediate · not written</span></li>
+<li class="g">Nitrogen as ammonium, not nitrate<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 4 · Ripening
+
+<ul class="syl">
+<li class="g">Why blueberries are blue: anthocyanins<span class="m">Introductory · not written</span></li>
+<li class="g">Sugar, acid, and what &quot;ripe&quot; measures<span class="m">Introductory · not written</span></li>
+<li class="g">Non-climacteric: why a picked blueberry stops<span class="m">Intermediate · not written</span></li>
+<li class="g">The bloom: the wax coat and what it protects<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 5 · Seasons and stress
+
+<ul class="syl">
+<li class="g">Chill hours and dormancy<span class="m">Introductory · not written</span></li>
+<li class="g">Frost, and the night the crop is lost<span class="m">Introductory · not written</span></li>
+<li class="g">Heat and drought: the stomata close<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Breeding
+
+<ul class="syl">
+<li class="g">Highbush, lowbush, rabbiteye<span class="m">Introductory · not written</span></li>
+<li class="g">What breeders select for<span class="m">Intermediate · not written</span></li>
+<li class="g">Ploidy, and why blueberries are odd<span class="m">Intermediate · not written</span></li>
+</ul>

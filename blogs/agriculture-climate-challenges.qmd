@@ -1,0 +1,269 @@
+---
+title: Agriculture under climate extremes
+description: Heat, drought and surface ozone acting on crops together, and the agronomic changes that would make food systems less fragile.
+date: 2026-08-27
+categories:
+- food security
+- climate adaptation
+- ozone pollution
+- agronomy
+- climate resilience
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/air-land-climate/index.html">Air, Land and Climate</a><span class="sep">·</span>Part 9 · Climate and food</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">How ozone damages crops</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Breadbaskets now face heatwaves, flash drought and phytotoxic surface ozone ($\text{O}_3$) in the same season. Evaluated together, co-occurring heat and peak ozone depress soybean, wheat and maize yields by $4.4–12.4\%$ beyond thermal stress alone. This module sets out a four-tier adaptation stack (tolerant cultivars, strip intercropping, drip fertigation, regional grain buffers) and explains why the tiers stack rather than substitute.
+:::
+
+## Three stresses that arrive together
+
+Modern agriculture was built on the climatic stability of the Holocene. Breadbaskets now face three atmospheric stressors at once, and their damage compounds:
+
+```{mermaid}
+flowchart TD
+    TripleThreat["The Compounding Agricultural Stress Matrix"]
+    
+    TripleThreat --> Heat["1. Extreme Heat & Evaporative Deficit<br/>Pollen Sterility, Accelerated Senescence"]
+    TripleThreat --> Water["2. Hydrological Volatility<br/>Flash Droughts, Flood Inundation, Soil Erosion"]
+    TripleThreat --> Ozone["3. Toxic Surface Ozone (O3)<br/>Stomatal Lesions, RuBisCO Degradation"]
+
+    Heat & Water & Ozone --> CompoundDamage["Compounding Cellular Damage in Staple Crops<br/>Depresses Photosynthetic Carbon Assimilation by 15-30%"]
+    
+    CompoundDamage --> YieldDrop["Major Global Crop Losses (Wheat, Maize, Soy, Rice)"]
+    YieldDrop --> EconomicShock["Food Price Spikes, Export Bans & Malnutrition Risk"]
+
+    class TripleThreat indigo
+    class Heat rust
+    class Water plum
+    class Ozone ochre
+    class CompoundDamage sienna
+    class EconomicShock terracotta
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef terracotta fill:#c97d62,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+### Surface ozone, the overlooked one
+
+Greenhouse warming is widely recognised; ground-level ozone is a chronic crop poison that is not:
+1. Ozone enters open leaf stomata during daytime transpiration.
+2. Inside the leaf interior, it rapidly dissolves into reactive oxygen species ($\text{ROS}$: $\text{H}_2\text{O}_2, \cdot\text{OH}, \text{O}_2^{\cdot-}$)[^1].
+3. $\text{ROS}$ degrades the primary photosynthetic enzyme **RuBisCO**, inducing premature chlorosis, shrinking grain fill duration, and slashing harvest yield by $5–15\%$ globally[^2].
+
+## Which staples are most exposed
+
+The four staples differ in photosynthetic pathway and in the growth stage each stress hits, so their vulnerabilities differ:
+
+| Staple Crop | Photosynthetic Pathway | Primary Climate Vulnerability | Ozone Sensitivity | Estimated Global Annual Yield Loss |
+| :--- | :--- | :--- | :--- | :--- |
+| **Soybean ($\text{Glycine max}$)** | $\text{C}_3$ Legume | Pod abortion during reproductive heat | **Extremely High** | **$-8.5\text{ to }-14.0\%$** |
+| **Wheat ($\text{Triticum aestivum}$)** | $\text{C}_3$ Cereal | Heat-induced grain shrinkage during flowering | **Very High** | **$-7.1\text{ to }-12.2\%$** |
+| **Maize ($\text{Zea mays}$)** | $\text{C}_4$ Grass | Silk desiccation and pollen sterility ($T > 35^\circ\text{C}$) | **Moderate** | **$-4.2\text{ to }-6.5\%$** |
+| **Rice ($\text{Oryza sativa}$)** | $\text{C}_3$ Semi-aquatic | Nighttime high-temperature respiration | **Moderate-High** | **$-3.8\text{ to }-5.9\%$** |
+
+```
+       Relative Yield Loss by Stressor for Major Global Grains (%):
+       
+       Soybean:  [████████] Heat  [████████████] Ozone  [██████] Drought  (-28% Total Risk)
+       Wheat:    [██████████] Heat  [██████████] Ozone  [████████] Drought  (-28% Total Risk)
+       Maize:    [██████████████] Heat  [████] Ozone  [██████████] Drought  (-28% Total Risk)
+       Rice:     [████████] Heat  [██████] Ozone  [██████] Drought  (-20% Total Risk)
+```
+
+## A four-tier adaptation stack
+
+In our synthesis in *Frontiers in Climate*[^3], we set out a resilience roadmap spanning biotechnology, field ecology and food-systems policy:
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Four stacked bands showing the adaptation tiers from genetics at the bottom to policy at the top, with the intervention and the scale at which each acts, against an axis of widening scale and lead time.">
+<defs>
+<marker id="agScale" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color--light)"/></marker>
+</defs>
+<text x="76" y="26" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">The four tiers act at different scales, so they stack rather than substitute</text>
+<line x1="44" y1="300" x2="44" y2="62" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#agScale)"/>
+<text transform="rotate(-90 26 186)" x="26" y="186" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">widening scale and lead time</text>
+<text x="246" y="56" fill="var(--md-default-fg-color--light)" font-size="11.5">INTERVENTION</text>
+<text x="735" y="56" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="11.5">ACTS AT</text>
+<rect x="76" y="66" width="664" height="52" rx="8" fill="var(--ink-rust)" fill-opacity="0.12" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<text x="92" y="97" fill="var(--ink-rust)" font-size="14.5" font-weight="600">Tier 4 &#183; Policy</text>
+<text x="246" y="97" fill="var(--md-default-fg-color)" font-size="13">Grain reserves, climate crop insurance</text>
+<text x="724" y="97" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">nation &#183; years to decades</text>
+<rect x="76" y="128" width="664" height="52" rx="8" fill="var(--ink-rust)" fill-opacity="0.12" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<text x="92" y="159" fill="var(--ink-rust)" font-size="14.5" font-weight="600">Tier 3 &#183; Water &amp; N</text>
+<text x="246" y="159" fill="var(--md-default-fg-color)" font-size="13">Drip fertigation, controlled-release urea</text>
+<text x="724" y="159" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">farm &#183; within one season</text>
+<rect x="76" y="190" width="664" height="52" rx="8" fill="var(--ink-indigo)" fill-opacity="0.12" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<text x="92" y="221" fill="var(--ink-indigo)" font-size="14.5" font-weight="600">Tier 2 &#183; Field</text>
+<text x="246" y="221" fill="var(--md-default-fg-color)" font-size="13">Strip intercropping, cover crops, biochar</text>
+<text x="724" y="221" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">field &#183; one to three seasons</text>
+<rect x="76" y="252" width="664" height="52" rx="8" fill="var(--ink-indigo)" fill-opacity="0.12" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<text x="92" y="283" fill="var(--ink-indigo)" font-size="14.5" font-weight="600">Tier 1 &#183; Genetics</text>
+<text x="246" y="283" fill="var(--md-default-fg-color)" font-size="13">Ozone- and heat-tolerant cultivars (CRISPR)</text>
+<text x="724" y="283" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">gene &#183; a decade of breeding</text>
+<rect x="92" y="314" width="12" height="12" rx="2" fill="var(--ink-indigo)" fill-opacity="0.55" stroke="var(--ink-indigo)" stroke-width="1.4"/>
+<text x="112" y="324" fill="var(--md-default-fg-color--light)" font-size="12.5">blue: raises what the plant can tolerate</text>
+<rect x="392" y="314" width="12" height="12" rx="2" fill="var(--ink-rust)" fill-opacity="0.55" stroke="var(--ink-rust)" stroke-width="1.4"/>
+<text x="412" y="324" fill="var(--md-default-fg-color--light)" font-size="12.5">magenta: lowers the stress the plant sees</text>
+</svg>
+<figcaption><strong>Figure 1 | Adaptation only works as a stack, because each tier buys time at a different scale.</strong> The two lower tiers (blue) change the plant itself &#8212; cultivars with stomatal conductance tuned to throttle uptake during peak midday ozone, and field designs that buffer microclimate and hold soil moisture &#8212; but both take seasons to decades to deploy. The two upper tiers (magenta) instead cut the stress the plant is exposed to at all, through precise water and nitrogen delivery and, at national scale, reserves and insurance that stop a local harvest failure from becoming a global price shock. Because the lead times differ by orders of magnitude, no single tier can substitute for another.</figcaption>
+</figure>
+```
+
+
+1. **Stress-Resilient Cultivars**: Breeding crops with optimized stomatal conductance curves that automatically throttle gas intake during peak midday ozone and heat events without choking off photosynthesis[^4].
+2. **Crop Diversification & Intercropping**: Transitioning away from vast, uniform monocultures toward multi-species strip intercropping (e.g., maize-soybean), which creates microclimate buffering and enhances soil moisture retention.
+3. **Smart Nutrient & Irrigation Management**: Utilizing subsurface drip fertigation to minimize ammonia volatilization while reducing plant water stress during critical flowering windows.
+4. **Decentralized Grain Buffers**: Establishing localized grain storage and diversified supply chains to prevent local harvest failures from turning into global price shocks.
+
+### Test the stack against compound stress
+
+Set warming and surface ozone, then step the adaptation level up to see how much of the loss each tier recovers:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <h4 style="margin-top: 0; color: #10b981;">🌽 Global Crop Stress & Adaptation Simulator</h4>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; color: #ef4444;">Warming Anomaly: <b id="warm-val">+1.5 °C</b></label>
+      <input type="range" id="sim-warm" min="0.0" max="4.0" value="1.5" step="0.5" oninput="updateCropSim()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #f59e0b;">Surface Ozone (ppb): <b id="ozo-val">55 ppb</b></label>
+      <input type="range" id="sim-ozo" min="30" max="90" value="55" step="5" oninput="updateCropSim()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #10b981;">Agro-Ecological Adaptation Level:</label>
+      <select id="sim-adapt-level" onchange="updateCropSim()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
+        <option value="0">None (Conventional Monoculture)</option>
+        <option value="1" selected>Moderate (Intercropping + Drip Water)</option>
+        <option value="2">Advanced (Full Climate-Resilient Package)</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 14px;">
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Soybean Yield</div>
+      <div id="yield-soy" style="font-size: 1.3em; font-weight: 700; color: #f59e0b;">-8.4%</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Wheat Yield</div>
+      <div id="yield-wheat" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">-7.2%</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Maize Yield</div>
+      <div id="yield-maize" style="font-size: 1.3em; font-weight: 700; color: #10b981;">-6.1%</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #ec4899;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Net Food Supply Resilience</div>
+      <div id="res-score" style="font-size: 1.3em; font-weight: 700; color: #10b981;">Moderate</div>
+    </div>
+  </div>
+
+  <div id="crop-diag" style="font-size: 0.9em; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 10px; border-radius: 4px;">
+    Moderate agro-ecological adaptation buffers against surface ozone damage and stabilizes grain production.
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+function updateCropSim() {
+  const warm = parseFloat(document.getElementById('sim-warm').value);
+  const ozo = parseFloat(document.getElementById('sim-ozo').value);
+  const adapt = parseInt(document.getElementById('sim-adapt-level').value);
+
+  document.getElementById('warm-val').innerText = '+' + warm.toFixed(1) + ' °C';
+  document.getElementById('ozo-val').innerText = ozo + ' ppb';
+
+  const ozo_excess = Math.max(0, ozo - 35);
+
+  // Baseline losses
+  let soy_loss = - (warm * 4.5 + ozo_excess * 0.35);
+  let wheat_loss = - (warm * 5.0 + ozo_excess * 0.28);
+  let maize_loss = - (warm * 6.2 + ozo_excess * 0.14);
+
+  // Adaptation buffer
+  if (adapt === 1) {
+    soy_loss += 5.5;
+    wheat_loss += 4.5;
+    maize_loss += 6.0;
+  } else if (adapt === 2) {
+    soy_loss += 11.0;
+    wheat_loss += 9.5;
+    maize_loss += 12.0;
+  }
+
+  const formatLoss = (val) => (val >= 0 ? '+' + val.toFixed(1) : val.toFixed(1)) + '%';
+
+  const soyEl = document.getElementById('yield-soy');
+  const wheatEl = document.getElementById('yield-wheat');
+  const maizeEl = document.getElementById('yield-maize');
+  const scoreEl = document.getElementById('res-score');
+
+  soyEl.innerText = formatLoss(soy_loss);
+  wheatEl.innerText = formatLoss(wheat_loss);
+  maizeEl.innerText = formatLoss(maize_loss);
+
+  soyEl.style.color = soy_loss < -10 ? '#ef4444' : (soy_loss < 0 ? '#f59e0b' : '#10b981');
+  wheatEl.style.color = wheat_loss < -10 ? '#ef4444' : (wheat_loss < 0 ? '#f59e0b' : '#10b981');
+  maizeEl.style.color = maize_loss < -10 ? '#ef4444' : (maize_loss < 0 ? '#f59e0b' : '#10b981');
+
+  let diag = '';
+  if (adapt === 0 && (warm > 2.0 || ozo > 65)) {
+    scoreEl.innerText = 'Critical Risk';
+    scoreEl.style.color = '#ef4444';
+    diag = '🚨 Critical Food Security Threat: Unmitigated compound heat and ozone episodes cause massive yield collapse across major cereal and legume crops.';
+  } else if (adapt === 2) {
+    scoreEl.innerText = 'High Resilience';
+    scoreEl.style.color = '#10b981';
+    diag = '🌟 Climate-Smart Farming: Comprehensive agronomic adaptations, intercropping, and stress-tolerant cultivars completely neutralize compound atmospheric losses.';
+  } else {
+    scoreEl.innerText = 'Buffered';
+    scoreEl.style.color = '#38bdf8';
+    diag = '🛡️ Moderate Resilience: Agro-ecological techniques provide effective protection against seasonal volatility and ozone peaks.';
+  }
+  document.getElementById('crop-diag').innerText = diag;
+}
+window.addEventListener('load', updateCropSim);
+setTimeout(updateCropSim, 300);
+</script>
+```
+
+
+### Data and code
+
+- **Synthesis Framework**: Data sources, historical crop yield databases, and ozone exposure metrics are documented in the Frontiers in Climate archive.
+- **Reference Code**: Agricultural modeling scripts and visualization routines are open on GitHub: [`kamingfung/agri-climate-challenges`](https://github.com/kamingfung).
+
+## Key takeaways
+
+- Heat, flash drought and surface ozone hit crops in the same season, and together they cut photosynthetic carbon assimilation by $15–30\%$.
+- Ozone enters through open stomata, becomes reactive oxygen species and degrades RuBisCO; on its own it removes $5–15\%$ of global yield, and with heat it takes $4.4–12.4\%$ more from soybean, wheat and maize than heat alone.
+- Soybean and wheat ($\text{C}_3$) are the most ozone-sensitive staples; maize ($\text{C}_4$) is more exposed to heat at silking.
+- The four tiers (genetics, field design, water and nitrogen management, grain reserves and insurance) act at different scales and lead times, so none can substitute for another.
+- Tightening industrial $\text{NO}_x$ and methane ($\text{CH}_4$) limits raises wheat and soybean yields directly, and subsidies and crop insurance should reward the soil-building practices (cover crops, intercropping, reduced tillage) that build resilience to heat and drought.
+
+## References
+
+[^1]: Ainsworth, E. A., Yendrek, C. R., Sitch, S., Collins, W. J. & Emberson, L. D. The effects of tropospheric ozone on net primary productivity and implications for climate change. *Annu. Rev. Plant Biol.* **63**, 637–661 (2012). https://doi.org/10.1146/annurev-arplant-042811-105518
+[^2]: Tai, A. P. K., Martin, M. V. & Heald, C. L. Threat to future global food security from climate change and ozone air pollution. *Nature Clim. Change* **4**, 817–821 (2014). https://doi.org/10.1038/nclimate2317
+[^3]: Fung, K. M., Saikawa, E. & Tai, A. P. K. Agriculture and food supply challenges in a changing climate. *Front. Clim.* **4**, 1113825 (2023). https://doi.org/10.3389/fclim.2022.1113825
+[^4]: Lobell, D. B. et al. The critical role of extreme heat for maize production in the United States. *Nature Clim. Change* **3**, 497–501 (2013). https://doi.org/10.1038/nclimate1832
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/enhanced-rock-weathering-nitrogen.html"><span>Previous</span>Enhanced rock weathering</a><a class="mf-up" href="/series/air-land-climate/index.html"><span>Series</span>Air, Land and Climate</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

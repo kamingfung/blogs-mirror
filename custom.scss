@@ -1,0 +1,81 @@
+/*-- scss:defaults --*/
+// Layered on top of the generated _palette-*.scss, which sets $primary,
+// $link-color and the grounds from palette.yml. Nothing here may contain a
+// hex — same rule as the MkDocs repo: palette.yml is the only colour source.
+//
+// Quarto applies defaults layers in reverse listing order, so this file is
+// compiled BEFORE _palette-*.scss: $primary and friends do not exist yet here.
+// Anything that needs them belongs in the generated layer or in scss:rules.
+$toc-font-size: 0.85rem;
+$content-font-size: 1rem;
+
+/*-- scss:rules --*/
+// Measure. Material caps the column; Bootstrap does not.
+main.content,
+.quarto-title-block .quarto-title {
+  max-width: 46rem;
+}
+.page-columns .content {
+  line-height: 1.65;
+}
+
+// Callouts: the TL;DR block every post opens with.
+div.callout-note.callout-style-simple {
+  border-left: 3px solid var(--ink-indigo);
+  // Not --md-code-bg-color: that token is pinned dark for the ported widgets.
+  background: rgba($primary, 0.05);
+}
+div.callout-note .callout-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+// Mermaid figures sit on the page ground rather than a white card.
+.cell-output-display svg[id^="mermaid"],
+pre.mermaid svg {
+  background: transparent !important;
+  max-width: 100%;
+  height: auto;
+}
+
+// Notebook output: keep committed figures from overflowing, and let the wide
+// plotly frames scroll rather than push the column.
+.cell-output img {
+  max-width: 100%;
+  height: auto;
+}
+.cell-output-display > div[id^="plotly"],
+.cell-output-display > table {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+// The ported posts' hand-written widgets assume a dark card. Give the raw
+// HTML a predictable frame in both schemes.
+.quarto-dark .cell-output-display,
+.quarto-light .cell-output-display {
+  border-radius: 8px;
+}
+
+// Wide content scrolls inside its own box rather than clipping. The ported
+// posts carry hand-drawn ASCII figures well over the 46rem measure.
+main.content pre,
+main.content pre > code {
+  overflow-x: auto;
+  max-width: 100%;
+}
+main.content table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+// Listing cards.
+.quarto-listing .listing-title {
+  font-weight: 600;
+}
+.quarto-listing .listing-description {
+  opacity: 0.8;
+}

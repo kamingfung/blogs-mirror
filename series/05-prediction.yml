@@ -1,0 +1,136 @@
+# Weather, Climate and Prediction — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Weather, Climate and Prediction"
+slug: prediction
+order: 5
+about: "What can and cannot be predicted about the atmosphere, and the statistics you need to tell the difference."
+assumes: "Comfort with averages and histograms. Python for the notebooks."
+parts:
+  - title: "Weather or climate?"
+    modules:
+      - id: prediction/climate-vs-weather
+        title: "Climate vs weather"
+        level: introductory
+        path: blogs/climate-vs-weather/climate-vs-weather.ipynb
+      - id: prediction/what-a-climatology-is
+        title: "What a climatology is"
+        level: introductory
+      - id: prediction/anomalies
+        title: "Anomalies"
+        level: introductory
+  - title: "Limits of prediction"
+    modules:
+      - id: prediction/why-can-t-we-forecast-rain-six-months-out
+        title: "Why can't we forecast rain six months out?"
+        level: introductory
+        path: blogs/rainfall-predictability/why-cant-we-forecast-rain-six-months-out.ipynb
+      - id: prediction/chaos-in-a-toy-model
+        title: "Chaos in a toy model"
+        level: intermediate
+        requires:
+          - prediction/why-can-t-we-forecast-rain-six-months-out
+      - id: prediction/ensemble-forecasts
+        title: "Ensemble forecasts"
+        level: intermediate
+        requires:
+          - prediction/chaos-in-a-toy-model
+  - title: "Simple models that work"
+    modules:
+      - id: prediction/markov-chains-for-weather
+        title: "Markov chains for weather"
+        level: introductory
+        path: blogs/markov-weather/why-markov-chains-work-for-weather.ipynb
+        requires:
+          - prediction/climate-vs-weather
+          - prediction/why-can-t-we-forecast-rain-six-months-out
+      - id: prediction/persistence-and-climatology-baselines
+        title: "Persistence and climatology baselines"
+        level: introductory
+      - id: prediction/skill-scores
+        title: "Skill scores"
+        level: intermediate
+        requires:
+          - prediction/persistence-and-climatology-baselines
+  - title: "Trend and season"
+    modules:
+      - id: prediction/decomposing-hong-kong-temperature
+        title: "Decomposing Hong Kong temperature"
+        level: intermediate
+        path: blogs/detrending/detrend_hk_temperature.ipynb
+        requires:
+          - prediction/anomalies
+          - prediction/moving-averages-and-their-pitfalls
+      - id: prediction/moving-averages-and-their-pitfalls
+        title: "Moving averages and their pitfalls"
+        level: introductory
+  - title: "Modes of variability"
+    modules:
+      - id: prediction/enso
+        title: "ENSO"
+        level: introductory
+      - id: prediction/monsoons
+        title: "Monsoons"
+        level: introductory
+      - id: prediction/the-nao-and-blocking
+        title: "The NAO and blocking"
+        level: intermediate
+  - title: "Seasonal forecasting"
+    modules:
+      - id: prediction/why-seasonal-forecasting-is-possible-at-all
+        title: "Why seasonal forecasting is possible at all"
+        level: intermediate
+      - id: prediction/teleconnections
+        title: "Teleconnections"
+        level: intermediate
+  - title: "Extremes"
+    modules:
+      - id: prediction/return-periods
+        title: "Return periods"
+        level: intermediate
+        requires:
+          - statistics/normal-lognormal-poisson
+      - id: prediction/extreme-value-theory
+        title: "Extreme value theory"
+        level: advanced
+        requires:
+          - prediction/return-periods
+          - statistics/heavy-tails
+      - id: prediction/heatwaves-in-a-warming-climate
+        title: "Heatwaves in a warming climate"
+        level: intermediate
+  - title: "Detecting climate change"
+    modules:
+      - id: prediction/signal-and-noise-in-temperature-records
+        title: "Signal and noise in temperature records"
+        level: intermediate
+        requires:
+          - statistics/is-the-trend-significant
+      - id: prediction/attribution
+        title: "Attribution"
+        level: advanced
+  - title: "How weather models work"
+    modules:
+      - id: prediction/numerical-weather-prediction
+        title: "Numerical weather prediction"
+        level: intermediate
+      - id: prediction/data-assimilation
+        title: "Data assimilation"
+        level: advanced
+  - title: "From global to local"
+    modules:
+      - id: prediction/downscaling
+        title: "Downscaling"
+        level: intermediate
+      - id: prediction/bias-correction
+        title: "Bias correction"
+        level: intermediate
+  - title: "Climate scenarios"
+    modules:
+      - id: prediction/cmip-and-the-ssps
+        title: "CMIP and the SSPs"
+        level: introductory
+      - id: prediction/reading-a-climate-projection
+        title: "Reading a climate projection"
+        level: intermediate

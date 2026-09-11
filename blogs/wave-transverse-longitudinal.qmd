@@ -1,0 +1,256 @@
+---
+title: Transverse and longitudinal
+description: How waves are classified, and the physical difference between a wave on a string and a wave in air.
+date: 2026-08-27
+categories:
+- physics
+- mathematics
+- signal processing
+- acoustics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/waves/index.html">Waves, Sound and Imaging</a><span class="sep">·</span>Part 1 · What is a wave</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School physics and trigonometry.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Every wave moves energy without permanently moving matter. They divide by whether the oscillation runs across the direction of travel or along it.
+:::
+
+## By medium and by motion
+
+All waves fall into two broad physical categories and two geometric modes of oscillation:
+
+```{mermaid}
+graph TD
+    Waves["The Universe of Waves"]
+    
+    Waves --> Medium["By Physical Medium"]
+    Medium --> Mech["Mechanical Waves<br/>(Requires matter: Sound, Water, Seismic)"]
+    Medium --> EM["Electromagnetic Waves<br/>(Travels in vacuum: Light, Radio, X-Rays)"]
+    Medium --> Matter["Matter / Quantum Waves<br/>(de Broglie: λ = h/p)"]
+
+    Waves --> Motion["By Direction of Oscillation"]
+    Motion --> Trans["Transverse Waves<br/>(Oscillates PERPENDICULAR to propagation)"]
+    Motion --> Long["Longitudinal / Compression Waves<br/>(Oscillates PARALLEL to propagation)"]
+
+    class Waves indigo
+    class Mech plum
+    class EM sienna
+    class Matter rust
+    class Trans olive
+    class Long ochre
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+### Transverse versus longitudinal
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 466" style="width:100%;max-width:700px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Two panels comparing a transverse sine wave with vertical particle motion against a longitudinal wave shown as rows of particles bunched into compressions and rarefactions.">
+  <defs>
+    <marker id="wtA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--ink-rust)"/></marker>
+    <marker id="wtB" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="var(--ink-rust)"/></marker>
+    <marker id="wtP" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <text x="60" y="46" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">a  Transverse — matter moves across the direction of travel</text>
+  <text x="60" y="66" fill="var(--md-default-fg-color--light)" font-size="12.5">a guitar string, a water surface, light</text>
+  <line x1="107.5" y1="84" x2="257.5" y2="84" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <line x1="107.5" y1="84" x2="107.5" y2="94" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <line x1="257.5" y1="84" x2="257.5" y2="94" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="182.5" y="78" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="14" font-style="italic">λ</text>
+  <line x1="70.0" y1="140.0" x2="620.0" y2="140.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.45"/>
+  <polyline points="70.0,140.0 74.0,133.7 78.0,127.5 82.0,121.7 86.0,116.4 90.0,111.8 94.0,107.9 98.0,105.0 102.0,103.0 106.0,102.1 110.0,102.2 114.0,103.4 118.0,105.6 122.0,108.8 126.0,112.9 130.0,117.7 134.0,123.1 138.0,129.0 142.0,135.2 146.0,141.6 150.0,147.9 154.0,154.0 158.0,159.7 162.0,164.8 166.0,169.3 170.0,172.9 174.0,175.6 178.0,177.3 182.0,178.0 186.0,177.6 190.0,176.1 194.0,173.7 198.0,170.3 202.0,166.0 206.0,161.0 210.0,155.5 214.0,149.5 218.0,143.2 222.0,136.8 226.0,130.5 230.0,124.5 234.0,119.0 238.0,114.0 242.0,109.7 246.0,106.3 250.0,103.9 254.0,102.4 258.0,102.0 262.0,102.7 266.0,104.4 270.0,107.1 274.0,110.7 278.0,115.2 282.0,120.3 286.0,126.0 290.0,132.1 294.0,138.4 298.0,144.8 302.0,151.0 306.0,156.9 310.0,162.3 314.0,167.1 318.0,171.2 322.0,174.4 326.0,176.6 330.0,177.8 334.0,177.9 338.0,177.0 342.0,175.0 346.0,172.1 350.0,168.2 354.0,163.6 358.0,158.3 362.0,152.5 366.0,146.3 370.0,140.0 374.0,133.7 378.0,127.5 382.0,121.7 386.0,116.4 390.0,111.8 394.0,107.9 398.0,105.0 402.0,103.0 406.0,102.1 410.0,102.2 414.0,103.4 418.0,105.6 422.0,108.8 426.0,112.9 430.0,117.7 434.0,123.1 438.0,129.0 442.0,135.2 446.0,141.6 450.0,147.9 454.0,154.0 458.0,159.7 462.0,164.8 466.0,169.3 470.0,172.9 474.0,175.6 478.0,177.3 482.0,178.0 486.0,177.6 490.0,176.1 494.0,173.7 498.0,170.3 502.0,166.0 506.0,161.0 510.0,155.5 514.0,149.5 518.0,143.2 522.0,136.8 526.0,130.5 530.0,124.5 534.0,119.0 538.0,114.0 542.0,109.7 546.0,106.3 550.0,103.9 554.0,102.4 558.0,102.0 562.0,102.7 566.0,104.4 570.0,107.1 574.0,110.7 578.0,115.2 582.0,120.3 586.0,126.0 590.0,132.1 594.0,138.4 598.0,144.8 602.0,151.0 606.0,156.9 610.0,162.3 614.0,167.1 618.0,171.2" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.8"/>
+  <line x1="107.5" y1="102.0" x2="107.5" y2="178.0" stroke="var(--ink-rust)" stroke-width="2.4" marker-start="url(#wtB)" marker-end="url(#wtA)"/>
+  <text x="96" y="202" fill="var(--ink-rust)" font-size="12.5" font-weight="600">particle motion</text>
+  <line x1="470" y1="200" x2="620" y2="200" stroke="var(--md-default-fg-color--light)" stroke-width="1.8" marker-end="url(#wtP)"/>
+  <text x="545" y="220" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">energy travels this way</text>
+  <line x1="60" y1="246" x2="640" y2="246" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.25"/>
+  <text x="60" y="278" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">b  Longitudinal — matter moves along the direction of travel</text>
+  <text x="60" y="298" fill="var(--md-default-fg-color--light)" font-size="12.5">sound in air, ultrasound, seismic P-waves</text>
+  <line x1="232" y1="316" x2="268" y2="316" stroke="var(--ink-rust)" stroke-width="2.4" marker-start="url(#wtB)" marker-end="url(#wtA)"/>
+  <text x="278" y="320" fill="var(--ink-rust)" font-size="12.5" font-weight="600">particle motion</text>
+  <line x1="470" y1="316" x2="620" y2="316" stroke="var(--md-default-fg-color--light)" stroke-width="1.8" marker-end="url(#wtP)"/>
+  <text x="545" y="302" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">energy travels this way</text>
+  <circle cx="89.0" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="101.5" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="111.5" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="120.3" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="129.7" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="141.2" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="155.6" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="172.9" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="191.8" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="210.8" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="228.2" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="242.9" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="254.6" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="264.1" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="272.9" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="282.7" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="295.0" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="310.3" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="328.2" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="347.3" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="366.0" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="382.7" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="396.5" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="407.4" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="416.6" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="425.5" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="435.9" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="449.1" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="465.2" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="483.6" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="502.8" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="521.1" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="537.0" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="549.9" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="560.2" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="569.1" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="578.3" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="589.4" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="603.4" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="620.3" cy="334" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="89.0" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="101.5" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="111.5" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="120.3" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="129.7" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="141.2" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="155.6" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="172.9" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="191.8" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="210.8" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="228.2" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="242.9" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="254.6" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="264.1" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="272.9" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="282.7" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="295.0" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="310.3" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="328.2" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="347.3" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="366.0" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="382.7" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="396.5" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="407.4" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="416.6" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="425.5" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="435.9" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="449.1" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="465.2" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="483.6" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="502.8" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="521.1" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="537.0" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="549.9" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="560.2" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="569.1" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="578.3" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="589.4" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="603.4" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="620.3" cy="356" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="89.0" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="101.5" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="111.5" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="120.3" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="129.7" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="141.2" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="155.6" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="172.9" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="191.8" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="210.8" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="228.2" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="242.9" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="254.6" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="264.1" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="272.9" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="282.7" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="295.0" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="310.3" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="328.2" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="347.3" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="366.0" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="382.7" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="396.5" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="407.4" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="416.6" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="425.5" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="435.9" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="449.1" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="465.2" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="483.6" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="502.8" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="521.1" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="537.0" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="549.9" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="560.2" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="569.1" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="578.3" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="589.4" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="603.4" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <circle cx="620.3" cy="378" r="2.7" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+  <text x="117" y="406" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12" font-weight="600">compression</text>
+  <text x="417" y="406" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12" font-weight="600">compression</text>
+  <text x="192" y="426" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">rarefaction</text>
+  <text x="492" y="426" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">rarefaction</text>
+  <text x="60" y="452" fill="var(--md-default-fg-color--light)" font-size="12.5">The medium only oscillates about a fixed point; what advances is the pattern, never the matter.</text>
+</svg>
+<figcaption><strong>Figure 1 | What separates sound from light is not the direction energy goes but the direction matter moves.</strong> Both panels carry energy left to right, and in both the individual particles (magenta double-arrows) merely oscillate about a fixed equilibrium. In a transverse wave that oscillation is perpendicular to travel, producing crests and troughs and allowing polarisation — a filter can pass one oscillation axis and block the other. In a longitudinal wave the oscillation is parallel to travel, so instead of crests there are alternating compressions and rarefactions: regions where the particles crowd together and thin out. There is no transverse axis left to filter, which is why sound cannot be polarised.</figcaption>
+</figure>
+```
+
+
+| Feature | Transverse Waves | Longitudinal Waves |
+| :--- | :--- | :--- |
+| **Oscillation Direction** | **Perpendicular** ($\perp$) to energy flow | **Parallel** ($\parallel$) to energy flow |
+| **Key Features** | Crests (peaks) and Troughs (valleys) | Compressions (high density) & Rarefactions (low density) |
+| **Medium Requirements** | Solids, liquid surfaces, or vacuum (EM light) | Any elastic medium (gases, liquids, solids) |
+| **Polarization** | **Can be polarized** (horizontal/vertical filters) | **Cannot be polarized** |
+| **Prime Examples** | Plucked guitar string, light waves, seismic S-waves | Sound in air ($343\text{ m/s}$), seismic P-waves, speaker cones |
+
+## What the medium has to supply
+
+The split between the two geometries is not a matter of taste; it is decided by the restoring force the medium can supply. A transverse wave needs the medium to resist being sheared, because each element is dragged sideways by its neighbours and must pull back. Solids do that, and so does a stretched string or the surface of a liquid under gravity and surface tension. The interior of a fluid does not: push a parcel of air or water sideways and nothing pulls it home. A longitudinal wave needs only that the medium resist compression, and every material does that to some degree, which is why sound travels through gases, liquids and solids alike.
+
+Seismology turns this into a measurement. An earthquake launches both kinds of wave: compressional P-waves, which pass through anything, and shear S-waves, which cannot cross a liquid. Seismographs on the far side of the Earth record P-waves but no direct S-waves in the region shadowed by the core, and that shadow is the evidence that the outer core is liquid.
+
+Light is the exception that fits the rule. Electromagnetic waves need no medium at all; what oscillates is the electric and magnetic field, and Maxwell's equations require both fields to lie perpendicular to the direction of travel. That is why light is transverse, why it can be polarised, and why polarising sunglasses cut glare from a road or a water surface: the reflected light is largely polarised in one plane, and the filter blocks that plane.
+
+## Speed depends on the medium, not on the wave
+
+For both geometries the speed is set by a stiffness divided by an inertia. A stiffer medium snaps back faster; a denser one is slower to move. Some representative values for sound:
+
+| Medium | Speed of sound | Why |
+| :--- | :--- | :--- |
+| Air at $20^\circ\text{C}$ | $343\text{ m/s}$ | Low stiffness, low density |
+| Water | $\approx 1480\text{ m/s}$ | Nearly incompressible, but dense |
+| Steel | $\approx 5900\text{ m/s}$ | Very stiff; stiffness wins over density |
+
+Light in vacuum travels at $c \approx 3.00 \times 10^{8}\text{ m/s}$, roughly a million times faster than sound in air, which is why lightning is seen before the thunder is heard: sound needs about three seconds to cover a kilometre.
+
+The same ordering, stiffness over inertia, is why a taut string carries a wave faster than a slack one, and why a thin string carries it faster than a thick one at the same tension. The next module makes this quantitative with $v = \sqrt{T/\mu}$ for a string and $v = \sqrt{B/\rho}$ for sound.
+
+## Key takeaways
+
+- A wave transports energy through a medium while the medium itself only oscillates about a fixed point; the pattern advances, the matter does not.
+- Waves are classified twice: by what carries them (mechanical, electromagnetic or quantum) and by which way the medium moves relative to the direction of travel.
+- Transverse waves oscillate perpendicular to travel, so they have crests and troughs and can be polarised; light and a plucked string are the examples to remember.
+- Longitudinal waves oscillate parallel to travel, so they have compressions and rarefactions instead of crests and cannot be polarised; sound in air is the canonical case.
+- Transverse mechanical waves need a medium that resists shear, so they travel in solids and on surfaces but not through the bulk of a fluid; longitudinal waves need only compressibility, and the speed of either is a stiffness over an inertia.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/waves/index.html"><span>Series</span>Waves, Sound and Imaging</a><a class="mf-next" href="/blogs/describing-a-wave.html"><span>Next</span>Describing a wave</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

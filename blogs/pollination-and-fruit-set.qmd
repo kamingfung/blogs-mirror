@@ -1,0 +1,60 @@
+---
+title: Pollination and fruit set
+description: A blueberry flower hides its pollen behind two pores that only release it under vibration, and most cultivars need pollen from a genetically different plant. Both facts explain why bees are rented by the hive.
+date: 2026-09-06
+categories:
+- plant biology
+- pollination
+- horticulture
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a><span class="sep">·</span>Part 2 · From flower to fruit</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School biology. The forecasting series models this crop&#x27;s data; this series explains where the data comes from.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+A blueberry flower's anthers open only through two small pores at the tip, and shed pollen only when vibrated at the right frequency, which is why bumblebees, not honeybees, are the more efficient pollinator. Many cultivars are also self-incompatible, setting little fruit from their own pollen, and berries from well-pollinated flowers end up both more numerous and larger, because seed number and berry size are linked.
+:::
+
+## A flower built to withhold its pollen
+
+Most flowers shed pollen from anthers that split open along a seam as soon as they mature. A blueberry flower's anthers instead form two narrow tubes, each closed except for a pore at the tip, and pollen only falls out when something shakes the flower hard enough to jolt it loose through those pores. This is buzz pollination, and it is not incidental: it means an insect that cannot vibrate at the right frequency leaves with little or no pollen, and a flower is not raided empty by every passing visitor.
+
+Bumblebees and several solitary bees can detach their flight muscles from their wings and vibrate their thorax directly against the anthers, a technique honeybees cannot perform. Where growers rely on rented honeybee hives alone, pollination is measurably less efficient per visit than where bumblebees or solitary bees are present, which is why many commercial plantings deliberately bring in bumblebee colonies alongside honeybee hives rather than one or the other.
+
+```{mermaid}
+flowchart LR
+    Bud["Flower opens"] --> Visit["Bee lands, vibrates thorax"]
+    Visit --> Release["Pollen released through anther pores"]
+    Release --> Transfer["Carried to a stigma"]
+    Transfer --> Fert{"Compatible pollen?"}
+    Fert -- "Same clone" --> Poor["Few ovules fertilised<br/>small, seedless-leaning berry"]
+    Fert -- "Different cultivar" --> Good["Many ovules fertilised<br/>larger, well-formed berry"]
+
+    class Bud plum
+    class Good olive
+    class Poor rust
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+## Why the flower needs a different plant, not just a visit
+
+Many highbush blueberry cultivars are partly or largely self-incompatible: a flower's own pollen, or pollen from a genetically identical plant, fertilises few of its ovules even when it is delivered. A single-cultivar block, however well visited by bees, can set poorly for this reason alone. Commercial plantings interplant two or more compatible cultivars, or rely on nearby wild pollen sources, specifically so that cross-pollen is what the bees are actually moving between visits.
+
+The payoff for good cross-pollination is not just more fruit; it is bigger fruit. Each ovule that gets fertilised develops into a seed, and a developing seed releases hormones that recruit surrounding tissue growth, so a berry with more fertilised ovules grows larger fruit flesh around them. Poorly pollinated flowers tend to abort or set small, sparsely seeded berries, which is why pollination quality shows up later as a size distribution, not only a fruit count.
+
+## Key takeaways
+
+- Blueberry anthers release pollen only through two tip pores under vibration; bumblebees and some solitary bees buzz-pollinate efficiently, honeybees cannot.
+- Many cultivars are self-incompatible, so cross-pollen from a genetically different cultivar is needed for good fruit set, not just any pollinator visit.
+- Seed number and berry size are linked, because each fertilised ovule recruits growth into the surrounding fruit tissue.
+- A successfully fertilised flower now has ovules to grow around; the next module follows what those cells do first.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/the-carbon-budget-of-a-bush.html"><span>Previous</span>The carbon budget of a bush</a><a class="mf-up" href="/series/plants/index.html"><span>Series</span>Plant biology, one blueberry at a time</a><a class="mf-next" href="/blogs/cell-division-then-cell-expansion.html"><span>Next</span>Cell division, then cell expansion</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

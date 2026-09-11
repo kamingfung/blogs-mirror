@@ -1,0 +1,96 @@
+# Statistics — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Statistics"
+slug: statistics
+order: 6
+about: "The statistics the other series lean on, kept short and separate so any module can point here."
+assumes: "School maths. Python or R for the notebooks."
+parts:
+  - title: "Describing data"
+    modules:
+      - id: statistics/histograms-quantiles-and-qq-plots
+        title: "Histograms, quantiles and QQ plots"
+        level: introductory
+      - id: statistics/mean-median-and-when-they-disagree
+        title: "Mean, median, and when they disagree"
+        level: introductory
+      - id: statistics/variance-and-standard-error
+        title: "Variance and standard error"
+        level: introductory
+  - title: "Comparing two samples"
+    modules:
+      - id: statistics/the-kolmogorovsmirnov-test
+        title: "The Kolmogorov–Smirnov test"
+        level: intermediate
+        path: blogs/ks_test/ks_test.ipynb
+        requires:
+          - statistics/histograms-quantiles-and-qq-plots
+          - statistics/what-a-p-value-is-not
+      - id: statistics/the-t-test-and-when-not-to-use-it
+        title: "The t-test, and when not to use it"
+        level: introductory
+      - id: statistics/permutation-tests
+        title: "Permutation tests"
+        level: intermediate
+        requires:
+          - statistics/the-t-test-and-when-not-to-use-it
+  - title: "Resampling"
+    modules:
+      - id: statistics/bootstrapping
+        title: "Bootstrapping"
+        level: intermediate
+        requires:
+          - statistics/variance-and-standard-error
+      - id: statistics/cross-validation
+        title: "Cross-validation"
+        level: intermediate
+  - title: "Regression"
+    modules:
+      - id: statistics/least-squares
+        title: "Least squares"
+        level: introductory
+      - id: statistics/is-the-trend-significant
+        title: "Is the trend significant?"
+        level: intermediate
+        requires:
+          - statistics/least-squares
+          - statistics/confidence-intervals
+      - id: statistics/reading-residuals
+        title: "Reading residuals"
+        level: intermediate
+  - title: "Uncertainty"
+    modules:
+      - id: statistics/confidence-intervals
+        title: "Confidence intervals"
+        level: introductory
+      - id: statistics/what-a-p-value-is-not
+        title: "What a p-value is not"
+        level: introductory
+  - title: "Distributions"
+    modules:
+      - id: statistics/normal-lognormal-poisson
+        title: "Normal, lognormal, Poisson"
+        level: introductory
+      - id: statistics/heavy-tails
+        title: "Heavy tails"
+        level: intermediate
+  - title: "Bayesian basics"
+    modules:
+      - id: statistics/bayes-rule
+        title: "Bayes' rule"
+        level: introductory
+      - id: statistics/priors-in-practice
+        title: "Priors in practice"
+        level: intermediate
+        requires:
+          - statistics/bayes-rule
+  - title: "Experimental design"
+    modules:
+      - id: statistics/controls-and-randomisation
+        title: "Controls and randomisation"
+        level: introductory
+      - id: statistics/power-and-how-many-samples
+        title: "Power, and how many samples"
+        level: intermediate

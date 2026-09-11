@@ -1,0 +1,93 @@
+# Engineering in Action — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Engineering in Action"
+slug: engineering
+order: 11
+about: "Building things that work, from Python tooling and AI agents to a 3D-printed cast."
+assumes: "Some programming."
+parts:
+  - title: "Reading your own code"
+    modules:
+      - id: engineering/the-sneaky-comma-inlay-type-hints
+        title: "The sneaky comma: inlay type hints"
+        level: introductory
+        path: blogs/typing.md
+      - id: engineering/linters-and-formatters
+        title: "Linters and formatters"
+        level: introductory
+      - id: engineering/type-checkers
+        title: "Type checkers"
+        level: intermediate
+        requires:
+          - engineering/the-sneaky-comma-inlay-type-hints
+  - title: "Working with AI agents"
+    modules:
+      - id: engineering/harness-engineering
+        title: "Harness engineering"
+        level: intermediate
+        path: blogs/harness-engineering.md
+        requires:
+          - engineering/instructions-that-agents-actually-follow
+      - id: engineering/instructions-that-agents-actually-follow
+        title: "Instructions that agents actually follow"
+        level: intermediate
+      - id: engineering/evaluating-agent-output
+        title: "Evaluating agent output"
+        level: intermediate
+        requires:
+          - engineering/harness-engineering
+  - title: "Small tools people use"
+    modules:
+      - id: engineering/total-return-and-reinvested-dividends
+        title: "Total return and reinvested dividends"
+        level: introductory
+        path: blogs/investment-comparator.md
+        note: "Placed here as a Streamlit tool. Confirm."
+      - id: engineering/from-notebook-to-app
+        title: "From notebook to app"
+        level: introductory
+      - id: engineering/deploying-a-streamlit-app
+        title: "Deploying a Streamlit app"
+        level: introductory
+        requires:
+          - engineering/from-notebook-to-app
+  - title: "Reproducible analysis"
+    modules:
+      - id: engineering/environments-that-don-t-break
+        title: "Environments that don't break"
+        level: introductory
+      - id: engineering/notebooks-vs-scripts
+        title: "Notebooks vs scripts"
+        level: introductory
+      - id: engineering/testing-analysis-code
+        title: "Testing analysis code"
+        level: intermediate
+        requires:
+          - engineering/notebooks-vs-scripts
+  - title: "Version control for scientists"
+    modules:
+      - id: engineering/git-for-one-person
+        title: "Git for one person"
+        level: introductory
+      - id: engineering/git-for-a-team
+        title: "Git for a team"
+        level: intermediate
+        requires:
+          - engineering/git-for-one-person
+  - title: "Physical engineering"
+    modules:
+      - id: engineering/why-triangles-3d-printed-cast-geometry
+        title: "Why triangles? 3D-printed cast geometry"
+        level: intermediate
+        path: blogs/triangular-cast-geometry.md
+        note: "Placed here as engineering rather than imaging. Confirm."
+      - id: engineering/finite-elements-in-ten-minutes
+        title: "Finite elements in ten minutes"
+        level: intermediate
+        requires:
+          - engineering/why-triangles-3d-printed-cast-geometry
+      - id: engineering/3d-printing-basics
+        title: "3D printing basics"
+        level: introductory

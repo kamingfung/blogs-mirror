@@ -1,0 +1,212 @@
+---
+title: Fertiliser nitrogen and aerosol cooling in CESM2
+description: Coupling nitrogen between the land and atmosphere models in CESM2. Fertiliser turns out to make aerosols that mask regional warming.
+date: 2026-08-27
+categories:
+- climate modeling
+- earth system science
+- nitrogen cycle
+- aerosol radiative forcing
+- land atmosphere interactions
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/air-land-climate/index.html">Air, Land and Climate</a><span class="sep">·</span>Part 6 · Fertiliser and the atmosphere</p><p class="mh-facts"><span class="lvl lvl-advanced">Advanced</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">What an Earth system model is</span>, <span class="unwritten" title="not written yet">Fixed nitrogen</span> and <a href="/blogs/kohler-theory.html">Köhler theory</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Climate models usually feed agricultural ammonia ($\text{NH}_3$) in as a fixed offline inventory, so the land and the atmosphere never talk. We built a bidirectional reactive-nitrogen coupler between $\text{CLM5}$ and $\text{CAM6}$ inside $\text{CESM2}$: dynamic emissions come out at $42.3\text{ Tg N yr}^{-1}$, the ammonium nitrate burden rises $72\%$, and the net forcing is $-0.24\text{ W m}^{-2}$ globally and up to $-1.8\text{ W m}^{-2}$ over Asia. After this module you can explain why that cooling masks regional warming and why cleaning the air would unmask it.
+:::
+
+## The loop that offline emissions break
+
+In the real Earth system, agricultural nitrogen runs in a closed loop from soil to air and back:
+
+```{mermaid}
+flowchart TD
+    Soil["Agricultural Soil (CLM5)<br/>Synthetic N Fertilizer + Manure"] -->|"Dynamic Volatilization (pH, Moisture, Temp)"| AtmGas["Atmospheric NH3 Gas"]
+    AtmGas -->|"Thermodynamic Gas-Aerosol Partitioning (MOSAIC/ISORROPIA)"| NitrateAerosol["Ammonium Nitrate Aerosols (NH4NO3)"]
+    
+    NitrateAerosol -->|Direct Aerosol Scattering| DirectCooling["Direct Radiative Cooling (-0.08 W/m²)"]
+    NitrateAerosol -->|"Cloud Condensation Nuclei (CCN)"| IndirectCooling["Cloud Albedo Indirect Cooling (-0.16 W/m²)"]
+    
+    DirectCooling & IndirectCooling --> TempDrop["Regional Surface Temperature Dimming (-0.15 to -0.35°C)"]
+    
+    NitrateAerosol -->|Wet & Dry Atmospheric Deposition| NaturalEcosystems["Remote Natural Forests & Grasslands (N Deposition)"]
+    NaturalEcosystems -->|"Carbon Sequestration (N-Stimulated Growth)"| CarbonSink["Enhanced Terrestrial Carbon Sink"]
+
+    class Soil olive
+    class AtmGas ochre
+    class NitrateAerosol indigo
+    class TempDrop plum
+    class CarbonSink sage
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+Historically, global models broke this loop: land models calculated soil nitrogen without atmospheric chemistry, while atmospheric models prescribed static, fixed monthly ammonia emission inventories[^1].
+
+## Closing the loop inside CESM2
+
+In our paper in *Biogeosciences*[^2], we built a bidirectional land-atmosphere nitrogen coupling inside **CESM2** in three pieces:
+
+1. **Dynamic Soil Volatilization in CLM5**: Rather than static emissions, soil $\text{NH}_3$ volatilization is calculated at every 30-minute model time step as a function of soil ammonium pool size, instantaneous topsoil $\text{pH}$, soil temperature, and moisture content:
+   $$E_{\text{NH}_3} = k_{\text{vol}}(T_{\text{soil}}, \theta_{\text{soil}}) \cdot \left[ \text{NH}_4^+ \right]_{\text{soil}} \cdot f(\text{pH})$$
+2. **Thermodynamic Gas-Aerosol Equilibrium in CAM6**: Gas-phase $\text{NH}_3$ is dynamically passed through the CESM coupler into CAM6-chem, where it interacts with sulfate and nitric acid ($\text{HNO}_3$) to form fine **ammonium nitrate ($\text{NH}_4\text{NO}_3$)** and **ammonium sulfate ($(\text{NH}_4)_2\text{SO}_4$)** aerosols via the Modal Aerosol Module (MAM4)[^3].
+3. **Closed Nitrogen Deposition Return**: Wet and dry deposition fluxes are continuously fed back to natural ecosystems in CLM5, stimulating vegetation carbon uptake.
+
+## What the coupled run changes
+
+Coupling changes the emission budget, then the aerosol burden, then the forcing:
+
+| Component | Uncoupled Baseline | Bidirectional Coupled CESM2 | Climate Impact |
+| :--- | :--- | :--- | :--- |
+| **Global Agricultural $\text{NH}_3$ Flux** | $34.2\text{ Tg N yr}^{-1}$ (fixed) | **$42.3\text{ Tg N yr}^{-1}$ (dynamic)** | Captures hot-season spikes |
+| **Global $\text{NH}_4\text{NO}_3$ Aerosol Burden** | $0.18\text{ Tg}$ | **$0.31\text{ Tg}$ ($+72\%$)** | Substantial aerosol expansion |
+| **Direct Aerosol Radiative Forcing** | $-0.03\text{ W m}^{-2}$ | **$-0.08\text{ W m}^{-2}$** | Direct solar reflection |
+| **Indirect Cloud Albedo Forcing** | $-0.07\text{ W m}^{-2}$ | **$-0.16\text{ W m}^{-2}$** | Brighter agricultural clouds |
+| **Total Effective Radiative Forcing ($\Delta F_{\text{net}}$)** | $-0.10\text{ W m}^{-2}$ | **$-0.24\text{ W m}^{-2}$** | **Net cooling amplification** |
+| **Regional Cooling (East Asia & Indo-Gangetic Plain)** | $-0.05^\circ\text{C}$ | **$-0.15\text{ to }-0.35^\circ\text{C}$** | Masks greenhouse warming |
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 316" style="width:100%;max-width:700px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Horizontal bars extending left from zero: direct solar reflection at minus 0.58 watts per square metre, cloud albedo modification at minus 1.22, and a net regional forcing of minus 1.80, compared with a global mean of minus 0.24.">
+<text x="40" y="28" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">Over the fertilised belts, the cooling runs about seven times the global mean</text>
+<line x1="660" y1="58" x2="660" y2="288" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<text x="668" y="62" fill="var(--md-default-fg-color--light)" font-size="12">0</text>
+<text x="40" y="64" fill="var(--ink-indigo)" font-size="14.5" font-weight="600">Direct solar reflection</text>
+<rect x="521" y="72" width="139" height="30" rx="3" fill="var(--ink-indigo)" fill-opacity="0.85"/>
+<text x="509" y="92" text-anchor="end" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">&#8722;0.58 W m&#8315;&#178;</text>
+<text x="40" y="118" fill="var(--md-default-fg-color--light)" font-size="12.5">aerosol particles scatter sunlight straight back to space &#183; global mean: &#8722;0.08 W m&#8315;&#178;</text>
+<text x="40" y="146" fill="var(--ink-rust)" font-size="14.5" font-weight="600">Cloud albedo modification</text>
+<rect x="367" y="154" width="293" height="30" rx="3" fill="var(--ink-rust)" fill-opacity="0.85"/>
+<text x="355" y="174" text-anchor="end" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">&#8722;1.22 W m&#8315;&#178;</text>
+<text x="40" y="200" fill="var(--md-default-fg-color--light)" font-size="12.5">extra nuclei make agricultural clouds brighter and longer-lived &#183; global mean: &#8722;0.16 W m&#8315;&#178;</text>
+<line x1="40" y1="216" x2="660" y2="216" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="5 5"/>
+<text x="40" y="240" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Net regional forcing</text>
+<rect x="228" y="248" width="432" height="34" rx="3" fill="var(--md-default-fg-color)" fill-opacity="0.78"/>
+<text x="216" y="270" text-anchor="end" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">&#8722;1.80 W m&#8315;&#178;</text>
+<text x="40" y="300" fill="var(--md-default-fg-color--light)" font-size="12.5">against a global-mean total of &#8722;0.24 W m&#8315;&#178;: the signal is local, not planetary</text>
+</svg>
+<figcaption><strong>Figure 1 | Fertilizer aerosol cooling is a regional signal that global means all but erase.</strong> Bars run leftward from zero because both pathways cool. Direct scattering by $\text{NH}_4\text{NO}_3$ particles (blue) contributes $-0.58\ \text{W m}^{-2}$ over East Asia and the Indo-Gangetic Plain, while the cloud-albedo response (magenta) contributes more than twice that, $-1.22\ \text{W m}^{-2}$, because the same particles act as cloud condensation nuclei. Together they reach $-1.80\ \text{W m}^{-2}$ locally &#8212; roughly seven times the global-mean $-0.24\ \text{W m}^{-2}$ &#8212; which is why the coupling masks greenhouse warming exactly where the fertilizer is applied and is invisible in a global average.</figcaption>
+</figure>
+```
+
+
+### Explore the two levers
+
+Ammonium nitrate needs both ammonia and nitric acid, so move the fertiliser slider and the $\text{NO}_x$ scenario separately and watch which one limits the aerosol:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <h4 style="margin-top: 0; color: #38bdf8;">🌐 Coupled Land-Atmosphere Nitrogen-Climate Gauge</h4>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; color: #10b981;">Global Fertilizer Application: <b id="fert-val">100% (Baseline)</b></label>
+      <input type="range" id="sim-cesm-fert" min="50" max="200" value="100" step="10" oninput="updateCesmSim()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #38bdf8;">Industrial NOx Emission Scenario:</label>
+      <select id="sim-cesm-nox" onchange="updateCesmSim()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
+        <option value="1.0" selected>Current High NOx (Abundant HNO3)</option>
+        <option value="0.5">Strict Clean Air NOx Controls (-50%)</option>
+        <option value="0.2">Deep Decarbonization NOx (-80%)</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px;">
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
+      <div style="font-size: 0.75em; color: #94a3b8;">NH₃ Volatilization</div>
+      <div id="res-nh3-flux" style="font-size: 1.3em; font-weight: 700; color: #f59e0b;">42.3 Tg N/yr</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
+      <div style="font-size: 0.75em; color: #94a3b8;">NH₄NO₃ Aerosol Burden</div>
+      <div id="res-aero-mass" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">0.31 Tg</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #6366f1;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Global Radiative Forcing</div>
+      <div id="res-rf-net" style="font-size: 1.3em; font-weight: 700; color: #6366f1;">-0.24 W/m²</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Regional Cooling Mask</div>
+      <div id="res-cool-mask" style="font-size: 1.3em; font-weight: 700; color: #10b981;">-0.25 °C</div>
+    </div>
+  </div>
+
+  <div id="cesm-diag" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
+    At baseline fertilization, agricultural aerosol formation exerts a noticeable regional cooling masking effect over East Asia.
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+function updateCesmSim() {
+  const fertScale = parseFloat(document.getElementById('sim-cesm-fert').value) / 100;
+  const noxScale = parseFloat(document.getElementById('sim-cesm-nox').value);
+
+  document.getElementById('fert-val').innerText = Math.round(fertScale * 100) + '%';
+
+  const base_nh3 = 42.3;
+  const nh3_flux = (base_nh3 * fertScale).toFixed(1);
+  
+  // Aerosol formation is limited by BOTH NH3 and NOx (HNO3)
+  const aero_factor = Math.min(fertScale, noxScale * 1.2);
+  const aero_mass = (0.31 * Math.pow(fertScale * noxScale, 0.75)).toFixed(2);
+  const rf_net = (-0.24 * aero_mass / 0.31).toFixed(2);
+  const cool_mask = (-0.25 * aero_mass / 0.31).toFixed(2);
+
+  document.getElementById('res-nh3-flux').innerText = nh3_flux + ' Tg N/yr';
+  document.getElementById('res-aero-mass').innerText = aero_mass + ' Tg';
+  document.getElementById('res-rf-net').innerText = rf_net + ' W/m²';
+  document.getElementById('res-cool-mask').innerText = cool_mask + ' °C';
+
+  let diag = '';
+  if (noxScale < 0.4) {
+    diag = '⚡ Deep Industrial NOx Abatement: Slashes atmospheric nitric acid, decoupling agricultural ammonia from nitrate aerosol formation and unmasking regional greenhouse warming.';
+  } else if (fertScale > 1.4) {
+    diag = '🌾 Heavy Agricultural Expansion: Surging ammonia emissions drive intense regional aerosol cooling over agricultural breadbaskets, but at the cost of severe particulate air pollution.';
+  } else {
+    diag = '🌍 Balanced Coupling: Land-atmosphere nitrogen interactions produce -0.24 W/m² global cooling while sustaining downwind ecosystem nitrogen deposition.';
+  }
+  document.getElementById('cesm-diag').innerText = diag;
+}
+window.addEventListener('load', updateCesmSim);
+setTimeout(updateCesmSim, 300);
+</script>
+```
+
+
+### Data and code
+
+- **Earth System Model**: The bidirectional nitrogen coupler code is implemented in the **Community Earth System Model (CESM2.1 / CAM6-chem / CLM5)**.
+- **Model Archives**: Simulation output files and namelists are archived on the [NCAR Climate Data Gateway](https://www.earthsystemgrid.org).
+- **Source Scripts**: Analysis and plotting code are hosted on GitHub: [`kamingfung/CESM2-Coupled-Nitrogen`](https://github.com/kamingfung).
+
+## Key takeaways
+
+- Offline ammonia inventories sever the land-atmosphere nitrogen loop; coupling CLM5 volatilisation to CAM6 chemistry at every 30-minute step restores it.
+- Dynamic emissions are larger than the fixed inventory ($42.3$ versus $34.2\text{ Tg N yr}^{-1}$) because they capture hot-season spikes, and the ammonium nitrate burden rises $72\%$.
+- The aerosols cool: $-0.24\text{ W m}^{-2}$ globally, but $-1.8\text{ W m}^{-2}$ and $-0.15$ to $-0.35^\circ\text{C}$ over East Asia and the Indo-Gangetic Plain. The signal is regional and a global mean hides it.
+- Cutting agricultural $\text{NH}_3$ and industrial $\text{NO}_x$ is needed to protect people from $\text{PM}_{2.5}$, and doing so removes this cooling mask and accelerates near-term regional warming.
+- Aerosol abatement therefore has to run alongside cuts in short-lived warmers ($\text{CH}_4$, black carbon, hydrofluorocarbons) to avoid a warming step as the air clears.
+
+## References
+
+[^1]: Lamarque, J.-F. et al. The Atmospheric Chemistry and Climate Model Intercomparison Project (ACCMIP): overview and description of models, simulations and evaluation. *Atmos. Chem. Phys.* **13**, 1793–1832 (2013). https://doi.org/10.5194/acp-13-1793-2013
+[^2]: Fung, K. M., Val Martin, M. & Tai, A. P. K. Modeling the interinfluence of fertilizer-induced $\text{NH}_3$ emission, nitrogen deposition, and aerosol radiative effects using modified CESM2. *Biogeosciences* **19**, 1635–1655 (2022). https://doi.org/10.5194/bg-19-1635-2022
+[^3]: Liu, X. et al. Description and evaluation of a new four-mode version of the Modal Aerosol Module (MAM4) in the Community Atmosphere Model (CAM5). *Geosci. Model Dev.* **9**, 505–526 (2016). https://doi.org/10.5194/gmd-9-505-2016
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/ammonia-deposition-ozone.html"><span>Previous</span>Ammonia deposition and ozone feedbacks</a><a class="mf-up" href="/series/air-land-climate/index.html"><span>Series</span>Air, Land and Climate</a><a class="mf-next" href="/blogs/intercropping-air-quality.html"><span>Next</span>Intercropping</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

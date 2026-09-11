@@ -1,0 +1,93 @@
+---
+title: Grading, and what happens when you teach
+description: The A to F scale as a records invention rather than a teaching tool, and what survived contact with a real syllabus and a taught lesson.
+date: 2026-08-28
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/teaching-leading/index.html">Teaching and Leading</a><span class="sep">·</span>Part 7 · Grading</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Nothing. Parts alternate between the classroom idea and its use at work.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+The A-F scale is an administrative invention from the 1940s built for record-keeping, not a pedagogical instrument (Schinske & Tanner). McClymer & Knoles name the failure it produces — **ersatz learning**, where students pass by pattern-matching the contrived shape of an exam question. Writing a real syllabus and teaching a real lesson is where that critique stops being theoretical.
+:::
+
+The last stretch of KTCP covers grading philosophy, then puts everything from the previous workshops to the test: write a real syllabus, teach a real (if short) lesson to peers, and see what survives contact with an actual classroom. This closing post covers both — the argument against conventional grading, and what I learned from watching my own teaching not go the way I'd planned.
+
+## Grading is a technology, not a measurement
+
+The most useful reframing in this whole program came from Schinske & Tanner's history of the A–F grading scale: it's an administrative invention from the 1940s, built for record-keeping, not a pedagogical tool anyone designed on purpose. Treated as a scientific measurement, it falls apart under scrutiny — inter-rater agreement on written work is famously poor, grades measurably dampen intrinsic motivation, and once a grade is attached to a piece of feedback, most students stop reading the feedback at all.
+
+McClymer & Knoles push the critique further with a phrase I keep coming back to: **ersatz learning**. Students can pass a course by pattern-matching the specific, contrived shape of an exam question, without that skill having any real connection to how a practitioner in the field actually thinks. The fix isn't a better test of the same kind — it's an **authentic** task, one that mirrors what someone in the discipline actually does with the material.
+
+Nilson's proposed alternative, **specifications grading**, was the most concretely adoptable idea in the whole reading list:
+
+| | Traditional (points/curve) grading | Specifications grading |
+|---|---|---|
+| **Unit of grading** | Partial credit, averaged across assignments | Pass/fail against an explicit, rigorous bar |
+| **What a grade means** | An average of unrelated skills, hard to interpret | Which specific outcomes were actually demonstrated |
+| **Recovering from a bad week** | Averaged in permanently | Tokens for a late pass or a revision |
+| **Final course grade** | Sum of points | Bundles of outcomes met |
+| **Ersatz-learning risk** | High — pattern-matching to the curve is rewarded | Lower — the bar is the same regardless of the curve |
+
+::: {.callout-note}
+## I reinvented a piece of this before I knew its name
+
+My own note from that workshop, written before I'd gotten to the Nilson reading, was simply: *let students redo and resubmit graded work for a make-up score.* It's the same underlying mechanic — grading as something a student can recover from, rather than a single irreversible measurement — arrived at independently because the problem (a system that punishes a bad week more than it measures actual understanding) was obvious enough to reinvent the solution.
+:::
+
+## Designing the syllabus, then living it imperfectly
+
+The capstone folded everything together into one artifact: a full syllabus, evaluated against a rubric whose criteria read like a checklist of this whole series:
+
+- [ ] Course-level learning outcomes use explicit, action verbs (not "understand")
+- [ ] Content is organized around real questions/themes, not a flat topic list
+- [ ] Each summative assessment has a stated rationale and is authentic to the discipline
+- [ ] Assessments are paced across the term, not backloaded onto one final
+- [ ] Tone is inclusive and growth-oriented (personal pronouns, positively-framed policies)
+- [ ] High expectations are paired with visible support (office hours, revision paths)
+- [ ] Policies are explained as pedagogy — *why* they help, not just what happens if you break them
+- [ ] The syllabus itself explains the backward-design logic behind the unit order
+
+Every item on that list traces back to a post earlier in this series — the rubric isn't a new idea, it's the same design habit applied to one final document.
+
+Mine was for a course called **Earth System Modeling**, built in exactly the shape the first post in this series describes: four units, each adding one subsystem to a computational model of the Earth's climate, building incrementally toward a capstone project where a student proposes a scenario, runs it, validates the result, and presents it.
+
+Then came microteaching — two short practice lessons in front of peers, with feedback in between. The gap between designing well and teaching well turned out to be its own lesson.
+
+```{mermaid}
+flowchart LR
+    A["Microteaching 1
+    ✅ relatable hook
+    ✅ logical scaffolding"] -->|"peer feedback:
+    color-code equations,
+    fix table order,
+    tighten pacing"| B["All 3 fixes applied"]
+    B --> C["Microteaching 2
+    ⚠️ denser slides
+    ⚠️ verbal-only computation
+    ⚠️ lower energy that day"]
+    C --> D["Net result: worse overall,
+    despite every fix landing"]
+```
+
+My first session got specific, actionable critique: color-code the equation terms to match the diagram, tighten the pacing on a derivation, keep a results table in a consistent order. I fixed all of it for the second session. And the second session was, by my own and my peers' assessment, *worse* overall — the slides were denser, I explained computation steps verbally instead of showing them, and the room felt less engaged.
+
+The honest diagnosis wasn't a design flaw at all — it was that I was tired that morning, and it showed in my delivery fluency in a way no amount of slide preparation could compensate for. That was worth sitting with: teaching quality isn't additive. You can fix every item on a feedback list and still have a worse session, because delivery is holistic in a way a checklist can't fully capture. The forward-looking fix wasn't "prepare more content" — it was structural: chunk a lesson into roughly fifteen-minute blocks, decide in advance what's safe to cut if energy or time runs short, and keep leaning on the scaffolding and active-recall techniques from earlier in this series rather than trying to carry a session on delivery alone.
+
+## Key takeaways
+
+Across these four posts, the throughline is one habit applied at different scales: define the outcome you actually want, build the smallest honest way to check whether you got there, and only then decide what to do — for a course, for a unit, for a single piece of feedback, for a grading policy. It's the same discipline I now reach for outside a classroom entirely, any time I'm tempted to start with the interesting technique instead of the question it's supposed to answer.
+
+- The A-F scale is a 1940s record-keeping invention, not a measurement (Schinske & Tanner): inter-rater agreement is poor, grades dampen intrinsic motivation, and once a grade is attached most students stop reading the feedback.
+- "Ersatz learning" (McClymer & Knoles) is passing by pattern-matching the shape of an exam question; the fix is an authentic task that mirrors what a practitioner does, not a harder test of the same kind.
+- Specifications grading (Nilson) replaces averaged partial credit with pass/fail against an explicit bar plus tokens for revision, so a bad week is recoverable rather than permanent.
+- A syllabus is the whole method in one document: action-verb outcomes, assessments with a stated rationale, paced across the term, policies explained as pedagogy.
+- Teaching quality is not additive: you can apply every item of feedback and still teach a worse session, so plan fifteen-minute chunks and decide in advance what is safe to cut.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/ktcp-prior-knowledge-and-feedback.html"><span>Previous</span>Meeting students where they are</a><a class="mf-up" href="/series/teaching-leading/index.html"><span>Series</span>Teaching and Leading</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

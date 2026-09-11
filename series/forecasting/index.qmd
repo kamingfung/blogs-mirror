@@ -1,0 +1,120 @@
+---
+title: "Forecasting with Machine Learning"
+description: "Tabular machine learning for time series, from framing the problem to shipping a model, with agricultural data throughout."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to advanced</dd></div>
+<div><dt>Parts</dt><dd>15</dd></div>
+<div><dt>Modules</dt><dd>7 of 34 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Python and pandas. Basic statistics. No prior forecasting.</dd></div>
+</dl>
+
+## Part 1 · Framing a forecast
+
+<ul class="syl">
+<li class="g">Horizon, frequency and target<span class="m">Introductory · not written</span></li>
+<li class="g">Leakage<span class="m">Introductory · not written</span></li>
+<li class="g">Backtesting properly<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 2 · Features
+
+<ul class="syl">
+<li class="w"><a href="/blogs/forecast/1_feature_engineering.html">Feature engineering with feature_engine</a><span class="m">Intermediate</span></li>
+<li class="g">Lags and rolling windows<span class="m">Introductory · not written</span></li>
+<li class="g">Calendar and cyclical encodings<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 3 · Models
+
+<ul class="syl">
+<li class="g">Baselines first<span class="m">Introductory · not written</span></li>
+<li class="g">Gradient boosting for tabular time series<span class="m">Intermediate · not written</span></li>
+<li class="w"><a href="/blogs/forecast/2_ensemble_models.html">Ensemble models</a><span class="m">Intermediate</span></li>
+</ul>
+
+## Part 4 · Explaining forecasts
+
+<ul class="syl">
+<li class="w"><a href="/blogs/forecast/3_shap_explainability.html">SHAP</a><span class="m">Intermediate</span></li>
+<li class="g">Partial dependence<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 5 · Multi-step forecasting
+
+<ul class="syl">
+<li class="w"><a href="/blogs/darts-direct-vs-recursive.html">Direct vs recursive in Darts</a><span class="m">Intermediate</span></li>
+<li class="g">Multi-output models<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Forecasting distributions
+
+<ul class="syl">
+<li class="w"><a href="/blogs/darts-size-distribution-forecast.html">Forecasting a size distribution</a><span class="m">Advanced</span></li>
+<li class="g">Compositional data<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 7 · Awkward targets
+
+<ul class="syl">
+<li class="w"><a href="/blogs/lightgbm-cross-entropy-bounded-target.html">Cross-entropy for bounded targets</a><span class="m">Advanced</span></li>
+<li class="g">Zeros and Tweedie<span class="m">Intermediate · not written</span></li>
+<li class="g">Log and Box–Cox transforms<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 8 · Curves from partial data
+
+<ul class="syl">
+<li class="w"><a href="/blogs/curve-fitting-partial-timeseries.html">Fitting a season from its first weeks</a><span class="m">Advanced</span></li>
+<li class="g">Growth curves<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 9 · Evaluating forecasts
+
+<ul class="syl">
+<li class="g">Which metric<span class="m">Introductory · not written</span></li>
+<li class="g">Pinball loss and quantiles<span class="m">Intermediate · not written</span></li>
+<li class="g">Backtest design<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 10 · Uncertainty
+
+<ul class="syl">
+<li class="g">Quantile regression<span class="m">Intermediate · not written</span></li>
+<li class="g">Conformal prediction<span class="m">Advanced · not written</span></li>
+</ul>
+
+## Part 11 · Hierarchies
+
+<ul class="syl">
+<li class="g">Hierarchical reconciliation<span class="m">Advanced · not written</span></li>
+<li class="g">Forecasting many series at once<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 12 · Classical models
+
+<ul class="syl">
+<li class="g">ETS and ARIMA<span class="m">Intermediate · not written</span></li>
+<li class="g">When classical beats machine learning<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 13 · Deep learning
+
+<ul class="syl">
+<li class="g">When deep learning helps<span class="m">Intermediate · not written</span></li>
+<li class="g">N-BEATS and TFT<span class="m">Advanced · not written</span></li>
+</ul>
+
+## Part 14 · Foundation models
+
+<ul class="syl">
+<li class="g">Time series foundation models<span class="m">Advanced · not written</span></li>
+</ul>
+
+## Part 15 · In production
+
+<ul class="syl">
+<li class="g">Retraining and drift<span class="m">Intermediate · not written</span></li>
+<li class="g">Monitoring a forecast<span class="m">Intermediate · not written</span></li>
+</ul>

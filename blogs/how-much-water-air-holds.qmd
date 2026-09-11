@@ -1,0 +1,101 @@
+---
+title: How much water can air hold?
+description: Saturation vapour pressure, relative humidity, and the equation that makes a few degrees of cooling matter so much.
+date: 2026-08-27
+categories:
+- meteorology
+- atmospheric science
+- physics
+- thermodynamics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 1 · Water and rising air</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School physics. A little calculus appears in the droplet parts and is always optional.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Warm air holds far more water vapour than cold air, and the relationship is exponential rather than linear. Clausius-Clapeyron says how steeply.
+:::
+
+## The saturation curve
+
+Water vapor in the atmosphere is an invisible gas. For condensation to occur, the air must reach **saturation** ($100\%$ Relative Humidity), where the rate of water condensation equals the rate of evaporation.
+
+The maximum amount of water vapor air can hold at equilibrium is the **saturation vapor pressure** $e_s(T)$, governed by the **Clausius-Clapeyron equation**:
+
+$$\frac{d e_s}{d T} = \frac{L_v(T) \cdot e_s(T)}{R_v \cdot T^2}$$
+
+Integrating this yields the exponential dependence of saturation on temperature:
+
+$$e_s(T) \approx e_0 \cdot \exp\left( \frac{L_v}{R_v} \left( \frac{1}{T_0} - \frac{1}{T} \right) \right)$$
+
+where:
+
+- $L_v \approx 2.501 \times 10^6 \text{ J/kg}$ is the latent heat of vaporization.
+- $R_v = 461.5 \text{ J/(kg}\cdot\text{K)}$ is the specific gas constant for water vapor.
+- $e_0 \approx 6.11 \text{ hPa}$ at $T_0 = 273.15 \text{ K}$ ($0^\circ\text{C}$).
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 400" style="width:100%;max-width:660px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Saturation vapour pressure of water plotted against air temperature from minus 20 to plus 40 degrees Celsius, rising exponentially from about 1 hectopascal to about 74 hectopascals.">
+  <line x1="90.0" y1="330.0" x2="620.0" y2="330.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="78" y="334.0" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">0</text>
+  <line x1="90.0" y1="257.5" x2="620.0" y2="257.5" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="78" y="261.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">20</text>
+  <line x1="90.0" y1="185.0" x2="620.0" y2="185.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="78" y="189.0" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">40</text>
+  <line x1="90.0" y1="112.5" x2="620.0" y2="112.5" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="78" y="116.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">60</text>
+  <line x1="90.0" y1="40.0" x2="620.0" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="78" y="44.0" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">80</text>
+  <line x1="90.0" y1="330.0" x2="90.0" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="90.0" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">-20</text>
+  <line x1="178.3" y1="330.0" x2="178.3" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="178.3" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">-10</text>
+  <line x1="266.7" y1="330.0" x2="266.7" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="266.7" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">0</text>
+  <line x1="355.0" y1="330.0" x2="355.0" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="355.0" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">10</text>
+  <line x1="443.3" y1="330.0" x2="443.3" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="443.3" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">20</text>
+  <line x1="531.7" y1="330.0" x2="531.7" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="531.7" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">30</text>
+  <line x1="620.0" y1="330.0" x2="620.0" y2="40.0" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <text x="620.0" y="352" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">40</text>
+  <line x1="90.0" y1="330.0" x2="620.0" y2="330.0" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+  <line x1="90.0" y1="330.0" x2="90.0" y2="40.0" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+  <polygon points="90.0,330.0 90.0,325.4 94.4,325.2 98.8,325.0 103.2,324.8 107.7,324.6 112.1,324.4 116.5,324.1 120.9,323.9 125.3,323.6 129.8,323.3 134.2,323.1 138.6,322.8 143.0,322.5 147.4,322.1 151.8,321.8 156.2,321.5 160.7,321.1 165.1,320.8 169.5,320.4 173.9,320.0 178.3,319.6 182.8,319.2 187.2,318.8 191.6,318.3 196.0,317.8 200.4,317.4 204.8,316.9 209.2,316.4 213.7,315.8 218.1,315.3 222.5,314.7 226.9,314.1 231.3,313.5 235.8,312.9 240.2,312.2 244.6,311.6 249.0,310.9 253.4,310.1 257.8,309.4 262.2,308.6 266.7,307.8 271.1,307.0 275.5,306.2 279.9,305.3 284.3,304.4 288.8,303.5 293.2,302.5 297.6,301.5 302.0,300.5 306.4,299.5 310.8,298.4 315.2,297.3 319.7,296.1 324.1,294.9 328.5,293.7 332.9,292.4 337.3,291.1 341.8,289.8 346.2,288.4 350.6,287.0 355.0,285.5 359.4,284.0 363.8,282.4 368.2,280.8 372.7,279.2 377.1,277.5 381.5,275.7 385.9,273.9 390.3,272.1 394.8,270.2 399.2,268.2 403.6,266.2 408.0,264.1 412.4,262.0 416.8,259.8 421.2,257.6 425.7,255.2 430.1,252.8 434.5,250.4 438.9,247.9 443.3,245.3 447.8,242.6 452.2,239.9 456.6,237.1 461.0,234.2 465.4,231.2 469.8,228.2 474.2,225.1 478.7,221.9 483.1,218.6 487.5,215.2 491.9,211.7 496.3,208.1 500.8,204.5 505.2,200.7 509.6,196.9 514.0,192.9 518.4,188.9 522.8,184.7 527.2,180.5 531.7,176.1 536.1,171.6 540.5,167.0 544.9,162.3 549.3,157.5 553.8,152.5 558.2,147.5 562.6,142.3 567.0,136.9 571.4,131.5 575.8,125.9 580.2,120.1 584.7,114.3 589.1,108.3 593.5,102.1 597.9,95.8 602.3,89.3 606.8,82.7 611.2,76.0 615.6,69.0 620.0,61.9 620.0,330.0" fill="var(--ink-indigo)" fill-opacity="0.12"/>
+  <polyline points="90.0,325.4 94.4,325.2 98.8,325.0 103.2,324.8 107.7,324.6 112.1,324.4 116.5,324.1 120.9,323.9 125.3,323.6 129.8,323.3 134.2,323.1 138.6,322.8 143.0,322.5 147.4,322.1 151.8,321.8 156.2,321.5 160.7,321.1 165.1,320.8 169.5,320.4 173.9,320.0 178.3,319.6 182.8,319.2 187.2,318.8 191.6,318.3 196.0,317.8 200.4,317.4 204.8,316.9 209.2,316.4 213.7,315.8 218.1,315.3 222.5,314.7 226.9,314.1 231.3,313.5 235.8,312.9 240.2,312.2 244.6,311.6 249.0,310.9 253.4,310.1 257.8,309.4 262.2,308.6 266.7,307.8 271.1,307.0 275.5,306.2 279.9,305.3 284.3,304.4 288.8,303.5 293.2,302.5 297.6,301.5 302.0,300.5 306.4,299.5 310.8,298.4 315.2,297.3 319.7,296.1 324.1,294.9 328.5,293.7 332.9,292.4 337.3,291.1 341.8,289.8 346.2,288.4 350.6,287.0 355.0,285.5 359.4,284.0 363.8,282.4 368.2,280.8 372.7,279.2 377.1,277.5 381.5,275.7 385.9,273.9 390.3,272.1 394.8,270.2 399.2,268.2 403.6,266.2 408.0,264.1 412.4,262.0 416.8,259.8 421.2,257.6 425.7,255.2 430.1,252.8 434.5,250.4 438.9,247.9 443.3,245.3 447.8,242.6 452.2,239.9 456.6,237.1 461.0,234.2 465.4,231.2 469.8,228.2 474.2,225.1 478.7,221.9 483.1,218.6 487.5,215.2 491.9,211.7 496.3,208.1 500.8,204.5 505.2,200.7 509.6,196.9 514.0,192.9 518.4,188.9 522.8,184.7 527.2,180.5 531.7,176.1 536.1,171.6 540.5,167.0 544.9,162.3 549.3,157.5 553.8,152.5 558.2,147.5 562.6,142.3 567.0,136.9 571.4,131.5 575.8,125.9 580.2,120.1 584.7,114.3 589.1,108.3 593.5,102.1 597.9,95.8 602.3,89.3 606.8,82.7 611.2,76.0 615.6,69.0 620.0,61.9" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.8"/>
+  <text x="86" y="30" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="13">e_s (hPa)</text>
+  <text x="355" y="376" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">Air temperature (°C)</text>
+  <text x="118" y="76" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Warm air holds vastly more vapour</text>
+  <text x="118" y="98" fill="var(--md-default-fg-color--light)" font-size="13">Clausius-Clapeyron makes the ceiling exponential:</text>
+  <text x="118" y="116" fill="var(--md-default-fg-color--light)" font-size="13">about +7% of capacity for every +1 °C.</text>
+  <text x="118" y="152" fill="var(--md-default-fg-color--light)" font-size="12.5">Cool a parcel below this curve</text>
+  <text x="118" y="170" fill="var(--md-default-fg-color--light)" font-size="12.5">and the surplus must condense.</text>
+  <circle cx="266.7" cy="307.8" r="5.5" fill="var(--ink-indigo)"/>
+  <text x="252.7" y="291.8" text-anchor="end" fill="var(--ink-indigo)" font-size="13.5" font-weight="600">6.1 hPa at 0 °C</text>
+  <circle cx="531.7" cy="176.1" r="5.5" fill="var(--ink-rust)"/>
+  <text x="517.7" y="166.1" text-anchor="end" fill="var(--ink-rust)" font-size="13.5" font-weight="600">42 hPa at 30 °C</text>
+  <text x="517.7" y="184.1" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">seven times as much water</text>
+</svg>
+<figcaption><strong>Figure 1 | Air's capacity for water vapour rises exponentially with temperature, which is why cooling — not moistening — makes clouds.</strong> Integrating the Clausius-Clapeyron relation gives a saturation vapour pressure $e_s(T)$ that curves upward steeply: saturated air at $0^\circ\text{C}$ holds about $6\text{ hPa}$ of vapour, while at $30^\circ\text{C}$ it holds roughly $42\text{ hPa}$ — seven times more. Read the same slope backwards and every $1^\circ\text{C}$ of cooling removes about $7\%$ of the capacity. Because the shaded region under the curve is the only vapour the air can carry, a parcel pushed below the curve by a few hundred metres of lift must shed its surplus as liquid.</figcaption>
+</figure>
+```
+
+
+## Key takeaways
+
+- Air is saturated when condensation and evaporation balance; that ceiling is the saturation vapour pressure $e_s(T)$, and it depends on temperature alone.
+- Clausius-Clapeyron makes $e_s$ exponential in temperature: saturated air at $30^\circ\text{C}$ holds about seven times the vapour of air at $0^\circ\text{C}$.
+- For every $1^\circ\text{C}$ drop in air temperature, saturation vapor pressure drops by roughly $7\%$, so cooling air is the most efficient way to force vapour into liquid droplets.
+- A parcel lifted a few hundred metres cools past the curve and has to shed its surplus vapour as liquid.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/why-rising-air-cools.html"><span>Next</span>Why does rising air cool?</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

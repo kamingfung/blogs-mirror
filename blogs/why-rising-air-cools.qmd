@@ -1,0 +1,117 @@
+---
+title: Why does rising air cool?
+description: Adiabatic expansion, the dry and moist lapse rates, and how to find the lifting condensation level.
+date: 2026-08-27
+categories:
+- meteorology
+- atmospheric science
+- physics
+- thermodynamics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 1 · Water and rising air</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School physics. A little calculus appears in the droplet parts and is always optional.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Rising air expands against lower pressure and does work, so it cools without losing any heat to its surroundings. Where that cooling crosses the dew point is the cloud base.
+:::
+
+## Adiabatic expansion
+
+The atmosphere is not cooled by refrigerators; it is cooled by **expansion against decreasing ambient pressure**.
+
+When a parcel of warm air rises, the surrounding atmospheric pressure drops exponentially with height ($P(z) = P_0 e^{-z/H}$). As the parcel expands, it performs mechanical work on the surrounding air ($W = P \Delta V$). Because air is a poor conductor of heat, this process is **adiabatic** ($dQ = 0$):
+
+$$dU = - dW \implies m c_v dT = - P dV$$
+
+```
+Dry Adiabatic Lapse Rate (DALR, Γ_d):
+Γ_d = - dT/dz = g / c_p ≈ 9.8 °C / km  (~ 1 °C per 100 meters)
+
+Saturated / Moist Adiabatic Lapse Rate (MALR, Γ_m):
+Γ_m = - dT/dz ≈ 4 to 7 °C / km  (Lower due to latent heat release!)
+```
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 440" style="width:100%;max-width:740px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Schematic of a rising air parcel: a blue arrow ascends along the dry adiabat below a dashed lifting condensation level, then a magenta arrow continues along the moist adiabat inside a flat-based cloud.">
+  <defs>
+    <marker id="clup" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-indigo)"/></marker>
+    <marker id="clupm" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+    <marker id="clax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <line x1="90" y1="386" x2="90" y2="58" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#clax)"/>
+  <text x="90" y="46" fill="var(--md-default-fg-color--light)" font-size="13">Altitude z</text>
+  <text x="415" y="78" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">A cumulus base is flat because it marks a temperature, not a place</text>
+  <path d="M 360 235 C 354 204, 376 182, 406 188 C 414 152, 460 138, 492 160 C 512 124, 572 128, 586 166 C 624 158, 650 182, 642 208 C 666 216, 666 235, 644 235 Z" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <text x="505" y="116" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">cloud top: buoyancy runs out</text>
+  <line x1="90" y1="235" x2="700" y2="235" stroke="var(--md-default-fg-color)" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="120" y="262" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">LCL — cloud base, where T = T_d</text>
+  <text x="120" y="282" fill="var(--md-default-fg-color--light)" font-size="12.5">z_LCL ≈ 125 (T₀ − T_d,₀) metres</text>
+  <line x1="470" y1="376" x2="470" y2="248" stroke="var(--ink-indigo)" stroke-width="3" marker-end="url(#clup)"/>
+  <line x1="470" y1="224" x2="470" y2="164" stroke="var(--ink-rust)" stroke-width="3" marker-end="url(#clupm)"/>
+  <text x="110" y="158" fill="var(--ink-rust)" font-size="14.5" font-weight="600">Moist adiabat</text>
+  <text x="110" y="178" fill="var(--md-default-fg-color--light)" font-size="13">Γ_m ≈ 5 °C km⁻¹</text>
+  <text x="110" y="196" fill="var(--md-default-fg-color--light)" font-size="12.5">latent heat release slows the</text>
+  <text x="110" y="212" fill="var(--md-default-fg-color--light)" font-size="12.5">cooling above cloud base</text>
+  <text x="110" y="306" fill="var(--ink-indigo)" font-size="14.5" font-weight="600">Dry adiabat</text>
+  <text x="110" y="326" fill="var(--md-default-fg-color--light)" font-size="13">Γ_d = g ⁄ c_p ≈ 9.8 °C km⁻¹</text>
+  <text x="110" y="344" fill="var(--md-default-fg-color--light)" font-size="12.5">expansion does work: the parcel</text>
+  <text x="110" y="360" fill="var(--md-default-fg-color--light)" font-size="12.5">loses 1 °C per 100 m climbed</text>
+  <line x1="90" y1="386" x2="700" y2="386" stroke="var(--md-default-fg-color)" stroke-width="3"/>
+  <line x1="112" y1="386" x2="100" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="138" y1="386" x2="126" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="164" y1="386" x2="152" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="190" y1="386" x2="178" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="216" y1="386" x2="204" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="242" y1="386" x2="230" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="268" y1="386" x2="256" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="294" y1="386" x2="282" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="320" y1="386" x2="308" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="346" y1="386" x2="334" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="372" y1="386" x2="360" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="398" y1="386" x2="386" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="424" y1="386" x2="412" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="450" y1="386" x2="438" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="476" y1="386" x2="464" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="502" y1="386" x2="490" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="528" y1="386" x2="516" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="554" y1="386" x2="542" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="580" y1="386" x2="568" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="606" y1="386" x2="594" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="632" y1="386" x2="620" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="658" y1="386" x2="646" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <line x1="684" y1="386" x2="672" y2="400" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" opacity="0.5"/>
+  <text x="96" y="420" fill="var(--md-default-fg-color--light)" font-size="13">Surface: T₀ and dew point T_d,₀</text>
+</svg>
+<figcaption><strong>Figure 1 | The flat bottom of a cumulus cloud is a thermometer reading rendered visible.</strong> A rising parcel exchanges no heat with its surroundings; it simply expands against falling pressure and does work, cooling at the dry adiabatic rate $\Gamma_d = g/c_p \approx 9.8^\circ\text{C km}^{-1}$ (blue). Its dew point barely changes, so temperature and dew point converge at a definite height — the Lifting Condensation Level, $z_{\text{LCL}} \approx 125\,(T_0 - T_{d,0})$ metres. Every parcel with the same surface temperature and humidity reaches it at the same altitude, which is why the cloud base is a plane rather than a ragged surface. Above it, condensation returns latent heat to the parcel and the ascent follows the shallower moist adiabat (magenta), $\Gamma_m \approx 5^\circ\text{C km}^{-1}$ — the extra warmth that lets cumulus towers keep climbing.</figcaption>
+</figure>
+```
+
+
+## The lifting condensation level
+
+The altitude at which a rising air parcel's temperature $T$ cools down to its **dew point** $T_d$ is the **Lifting Condensation Level (LCL)**—this marks the flat bottom (cloud base) of cumulus clouds:
+
+$$z_{\text{LCL}} \approx \frac{T_0 - T_{d0}}{\Gamma_d - \Gamma_{\text{dew}}} \approx 125 \times (T_0 - T_{d0}) \text{ meters}$$
+
+If surface temperature $T_0 = 25^\circ\text{C}$ and dew point $T_{d0} = 17^\circ\text{C}$:
+
+$$z_{\text{LCL}} \approx 125 \times (25 - 17) = 1,000 \text{ meters above ground}$$
+
+## Key takeaways
+
+- A rising parcel cools because it expands and does work on the surrounding air, not because it loses heat; the process is adiabatic.
+- Dry air cools at $\Gamma_d = g/c_p \approx 9.8^\circ\text{C km}^{-1}$; once condensation starts, latent heat release slows this to roughly $4$ to $7^\circ\text{C km}^{-1}$.
+- The cloud base sits where temperature meets dew point, at $z_{\text{LCL}} \approx 125\,(T_0 - T_{d0})$ metres, so an $8^\circ\text{C}$ spread puts the base near $1\text{ km}$.
+- Every parcel with the same surface temperature and humidity condenses at the same height, which is why cumulus bases are flat.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/how-much-water-air-holds.html"><span>Previous</span>How much water can air hold?</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/what-lifts-the-air.html"><span>Next</span>What lifts the air</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

@@ -1,0 +1,354 @@
+---
+title: Blog Archetypes & Interactive Components Sandbox
+description: An unlisted laboratory demonstrating the 5 structural blog archetypes, analytical math curves, theme-aware SVGs, Mermaid diagrams, and interactive components.
+date: 2026-08-28
+categories:
+- meta
+- design
+- templates
+- sandbox
+---
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+This unlisted reference and interactive sandbox showcases our **5 blog post archetypes** and component library (analytical mathematical curves, theme-aware SVGs, Mermaid pipelines, interactive sliders, and collapsible code blocks). It is maintained for testing and visual verification across different screen sizes and dark/light themes.
+:::
+
+---
+
+## The 5 Blog Post Archetypes
+
+To maintain varied reader engagement, blog posts rotate across 5 distinct structural archetypes:
+
+```{mermaid}
+graph TD
+    Root["5 Editorial Post Archetypes"]
+    
+    Root --> T1["1. Empirical Benchmark & Algorithmic Deep-Dive<br/>(ML, Time-Series, Optimization)"]
+    Root --> T2["2. Scientific Discovery & Earth System Impact<br/>(Atmospheric Chemistry, Climate, Health)"]
+    Root --> T3["3. Intuitive First-Principles Explainer<br/>(Physics, Acoustics, Thermodynamics, Biology)"]
+    Root --> T4["4. Developer Tooling & Practical Case Study<br/>(IDE Superpowers, Agent Harnesses, Debugging)"]
+    Root --> T5["5. Interactive Geospatial & Data Science Tutorial<br/>(NetCDF, GeoPandas, Xarray, R Pipelines)"]
+
+    class Root indigo
+    class T1 plum
+    class T2 olive
+    class T3 sage
+    class T4 ochre
+    class T5 terracotta
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef terracotta fill:#c97d62,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+---
+
+## Live Archetype Switcher & Scaffolding
+
+Select any archetype below to view its blueprint, tone, and real post examples:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <!-- Navigation Tabs -->
+  <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 12px;">
+    <button id="btn-arch-1" onclick="selectArchetype(1)" style="background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">1. Empirical Benchmark</button>
+    <button id="btn-arch-2" onclick="selectArchetype(2)" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">2. Scientific Discovery</button>
+    <button id="btn-arch-3" onclick="selectArchetype(3)" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">3. First-Principles Explainer</button>
+    <button id="btn-arch-4" onclick="selectArchetype(4)" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">4. Developer Case Study</button>
+    <button id="btn-arch-5" onclick="selectArchetype(5)" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em;">5. Geospatial Tutorial</button>
+  </div>
+
+  <!-- Dynamic Content Container -->
+  <div id="arch-display">
+    <!-- Populated by JavaScript below -->
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+const archetypes = {
+  1: {
+    title: "Archetype 1: The Empirical Benchmark & Algorithmic Deep-Dive",
+    tagline: "Quantitative, reproducible, and engineering-focused comparisons.",
+    bestFor: "Machine learning architectures, time-series forecasting, mathematical optimization, loss functions.",
+    examples: "<code>darts-direct-vs-recursive.md</code>, <code>lightgbm-cross-entropy-bounded-target.md</code>, <code>curve-fitting-partial-timeseries.md</code>",
+    blueprint: [
+      "<b>1. Title & Punchy TL;DR:</b> Quantitative hook + core algorithmic delta (e.g., '14% MAE reduction').",
+      "<b>2. The Algorithmic Dilemma:</b> Highlighting structural trade-offs (e.g., error accumulation vs computation time).",
+      "<b>3. Mermaid Pipeline Diagram:</b> Visual side-by-side flow comparing baseline vs proposed method.",
+      "<b>4. Mathematical Formulation:</b> LaTeX objective loss functions or KKT linear systems.",
+      "<b>5. Collapsed Production Code:</b> Full Python script inside <code>??? example 'View Implementation'</code>.",
+      "<b>6. Empirical Benchmark Table:</b> Quantitative metrics (MAE, RMSE, Runtime, Memory).",
+      "<b>7. Practical Engineering Takeaways:</b> When to use, when to avoid, and GitHub repo links."
+    ],
+    color: "#0284c7"
+  },
+  2: {
+    title: "Archetype 2: The Scientific Discovery & Earth System Impact",
+    tagline: "Academic rigor paired with macro-scale environmental and public health insights.",
+    bestFor: "Atmospheric chemistry, climate simulations, biogeochemical cycles, agricultural policy.",
+    examples: "<code>dms-oxidation-climate.md</code>, <code>intercropping-air-quality.md</code>, <code>enhanced-rock-weathering-nitrogen.md</code>, <code>cesm2-fertilizer-climate-feedback.md</code>",
+    blueprint: [
+      "<b>1. Title & Punchy TL;DR:</b> Problem hook + CESM/GEOS-Chem finding + climate/mortality shift.",
+      "<b>2. Thought-Provoking Epigraph:</b> Quotation highlighting biosphere-atmosphere coupling.",
+      "<b>3. The Environmental Triad:</b> Mermaid diagram tracing chemical fluxes and feedback loops.",
+      "<b>4. The Missing Molecular Mechanism:</b> Reaction pathways, autoxidation cascades, or pH kinetics.",
+      "<b>5. Global Earth System Model Results:</b> Comparative matrix table with global budget shifts.",
+      "<b>6. Interactive Policy Simulator:</b> Live HTML5 slider sandbox allowing readers to test scenarios.",
+      "<b>7. Strategic Policy Pathways:</b> Cross-sectoral policy recommendations (SDGs, air quality standards).",
+      "<b>8. Data/Code Availability & Formal References:</b> Zenodo repositories and Nature-style numbered citations."
+    ],
+    color: "#059669"
+  },
+  3: {
+    title: "Archetype 3: The Intuitive First-Principles Explainer",
+    tagline: "Narrative, thought-experiment driven breakdowns of core mathematical and physical laws.",
+    bestFor: "Classical mechanics, acoustics, thermodynamics, quantum information, molecular biology.",
+    examples: "<code>wave-theory.md</code>, <code>math-of-music.md</code>, <code>fourier-transform-audio.md</code>, <code>how-clouds-form.md</code>, <code>gravitational-well.md</code>, <code>dna-and-rna.md</code>",
+    blueprint: [
+      "<b>1. Title & Punchy TL;DR:</b> Core physical invariant + mathematical framework + interactive tools.",
+      "<b>2. The Core Analogy / Thought Experiment:</b> Intuitive mental model (e.g., Master Blueprint vs Photocopy, Newton's Prism).",
+      "<b>3. First-Principles Mathematics:</b> Analytical equations (d'Alembert wave equation, Clausius-Clapeyron, Köhler curve).",
+      "<b>4. Analytical Visual Landscape:</b> Mathematically exact Canvas widget or Theme-Aware SVG.",
+      "<b>5. Interactive Pedagogical Sandbox:</b> Live Web Audio synthesizer, thermodynamic parcel lifter, or orbital sandbox.",
+      "<b>6. Historical Context & Paradigm Shifts:</b> Pythagoras, Fourier, Wheeler, or Landauer breakthroughs.",
+      "<b>7. The Macro Journey:</b> Step-by-step assembly from microscopic particles to emergent phenomena."
+    ],
+    color: "#8b5cf6"
+  },
+  4: {
+    title: "Archetype 4: The Developer Tooling & Practical Case Study",
+    tagline: "Pragmatic, peer-to-peer developer conversations solving real-world friction.",
+    bestFor: "IDE superpowers, defensive typing, AI agent harnesses, debugging war stories.",
+    examples: "<code>typing.md</code>, <code>harness-engineering.md</code>, <code>investment-comparator.md</code>",
+    blueprint: [
+      "<b>1. Title & Punchy TL;DR:</b> The developer pitfall + modern defensive tool + productivity outcome.",
+      "<b>2. The 'War Story' Hook:</b> A relatable debugging ordeal (e.g., the single misplaced comma).",
+      "<b>3. The Root Cause Code Diff:</b> Before/after code snippets highlighting silent bugs.",
+      "<b>4. The Architectural Fix:</b> Mermaid flowchart showing the LSP, middleware, or verification loop.",
+      "<b>5. Step-by-Step Tooling Recipe:</b> VS Code/Cursor JSON settings, Neovim LSP configs, or CLI invocations.",
+      "<b>6. Modern Defensive Toolkit Table:</b> Tool matrix comparing protection vs cognitive overhead.",
+      "<b>7. '3 Things You Can Do This Week':</b> Immediately actionable, concrete next steps."
+    ],
+    color: "#d97706"
+  },
+  5: {
+    title: "Archetype 5: The Interactive Geospatial & Data Science Tutorial",
+    tagline: "Hands-on cookbook recipes for complex scientific datasets and spatial formats.",
+    bestFor: "NetCDF multi-file processing, Xarray, GeoPandas, raster resampling, ggplot2 extensions.",
+    examples: "<code>segment-shadow-python/index.md</code>, <code>ms-buildings/index.md</code>, <code>partial-scaling-netcdf/index.md</code>, <code>r-regridding/index.md</code>",
+    blueprint: [
+      "<b>1. Title & Punchy TL;DR:</b> Spatial challenge + package solution + output format benefits.",
+      "<b>2. Geospatial Pipeline Flowchart:</b> Mermaid data flow from raw files to raster/parquet output.",
+      "<b>3. Prerequisites & Environment Setup:</b> Fast setup instructions via <code>uv</code> or <code>conda</code>.",
+      "<b>4. Modular Step-by-Step Code Stages:</b> Ingestion $\\to$ Coordinate Masking $\\to$ Spatial Resampling $\\to$ Map Rendering.",
+      "<b>5. Performance & Gotchas Box:</b> Guidance on CRS projections, GeoJSON vs Parquet memory traps.",
+      "<b>6. Publication-Grade Map Outputs:</b> High-resolution figure display with custom colorbars.",
+      "<b>7. Downloadable Assets:</b> Links to GitHub sample scripts and test NetCDF/GeoJSON datasets."
+    ],
+    color: "#06b6d4"
+  }
+};
+
+function selectArchetype(id) {
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.getElementById(`btn-arch-${i}`);
+    if (btn) {
+      btn.style.background = i === id ? archetypes[id].color : '#334155';
+    }
+  }
+
+  const data = archetypes[id];
+  const container = document.getElementById('arch-display');
+  
+  let blueprintList = '';
+  data.blueprint.forEach(step => {
+    blueprintList += `<li style="margin-bottom: 8px; line-height: 1.5;">${step}</li>`;
+  });
+
+  container.innerHTML = `
+    <div style="border-left: 4px solid ${data.color}; padding-left: 16px; margin-bottom: 16px;">
+      <h3 style="margin: 0 0 6px 0; color: ${data.color}; font-size: 1.25em;">${data.title}</h3>
+      <p style="margin: 0; color: #94a3b8; font-style: italic;">${data.tagline}</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 16px;">
+      <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+        <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Best Suited Topics</div>
+        <div style="font-size: 0.9em; color: #e2e8f0; margin-top: 4px;">${data.bestFor}</div>
+      </div>
+      <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+        <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase; font-weight: bold;">Published Post Examples</div>
+        <div style="font-size: 0.85em; color: #38bdf8; margin-top: 4px;">${data.examples}</div>
+      </div>
+    </div>
+
+    <div style="background: #020617; padding: 16px; border-radius: 8px; border: 1px solid #1e293b;">
+      <div style="font-size: 0.8em; color: ${data.color}; text-transform: uppercase; font-weight: bold; margin-bottom: 10px;">Structural Sequence Blueprint</div>
+      <ol style="margin: 0; padding-left: 20px; font-size: 0.9em; color: #cbd5e1;">
+        ${blueprintList}
+      </ol>
+    </div>
+  `;
+}
+
+window.addEventListener('load', () => selectArchetype(1));
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => selectArchetype(1));
+}
+setTimeout(() => selectArchetype(1), 200);
+</script>
+```
+
+
+---
+
+## Visual Component Demonstrations
+
+### 1. Analytical Mathematical Curves *(100% Exact Physics)*
+
+$$U_{\text{eff}}(r) = -\frac{GMm}{r} + \frac{L^2}{2mr^2}$$
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 18px; margin: 20px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <span style="font-weight: 600; color: #38bdf8;">⚡ Live Analytical Potential Curve & Classical Turning Points</span>
+    <span style="font-size: 0.8em; color: #94a3b8;">r ∈ [0.4, 5.0] AU</span>
+  </div>
+
+  <canvas id="showcase-curve-canvas" width="680" height="220" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+</div>
+```
+
+
+```{=html}
+<script>
+function drawShowcaseCurve() {
+  const canvas = document.getElementById('showcase-curve-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const padLeft = 50, padRight = 20, padTop = 20, padBottom = 30;
+  const w = canvas.width - padLeft - padRight;
+  const h = canvas.height - padTop - padBottom;
+
+  const rMin = 0.4, rMax = 5.0;
+  const uMin = -1.2, uMax = 0.5;
+
+  const toX = (r) => padLeft + ((r - rMin) / (rMax - rMin)) * w;
+  const toY = (u) => padTop + ((uMax - u) / (uMax - uMin)) * h;
+
+  // Zero Line
+  const y0 = toY(0);
+  ctx.strokeStyle = '#475569';
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(padLeft, y0); ctx.lineTo(padLeft + w, y0); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#94a3b8'; ctx.font = '10px system-ui'; ctx.fillText('E = 0 (Escape)', padLeft + w - 80, y0 - 4);
+
+  // Effective Potential Curve
+  const L = 1.1;
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  let first = true;
+  for (let r = rMin; r <= rMax; r += 0.05) {
+    const u = - 1.0 / r + (L * L) / (2 * r * r);
+    if (u <= uMax && u >= uMin) {
+      const px = toX(r), py = toY(u);
+      if (first) { ctx.moveTo(px, py); first = false; } else ctx.lineTo(px, py);
+    }
+  }
+  ctx.stroke();
+
+  // Bound State Energy Level
+  const E = -0.28;
+  const yE = toY(E);
+  ctx.strokeStyle = '#f59e0b';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(toX(0.74), yE); ctx.lineTo(toX(2.83), yE); ctx.stroke();
+  ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(toX(0.74), yE, 4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(toX(2.83), yE, 4, 0, Math.PI*2); ctx.fill();
+  ctx.fillText('Bound Orbit (E = -0.28)', toX(1.3), yE - 6);
+}
+window.addEventListener('load', drawShowcaseCurve);
+if (typeof document$ !== 'undefined') document$.subscribe(drawShowcaseCurve);
+setTimeout(drawShowcaseCurve, 250);
+</script>
+```
+
+
+---
+
+### 2. Inline Theme-Aware Semantic SVGs *(Zero-JS, Infinite Scalability)*
+
+```{=html}
+<div style="width: 100%; max-width: 620px; margin: 1.8em auto; text-align: center;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" style="width: 100%; height: auto; display: block; font-family: system-ui, -apple-system, sans-serif;">
+  <defs>
+    <linearGradient id="showcaseGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="var(--ink-indigo)" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="var(--ink-plum)" stop-opacity="0.15"/>
+    </linearGradient>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="var(--ink-indigo)"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="var(--ink-sage)"/>
+    </marker>
+  </defs>
+  <rect x="10" y="10" width="580" height="140" rx="12" fill="url(#showcaseGrad)" stroke="var(--ink-indigo)" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <circle cx="95" cy="80" r="32" fill="var(--ink-indigo)" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <text x="95" y="85" fill="var(--md-default-bg-color)" font-size="12" font-weight="bold" text-anchor="middle">Input Data</text>
+  <line x1="130" y1="80" x2="215" y2="80" stroke="var(--ink-indigo)" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <rect x="225" y="45" width="150" height="70" rx="10" fill="var(--md-default-fg-color)" stroke="var(--ink-plum)" stroke-width="2"/>
+  <text x="300" y="75" fill="var(--ink-sage)" font-size="13" font-weight="bold" text-anchor="middle">Physics Layer</text>
+  <text x="300" y="95" fill="var(--md-default-fg-color--light)" font-size="11" text-anchor="middle">Conservation Laws</text>
+  <line x1="380" y1="80" x2="460" y2="80" stroke="var(--ink-sage)" stroke-width="2.5" marker-end="url(#arrowhead-purple)"/>
+  <circle cx="495" cy="80" r="32" fill="var(--ink-olive)" stroke="var(--ink-olive)" stroke-width="2"/>
+  <text x="495" y="85" fill="var(--md-default-bg-color)" font-size="12" font-weight="bold" text-anchor="middle">Forecast</text>
+</svg>
+</div>
+```
+
+
+---
+
+### 3. Collapsible Code Blocks (`pymdownx.details`)
+
+::: {.callout-note collapse="true"}
+## View Python Data Processing Module (`compute_statistics.py`)
+
+```python
+import numpy as np
+import pandas as pd
+
+def process_time_series(df: pd.DataFrame, target_col: str, window: int = 14) -> pd.DataFrame:
+    """
+    Computes rolling statistics and exponential weighting on time series.
+    """
+    df = df.copy()
+    df['rolling_mean'] = df[target_col].rolling(window=window, min_periods=1).mean()
+    df['rolling_std'] = df[target_col].rolling(window=window, min_periods=1).std().fillna(0)
+    df['ewma'] = df[target_col].ewm(span=window).mean()
+    return df
+```
+:::
+
+---
+
+### 4. Interactive Scenario Simulators
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 10px; padding: 16px; margin: 20px 0; font-family: system-ui, sans-serif;">
+  <label style="font-size: 0.85em; color: #94a3b8;">Interactive Parameter Ratio: <b id="showcase-slider-val" style="color: #10b981;">50%</b></label>
+  <input type="range" id="showcase-slider" min="0" max="100" value="50" oninput="document.getElementById('showcase-slider-val').innerText = this.value + '%'" style="width: 100%; accent-color: #10b981; margin-top: 6px;">
+</div>
+```
+

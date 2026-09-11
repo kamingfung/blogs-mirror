@@ -1,0 +1,82 @@
+---
+title: 'Supplements: what survives scrutiny'
+description: Two supplements have replicated effects in healthy people, and a third category, correcting a measured deficiency, is a different question. Most of the rest of the shelf does not clear the bar.
+date: 2026-09-05
+categories:
+- nutrition
+- supplements
+- evidence
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 1 · Looking after the machine you think with</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/reading-a-nutrition-study.html">Reading a nutrition study without being fooled</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Hold supplements to the standard you would hold a model: randomised trials, replicated, with an effect size worth having and a mechanism that makes sense. Two pass in healthy people: creatine and caffeine. Correcting a measured deficiency, of vitamin D, iron or B12, is a separate and legitimate case. Branched-chain amino acids, glutamine, testosterone boosters, general multivitamins and high-dose antioxidants do not pass, and the antioxidants may blunt the training you are taking them for.
+:::
+
+*Personal record with sources attached. Not medical, dietary or fitness advice.*
+
+## The bar a supplement has to clear
+
+The supplement industry runs on the same fallacy that produces overfit models: a plausible mechanism, a small study with a positive result, and no replication. Before anything goes in the cupboard I want four things. Randomised controlled trials, because observational data on supplement users measures the kind of person who buys supplements. Replication across independent groups. An effect size that would matter if it were real. And a mechanism that survives contact with the physiology.
+
+Very few products clear all four. The ones that do are cheap and unglamorous.
+
+## What clears it
+
+**Creatine monohydrate.** Creatine buffers ATP in muscle over the first seconds of a hard effort. Supplementing 3 to 5 g a day raises muscle stores by 20 to 40 percent, and the International Society of Sports Nutrition's position stand, reviewing several hundred trials, finds consistent gains in strength and lean mass on the order of one to two kilograms over a training block, with no safety signal in healthy adults at those doses.[^1] It is the most studied ergogenic supplement there is. The effect on cognition is smaller and more conditional: a systematic review of six randomised trials found improvements in short-term memory and reasoning, clearer in older adults and under sleep deprivation, and absent in well-rested young people.[^2] I take it for the muscle; the mind is a possible bonus.
+
+**Caffeine.** Doses of 3 to 6 mg per kg taken about an hour before exercise improve endurance, strength and power in most people, and the effect is one of the most replicated in sports science.[^3] The trade-off is sleep, which the next module takes seriously: caffeine taken six hours before bed still measurably shortens and disrupts it.[^4] I treat caffeine as a scheduling decision rather than a supplement.
+
+## What does not
+
+**Branched-chain amino acids.** Leucine, isoleucine and valine sold as a muscle builder. The physiology does not support it: muscle protein synthesis needs all the essential amino acids, and giving three of them in isolation cannot raise it; the only trials showing a benefit compared BCAAs against nothing rather than against complete protein.[^5] If protein intake is adequate, BCAAs are expensive water.
+
+**Glutamine.** Marketed for recovery. A randomised trial of 0.9 g per kg per day alongside resistance training found no effect on strength, lean mass or protein degradation compared with placebo.[^6]
+
+**Testosterone boosters.** A 2020 review of the fifty top-selling products found 90 percent claimed to raise testosterone, that about a quarter of their ingredients had any supporting data, and that some ingredients were dosed above the tolerable upper limit.[^7] Nothing on the shelf reliably raises testosterone in men with normal levels.
+
+**General multivitamins.** The Physicians' Health Study II followed 14,641 men for eleven years on a daily multivitamin or placebo. Cardiovascular events were unchanged.[^8] Total cancer fell by 8 percent, a small effect in a well-nourished population that has not been clearly replicated.[^9] The US Preventive Services Task Force concluded in 2022 that the evidence is insufficient to recommend for or against.[^10] A multivitamin is unlikely to hurt and unlikely to do much.
+
+**High-dose antioxidants.** This one can work against you. A trial gave people vitamin C at 1,000 mg and vitamin E at 400 IU daily during four weeks of exercise training. The training improved insulin sensitivity in the placebo group and did not in the antioxidant group.[^11] The oxidative stress of exercise is part of the signal that produces the adaptation, and quenching it quenched the benefit.
+
+**Fish oil and vitamin D in people who are not deficient.** The VITAL trial randomised 25,871 adults to vitamin D 2,000 IU, omega-3 at 1 g, both or neither, for a median 5.3 years. Neither reduced the primary endpoints of major cardiovascular events or invasive cancer.[^12]<sup>,</sup>[^13] These were people with adequate baseline levels. Which brings up the case that is genuinely different.
+
+## Deficiency is a different question
+
+Everything above is about adding a nutrient to someone who has enough. Replacing one that is measurably missing is a different intervention with different evidence, and it is where supplements clearly work. Vitamin D in someone with a low serum level, iron in someone with low ferritin, B12 in someone eating no animal products: each is a straightforward correction of a measured value, and the trials that matter are in deficient populations rather than replete ones.
+
+The step that makes this scientific rather than hopeful is the measurement. A blood test costs less than a year of most supplements and tells you whether you are in the population the positive trials studied. I get vitamin D, ferritin and B12 checked once a year and act on the numbers. Without the number, I am guessing.
+
+## Key takeaways
+
+- Judge a supplement by replicated randomised trials with a meaningful effect size and a plausible mechanism, not by a single positive study.
+- Creatine monohydrate at 3 to 5 g a day and caffeine at 3 to 6 mg per kg are the two that pass in healthy people.
+- Branched-chain amino acids, glutamine and testosterone boosters lack a mechanism or a result. Multivitamins are near-null in the well nourished.
+- High-dose vitamin C and E blunted the insulin-sensitivity gain from exercise training. Antioxidants can cost you the adaptation.
+- Correcting a measured deficiency is a different question with good evidence. Get the measurement first.
+
+## References
+
+[^1]: Kreider, R. B. et al. International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine. *J. Int. Soc. Sports Nutr.* **14**, 18 (2017). https://doi.org/10.1186/s12970-017-0173-z
+[^2]: Avgerinos, K. I., Spyrou, N., Bougioukas, K. I. & Kapogiannis, D. Effects of creatine supplementation on cognitive function of healthy individuals: a systematic review of randomized controlled trials. *Exp. Gerontol.* **108**, 166–173 (2018). https://doi.org/10.1016/j.exger.2018.04.013
+[^3]: Guest, N. S. et al. International Society of Sports Nutrition position stand: caffeine and exercise performance. *J. Int. Soc. Sports Nutr.* **18**, 1 (2021). https://doi.org/10.1186/s12970-020-00383-4
+[^4]: Drake, C., Roehrs, T., Shambroom, J. & Roth, T. Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. *J. Clin. Sleep Med.* **9**, 1195–1200 (2013). https://doi.org/10.5664/jcsm.3170
+[^5]: Wolfe, R. R. Branched-chain amino acids and muscle protein synthesis in humans: myth or reality? *J. Int. Soc. Sports Nutr.* **14**, 30 (2017). https://doi.org/10.1186/s12970-017-0184-9
+[^6]: Candow, D. G., Chilibeck, P. D., Burke, D. G., Davison, K. S. & Smith-Palmer, T. Effect of glutamine supplementation combined with resistance training in young adults. *Eur. J. Appl. Physiol.* **86**, 142–149 (2001). https://doi.org/10.1007/s00421-001-0523-y
+[^7]: Clemesha, C. G., Thaker, H. & Samplaski, M. K. "Testosterone boosting" supplements composition and claims are not supported by the academic literature. *World J. Mens Health* **38**, 115–122 (2020). https://doi.org/10.5534/wjmh.190043
+[^8]: Sesso, H. D. et al. Multivitamins in the prevention of cardiovascular disease in men: the Physicians' Health Study II randomized controlled trial. *JAMA* **308**, 1751–1760 (2012). https://doi.org/10.1001/jama.2012.14805
+[^9]: Gaziano, J. M. et al. Multivitamins in the prevention of cancer in men: the Physicians' Health Study II randomized controlled trial. *JAMA* **308**, 1871–1880 (2012). https://doi.org/10.1001/jama.2012.14641
+[^10]: US Preventive Services Task Force. Vitamin, mineral, and multivitamin supplementation to prevent cardiovascular disease and cancer: US Preventive Services Task Force recommendation statement. *JAMA* **327**, 2326–2333 (2022). https://doi.org/10.1001/jama.2022.8970
+[^11]: Ristow, M. et al. Antioxidants prevent health-promoting effects of physical exercise in humans. *Proc. Natl Acad. Sci. USA* **106**, 8665–8670 (2009). https://doi.org/10.1073/pnas.0903485106
+[^12]: Manson, J. E. et al. Vitamin D supplements and prevention of cancer and cardiovascular disease. *N. Engl. J. Med.* **380**, 33–44 (2019). https://doi.org/10.1056/NEJMoa1809944
+[^13]: Manson, J. E. et al. Marine n-3 fatty acids and prevention of cardiovascular disease and cancer. *N. Engl. J. Med.* **380**, 23–32 (2019). https://doi.org/10.1056/NEJMoa1811403
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/how-much-protein-really.html"><span>Previous</span>How much protein, really</a><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a><a class="mf-next" href="/blogs/how-muscle-is-actually-built.html"><span>Next</span>How muscle is actually built</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

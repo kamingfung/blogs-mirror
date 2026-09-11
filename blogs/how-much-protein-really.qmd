@@ -1,0 +1,78 @@
+---
+title: How much protein, really
+description: The recommended daily allowance is a floor against deficiency. The number that builds muscle is about twice it, and the per-meal ceiling most people worry about does not exist.
+date: 2026-09-05
+categories:
+- nutrition
+- protein
+- muscle
+- evidence
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 1 · Looking after the machine you think with</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/where-your-calories-come-from.html">Where your calories come from</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Two numbers get confused. The recommended daily allowance of 0.8 g per kg is the intake below which healthy adults lose nitrogen; it is a floor, not a target. The intake that maximises muscle gain from resistance training is about 1.6 g per kg per day, with a plausible range up to 2.2, from a meta-analysis of 49 trials. Spreading it across meals is convenient, not required: a single 100 g dose is still being used twelve hours later. Kidneys in healthy people are unaffected.
+:::
+
+*Personal record with sources attached. Not medical, dietary or fitness advice.*
+
+## Two numbers that get confused
+
+The recommended daily allowance for protein is 0.8 g per kg of body weight per day.[^1] It comes from nitrogen balance studies: feed people less and less protein, find the intake below which they excrete more nitrogen than they eat, add a safety margin. It answers the question "how little protein can an adult eat without losing tissue?" For a 75 kg adult that is 60 g.
+
+That is not the question anyone lifting weights is asking. The question there is how much protein makes training produce more muscle, and it has a different answer because it is a different experiment.
+
+## The dose-response curve
+
+The best single estimate comes from a 2018 meta-analysis of 49 randomised trials, 1,863 participants, all doing resistance training, some given extra protein and some not.[^2] Three results matter.
+
+Protein supplementation increased fat-free mass by about 0.3 kg and one-repetition-maximum strength by about 2.5 kg beyond training alone. Modest, real, and consistent.
+
+The effect had a breakpoint. Meta-regression showed gains in fat-free mass rising with total protein intake up to 1.62 g per kg per day, then flattening. The 95 percent confidence interval on that breakpoint ran from 1.03 to 2.20. So the honest statement is: somewhere between 1.0 and 2.2 g per kg the return stops, and the central estimate is 1.6.
+
+The effect was smaller in trained people and in older people, who need more protein to get the same response. For someone over 60 or with years of training behind them, the top of the range is the safer target.
+
+At 75 kg, 1.6 g per kg is 120 g a day. Two chicken breasts, a serving of Greek yoghurt, two eggs and a scoop of whey gets there without effort. Plant sources need more volume because they are lower in leucine, the amino acid that triggers muscle protein synthesis; a mixed intake or a larger total covers it.[^3]
+
+## Per meal, and the ceiling that is not there
+
+The idea that the body can only use 20 to 30 g of protein per meal comes from a real study, misread. Young men given 0, 5, 10, 20 or 40 g of egg protein after leg exercise showed muscle protein synthesis rising to 20 g and then plateauing; 40 g added little synthesis and more oxidation.[^4] That was synthesis over a few hours, in one muscle, after one dose.
+
+A 2023 study gave 0, 25 or 100 g of milk protein after whole-body exercise and tracked it for twelve hours.[^5] The 100 g dose produced a larger and longer anabolic response than 25 g, and it was still elevated at twelve hours with no sign of a ceiling. The earlier plateau was an artefact of the measurement window. Protein you eat in one sitting is not wasted; it is used more slowly.
+
+The practical guidance that came out of the older work, about 0.4 g per kg per meal across four meals, remains a reasonable way to hit a daily total.[^3] It is a scheduling convenience. If your day only allows two large protein meals, the total still counts.
+
+## Safety and where it comes from
+
+The kidney concern is the one people raise. A 2018 meta-analysis of 28 trials found no difference in glomerular filtration rate between higher-protein diets, above 1.5 g per kg, and lower ones in healthy adults.[^6] People with existing kidney disease are a separate population with separate advice, and this module is not that advice.
+
+Above about 2.2 g per kg the evidence for further benefit runs out, and the food displaces carbohydrate you may want for training. There is no reason to go there except preference.
+
+On sources, the evidence favours food over powder for everything except convenience. Whey is fast and leucine-rich, useful after a session or when a meal is missed; it is not more effective than the same grams from a meal. Plant proteins work at slightly higher totals. What I track is grams per day; what it comes from changes with the week.
+
+## Key takeaways
+
+- 0.8 g per kg per day is the floor below which adults lose tissue. It is not the target for anyone training.
+- Muscle gain from resistance training rises with protein intake up to about 1.6 g per kg per day, then flattens; the confidence interval runs to 2.2.
+- Older and more trained people sit toward the top of that range.
+- There is no per-meal ceiling. A 100 g dose is still being used twelve hours later. Four meals of 0.4 g per kg is a convenience, not a rule.
+- Higher protein intake does not change kidney function in healthy adults.
+
+## References
+
+[^1]: Institute of Medicine. *Dietary Reference Intakes for Energy, Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and Amino Acids*. (National Academies Press, Washington, DC, 2005). https://doi.org/10.17226/10490
+[^2]: Morton, R. W. et al. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults. *Br. J. Sports Med.* **52**, 376–384 (2018). https://doi.org/10.1136/bjsports-2017-097608
+[^3]: Schoenfeld, B. J. & Aragon, A. A. How much protein can the body use in a single meal for muscle-building? Implications for daily protein distribution. *J. Int. Soc. Sports Nutr.* **15**, 10 (2018). https://doi.org/10.1186/s12970-018-0215-1
+[^4]: Moore, D. R. et al. Ingested protein dose response of muscle and albumin protein synthesis after resistance exercise in young men. *Am. J. Clin. Nutr.* **89**, 161–168 (2009). https://doi.org/10.3945/ajcn.2008.26401
+[^5]: Trommelen, J. et al. The anabolic response to protein ingestion during recovery from exercise has no upper limit in magnitude and duration in vivo in humans. *Cell Rep. Med.* **4**, 101324 (2023). https://doi.org/10.1016/j.xcrm.2023.101324
+[^6]: Devries, M. C. et al. Changes in kidney function do not differ between healthy adults consuming higher- compared with lower- or normal-protein diets: a systematic review and meta-analysis. *J. Nutr.* **148**, 1760–1775 (2018). https://doi.org/10.1093/jn/nxy197
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/where-your-calories-come-from.html"><span>Previous</span>Where your calories come from</a><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a><a class="mf-next" href="/blogs/supplements-what-survives-scrutiny.html"><span>Next</span>Supplements: what survives scrutiny</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

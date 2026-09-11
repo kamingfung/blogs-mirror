@@ -1,0 +1,360 @@
+---
+title: Intercropping
+description: Growing two crops in alternating strips raises yield and cuts the nitrogen fertiliser needed. Across China that would also cut ammonia and PM2.5 deaths.
+date: 2026-08-27
+categories:
+- sustainable agriculture
+- air quality
+- public health
+- nitrogen cycle
+- environmental policy
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/air-land-climate/index.html">Air, Land and Climate</a><span class="sep">·</span>Part 7 · Farming that cleans the air</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">Where ammonia comes from</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Monoculture leans on heavy synthetic nitrogen, and the ammonia ($\text{NH}_3$) it volatilises becomes downwind $\text{PM}_{2.5}$. Combining Chinese field-trial data with GEOS-Chem, we find that maize-soybean strip intercropping raises total grain yield $1.5–3.2\%$ while cutting synthetic fertiliser $13.5\%$, ammonia emissions by $0.46\text{ Tg N yr}^{-1}$, surface $\text{PM}_{2.5}$ by up to $2.3\ \mu\text{g m}^{-3}$ and premature deaths by about $7{,}100$ a year. After this module you can trace how a change in field geometry becomes a health number.
+:::
+
+## Why monoculture costs clean air
+
+Global agriculture applies over $110\text{ million tonnes}$ of synthetic nitrogen fertilizer each year. In East Asia, heavy fertilization has bought high yields at an environmental cost that arrives in three steps:
+
+1. **Low Nitrogen Use Efficiency (NUE)**: More than $50\%$ of applied nitrogen is lost to the environment rather than absorbed by the crop[^1].
+2. **Ammonia Volatilization**: Excess soil ammonium volatilizes into atmospheric ammonia gas ($\text{NH}_3$).
+3. **Secondary $\text{PM}_{2.5}$ Smog Formation**: In the atmosphere, basic $\text{NH}_3$ rapidly neutralizes nitric acid ($\text{HNO}_3$) and sulfuric acid ($\text{H}_2\text{SO}_4$) from industrial and vehicular emissions, forming ammonium nitrate ($\text{NH}_4\text{NO}_3$) and ammonium sulfate ($(\text{NH}_4)_2\text{SO}_4$) aerosols—the dominant inorganic components of wintertime $\text{PM}_{2.5}$ air pollution in East Asia and the US Midwest[^2].
+
+```{mermaid}
+flowchart LR
+    Fertilizer["Synthetic N Fertilizer (Urea / Ammonium)"] --> SoilN["Excess Soil Ammonium (NH4+)"]
+    SoilN --> Volatilization["Agricultural NH3 Volatilization"]
+    Volatilization --> Atmosphere["Atmospheric Gas Phase NH3"]
+    Atmosphere --> Reaction{"Neutralization Reactions with Acid Gases"}
+    AcidGas["Industrial & Vehicular NOx and SO2 (HNO3, H2SO4)"] --> Reaction
+    Reaction --> PM25["Secondary Inorganic PM2.5 (NH4NO3, (NH4)2SO4)"]
+    PM25 --> Health["Premature Respiratory & Cardiovascular Mortalities"]
+
+    class Fertilizer rust
+    class Volatilization ochre
+    class Reaction indigo
+    class PM25 sienna
+    class Health terracotta
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef terracotta fill:#c97d62,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+## What strip intercropping does
+
+**Strip intercropping** is an agro-ecological practice where two or more compatible crops (typically a cereal such as **maize** and a legume such as **soybean** or **peanut**) are cultivated in alternating parallel strips in the same field during the same growing season:
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 422" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Overhead plan view of a field planted in a repeating pattern of two maize rows followed by two soybean rows, with the repeat unit bracketed and the crop interfaces marked.">
+  <defs><marker id="icT" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--ink-indigo)"/></marker><marker id="icF" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker></defs>
+  <rect x="70" y="96" width="620" height="192" fill="var(--md-default-fg-color--light)" fill-opacity="0.05" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+  <line x1="158.6" y1="96" x2="158.6" y2="288" stroke="var(--md-default-fg-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.45"/>
+  <line x1="247.1" y1="96" x2="247.1" y2="288" stroke="var(--md-default-fg-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.45"/>
+  <line x1="335.7" y1="96" x2="335.7" y2="288" stroke="var(--md-default-fg-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.45"/>
+  <line x1="424.3" y1="96" x2="424.3" y2="288" stroke="var(--md-default-fg-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.45"/>
+  <line x1="512.9" y1="96" x2="512.9" y2="288" stroke="var(--md-default-fg-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.45"/>
+  <line x1="601.4" y1="96" x2="601.4" y2="288" stroke="var(--md-default-fg-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.45"/>
+  <line x1="92.14" y1="108" x2="92.14" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 81.14 111 Q 90.14 118 92.14 120 Q 94.14 118 103.1 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 81.14 140.6 Q 90.14 147.6 92.14 149.6 Q 94.14 147.6 103.1 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 81.14 170.2 Q 90.14 177.2 92.14 179.2 Q 94.14 177.2 103.1 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 81.14 199.8 Q 90.14 206.8 92.14 208.8 Q 94.14 206.8 103.1 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 81.14 229.4 Q 90.14 236.4 92.14 238.4 Q 94.14 236.4 103.1 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 81.14 259 Q 90.14 266 92.14 268 Q 94.14 266 103.1 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <line x1="136.4" y1="108" x2="136.4" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 125.4 111 Q 134.4 118 136.4 120 Q 138.4 118 147.4 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 125.4 140.6 Q 134.4 147.6 136.4 149.6 Q 138.4 147.6 147.4 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 125.4 170.2 Q 134.4 177.2 136.4 179.2 Q 138.4 177.2 147.4 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 125.4 199.8 Q 134.4 206.8 136.4 208.8 Q 138.4 206.8 147.4 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 125.4 229.4 Q 134.4 236.4 136.4 238.4 Q 138.4 236.4 147.4 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 125.4 259 Q 134.4 266 136.4 268 Q 138.4 266 147.4 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <circle cx="180.7" cy="114" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="180.7" cy="140" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="180.7" cy="166" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="180.7" cy="192" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="180.7" cy="218" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="180.7" cy="244" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="180.7" cy="270" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="114" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="140" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="166" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="192" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="218" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="244" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="225" cy="270" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <line x1="269.3" y1="108" x2="269.3" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 258.3 111 Q 267.3 118 269.3 120 Q 271.3 118 280.3 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 258.3 140.6 Q 267.3 147.6 269.3 149.6 Q 271.3 147.6 280.3 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 258.3 170.2 Q 267.3 177.2 269.3 179.2 Q 271.3 177.2 280.3 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 258.3 199.8 Q 267.3 206.8 269.3 208.8 Q 271.3 206.8 280.3 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 258.3 229.4 Q 267.3 236.4 269.3 238.4 Q 271.3 236.4 280.3 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 258.3 259 Q 267.3 266 269.3 268 Q 271.3 266 280.3 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <line x1="313.6" y1="108" x2="313.6" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 302.6 111 Q 311.6 118 313.6 120 Q 315.6 118 324.6 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 302.6 140.6 Q 311.6 147.6 313.6 149.6 Q 315.6 147.6 324.6 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 302.6 170.2 Q 311.6 177.2 313.6 179.2 Q 315.6 177.2 324.6 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 302.6 199.8 Q 311.6 206.8 313.6 208.8 Q 315.6 206.8 324.6 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 302.6 229.4 Q 311.6 236.4 313.6 238.4 Q 315.6 236.4 324.6 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 302.6 259 Q 311.6 266 313.6 268 Q 315.6 266 324.6 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <circle cx="357.9" cy="114" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="357.9" cy="140" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="357.9" cy="166" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="357.9" cy="192" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="357.9" cy="218" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="357.9" cy="244" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="357.9" cy="270" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="114" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="140" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="166" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="192" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="218" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="244" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="402.1" cy="270" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <line x1="446.4" y1="108" x2="446.4" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 435.4 111 Q 444.4 118 446.4 120 Q 448.4 118 457.4 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 435.4 140.6 Q 444.4 147.6 446.4 149.6 Q 448.4 147.6 457.4 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 435.4 170.2 Q 444.4 177.2 446.4 179.2 Q 448.4 177.2 457.4 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 435.4 199.8 Q 444.4 206.8 446.4 208.8 Q 448.4 206.8 457.4 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 435.4 229.4 Q 444.4 236.4 446.4 238.4 Q 448.4 236.4 457.4 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 435.4 259 Q 444.4 266 446.4 268 Q 448.4 266 457.4 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <line x1="490.7" y1="108" x2="490.7" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 479.7 111 Q 488.7 118 490.7 120 Q 492.7 118 501.7 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 479.7 140.6 Q 488.7 147.6 490.7 149.6 Q 492.7 147.6 501.7 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 479.7 170.2 Q 488.7 177.2 490.7 179.2 Q 492.7 177.2 501.7 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 479.7 199.8 Q 488.7 206.8 490.7 208.8 Q 492.7 206.8 501.7 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 479.7 229.4 Q 488.7 236.4 490.7 238.4 Q 492.7 236.4 501.7 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 479.7 259 Q 488.7 266 490.7 268 Q 492.7 266 501.7 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <circle cx="535" cy="114" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="535" cy="140" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="535" cy="166" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="535" cy="192" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="535" cy="218" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="535" cy="244" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="535" cy="270" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="114" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="140" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="166" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="192" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="218" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="244" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <circle cx="579.3" cy="270" r="5.4" fill="var(--ink-rust)" fill-opacity="0.75"/>
+  <line x1="623.6" y1="108" x2="623.6" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 612.6 111 Q 621.6 118 623.6 120 Q 625.6 118 634.6 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 612.6 140.6 Q 621.6 147.6 623.6 149.6 Q 625.6 147.6 634.6 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 612.6 170.2 Q 621.6 177.2 623.6 179.2 Q 625.6 177.2 634.6 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 612.6 199.8 Q 621.6 206.8 623.6 208.8 Q 625.6 206.8 634.6 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 612.6 229.4 Q 621.6 236.4 623.6 238.4 Q 625.6 236.4 634.6 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 612.6 259 Q 621.6 266 623.6 268 Q 625.6 266 634.6 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <line x1="667.9" y1="108" x2="667.9" y2="276" stroke="var(--ink-indigo)" stroke-width="5"/>
+  <path d="M 656.9 111 Q 665.9 118 667.9 120 Q 669.9 118 678.9 111" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 656.9 140.6 Q 665.9 147.6 667.9 149.6 Q 669.9 147.6 678.9 140.6" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 656.9 170.2 Q 665.9 177.2 667.9 179.2 Q 669.9 177.2 678.9 170.2" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 656.9 199.8 Q 665.9 206.8 667.9 208.8 Q 669.9 206.8 678.9 199.8" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 656.9 229.4 Q 665.9 236.4 667.9 238.4 Q 669.9 236.4 678.9 229.4" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 656.9 259 Q 665.9 266 667.9 268 Q 669.9 266 678.9 259" fill="none" stroke="var(--ink-indigo)" stroke-width="1.8"/>
+  <path d="M 70 80 v -8 H 247.1 v 8" fill="none" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+  <text x="158.6" y="64" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">one repeat = 2 maize + 2 soybean rows</text>
+  <path d="M 606 82 q -34 4 -58 12" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#icF)"/>
+  <text x="614" y="66" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">crop</text>
+  <text x="614" y="82" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">interface</text>
+  <text x="380" y="30" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">Plan view of a 2 : 2 maize–soybean strip field</text>
+  <text x="380" y="50" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">looking straight down; rows run top to bottom, the pattern repeats left to right</text>
+  <rect x="90" y="316" width="13" height="13" fill="var(--ink-indigo)" fill-opacity="0.8"/>
+  <text x="111" y="327" fill="var(--ink-indigo)" font-size="13.5" font-weight="600">Maize — tall C₄ cereal</text>
+  <text x="90" y="349" fill="var(--md-default-fg-color--light)" font-size="11.5">deep taproot reaches subsoil water and nitrogen</text>
+  <text x="90" y="366" fill="var(--md-default-fg-color--light)" font-size="11.5">tall canopy intercepts the direct solar beam</text>
+  <text x="90" y="383" fill="var(--md-default-fg-color--light)" font-size="11.5">root exudates mobilise insoluble soil phosphorus</text>
+  <rect x="420" y="316" width="13" height="13" fill="var(--ink-rust)" fill-opacity="0.8"/>
+  <text x="441" y="327" fill="var(--ink-rust)" font-size="13.5" font-weight="600">Soybean — short C₃ legume</text>
+  <text x="420" y="349" fill="var(--md-default-fg-color--light)" font-size="11.5">Rhizobium root nodules fix atmospheric N₂</text>
+  <text x="420" y="366" fill="var(--md-default-fg-color--light)" font-size="11.5">shade-tolerant; uses diffuse ground light</text>
+  <text x="420" y="383" fill="var(--md-default-fg-color--light)" font-size="11.5">lateral roots occupy a different soil layer</text>
+  <text x="380" y="404" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5">Every soybean row borders maize at 2 : 2, so the facilitation interface is as long as the pattern allows</text>
+</svg>
+<figcaption><strong>Figure 1 | Strip width is the design variable, because the benefits are generated at the boundary between the two crops, not inside either strip.</strong> Seen from above, a $2:2$ pattern puts every soybean row directly against maize, which maximises the length of interface per hectare — and it is along that interface that the three mechanisms act: fixed nitrogen leaking from legume nodules toward the cereal, phosphorus mobilised by maize root exudates, and vertical light-niche separation between a tall $\text{C}_4$ canopy and a shade-tolerant $\text{C}_3$ understory. The result is a land equivalent ratio of $1.2$–$1.4$, meaning a monoculture would need $20$–$40\%$ more land for the same grain. Colour here carries only crop identity, so the geometry is what the eye reads.</figcaption>
+</figure>
+```
+
+
+### Three mechanisms at the interface
+
+1. **Biological Nitrogen Fixation**: Legumes form symbiotic relationships with root-nodule *Rhizobium* bacteria that fix inert atmospheric $\text{N}_2$ into bioavailable ammonium, drastically cutting synthetic fertilizer requirements[^3].
+2. **Niche Differentiation & Complementarity**: Maize has a deep taproot and tall canopy (capturing upper canopy sunlight); soybean has a lateral shallow root system and shade tolerance (utilizing diffuse ground light).
+3. **Interspecific Facilitation**: Maize root exudates stimulate organic acid secretion that mobilizes insoluble soil phosphorus, benefiting both crops.
+
+The net biological productivity of intercropping is measured by the **Land Equivalent Ratio (LER)**:
+
+$$\text{LER} = \frac{Y_{\text{maize, inter}}}{Y_{\text{maize, mono}}} + \frac{Y_{\text{soy, inter}}}{Y_{\text{soy, mono}}}$$
+
+An $\text{LER} > 1.0$ (typically $1.2–1.4$ in field trials) indicates that a monoculture would require $20–40\%$ more land area to produce the same total grain yield.
+
+## From field trials to avoided deaths
+
+In our paper in *Environmental Research Letters*[^4], we coupled agronomic field-trial data across China with the 3-D chemical transport model **GEOS-Chem** and epidemiological concentration-response functions to simulate a nationwide switch to maize-soybean intercropping:
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 280" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Three linked boxes showing the modelling chain: agronomic field trials cut synthetic nitrogen 13.5 percent, GEOS-Chem converts that to 2.3 micrograms per cubic metre less PM2.5, and exposure-response functions give 7,100 avoided deaths per year.">
+  <defs><marker id="ipA" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--ink-rust)"/></marker></defs>
+  <rect x="8" y="56" width="216" height="158" rx="10" fill="var(--ink-plum)" fill-opacity="0.07" stroke="var(--ink-plum)" stroke-width="2"/>
+  <text x="116" y="80" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="600">Agronomic field trials</text>
+  <text x="116" y="97" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11">China-wide strip-trial synthesis</text>
+  <line x1="24" y1="108" x2="208" y2="108" stroke="var(--ink-plum)" stroke-width="1.2" opacity="0.5"/>
+  <text x="116" y="130" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">grain: +5.2 Mt maize (+2.4 %)</text>
+  <text x="116" y="153" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">+1.4 Mt soybean (+10.8 %)</text>
+  <text x="116" y="176" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">synthetic N: 10.4 to 9.0 Tg N yr⁻¹</text>
+  <text x="116" y="199" text-anchor="middle" fill="var(--ink-rust)" font-size="11.5" font-weight="600">−13.5 % fertiliser applied</text>
+  <rect x="272" y="56" width="216" height="158" rx="10" fill="var(--ink-plum)" fill-opacity="0.07" stroke="var(--ink-plum)" stroke-width="2"/>
+  <text x="380" y="80" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="600">GEOS-Chem 3-D transport</text>
+  <text x="380" y="97" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11">emission, chemistry, transport</text>
+  <line x1="288" y1="108" x2="472" y2="108" stroke="var(--ink-plum)" stroke-width="1.2" opacity="0.5"/>
+  <text x="380" y="130" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">NH₃: 3.45 to 2.99 Tg N yr⁻¹</text>
+  <text x="380" y="153" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">surface PM₂.₅, North China Plain:</text>
+  <text x="380" y="176" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">68.4 to 66.1 µg m⁻³</text>
+  <text x="380" y="199" text-anchor="middle" fill="var(--ink-rust)" font-size="11.5" font-weight="600">−2.3 µg m⁻³ of secondary PM₂.₅</text>
+  <rect x="536" y="56" width="216" height="158" rx="10" fill="var(--ink-plum)" fill-opacity="0.07" stroke="var(--ink-plum)" stroke-width="2"/>
+  <text x="644" y="80" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="12.5" font-weight="600">Exposure–response functions</text>
+  <text x="644" y="97" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11">Global Burden of Disease relations</text>
+  <line x1="552" y1="108" x2="736" y2="108" stroke="var(--ink-plum)" stroke-width="1.2" opacity="0.5"/>
+  <text x="644" y="130" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">population-weighted exposure</text>
+  <text x="644" y="153" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">× cause-specific hazard ratios</text>
+  <text x="644" y="176" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="11.5" font-weight="400">summed over every grid cell</text>
+  <text x="644" y="199" text-anchor="middle" fill="var(--ink-rust)" font-size="11.5" font-weight="600">7,100 deaths avoided each year</text>
+  <line x1="228" y1="135" x2="266" y2="135" stroke="var(--ink-rust)" stroke-width="2.8" marker-end="url(#ipA)"/>
+  <line x1="492" y1="135" x2="530" y2="135" stroke="var(--ink-rust)" stroke-width="2.8" marker-end="url(#ipA)"/>
+  <text x="380" y="30" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">From field rows to avoided deaths: one coupled chain</text>
+  <text x="380" y="244" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">every stage hands the next a physical quantity, not a score: tonnes of nitrogen become micrograms per cubic metre,</text>
+  <text x="380" y="262" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">which become deaths — so an error at any link propagates straight through to the health number</text>
+</svg>
+<figcaption><strong>Figure 2 | The health benefit is not an assumption bolted on at the end; it is the arithmetic consequence of a fertiliser cut carried through two physical models.</strong> Field trials fix the agronomic step, dropping synthetic nitrogen from $10.4$ to $9.0\text{ Tg N yr}^{-1}$ while grain output rises. GEOS-Chem then converts that into $0.46\text{ Tg N yr}^{-1}$ less ammonia volatilisation and, through gas-aerosol partitioning with nitric and sulfuric acid, $2.3\ \mu\text{g m}^{-3}$ less surface $\text{PM}_{2.5}$ over the North China Plain. Only then do concentration-response functions turn that exposure change into $7{,}100$ avoided premature deaths a year. The chain is one-directional and each link is a separate assumption, which is where the uncertainty lives.</figcaption>
+</figure>
+```
+
+
+### Nationwide numbers
+
+| Metric | Monoculture Baseline | Nationwide Intercropping Adoption | Co-Benefit Shift |
+| :--- | :--- | :--- | :--- |
+| **National Maize Production** | $215.8\text{ Mt}$ | $+5.2\text{ Mt}$ | **$+2.4\%$ grain increase** |
+| **National Soybean Production** | $12.9\text{ Mt}$ | $+1.4\text{ Mt}$ | **$+10.8\%$ grain increase** |
+| **Synthetic Nitrogen Application** | $10.4\text{ Tg N yr}^{-1}$ | $9.0\text{ Tg N yr}^{-1}$ | **$-13.5\%$ fertilizer cut** |
+| **Agricultural $\text{NH}_3$ Emissions** | $3.45\text{ Tg N yr}^{-1}$ | $2.99\text{ Tg N yr}^{-1}$ | **$-0.46\text{ Tg N yr}^{-1}$ reduction** |
+| **Surface $\text{PM}_{2.5}$ (North China Plain)** | $68.4\ \mu\text{g m}^{-3}$ | $66.1\ \mu\text{g m}^{-3}$ | **$-2.3\ \mu\text{g m}^{-3}$ cleaner air** |
+| **Annual Prevented Premature Deaths** | — | — | **$7,100$ lives saved per year** |
+
+### Explore the adoption rate
+
+The chain is linear in adoption, so the slider scales grain, fertiliser, $\text{NH}_3$ and avoided $\text{PM}_{2.5}$ mortality together:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <h4 style="margin-top: 0; color: #10b981;">🌾 National Intercropping Scenario Calculator</h4>
+  
+  <div style="margin-bottom: 16px;">
+    <label style="font-size: 0.85em; color: #94a3b8;">Nationwide Cropland Adoption Rate: <b id="adopt-val" style="color: #10b981;">50%</b></label>
+    <input type="range" id="sim-adopt" min="0" max="100" value="50" step="5" oninput="updateIntercropSim()" style="width: 100%;">
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Total Grain Boost</div>
+      <div id="res-grain" style="font-size: 1.4em; font-weight: 700; color: #10b981; margin-top: 4px;">+3.3 Mt</div>
+    </div>
+    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Synthetic N Cut</div>
+      <div id="res-fert" style="font-size: 1.4em; font-weight: 700; color: #38bdf8; margin-top: 4px;">-0.70 Tg N</div>
+    </div>
+    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">NH₃ Emissions Slashed</div>
+      <div id="res-nh3" style="font-size: 1.4em; font-weight: 700; color: #f59e0b; margin-top: 4px;">-230 kt N</div>
+    </div>
+    <div style="background: #0f172a; padding: 14px; border-radius: 8px; text-align: center; border-top: 3px solid #ec4899;">
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Avoided Deaths / Year</div>
+      <div id="res-health" style="font-size: 1.4em; font-weight: 700; color: #ec4899; margin-top: 4px;">~3,550 lives</div>
+    </div>
+  </div>
+
+  <div id="sim-text" style="font-size: 0.9em; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 10px; border-radius: 4px;">
+    At 50% adoption, intercropping produces substantial public health benefits while bolstering domestic protein feed security through expanded soybean output.
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+function updateIntercropSim() {
+  const adopt = parseFloat(document.getElementById('sim-adopt').value) / 100;
+  document.getElementById('adopt-val').innerText = Math.round(adopt * 100) + '%';
+
+  const max_grain = 6.6; // Mt
+  const max_fert = 1.40; // Tg N
+  const max_nh3 = 460; // kt N
+  const max_health = 7100; // deaths
+
+  const grain = (max_grain * adopt).toFixed(1);
+  const fert = (max_fert * adopt).toFixed(2);
+  const nh3 = Math.round(max_nh3 * adopt);
+  const health = Math.round(max_health * adopt);
+
+  document.getElementById('res-grain').innerText = '+' + grain + ' Mt';
+  document.getElementById('res-fert').innerText = '-' + fert + ' Tg N';
+  document.getElementById('res-nh3').innerText = '-' + nh3 + ' kt N';
+  document.getElementById('res-health').innerText = '~' + health.toLocaleString() + ' lives';
+
+  let text = '';
+  if (adopt === 0) {
+    text = 'Baseline intensive monoculture: high synthetic nitrogen dependency and severe downwind PM2.5 air pollution.';
+  } else if (adopt < 0.3) {
+    text = 'Targeted adoption in high-ammonia hotspots (North China Plain & Sichuan Basin) yields immediate health dividends.';
+  } else if (adopt < 0.7) {
+    text = 'Widespread adoption provides massive fertilizer cost savings for smallholder farmers alongside major public health improvements.';
+  } else {
+    text = 'Full nationwide adoption transforms China into a global model of sustainable agro-ecological intensification.';
+  }
+  document.getElementById('sim-text').innerText = text;
+}
+window.addEventListener('load', updateIntercropSim);
+setTimeout(updateIntercropSim, 300);
+</script>
+```
+
+
+### Data and code
+
+- **Atmospheric Model**: Chemical transport simulations were performed using the open-source **GEOS-Chem Chemical Transport Model**[^5].
+- **Agronomic Datasets**: Field trial yield and nitrogen response databases are archived in the Environmental Research Letters repository.
+- **Analysis Code**: Geospatial mapping and health burden calculation scripts are open source on GitHub: [`kamingfung/intercropping-air-quality`](https://github.com/kamingfung).
+
+## Key takeaways
+
+- Over half of applied nitrogen is lost; the ammonia it volatilises neutralises nitric and sulfuric acid to form ammonium nitrate and sulfate, the dominant inorganic $\text{PM}_{2.5}$ in East Asian winters.
+- Strip intercropping works at the crop interface: legume nitrogen fixation, root-niche complementarity and phosphorus facilitation give a land equivalent ratio of $1.2$–$1.4$.
+- Nationwide adoption in China would add $5.2\text{ Mt}$ maize and $1.4\text{ Mt}$ soybean while cutting synthetic nitrogen $13.5\%$, $\text{NH}_3$ by $0.46\text{ Tg N yr}^{-1}$, North China Plain $\text{PM}_{2.5}$ by $2.3\ \mu\text{g m}^{-3}$ and premature deaths by about $7{,}100$ a year.
+- Farm field design delivers air-quality gains that industrial controls alone cannot, which is why agriculture, environment and health ministries need to plan together (SDG 2, SDG 3 and SDG 12).
+- The practice scales to smallholders: it runs on modern mechanised harvesters and needs little capital compared with carbon capture or end-of-pipe scrubbers.
+
+## References
+
+[^1]: Zhang, X. et al. Managing nitrogen for sustainable development. *Nature* **528**, 51–59 (2015). https://doi.org/10.1038/nature15743
+[^2]: Paulot, F. & Jacob, D. J. Hidden cost of U.S. agricultural exports: particulate matter from ammonia. *Environ. Sci. Technol.* **48**, 903–908 (2014). https://doi.org/10.1021/es4034793
+[^3]: Li, L. et al. Diversity enhances agricultural productivity via rhizosphere phosphorus facilitation on phosphorus-deficient soils. *Proc. Natl. Acad. Sci. USA* **104**, 11192–11196 (2007). https://doi.org/10.1073/pnas.0704591104
+[^4]: Fung, K. M., Tai, A. P. K., Yong, T., Liu, X. & Lam, H.-M. Co-benefits of intercropping as a sustainable farming method for safeguarding both food security and air quality. *Environ. Res. Lett.* **14**, 044011 (2019). https://doi.org/10.1088/1748-9326/ab0c79
+[^5]: Bey, I. et al. Global modeling of tropospheric chemistry with assimilated meteorology: Model description and evaluation. *J. Geophys. Res. Atmos.* **106**, 23073–23095 (2001). https://doi.org/10.1029/2001JD000807
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/cesm2-fertilizer-climate-feedback.html"><span>Previous</span>Fertiliser nitrogen and aerosol cooling in CESM2</a><a class="mf-up" href="/series/air-land-climate/index.html"><span>Series</span>Air, Land and Climate</a><a class="mf-next" href="/blogs/enhanced-rock-weathering-nitrogen.html"><span>Next</span>Enhanced rock weathering</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

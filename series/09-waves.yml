@@ -1,0 +1,159 @@
+# Waves, Sound and Imaging — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+title: Waves, Sound and Imaging
+slug: waves
+order: 9
+about: One idea, the wave, followed from a plucked string through Fourier analysis to a brain scan.
+assumes: School physics and trigonometry.
+parts:
+- title: What is a wave
+  modules:
+  - id: waves/transverse-and-longitudinal
+    title: Transverse and longitudinal
+    level: introductory
+    path: blogs/wave-transverse-longitudinal.md
+  - id: waves/describing-a-wave
+    title: Describing a wave
+    level: introductory
+    path: blogs/describing-a-wave.md
+    requires:
+    - waves/transverse-and-longitudinal
+  - id: waves/the-wave-equation
+    title: The wave equation
+    level: intermediate
+    path: blogs/the-wave-equation.md
+    requires:
+    - waves/describing-a-wave
+- title: Superposition
+  modules:
+  - id: waves/interference
+    title: Interference
+    level: introductory
+    path: blogs/wave-interference.md
+  - id: waves/standing-waves-and-resonance
+    title: Standing waves and resonance
+    level: introductory
+    path: blogs/standing-waves.md
+    requires:
+    - waves/interference
+  - id: waves/beats
+    title: Beats
+    level: introductory
+    requires:
+    - waves/interference
+- title: Sound and music
+  modules:
+  - id: waves/the-mathematics-of-music
+    title: The mathematics of music
+    level: introductory
+    path: blogs/math-of-music.md
+    requires:
+    - waves/standing-waves-and-resonance
+  - id: waves/why-octaves-sound-the-same
+    title: Why octaves sound the same
+    level: introductory
+  - id: waves/timbre
+    title: Timbre
+    level: introductory
+    requires:
+    - waves/the-mathematics-of-music
+- title: Fourier
+  modules:
+  - id: waves/the-fourier-transform-and-audio
+    title: The Fourier transform and audio
+    level: intermediate
+    path: blogs/fourier-transform-audio.md
+    requires:
+    - waves/standing-waves-and-resonance
+    - waves/the-mathematics-of-music
+  - id: waves/the-dft-and-the-fft
+    title: The DFT and the FFT
+    level: intermediate
+    requires:
+    - waves/the-fourier-transform-and-audio
+  - id: waves/sampling-and-aliasing
+    title: Sampling and aliasing
+    level: intermediate
+    requires:
+    - waves/the-dft-and-the-fft
+- title: Filters
+  modules:
+  - id: waves/low-pass-high-pass-band-pass
+    title: Low-pass, high-pass, band-pass
+    level: intermediate
+  - id: waves/convolution
+    title: Convolution
+    level: intermediate
+    requires:
+    - waves/low-pass-high-pass-band-pass
+- title: Light
+  modules:
+  - id: waves/electromagnetic-waves
+    title: Electromagnetic waves
+    level: introductory
+  - id: waves/diffraction
+    title: Diffraction
+    level: intermediate
+- title: Spins and resonance
+  modules:
+  - id: waves/nmr-basics
+    title: NMR basics
+    level: intermediate
+  - id: waves/relaxation-t1-and-t2
+    title: 'Relaxation: T1 and T2'
+    level: intermediate
+    requires:
+    - waves/nmr-basics
+- title: MRI
+  modules:
+  - id: waves/what-mri-sees
+    title: What MRI sees
+    level: intermediate
+    path: blogs/mri-what-it-sees.md
+    requires:
+    - waves/nmr-basics
+    - waves/relaxation-t1-and-t2
+  - id: waves/k-space
+    title: k-space
+    level: intermediate
+    requires:
+    - waves/what-mri-sees
+    - waves/the-dft-and-the-fft
+    note: Already planned as MRI part 2.
+  - id: waves/contrast-tr-and-te
+    title: 'Contrast: TR and TE'
+    level: intermediate
+    requires:
+    - waves/relaxation-t1-and-t2
+- title: Perfusion and function
+  modules:
+  - id: waves/perfusion-imaging
+    title: Perfusion imaging
+    level: intermediate
+    requires:
+    - waves/k-space
+  - id: waves/bold-and-fmri
+    title: BOLD and fMRI
+    level: intermediate
+    requires:
+    - waves/k-space
+- title: Other imaging
+  modules:
+  - id: waves/ct
+    title: CT
+    level: introductory
+  - id: waves/ultrasound
+    title: Ultrasound
+    level: introductory
+  - id: waves/pet
+    title: PET
+    level: introductory
+- title: Waves in the Earth
+  modules:
+  - id: waves/seismic-waves
+    title: Seismic waves
+    level: introductory
+  - id: waves/ocean-waves
+    title: Ocean waves
+    level: introductory

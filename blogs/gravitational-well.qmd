@@ -1,0 +1,1291 @@
+---
+title: Gravitational wells
+description: 'Potential as a shape you can fall into: Earth''s, a black hole''s, and the saddle points between two bodies.'
+date: 2026-08-26
+categories:
+- physics
+- astronomy
+- astrophysics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/everyday-physics/index.html">Physics of Everyday Things</a><span class="sep">·</span>Part 1 · Gravity</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Curiosity. School physics helps.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Every mass carves a potential valley, $\Phi(r) = -GM/r$, and leaving it costs kinetic energy. This module compares three shapes of that valley: Earth's, which stops at a solid floor and sets the rocket equation; a Schwarzschild black hole's, which has no floor and fixes the ISCO, photon sphere and horizon at set fractions of its depth; and a binary system's double well with five Lagrange points. Two simulators let you rotate the surfaces and launch test orbits.
+:::
+
+Place a bowling ball on a stretched rubber sheet and it sags into a smooth conical dip. A marble rolled nearby no longer travels straight; it curves around the dip, orbits it, or spirals in.
+
+That picture is a workable model of a **gravitational potential well**. Real gravity acts in four-dimensional spacetime rather than on a two-dimensional sheet[^1], but the potential energy landscape behaves in the same mathematical way: every mass carves a valley, and leaving it means climbing the slope and paying in kinetic energy.
+
+## What a gravitational well is
+
+In physics, the gravitational potential $\Phi(r)$ around a spherically symmetric mass $M$ at distance $r$ is defined as the work required per unit mass to bring an object from infinity (where potential is zero) to $r$[^2]:
+
+$$\Phi(r) = - \frac{G M}{r}$$
+
+where:
+
+- $G \approx 6.6743 \times 10^{-11} \text{ m}^3\text{kg}^{-1}\text{s}^{-2}$ is Newton's gravitational constant.
+- $M$ is the mass of the celestial body.
+- $r$ is the radial distance from the center of mass.
+
+The negative sign is paramount: it signifies a **bound state**. At infinitely far distances ($r \to \infty$), the potential approaches $0$. As you approach the mass ($r \to 0$), the potential plunges towards $-\infty$.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+    <h4 style="margin: 0; color: #38bdf8; font-size: 1.05em; display: flex; align-items: center; gap: 8px;">
+      <span>🌌 Analytical Gravitational & Effective Potential Landscape</span>
+    </h4>
+    <span style="font-size: 0.8em; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 3px 8px; border-radius: 4px; font-family: monospace;">
+      U_eff(r) = -GMm/r + L²/(2mr²)
+    </span>
+  </div>
+
+  <!-- Interactive Controls -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Total Energy (E): <b id="well-e-val" style="color: #f59e0b;">-0.28</b></label>
+      <input type="range" id="well-slider-e" min="-0.65" max="0.30" step="0.01" value="-0.28" oninput="updatePotentialWell()" style="width: 100%; accent-color: #f59e0b;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Angular Momentum (L): <b id="well-l-val" style="color: #10b981;">1.10</b></label>
+      <input type="range" id="well-slider-l" min="0.0" max="1.60" step="0.05" value="1.10" oninput="updatePotentialWell()" style="width: 100%; accent-color: #10b981;">
+    </div>
+  </div>
+
+  <!-- Real-time Mathematical Readout Cards -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px;">
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
+      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Orbital State</div>
+      <div id="readout-state" style="font-size: 1.05em; font-weight: 700; color: #10b981; margin-top: 2px;">Bound Orbit</div>
+    </div>
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
+      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Periapsis (r_min)</div>
+      <div id="readout-rmin" style="font-size: 1.05em; font-weight: 700; color: #38bdf8; margin-top: 2px;">0.74 AU</div>
+    </div>
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
+      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Apoapsis (r_max)</div>
+      <div id="readout-rmax" style="font-size: 1.05em; font-weight: 700; color: #38bdf8; margin-top: 2px;">2.83 AU</div>
+    </div>
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; text-align: center;">
+      <div style="font-size: 0.72em; color: #94a3b8; text-transform: uppercase;">Well Minimum (U_min)</div>
+      <div id="readout-umin" style="font-size: 1.05em; font-weight: 700; color: #a78bfa; margin-top: 2px;">-0.41</div>
+    </div>
+  </div>
+
+  <!-- Analytical Curve Canvas -->
+  <canvas id="potential-well-canvas" width="720" height="340" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 0.8em; color: #64748b; margin-top: 10px;">
+    <span>🔵 <strong style="color: #38bdf8;">U_eff(r)</strong> (Effective Potential) | 🟣 <strong style="color: #a78bfa;">-GM/r</strong> (Gravitational) | 🟢 <strong style="color: #34d399;">L²/(2mr²)</strong> (Centrifugal)</span>
+    <span>🟠 <strong style="color: #f59e0b;">E (Total Energy Level)</strong></span>
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+function updatePotentialWell() {
+  const E = parseFloat(document.getElementById('well-slider-e').value);
+  const L = parseFloat(document.getElementById('well-slider-l').value);
+
+  document.getElementById('well-e-val').innerText = (E >= 0 ? '+' : '') + E.toFixed(2);
+  document.getElementById('well-l-val').innerText = L.toFixed(2);
+
+  // Exact physics calculations (normalized units GMm = 1, m = 1)
+  const GMm = 1.0;
+  const m = 1.0;
+  
+  // Potential minimum: r_min_well = L^2 / GMm
+  const r_well_min = L > 0 ? (L * L) / GMm : 0;
+  const U_well_min = L > 0 ? - (GMm * GMm) / (2 * L * L) : -Infinity;
+
+  const uminEl = document.getElementById('readout-umin');
+  uminEl.innerText = L > 0 ? U_well_min.toFixed(2) : '-∞ (Plunge)';
+
+  // Calculate classical turning points: E = -GMm/r + L^2/(2m r^2)
+  // 2E r^2 + 2GMm r - L^2 = 0
+  const stateEl = document.getElementById('readout-state');
+  const rminEl = document.getElementById('readout-rmin');
+  const rmaxEl = document.getElementById('readout-rmax');
+
+  let r1 = null;
+  let r2 = null;
+
+  if (L === 0) {
+    stateEl.innerText = "Radial Plunge";
+    stateEl.style.color = "#ef4444";
+    rminEl.innerText = "0.00 (Crash)";
+    rmaxEl.innerText = E < 0 ? (-GMm / E).toFixed(2) + " AU" : "∞ (Escape)";
+  } else if (E < U_well_min) {
+    stateEl.innerText = "Forbidden Energy";
+    stateEl.style.color = "#94a3b8";
+    rminEl.innerText = "N/A";
+    rmaxEl.innerText = "N/A";
+  } else if (Math.abs(E - U_well_min) < 0.01) {
+    stateEl.innerText = "Circular Orbit";
+    stateEl.style.color = "#38bdf8";
+    rminEl.innerText = r_well_min.toFixed(2) + " AU";
+    rmaxEl.innerText = r_well_min.toFixed(2) + " AU";
+    r1 = r_well_min;
+    r2 = r_well_min;
+  } else if (E < 0) {
+    // Bound elliptical orbit
+    const disc = 4 * GMm * GMm + 8 * E * (L * L);
+    if (disc >= 0) {
+      const sqrtD = Math.sqrt(disc);
+      r1 = (-2 * GMm + sqrtD) / (4 * E);
+      r2 = (-2 * GMm - sqrtD) / (4 * E);
+      if (r1 > r2) { const tmp = r1; r1 = r2; r2 = tmp; }
+      stateEl.innerText = "Bound Ellipse";
+      stateEl.style.color = "#10b981";
+      rminEl.innerText = r1.toFixed(2) + " AU";
+      rmaxEl.innerText = r2.toFixed(2) + " AU";
+    }
+  } else if (E === 0) {
+    // Parabolic escape
+    r1 = (L * L) / (2 * GMm);
+    stateEl.innerText = "Parabolic Escape";
+    stateEl.style.color = "#f59e0b";
+    rminEl.innerText = r1.toFixed(2) + " AU";
+    rmaxEl.innerText = "∞ (Zero v_inf)";
+  } else {
+    // Hyperbolic flyby
+    const disc = 4 * GMm * GMm + 8 * E * (L * L);
+    const sqrtD = Math.sqrt(disc);
+    r1 = (-2 * GMm + sqrtD) / (4 * E);
+    stateEl.innerText = "Hyperbolic Flyby";
+    stateEl.style.color = "#8b5cf6";
+    rminEl.innerText = r1.toFixed(2) + " AU";
+    rmaxEl.innerText = "∞ (Unbound)";
+  }
+
+  drawPotentialWellCanvas(E, L, U_well_min, r1, r2);
+}
+
+function drawPotentialWellCanvas(E, L, U_min, r1, r2) {
+  const canvas = document.getElementById('potential-well-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const padLeft = 60, padRight = 30, padTop = 30, padBottom = 40;
+  const w = canvas.width - padLeft - padRight;
+  const h = canvas.height - padTop - padBottom;
+
+  const rMinPlot = 0.35, rMaxPlot = 5.5;
+  const uMinPlot = -1.2, uMaxPlot = 0.6;
+
+  function toX(r) {
+    return padLeft + ((r - rMinPlot) / (rMaxPlot - rMinPlot)) * w;
+  }
+  function toY(u) {
+    return padTop + ((uMaxPlot - u) / (uMaxPlot - uMinPlot)) * h;
+  }
+
+  // Draw Grid Lines
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  for (let r = 1; r <= 5; r++) {
+    const gx = toX(r);
+    ctx.beginPath(); ctx.moveTo(gx, padTop); ctx.lineTo(gx, padTop + h); ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px system-ui';
+    ctx.fillText(r + ' AU', gx - 12, padTop + h + 18);
+  }
+  for (let u = -1.0; u <= 0.5; u += 0.5) {
+    const gy = toY(u);
+    ctx.beginPath(); ctx.moveTo(padLeft, gy); ctx.lineTo(padLeft + w, gy); ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px system-ui';
+    ctx.fillText(u.toFixed(1), 16, gy + 4);
+  }
+
+  // Zero Energy Reference Line (E = 0)
+  const yZero = toY(0);
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath(); ctx.moveTo(padLeft, yZero); ctx.lineTo(padLeft + w, yZero); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '11px system-ui';
+  ctx.fillText('Zero Energy (E = 0: Escape Threshold)', padLeft + w - 210, yZero - 6);
+
+  // 1. Plot Pure Gravitational Potential (-1/r)
+  ctx.strokeStyle = 'rgba(167, 139, 250, 0.4)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let r = rMinPlot; r <= rMaxPlot; r += 0.05) {
+    const u_g = - 1.0 / r;
+    const px = toX(r), py = toY(Math.max(uMinPlot - 0.2, u_g));
+    if (r === rMinPlot) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // 2. Plot Centrifugal Potential (L^2 / 2r^2)
+  if (L > 0) {
+    ctx.strokeStyle = 'rgba(52, 211, 153, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let r = rMinPlot; r <= rMaxPlot; r += 0.05) {
+      const u_c = (L * L) / (2 * r * r);
+      if (u_c <= uMaxPlot + 0.2) {
+        const px = toX(r), py = toY(u_c);
+        if (r === rMinPlot) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+    }
+    ctx.stroke();
+  }
+
+  // 3. Shaded Bound Trapping Zone
+  if (r1 !== null && r2 !== null && E < 0) {
+    const x1 = Math.max(padLeft, toX(r1));
+    const x2 = Math.min(padLeft + w, toX(r2));
+    const yE = toY(E);
+
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.12)';
+    ctx.beginPath();
+    ctx.moveTo(x1, yE);
+    for (let r = r1; r <= r2; r += 0.02) {
+      const u_eff = - 1.0 / r + (L * L) / (2 * r * r);
+      ctx.lineTo(toX(r), toY(u_eff));
+    }
+    ctx.lineTo(x2, yE);
+    ctx.closePath();
+    ctx.fill();
+
+    // Turning point markers
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath(); ctx.arc(x1, yE, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x2, yE, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '10px system-ui';
+    ctx.fillText('r_peri', x1 - 12, yE - 8);
+    ctx.fillText('r_apo', x2 - 8, yE - 8);
+  }
+
+  // 4. Plot Effective Potential Curve U_eff(r)
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 3.5;
+  ctx.beginPath();
+  let firstPoint = true;
+  for (let r = rMinPlot; r <= rMaxPlot; r += 0.02) {
+    const u_eff = - 1.0 / r + (L * L) / (2 * r * r);
+    if (u_eff <= uMaxPlot + 0.5 && u_eff >= uMinPlot - 0.5) {
+      const px = toX(r), py = toY(u_eff);
+      if (firstPoint) { ctx.moveTo(px, py); firstPoint = false; } else ctx.lineTo(px, py);
+    }
+  }
+  ctx.stroke();
+
+  // 5. Total Energy Level E Horizontal Bar
+  const yE = toY(E);
+  if (yE >= padTop && yE <= padTop + h) {
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(padLeft, yE);
+    ctx.lineTo(padLeft + w, yE);
+    ctx.stroke();
+
+    ctx.fillStyle = '#f59e0b';
+    ctx.font = 'bold 11px system-ui';
+    ctx.fillText('E = ' + (E >= 0 ? '+' : '') + E.toFixed(2), padLeft + 10, yE - 6);
+  }
+}
+
+// Lifecycle registration
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => {
+    updatePotentialWell();
+  });
+}
+window.addEventListener('load', updatePotentialWell);
+setTimeout(updatePotentialWell, 200);
+</script>
+```
+
+
+### Orbiting versus escaping
+
+A spacecraft or particle of mass $m$ in this field has total mechanical energy:
+
+$$E = K + U = \frac{1}{2} m v^2 - \frac{G M m}{r}$$
+
+The sign of $E$ dictates its cosmic destiny:
+
+```{mermaid}
+flowchart TD
+    Start["Particle with Total Energy E = K + U"] --> CheckE{"Total Energy E vs 0"}
+    
+    CheckE -- "E < 0 (Bound State)" --> SubBound{"Angular Momentum L"}
+    SubBound -- "L > 0" --> Orbit["Elliptical / Circular Orbit (Trapped in Well)"]
+    SubBound -- "L = 0" --> Plunge["Direct Radial Collision / Plunge"]
+    
+    CheckE -- "E = 0 (Parabolic)" --> EscapeZero["Parabolic Trajectory (Escapes to ∞ with v = 0)"]
+    
+    CheckE -- "E > 0 (Hyperbolic)" --> EscapePos["Hyperbolic Trajectory (Escapes with Residual Excess Velocity v_inf)"]
+
+    class CheckE indigo
+    class Orbit olive
+    class Plunge rust
+    class EscapeZero ochre
+    class EscapePos plum
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+The minimum velocity needed at radius $r$ to reach $E = 0$ (climbing entirely out of the well to infinity) is the **escape velocity** $v_{\text{esc}}$:
+
+$$\frac{1}{2} m v_{\text{esc}}^2 - \frac{G M m}{r} = 0 \implies v_{\text{esc}} = \sqrt{\frac{2 G M}{r}}$$
+
+
+### The three archetypes side by side
+
+| Feature | Earth (Rocky Planet) | Black Hole (Stellar Mass) | Binary Massive Planets |
+| :--- | :--- | :--- | :--- |
+| **Mass Structure** | Single distributed sphere ($M_\oplus \approx 5.97 \times 10^{24}\text{ kg}$) | Point singularity / compressed horizon ($M \ge 3 M_\odot$) | Two interacting masses ($M_1, M_2$) orbiting a barycentre |
+| **Well Bottom** | Truncated at physical surface ($r = R_\oplus \approx 6,371\text{ km}$) | Singular abyss ($r = 0$), shielded by event horizon $r_s$ | Two distinct funnels joined by an $L_1$ saddle bridge |
+| **Surface Potential** | $\Phi_{\text{surf}} \approx -62.5\text{ MJ/kg}$ | $\Phi(r_s) \to -c^2 / 2$ (relativistic limit) | Variable $\Phi(x, y)$ with saddle barriers |
+| **Escape Velocity** | $11.19\text{ km/s}$ at sea level | $c \approx 299,792\text{ km/s}$ at $r = r_s$ | Dependent on location and launch vector |
+| **Equilibrium Points** | Center of mass only ($r = 0$) | Singular center ($r = 0$) | 5 Lagrange equilibrium points ($L_1 \dots L_5$) |
+| **Relativistic Warping** | Negligible ($\approx 1.4 \times 10^{-9}$ fractional redshift) | Extreme (infinite time dilation, photon sphere at $1.5 r_s$) | Moderate to high depending on stellar/planetary masses |
+
+## Three wells compared
+
+### Earth, a well with a floor
+
+For Earth, the potential does not plunge to $-\infty$. Because Earth is a solid sphere of radius $R_\oplus$, the $1/r$ potential stops decreasing at the surface. Inside the Earth (assuming uniform density $\rho$), Gauss's Law dictates that gravity decreases linearly to zero at the center:
+
+$$\Phi(r) = \begin{cases} -\frac{G M}{R_\oplus} \left( \frac{3}{2} - \frac{r^2}{2 R_\oplus^2} \right) & \text{for } r < R_\oplus \\ -\frac{G M}{r} & \text{for } r \ge R_\oplus \end{cases}$$
+
+```
+Earth's Gravitational Potential Cross-Section:
+        r = -R⊕           r = 0           r = +R⊕
+═══════════╤════════════════╤════════════════╤═══════════ Φ = 0 (Deep Space)
+            \              / \              /
+             \            /   \            /
+              \          /     \          /
+  1/r curve    \        /       \        /   1/r curve
+                \      /         \      /
+                 \____/           \____/
+                 Solid Surface (r = R⊕)
+                 Depth = -62.5 MJ/kg
+                 v_esc = 11.2 km/s
+```
+
+#### The rocket equation
+
+To climb out of Earth's $62.5\text{ MJ/kg}$ energy ditch, a rocket must burn propellant according to Tsiolkovsky's rocket equation[^3]:
+
+$$\Delta v = v_e \ln \left( \frac{m_0}{m_f} \right)$$
+
+Because propellant itself has mass, the fuel fraction grows exponentially with the depth of the well:
+
+```
+Mass Breakdown of a Moon/Mars-Bound Rocket Launching from Earth:
+[█████████████████████████████████████████████████░░] 94% Propellant (Fuel & Oxidizer)
+[██                                                 ]  4% Rocket Dry Structure & Engines
+[█                                                  ]  2% Actual Scientific Payload
+```
+
+### A black hole, a well with no floor
+
+A black hole represents a gravity well with no solid surface to stop the plunge. According to Einstein's General Relativity, spacetime curvature near a Schwarzschild black hole[^4] creates key relativistic boundaries that do not exist in Newtonian gravity:
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A symmetric potential-well cross-section of a Schwarzschild black hole plotted to scale, with the ISCO at one sixth depth, the photon sphere at one third, the event horizon at one half, and no defined potential inside the horizon.">
+  <defs><marker id="gwM" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker><marker id="gwF" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker></defs>
+  <rect x="295.5" y="74.76" width="44.91" height="255.2" fill="var(--ink-rust)" fill-opacity="0.10"/>
+  <line x1="80" y1="74.76" x2="556" y2="74.76" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/><line x1="80" y1="111.2" x2="556" y2="111.2" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/><line x1="80" y1="147.7" x2="556" y2="147.7" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/><line x1="80" y1="184.1" x2="556" y2="184.1" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/><line x1="80" y1="220.6" x2="556" y2="220.6" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/><line x1="80" y1="257.1" x2="556" y2="257.1" stroke="var(--md-default-fg-color--light)" stroke-width="1" opacity="0.16"/>
+  <line x1="80" y1="330" x2="556" y2="330" stroke="var(--md-default-fg-color)" stroke-width="1.6"/><line x1="80" y1="62" x2="80" y2="330" stroke="var(--md-default-fg-color)" stroke-width="1.6"/>
+  <line x1="93.47" y1="330" x2="93.47" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="93.47" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">−10</text><line x1="183.3" y1="330" x2="183.3" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="183.3" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">−6</text><line x1="250.6" y1="330" x2="250.6" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="250.6" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">−3</text><line x1="318" y1="330" x2="318" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="318" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">0</text><line x1="385.4" y1="330" x2="385.4" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="385.4" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">3</text><line x1="452.7" y1="330" x2="452.7" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="452.7" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">6</text><line x1="542.5" y1="330" x2="542.5" y2="335" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="542.5" y="348" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">10</text>
+  <line x1="75" y1="74.76" x2="80" y2="74.76" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="71" y="78.76" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12">0</text><line x1="75" y1="111.2" x2="80" y2="111.2" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="71" y="115.2" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12">−0.1</text><line x1="75" y1="147.7" x2="80" y2="147.7" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="71" y="151.7" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12">−0.2</text><line x1="75" y1="184.1" x2="80" y2="184.1" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="71" y="188.1" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12">−0.3</text><line x1="75" y1="220.6" x2="80" y2="220.6" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="71" y="224.6" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12">−0.4</text><line x1="75" y1="257.1" x2="80" y2="257.1" stroke="var(--md-default-fg-color--light)" stroke-width="1.3"/><text x="71" y="261.1" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12">−0.5</text>
+  <line x1="80" y1="74.76" x2="556" y2="74.76" stroke="var(--md-default-fg-color)" stroke-width="1.6" stroke-dasharray="7 5"/>
+  <text x="88" y="66.76" fill="var(--md-default-fg-color--light)" font-size="12.5">Φ = 0 — flat spacetime, infinitely far away</text>
+  <path d="M295.5 257.1 L287.6 209.2 L283.9 194.6 L280.9 185.2 L278.4 178.2 L276.2 172.7 L274.1 168.1 L272.3 164.2 L270.5 160.9 L268.8 158 L267.2 155.4 L265.7 153 L264.2 150.9 L262.8 148.9 L261.4 147.1 L260.1 145.5 L258.8 144 L257.6 142.5 L256.4 141.2 L255.2 140 L254.1 138.8 L252.9 137.7 L251.8 136.6 L250.7 135.6 L249.7 134.7 L248.6 133.8 L247.6 132.9 L246.6 132.1 L245.6 131.3 L244.6 130.6 L243.7 129.8 L242.7 129.2 L241.8 128.5 L240.9 127.9 L240 127.2 L239.1 126.6 L238.2 126.1 L237.3 125.5 L236.5 125 L235.6 124.5 L234.8 124 L234 123.5 L233.1 123 L232.3 122.5 L231.5 122.1 L230.7 121.7 L229.9 121.2 L229.2 120.8 L228.4 120.4 L227.6 120.1 L226.9 119.7 L226.1 119.3 L225.4 119 L224.6 118.6 L223.9 118.3 L223.2 117.9 L222.4 117.6 L221.7 117.3 L221 117 L220.3 116.7 L219.6 116.4 L218.9 116.1 L218.2 115.8 L217.6 115.5 L216.9 115.2 L216.2 115 L215.5 114.7 L214.9 114.5 L214.2 114.2 L213.6 114 L212.9 113.7 L212.3 113.5 L211.6 113.2 L211 113 L210.3 112.8 L209.7 112.6 L209.1 112.3 L208.5 112.1 L207.8 111.9 L207.2 111.7 L206.6 111.5 L206 111.3 L205.4 111.1 L204.8 110.9 L204.2 110.7 L203.6 110.5 L203 110.4 L202.4 110.2 L201.8 110 L201.2 109.8 L200.7 109.6 L200.1 109.5 L199.5 109.3 L198.9 109.1 L198.4 109 L197.8 108.8 L197.2 108.7 L196.7 108.5 L196.1 108.3 L195.5 108.2 L195 108 L194.4 107.9 L193.9 107.7 L193.3 107.6 L192.8 107.5 L192.3 107.3 L191.7 107.2 L191.2 107 L190.6 106.9 L190.1 106.8 L189.6 106.6 L189.1 106.5 L188.5 106.4 L188 106.2 L187.5 106.1 L187 106 L186.4 105.9 L185.9 105.8 L185.4 105.6 L184.9 105.5 L184.4 105.4 L183.9 105.3 L183.4 105.2 L182.9 105.1 L182.4 104.9 L181.9 104.8 L181.4 104.7 L180.9 104.6 L180.4 104.5 L179.9 104.4 L179.4 104.3 L178.9 104.2 L178.4 104.1 L177.9 104 L177.4 103.9 L176.9 103.8 L176.5 103.7 L176 103.6 L175.5 103.5 L175 103.4 L174.5 103.3 L174.1 103.2 L173.6 103.1 L173.1 103 L172.7 102.9 L172.2 102.8 L171.7 102.7 L171.3 102.7 L170.8 102.6 L170.3 102.5 L169.9 102.4 L169.4 102.3 L169 102.2 L168.5 102.1 L168 102.1 L167.6 102 L167.1 101.9 L166.7 101.8 L166.2 101.7 L165.8 101.7 L165.3 101.6 L164.9 101.5 L164.4 101.4 L164 101.3 L163.5 101.3 L163.1 101.2 L162.7 101.1 L162.2 101 L161.8 101 L161.3 100.9 L160.9 100.8 L160.5 100.7 L160 100.7 L159.6 100.6 L159.2 100.5 L158.7 100.5 L158.3 100.4 L157.9 100.3 L157.5 100.3 L157 100.2 L156.6 100.1 L156.2 100.1 L155.8 99.99 L155.3 99.93 L154.9 99.86 L154.5 99.8 L154.1 99.73 L153.7 99.67 L153.3 99.61 L152.8 99.55 L152.4 99.48 L152 99.42 L151.6 99.36 L151.2 99.3 L150.8 99.24 L150.4 99.18 L150 99.12 L149.5 99.06 L149.1 99 L148.7 98.94 L148.3 98.89 L147.9 98.83 L147.5 98.77 L147.1 98.72 L146.7 98.66 L146.3 98.6 L145.9 98.55 L145.5 98.49 L145.1 98.44 L144.7 98.38 L144.3 98.33 L143.9 98.28 L143.5 98.22 L143.1 98.17 L142.7 98.12 L142.4 98.07 L142 98.01 L141.6 97.96 L141.2 97.91 L140.8 97.86 L140.4 97.81 L140 97.76 L139.6 97.71 L139.2 97.66 L138.9 97.61 L138.5 97.56 L138.1 97.51 L137.7 97.47 L137.3 97.42 L136.9 97.37 L136.6 97.32 L136.2 97.28 L135.8 97.23 L135.4 97.18 L135 97.14 L134.7 97.09 L134.3 97.04 L133.9 97 L133.5 96.95 L133.2 96.91 L132.8 96.86 L132.4 96.82 L132.1 96.78 L131.7 96.73 L131.3 96.69 L130.9 96.64 L130.6 96.6 L130.2 96.56 L129.8 96.52 L129.5 96.47 L129.1 96.43 L128.7 96.39 L128.4 96.35 L128 96.31 L127.6 96.27 L127.3 96.22 L126.9 96.18 L126.6 96.14 L126.2 96.1 L125.8 96.06 L125.5 96.02 L125.1 95.98 L124.8 95.94 L124.4 95.91 L124 95.87 L123.7 95.83 L123.3 95.79 L123 95.75 L122.6 95.71 L122.3 95.67 L121.9 95.64 L121.5 95.6 L121.2 95.56 L120.8 95.52 L120.5 95.49 L120.1 95.45 L119.8 95.41 L119.4 95.38 L119.1 95.34 L118.7 95.31 L118.4 95.27 L118 95.23 L117.7 95.2 L117.4 95.16 L117 95.13 L116.7 95.09 L116.3 95.06 L116 95.02 L115.6 94.99 L115.3 94.96 L114.9 94.92 L114.6 94.89 L114.3 94.85 L113.9 94.82 L113.6 94.79 L113.2 94.75 L112.9 94.72 L112.6 94.69 L112.2 94.65 L111.9 94.62 L111.5 94.59 L111.2 94.56 L110.9 94.52 L110.5 94.49 L110.2 94.46 L109.9 94.43 L109.5 94.4 L109.2 94.37 L108.9 94.33 L108.5 94.3 L108.2 94.27 L107.9 94.24 L107.5 94.21 L107.2 94.18 L106.9 94.15 L106.5 94.12 L106.2 94.09 L105.9 94.06 L105.6 94.03 L105.2 94 L104.9 93.97 L104.6 93.94 L104.2 93.91 L103.9 93.88 L103.6 93.85 L103.3 93.82 L102.9 93.8 L102.6 93.77 L102.3 93.74 L102 93.71 L101.6 93.68 L101.3 93.65 L101 93.63 L100.7 93.6 L100.4 93.57 L100 93.54 L99.71 93.51 L99.39 93.49 L99.07 93.46 L98.75 93.43 L98.43 93.4 L98.11 93.38 L97.79 93.35 L97.48 93.32 L97.16 93.3 L96.84 93.27 L96.53 93.24 L96.21 93.22 L95.89 93.19 L95.58 93.17 L95.26 93.14 L94.95 93.11 L94.63 93.09 L94.32 93.06 L94.01 93.04 L93.69 93.01 L93.38 92.99 L93.07 92.96 L92.76 92.94 L92.45 92.91 L92.14 92.89 L91.83 92.86 L91.51 92.84 L91.21 92.81 L90.9 92.79 L90.59 92.76 L90.28 92.74 L89.97 92.71 L89.66 92.69 L89.35 92.66 L89.05 92.64 L88.74 92.62 L88.43 92.59 L88.13 92.57 L87.82 92.55 L87.52 92.52 L87.21 92.5 L86.91 92.48 L86.6 92.45 L86.3 92.43 L86 92.41 L85.69 92.38 L85.39 92.36 L85.09 92.34 L84.79 92.31 L84.48 92.29 L84.18 92.27 L83.88 92.25 L83.58 92.22 L83.28 92.2 L82.98 92.18 L82.68 92.16 L82.38 92.14 L82.08 92.11 L81.78 92.09 L81.49 92.07 L81.19 92.05 L80.89 92.03 L80.59 92 L80.3 91.98 L80 91.96" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.8"/>
+  <path d="M340.5 257.1 L348.4 209.2 L352.1 194.6 L355.1 185.2 L357.6 178.2 L359.8 172.7 L361.9 168.1 L363.7 164.2 L365.5 160.9 L367.2 158 L368.8 155.4 L370.3 153 L371.8 150.9 L373.2 148.9 L374.6 147.1 L375.9 145.5 L377.2 144 L378.4 142.5 L379.6 141.2 L380.8 140 L381.9 138.8 L383.1 137.7 L384.2 136.6 L385.3 135.6 L386.3 134.7 L387.4 133.8 L388.4 132.9 L389.4 132.1 L390.4 131.3 L391.4 130.6 L392.3 129.8 L393.3 129.2 L394.2 128.5 L395.1 127.9 L396 127.2 L396.9 126.6 L397.8 126.1 L398.7 125.5 L399.5 125 L400.4 124.5 L401.2 124 L402 123.5 L402.9 123 L403.7 122.5 L404.5 122.1 L405.3 121.7 L406.1 121.2 L406.8 120.8 L407.6 120.4 L408.4 120.1 L409.1 119.7 L409.9 119.3 L410.6 119 L411.4 118.6 L412.1 118.3 L412.8 117.9 L413.6 117.6 L414.3 117.3 L415 117 L415.7 116.7 L416.4 116.4 L417.1 116.1 L417.8 115.8 L418.4 115.5 L419.1 115.2 L419.8 115 L420.5 114.7 L421.1 114.5 L421.8 114.2 L422.4 114 L423.1 113.7 L423.7 113.5 L424.4 113.2 L425 113 L425.7 112.8 L426.3 112.6 L426.9 112.3 L427.5 112.1 L428.2 111.9 L428.8 111.7 L429.4 111.5 L430 111.3 L430.6 111.1 L431.2 110.9 L431.8 110.7 L432.4 110.5 L433 110.4 L433.6 110.2 L434.2 110 L434.8 109.8 L435.3 109.6 L435.9 109.5 L436.5 109.3 L437.1 109.1 L437.6 109 L438.2 108.8 L438.8 108.7 L439.3 108.5 L439.9 108.3 L440.5 108.2 L441 108 L441.6 107.9 L442.1 107.7 L442.7 107.6 L443.2 107.5 L443.7 107.3 L444.3 107.2 L444.8 107 L445.4 106.9 L445.9 106.8 L446.4 106.6 L446.9 106.5 L447.5 106.4 L448 106.2 L448.5 106.1 L449 106 L449.6 105.9 L450.1 105.8 L450.6 105.6 L451.1 105.5 L451.6 105.4 L452.1 105.3 L452.6 105.2 L453.1 105.1 L453.6 104.9 L454.1 104.8 L454.6 104.7 L455.1 104.6 L455.6 104.5 L456.1 104.4 L456.6 104.3 L457.1 104.2 L457.6 104.1 L458.1 104 L458.6 103.9 L459.1 103.8 L459.5 103.7 L460 103.6 L460.5 103.5 L461 103.4 L461.5 103.3 L461.9 103.2 L462.4 103.1 L462.9 103 L463.3 102.9 L463.8 102.8 L464.3 102.7 L464.7 102.7 L465.2 102.6 L465.7 102.5 L466.1 102.4 L466.6 102.3 L467 102.2 L467.5 102.1 L468 102.1 L468.4 102 L468.9 101.9 L469.3 101.8 L469.8 101.7 L470.2 101.7 L470.7 101.6 L471.1 101.5 L471.6 101.4 L472 101.3 L472.5 101.3 L472.9 101.2 L473.3 101.1 L473.8 101 L474.2 101 L474.7 100.9 L475.1 100.8 L475.5 100.7 L476 100.7 L476.4 100.6 L476.8 100.5 L477.3 100.5 L477.7 100.4 L478.1 100.3 L478.5 100.3 L479 100.2 L479.4 100.1 L479.8 100.1 L480.2 99.99 L480.7 99.93 L481.1 99.86 L481.5 99.8 L481.9 99.73 L482.3 99.67 L482.7 99.61 L483.2 99.55 L483.6 99.48 L484 99.42 L484.4 99.36 L484.8 99.3 L485.2 99.24 L485.6 99.18 L486 99.12 L486.5 99.06 L486.9 99 L487.3 98.94 L487.7 98.89 L488.1 98.83 L488.5 98.77 L488.9 98.72 L489.3 98.66 L489.7 98.6 L490.1 98.55 L490.5 98.49 L490.9 98.44 L491.3 98.38 L491.7 98.33 L492.1 98.28 L492.5 98.22 L492.9 98.17 L493.3 98.12 L493.6 98.07 L494 98.01 L494.4 97.96 L494.8 97.91 L495.2 97.86 L495.6 97.81 L496 97.76 L496.4 97.71 L496.8 97.66 L497.1 97.61 L497.5 97.56 L497.9 97.51 L498.3 97.47 L498.7 97.42 L499.1 97.37 L499.4 97.32 L499.8 97.28 L500.2 97.23 L500.6 97.18 L501 97.14 L501.3 97.09 L501.7 97.04 L502.1 97 L502.5 96.95 L502.8 96.91 L503.2 96.86 L503.6 96.82 L503.9 96.78 L504.3 96.73 L504.7 96.69 L505.1 96.64 L505.4 96.6 L505.8 96.56 L506.2 96.52 L506.5 96.47 L506.9 96.43 L507.3 96.39 L507.6 96.35 L508 96.31 L508.4 96.27 L508.7 96.22 L509.1 96.18 L509.4 96.14 L509.8 96.1 L510.2 96.06 L510.5 96.02 L510.9 95.98 L511.2 95.94 L511.6 95.91 L512 95.87 L512.3 95.83 L512.7 95.79 L513 95.75 L513.4 95.71 L513.7 95.67 L514.1 95.64 L514.5 95.6 L514.8 95.56 L515.2 95.52 L515.5 95.49 L515.9 95.45 L516.2 95.41 L516.6 95.38 L516.9 95.34 L517.3 95.31 L517.6 95.27 L518 95.23 L518.3 95.2 L518.6 95.16 L519 95.13 L519.3 95.09 L519.7 95.06 L520 95.02 L520.4 94.99 L520.7 94.96 L521.1 94.92 L521.4 94.89 L521.7 94.85 L522.1 94.82 L522.4 94.79 L522.8 94.75 L523.1 94.72 L523.4 94.69 L523.8 94.65 L524.1 94.62 L524.5 94.59 L524.8 94.56 L525.1 94.52 L525.5 94.49 L525.8 94.46 L526.1 94.43 L526.5 94.4 L526.8 94.37 L527.1 94.33 L527.5 94.3 L527.8 94.27 L528.1 94.24 L528.5 94.21 L528.8 94.18 L529.1 94.15 L529.5 94.12 L529.8 94.09 L530.1 94.06 L530.4 94.03 L530.8 94 L531.1 93.97 L531.4 93.94 L531.8 93.91 L532.1 93.88 L532.4 93.85 L532.7 93.82 L533.1 93.8 L533.4 93.77 L533.7 93.74 L534 93.71 L534.4 93.68 L534.7 93.65 L535 93.63 L535.3 93.6 L535.6 93.57 L536 93.54 L536.3 93.51 L536.6 93.49 L536.9 93.46 L537.3 93.43 L537.6 93.4 L537.9 93.38 L538.2 93.35 L538.5 93.32 L538.8 93.3 L539.2 93.27 L539.5 93.24 L539.8 93.22 L540.1 93.19 L540.4 93.17 L540.7 93.14 L541.1 93.11 L541.4 93.09 L541.7 93.06 L542 93.04 L542.3 93.01 L542.6 92.99 L542.9 92.96 L543.2 92.94 L543.6 92.91 L543.9 92.89 L544.2 92.86 L544.5 92.84 L544.8 92.81 L545.1 92.79 L545.4 92.76 L545.7 92.74 L546 92.71 L546.3 92.69 L546.6 92.66 L547 92.64 L547.3 92.62 L547.6 92.59 L547.9 92.57 L548.2 92.55 L548.5 92.52 L548.8 92.5 L549.1 92.48 L549.4 92.45 L549.7 92.43 L550 92.41 L550.3 92.38 L550.6 92.36 L550.9 92.34 L551.2 92.31 L551.5 92.29 L551.8 92.27 L552.1 92.25 L552.4 92.22 L552.7 92.2 L553 92.18 L553.3 92.16 L553.6 92.14 L553.9 92.11 L554.2 92.09 L554.5 92.07 L554.8 92.05 L555.1 92.03 L555.4 92 L555.7 91.98 L556 91.96" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.8"/>
+  <line x1="250.6" y1="135.5" x2="250.6" y2="268" stroke="var(--ink-indigo)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.85"/>
+  <circle cx="250.6" cy="135.5" r="4.2" fill="var(--ink-indigo)"/>
+  <line x1="385.4" y1="135.5" x2="385.4" y2="268" stroke="var(--ink-indigo)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.85"/>
+  <circle cx="385.4" cy="135.5" r="4.2" fill="var(--ink-indigo)"/>
+  <line x1="385.4" y1="135.5" x2="562" y2="135.5" stroke="var(--ink-indigo)" stroke-width="1.3" stroke-dasharray="4 4"/>
+  <text x="570" y="131.5" fill="var(--ink-indigo)" font-size="13" font-weight="600">ISCO — 3 r<tspan font-size="10" dy="3">s</tspan></text>
+  <text x="570" y="148.5" fill="var(--md-default-fg-color--light)" font-size="12">the last stable circular orbit</text>
+  <text x="570" y="163.5" fill="var(--md-default-fg-color--light)" font-size="12">Φ ⁄ c² = −1 ⁄ 6</text>
+  <line x1="284.3" y1="196.3" x2="284.3" y2="268" stroke="var(--ink-indigo)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.85"/>
+  <circle cx="284.3" cy="196.3" r="4.2" fill="var(--ink-indigo)"/>
+  <line x1="351.7" y1="196.3" x2="351.7" y2="268" stroke="var(--ink-indigo)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.85"/>
+  <circle cx="351.7" cy="196.3" r="4.2" fill="var(--ink-indigo)"/>
+  <line x1="351.7" y1="196.3" x2="562" y2="196.3" stroke="var(--ink-indigo)" stroke-width="1.3" stroke-dasharray="4 4"/>
+  <text x="570" y="192.3" fill="var(--ink-indigo)" font-size="13" font-weight="600">photon sphere — 1.5 r<tspan font-size="10" dy="3">s</tspan></text>
+  <text x="570" y="209.3" fill="var(--md-default-fg-color--light)" font-size="12">light can orbit in a circle</text>
+  <text x="570" y="224.3" fill="var(--md-default-fg-color--light)" font-size="12">Φ ⁄ c² = −1 ⁄ 3</text>
+  <circle cx="295.5" cy="257.1" r="4.2" fill="var(--ink-rust)"/>
+  <circle cx="340.5" cy="257.1" r="4.2" fill="var(--ink-rust)"/>
+  <line x1="340.5" y1="257.1" x2="562" y2="257.1" stroke="var(--ink-rust)" stroke-width="1.3" stroke-dasharray="4 4"/>
+  <text x="570" y="253.1" fill="var(--ink-rust)" font-size="13" font-weight="600">event horizon — 1 r<tspan font-size="10" dy="3">s</tspan></text>
+  <text x="570" y="270.1" fill="var(--md-default-fg-color--light)" font-size="12">escape speed reaches c</text>
+  <text x="570" y="285.1" fill="var(--md-default-fg-color--light)" font-size="12">Φ ⁄ c² = −1 ⁄ 2</text>
+  <line x1="295.5" y1="258.9" x2="295.5" y2="291.7" stroke="var(--ink-rust)" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#gwM)"/>
+  <line x1="340.5" y1="258.9" x2="340.5" y2="291.7" stroke="var(--ink-rust)" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#gwM)"/>
+  <text x="318" y="309.9" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">no static potential exists here</text>
+  <text x="318" y="324.5" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12">every worldline reaches r = 0 in finite proper time</text>
+  <text x="318" y="374" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">radius along a diameter through the hole, r ⁄ r<tspan font-size="10" dy="3">s</tspan><tspan dy="-3"> (sign marks which side)</tspan></text>
+  <text transform="translate(26,196) rotate(-90)" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">metric potential Φ ⁄ c² (dimensionless)</text>
+  <text x="318" y="30" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Schwarzschild well: Φ ⁄ c² = −r<tspan font-size="11" dy="3">s</tspan><tspan dy="-3"> ⁄ 2r</tspan></text>
+  <text x="318" y="48" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">drawn to scale; the three landmark radii fall at fixed fractions of the depth</text>
+</svg>
+<figcaption><strong>Figure 1 | A black hole's well has no floor, and the landmark radii sit at fixed fractions of its depth.</strong> Matching the Schwarzschild metric term $g_{tt} = -(1 - r_s/r)$ to $-(1 + 2\Phi/c^2)$ gives $\Phi/c^2 = -r_s/2r$ exactly, so the profile above is the real curve rather than a sketch. Because that depth is set purely by $r/r_s$, the innermost stable circular orbit always sits at $-1/6$, the photon sphere at $-1/3$, and the horizon at $-1/2$ — for a stellar-mass hole and a supermassive one alike. Unlike Earth, whose $1/r$ curve is truncated by a solid surface at $-62.5\text{ MJ kg}^{-1}$, nothing here stops the descent: inside $r_s$ (magenta) no static observer can exist, so no potential can be defined and every worldline runs to $r = 0$.</figcaption>
+</figure>
+```
+
+
+#### Key radii around a static black hole
+
+```{mermaid}
+graph LR
+    FarSpace["Deep Space (Newtonian Regime r >> r_s)"] --> ISCO["ISCO (r = 3 r_s)<br/>Innermost Stable Circular Orbit"]
+    ISCO --> PhotonSphere["Photon Sphere (r = 1.5 r_s)<br/>Light bent into closed circular orbits"]
+    PhotonSphere --> Horizon["Event Horizon (r = 1.0 r_s)<br/>v_esc = c, no escape possible"]
+    Horizon --> Singularity["Singularity (r = 0)<br/>Infinite density & tidal curvature"]
+
+    class FarSpace indigo
+    class ISCO plum
+    class PhotonSphere ochre
+    class Horizon rust
+    class Singularity sienna
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+1. **Innermost Stable Circular Orbit (ISCO, $r = 3 r_s = \frac{6GM}{c^2}$)**: Inside this radius, no stable circular orbits exist. Any perturbation causes matter to spiral precipitously inward.
+2. **Photon Sphere ($r = 1.5 r_s = \frac{3GM}{c^2}$)**: Photons (light) can orbit the black hole in unstable circular orbits. A camera placed here would look forward and see the back of its own housing.
+3. **Event Horizon ($r = r_s = \frac{2GM}{c^2}$)**: The boundary of no return. Space itself flows inward faster than light; all null geodesics point inward toward $r=0$. Rotating Kerr black holes introduce an additional ergosphere boundary outside the horizon[^5].
+
+### A binary system, two wells and a saddle
+
+When two massive bodies orbit a common center of mass, their gravitational potential wells overlap in the co-rotating frame. The **effective potential** (accounting for both gravitational attraction and centrifugal acceleration) creates an intricate landscape with two deep funnels connected by a saddle pass, originally solved in the restricted three-body problem by Joseph-Louis Lagrange[^6]:
+
+$$\Phi_{\text{eff}}(\mathbf{r}) = -\frac{G M_1}{|\mathbf{r} - \mathbf{r}_1|} - \frac{G M_2}{|\mathbf{r} - \mathbf{r}_2|} - \frac{1}{2} (\boldsymbol{\omega} \times \mathbf{r})^2$$
+
+```
+Two Massive Planets Potential Profile (Cross-Section through Centers):
+
+        L3               Planet 1             L1            Planet 2            L2
+   ═══/\════════════════════╤═════════════════/\═══════════════╤════════════════/\═══
+     /  \                  / \               /  \             / \              /  \
+    /    \                /   \             /    \           /   \            /    \
+   /      \              /     \           /      \         /     \          /      \
+           \            /       \         /        \       /       \        /
+            \          /         \       /          \     /         \      /
+             \        /           \     /            \   /           \    /
+              \______/             \___/              \_/             \__/
+               Well 1                                  Well 2
+              (Mass M1)             L1 Saddle        (Mass M2)
+                                 (Gravitational Pass)
+```
+
+#### The five Lagrange points
+
+```{mermaid}
+graph TD
+    subgraph Collinear["Collinear Points (Unstable Saddle Points)"]
+        L1["L1 Point<br/>Between M1 and M2<br/>Gateway / Roche Lobe Saddle"]
+        L2["L2 Point<br/>Behind Smaller Body<br/>Ideal for Deep Space Observatories (JWST)"]
+        L3["L3 Point<br/>Behind Larger Body<br/>Hidden on Opposite Side of Orbit"]
+    end
+
+    subgraph Triangular["Triangular Points (Coriolis-Stabilized Potential Peaks)"]
+        L4["L4 Point<br/>60° Ahead in Orbit<br/>Trojan Asteroid Sanctuary"]
+        L5["L5 Point<br/>60° Behind in Orbit<br/>Trojan Asteroid Sanctuary"]
+    end
+
+    Collinear -.->|Spacecraft Station-Keeping Needed| HaloOrbits["Halo & Lissajous Orbits"]
+    Triangular -.->|Dynamically Stable if M1/M2 > 24.96| Trojans["Stable Natural Capture (Trojans)"]
+
+    class L1 rust
+    class L2 ochre
+    class L3 terracotta
+    class L4 olive
+    class L5 olive
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef terracotta fill:#c97d62,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+| Lagrange Point | Geometric Position | Potential Topography | Dynamic Stability | Real-World Astro & Space Missions |
+| :--- | :--- | :--- | :--- | :--- |
+| **$L_1$** | Between $M_1$ and $M_2$ | **Saddle point** (dip along perpendicular axis, peak along line of centers) | Unstable (requires station-keeping) | SOHO solar observatory (Sun-Earth), Inter-planetary transfer corridor |
+| **$L_2$** | Beyond $M_2$ along the line of centers | **Saddle point** | Unstable | James Webb Space Telescope (JWST), Gaia, WMAP |
+| **$L_3$** | Beyond $M_1$ opposite to $M_2$ | **Saddle point** | Unstable | Sci-Fi "Counter-Earth", theoretical resonance studies |
+| **$L_4$** | Vertex of equilateral triangle ($+60^\circ$ ahead) | **Effective potential hill** | Stable (Coriolis force circles particles around peak) | Jupiter Trojans (Greeks), Earth Trojan 2020 XL5, Lucy mission |
+| **$L_5$** | Vertex of equilateral triangle ($-60^\circ$ behind) | **Effective potential hill** | Stable (Coriolis stabilized) | Jupiter Trojans, proposed space habitats |
+
+### Escape conditions across the three regimes
+
+The escape condition takes a different form in each regime:
+
+$$v_{\text{esc}}(r) = \begin{cases} \sqrt{\frac{2 G M_\oplus}{R_\oplus}} \approx 11.2\text{ km/s} & \text{(Earth Surface)} \\ c \sqrt{\frac{r_s}{r}} \implies c \text{ at } r = r_s & \text{(Schwarzschild Black Hole)} \\ \sqrt{2 \left(\Phi_{\text{eff}}(L_1) - \Phi_{\text{eff}}(\mathbf{r}_0)\right)} & \text{(Inter-well Transit between Binary Planets)} \end{cases}$$
+
+#### The payload dilemma for any well
+
+To leave any gravitational well of depth $\Delta \Phi = \frac{1}{2} v_{\text{esc}}^2$, the required propellant-to-payload ratio $\frac{m_{\text{fuel}}}{m_{\text{payload}}}$ for an exhaust velocity $c_e$ is:
+
+$$\frac{m_{\text{fuel}}}{m_{\text{payload}}} = \exp\left( \frac{\sqrt{2 \Delta \Phi}}{c_e} \right) - 1$$
+
+As the potential well deepens linearly, the fuel required grows **exponentially**. On a super-Earth with just $2\times$ Earth's radius and mass, the rocket equation makes chemical spaceflight virtually impossible — underscoring how delicate Earth's gravitational cradle truly is.
+
+## Interactive simulators
+
+### A 3D potential surface
+
+Toggle between **Earth**, a **black hole** and a **binary system**. Click and drag to rotate, inspect the equipotential contours, or tune the mass ratio.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <button id="btn-earth" onclick="selectSystem('earth')" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;">🌍 Earth</button>
+      <button id="btn-bh" onclick="selectSystem('bh')" style="background: #334155; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;">🕳️ Black Hole</button>
+      <button id="btn-binary" onclick="selectSystem('binary')" style="background: #334155; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;">🪐🪐 Binary Planets</button>
+    </div>
+    <div id="system-caption" style="font-size: 0.9em; color: #94a3b8; font-style: italic;">
+      Single planet: Truncated potential with solid surface cutoff.
+    </div>
+  </div>
+
+  <div id="mass-ratio-control" style="display: none; margin-bottom: 14px; background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 8px; align-items: center; gap: 12px;">
+    <label for="massRatioSlider" style="font-size: 0.85em; font-weight: 600;">Secondary Body Mass (M₂ / M₁): <span id="massRatioVal">0.35</span></label>
+    <input type="range" id="massRatioSlider" min="0.05" max="1.0" step="0.05" value="0.35" oninput="updateBinaryMass(this.value)" style="flex-grow: 1; accent-color: #38bdf8;">
+  </div>
+
+  <div id="plotly-gravity-well" style="width: 100%; height: 520px; border-radius: 8px; overflow: hidden; background: #0f172a;"></div>
+
+  <div style="font-size: 0.8em; color: #64748b; margin-top: 10px; text-align: center;">
+    Tip: Click and drag to rotate the 3D surface. Scroll to zoom. Hover over any point to read the local gravitational potential.
+  </div>
+</div>
+```
+
+
+### An orbital trajectory sandbox
+
+Launch a test spacecraft into the potential and watch kinetic energy trade against potential energy. Launch speed and angle decide between **orbital capture**, **plunge** and **hyperbolic escape**.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; align-items: center; justify-content: space-between;">
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <label style="font-size: 0.85em; font-weight: 600; color: #94a3b8;">Scene:</label>
+      <select id="sim-scene-select" onchange="setSimScene(this.value)" style="background: #0f172a; color: #f8fafc; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; font-size: 0.9em;">
+        <option value="earth">🌍 Earth Orbit & Escape</option>
+        <option value="bh">🕳️ Black Hole & Relativistic Plunge</option>
+        <option value="binary">🪐🪐 Binary System (Slingshot & Chaos)</option>
+      </select>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button onclick="launchProbe()" style="background: #10b981; color: white; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer; font-weight: 600;">🚀 Launch Probe</button>
+      <button onclick="clearTrails()" style="background: #475569; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer;">🧹 Clear Trails</button>
+      <button onclick="resetSim()" style="background: #ef4444; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer;">↺ Reset</button>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; font-size: 0.85em;">
+    <div>
+      <label>Launch Speed (v₀): <strong id="v0-display">5.8</strong> km/s</label>
+      <input type="range" id="sim-v0" min="1.0" max="15.0" step="0.2" value="5.8" oninput="updateSimControls()" style="width: 100%; accent-color: #10b981;">
+    </div>
+    <div>
+      <label>Launch Angle (θ): <strong id="angle-display">90</strong>°</label>
+      <input type="range" id="sim-angle" min="0" max="360" step="5" value="90" oninput="updateSimControls()" style="width: 100%; accent-color: #38bdf8;">
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+      <div>Status: <strong id="sim-status" style="color: #38bdf8;">Ready to Launch</strong></div>
+      <div style="font-size: 0.8em; color: #94a3b8;">Mechanical Energy: <span id="energy-display">--</span></div>
+    </div>
+  </div>
+
+  <canvas id="gravity-sandbox" width="760" height="420" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+
+  <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #64748b; margin-top: 8px;">
+    <span>Click anywhere on canvas to set launch origin.</span>
+    <span>Green trail: Bound orbit | Orange: Slingshot / escape | Red: Plunge / capture</span>
+  </div>
+</div>
+```
+
+
+<!-- Scripts for Plotly & Physics Simulation -->
+```{=html}
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+```
+
+```{=html}
+<script>
+// --- PLOTLY 3D GRAVITY WELL VISUALIZER ---
+let currentSystem = 'earth';
+let binaryRatio = 0.35;
+
+function generatePotentialGrid(type, ratio) {
+  const N = 50;
+  const x = [];
+  const y = [];
+  const z = [];
+  const range = 6.0;
+  
+  for (let i = 0; i < N; i++) {
+    x.push(-range + (2 * range * i) / (N - 1));
+    y.push(-range + (2 * range * i) / (N - 1));
+  }
+
+  for (let i = 0; i < N; i++) {
+    const row = [];
+    for (let j = 0; j < N; j++) {
+      const px = x[j];
+      const py = y[i];
+      let val = 0;
+
+      if (type === 'earth') {
+        const r = Math.sqrt(px * px + py * py);
+        const R_earth = 1.2;
+        if (r < R_earth) {
+          val = - (1.0 / R_earth) * (1.5 - 0.5 * (r * r) / (R_earth * R_earth));
+        } else {
+          val = - 1.0 / r;
+        }
+        val = Math.max(val, -1.8);
+      } else if (type === 'bh') {
+        const r = Math.sqrt(px * px + py * py);
+        const r_s = 0.6;
+        if (r <= r_s * 0.5) {
+          val = -5.0;
+        } else {
+          // Relativistic effective potential approximation
+          val = - 1.5 / Math.pow(r, 1.15) - 0.5 * (r_s * r_s) / Math.pow(r, 3);
+          val = Math.max(val, -5.0);
+        }
+      } else if (type === 'binary') {
+        const d = 2.4;
+        const x1 = -d * ratio / (1.0 + ratio);
+        const x2 = d / (1.0 + ratio);
+        const r1 = Math.sqrt((px - x1) * (px - x1) + py * py);
+        const r2 = Math.sqrt((px - x2) * (px - x2) + py * py);
+        
+        const pot1 = - 1.8 / Math.max(r1, 0.45);
+        const pot2 = - (1.8 * ratio) / Math.max(r2, 0.35);
+        
+        // Co-rotating centrifugal potential: -0.5 * omega^2 * (px^2 + py^2)
+        const omegaSq = 0.08;
+        const rot = - 0.5 * omegaSq * (px * px + py * py);
+        
+        val = pot1 + pot2 + rot;
+        val = Math.max(val, -4.5);
+      }
+      row.push(val);
+    }
+    z.push(row);
+  }
+  return { x, y, z };
+}
+
+function plotGravityWell() {
+  const dataGrid = generatePotentialGrid(currentSystem, binaryRatio);
+  
+  let titleText = "Gravitational Potential Well: Earth (Truncated Core)";
+  let colorscale = 'Viridis';
+  
+  if (currentSystem === 'bh') {
+    titleText = "Relativistic Potential Funnel: Black Hole (r_s Horizon & Singular Abyss)";
+    colorscale = 'Electric';
+  } else if (currentSystem === 'binary') {
+    titleText = "Binary System Potential: Roche Lobes & Lagrange Saddles (L1 - L5)";
+    colorscale = 'Plasma';
+  }
+
+  const surfaceTrace = {
+    z: dataGrid.z,
+    x: dataGrid.x,
+    y: dataGrid.y,
+    type: 'surface',
+    colorscale: colorscale,
+    showscale: true,
+    colorbar: {
+      title: 'Potential Φ',
+      titleside: 'top',
+      thickness: 14,
+      len: 0.7,
+      tickfont: { color: '#94a3b8' },
+      titlefont: { color: '#f8fafc' }
+    },
+    contours: {
+      z: {
+        show: true,
+        usecolormap: true,
+        highlightcolor: "#00f0ff",
+        project: { z: true }
+      }
+    },
+    lighting: {
+      ambient: 0.65,
+      diffuse: 0.8,
+      specular: 0.3
+    }
+  };
+
+  const layout = {
+    title: {
+      text: titleText,
+      font: { color: '#f1f5f9', size: 15 }
+    },
+    paper_bgcolor: '#0f172a',
+    plot_bgcolor: '#0f172a',
+    margin: { l: 20, r: 20, b: 20, t: 40 },
+    scene: {
+      xaxis: { title: 'X Distance', color: '#94a3b8', gridcolor: '#334155', zerolinecolor: '#475569' },
+      yaxis: { title: 'Y Distance', color: '#94a3b8', gridcolor: '#334155', zerolinecolor: '#475569' },
+      zaxis: { title: 'Potential Energy Φ', color: '#94a3b8', gridcolor: '#334155', zerolinecolor: '#475569' },
+      camera: {
+        eye: { x: 1.4, y: -1.5, z: 1.2 }
+      }
+    }
+  };
+
+  const config = { responsive: true, displayModeBar: true, displaylogo: false };
+  Plotly.react('plotly-gravity-well', [surfaceTrace], layout, config);
+}
+
+function selectSystem(sys) {
+  currentSystem = sys;
+  const btnEarth = document.getElementById('btn-earth');
+  const btnBh = document.getElementById('btn-bh');
+  const btnBinary = document.getElementById('btn-binary');
+  const caption = document.getElementById('system-caption');
+  const massCtrl = document.getElementById('mass-ratio-control');
+
+  btnEarth.style.background = '#334155';
+  btnBh.style.background = '#334155';
+  btnBinary.style.background = '#334155';
+
+  if (sys === 'earth') {
+    btnEarth.style.background = '#2563eb';
+    caption.innerText = 'Single planet: Truncated potential with solid surface cutoff.';
+    massCtrl.style.display = 'none';
+  } else if (sys === 'bh') {
+    btnBh.style.background = '#8b5cf6';
+    caption.innerText = 'Black hole: Deep relativistic funnel with event horizon plunge.';
+    massCtrl.style.display = 'none';
+  } else if (sys === 'binary') {
+    btnBinary.style.background = '#f59e0b';
+    caption.innerText = 'Binary system: Double funnel with L1 saddle bridge and Lagrange points.';
+    massCtrl.style.display = 'flex';
+  }
+  plotGravityWell();
+}
+
+function updateBinaryMass(val) {
+  binaryRatio = parseFloat(val);
+  document.getElementById('massRatioVal').innerText = binaryRatio.toFixed(2);
+  plotGravityWell();
+}
+
+// --- 2D CANVAS ORBITAL SIMULATOR ---
+let simScene = 'earth';
+let probe = null;
+let trail = [];
+let animId = null;
+let simTime = 0;
+let probeOrigin = { x: 380, y: 110 };
+
+// Auto-running ambient satellites so the sandbox is lively by default
+let ambientSatellites = [];
+
+function initAmbientSatellites() {
+  ambientSatellites = [];
+  if (simScene === 'earth') {
+    ambientSatellites.push({ angle: 0, radius: 70, speed: 0.022, color: '#38bdf8', size: 3.5, label: 'LEO Satellite' });
+    ambientSatellites.push({ angle: 2.1, radius: 125, speed: 0.009, color: '#a78bfa', size: 3.5, label: 'GEO Satellite' });
+  } else if (simScene === 'bh') {
+    ambientSatellites.push({ angle: 0.5, radius: 45, speed: 0.045, color: '#f59e0b', size: 3, label: 'Accretion Disk' });
+    ambientSatellites.push({ angle: 3.2, radius: 90, speed: 0.016, color: '#ec4899', size: 3.5, label: 'Stable Relativistic Orbit' });
+  } else if (simScene === 'binary') {
+    ambientSatellites.push({ angle: 0, radius: 55, speed: 0.025, center: { x: 260, y: 210 }, color: '#38bdf8', size: 3, label: 'Moon 1' });
+    ambientSatellites.push({ angle: 1.5, radius: 42, speed: 0.03, center: { x: 500, y: 210 }, color: '#fbbf24', size: 3, label: 'Moon 2' });
+  }
+}
+
+function getCanvasAndContext() {
+  const canvas = document.getElementById('gravity-sandbox');
+  if (!canvas) return null;
+  const ctx = canvas.getContext('2d');
+  return { canvas, ctx };
+}
+
+function setSimScene(scene) {
+  simScene = scene;
+  initAmbientSatellites();
+  resetSim();
+
+  const v0Input = document.getElementById('sim-v0');
+  const angleInput = document.getElementById('sim-angle');
+
+  if (scene === 'earth') {
+    if (v0Input) v0Input.value = 5.8;
+    if (angleInput) angleInput.value = 90;
+    probeOrigin = { x: 380, y: 110 };
+  } else if (scene === 'bh') {
+    if (v0Input) v0Input.value = 6.5;
+    if (angleInput) angleInput.value = 100;
+    probeOrigin = { x: 380, y: 90 };
+  } else if (scene === 'binary') {
+    if (v0Input) v0Input.value = 4.2;
+    if (angleInput) angleInput.value = 85;
+    probeOrigin = { x: 230, y: 120 };
+  }
+  updateSimControls();
+}
+
+function updateSimControls() {
+  const v0Input = document.getElementById('sim-v0');
+  const angleInput = document.getElementById('sim-angle');
+  const v0Display = document.getElementById('v0-display');
+  const angleDisplay = document.getElementById('angle-display');
+
+  if (v0Input && v0Display) {
+    v0Display.innerText = parseFloat(v0Input.value).toFixed(1);
+  }
+  if (angleInput && angleDisplay) {
+    angleDisplay.innerText = angleInput.value;
+  }
+}
+
+function setupCanvasEvents() {
+  const canvas = document.getElementById('gravity-sandbox');
+  if (!canvas || canvas.dataset.hasEvents) return;
+  canvas.dataset.hasEvents = "true";
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    probeOrigin.x = (e.clientX - rect.left) * scaleX;
+    probeOrigin.y = (e.clientY - rect.top) * scaleY;
+    resetSim();
+  });
+}
+
+function resetSim() {
+  probe = null;
+  trail = [];
+  const statusEl = document.getElementById('sim-status');
+  const energyEl = document.getElementById('energy-display');
+  if (statusEl) {
+    statusEl.innerText = 'Ready to Launch';
+    statusEl.style.color = '#38bdf8';
+  }
+  if (energyEl) {
+    energyEl.innerText = '--';
+  }
+}
+
+function clearTrails() {
+  trail = [];
+}
+
+function launchProbe() {
+  const v0Input = document.getElementById('sim-v0');
+  const angleInput = document.getElementById('sim-angle');
+  const v0 = v0Input ? parseFloat(v0Input.value) : 5.8;
+  const angleDeg = angleInput ? parseFloat(angleInput.value) : 90;
+  const angleRad = (angleDeg * Math.PI) / 180;
+
+  const speedScale = 0.55;
+  const vx = v0 * Math.cos(angleRad) * speedScale;
+  const vy = - v0 * Math.sin(angleRad) * speedScale;
+
+  probe = {
+    x: probeOrigin.x,
+    y: probeOrigin.y,
+    vx: vx,
+    vy: vy,
+    active: true,
+    state: 'flying'
+  };
+
+  trail = [{ x: probe.x, y: probe.y, state: 'flying' }];
+  const statusEl = document.getElementById('sim-status');
+  if (statusEl) {
+    statusEl.innerText = 'In Orbit / Active Flight';
+    statusEl.style.color = '#10b981';
+  }
+}
+
+function animStep() {
+  simTime += 0.016;
+
+  // 1. Update ambient satellites continuously
+  ambientSatellites.forEach(sat => {
+    sat.angle += sat.speed;
+  });
+
+  // 2. Physics integration for user-launched probe
+  if (probe && probe.active) {
+    const dt = 0.25;
+    const subSteps = 4;
+    let currentPotential = -100;
+    
+    for (let step = 0; step < subSteps; step++) {
+      let ax = 0;
+      let ay = 0;
+
+      if (simScene === 'earth') {
+        const cx = 380, cy = 210, GMe = 1800;
+        const dx = cx - probe.x;
+        const dy = cy - probe.y;
+        const r = Math.sqrt(dx * dx + dy * dy);
+        
+        if (r < 32) {
+          probe.active = false;
+          probe.state = 'crashed';
+          const statusEl = document.getElementById('sim-status');
+          if (statusEl) {
+            statusEl.innerText = 'Surface Impact / Plunge';
+            statusEl.style.color = '#ef4444';
+          }
+          break;
+        }
+        
+        const force = GMe / (r * r);
+        ax += force * (dx / r);
+        ay += force * (dy / r);
+        currentPotential = - GMe / r;
+
+      } else if (simScene === 'bh') {
+        const cx = 380, cy = 210, GMbh = 3200, rs = 22;
+        const dx = cx - probe.x;
+        const dy = cy - probe.y;
+        const r = Math.sqrt(dx * dx + dy * dy);
+
+        if (r <= rs) {
+          probe.active = false;
+          probe.state = 'swallowed';
+          const statusEl = document.getElementById('sim-status');
+          if (statusEl) {
+            statusEl.innerText = 'Crossed Event Horizon (Trapped Forever)';
+            statusEl.style.color = '#ef4444';
+          }
+          break;
+        }
+
+        const effectiveDist = Math.max(r - rs, 2.0);
+        const force = GMbh / (effectiveDist * effectiveDist);
+        ax += force * (dx / r);
+        ay += force * (dy / r);
+        currentPotential = - GMbh / effectiveDist;
+
+      } else if (simScene === 'binary') {
+        const c1x = 260, c1y = 210, GM1 = 1500, R1 = 28;
+        const c2x = 500, c2y = 210, GM2 = 900, R2 = 20;
+
+        const dx1 = c1x - probe.x, dy1 = c1y - probe.y, r1 = Math.sqrt(dx1*dx1 + dy1*dy1);
+        const dx2 = c2x - probe.x, dy2 = c2y - probe.y, r2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+
+        if (r1 < R1 || r2 < R2) {
+          probe.active = false;
+          probe.state = 'crashed';
+          const statusEl = document.getElementById('sim-status');
+          if (statusEl) {
+            statusEl.innerText = 'Planet Surface Collision';
+            statusEl.style.color = '#ef4444';
+          }
+          break;
+        }
+
+        ax += (GM1 / (r1 * r1)) * (dx1 / r1) + (GM2 / (r2 * r2)) * (dx2 / r2);
+        ay += (GM1 / (r1 * r1)) * (dy1 / r1) + (GM2 / (r2 * r2)) * (dy2 / r2);
+        currentPotential = - GM1/r1 - GM2/r2;
+      }
+
+      probe.vx += ax * (dt / subSteps);
+      probe.vy += ay * (dt / subSteps);
+      probe.x += probe.vx * (dt / subSteps);
+      probe.y += probe.vy * (dt / subSteps);
+
+      if (probe.x < -100 || probe.x > 860 || probe.y < -100 || probe.y > 520) {
+        probe.active = false;
+        probe.state = 'escaped';
+        const statusEl = document.getElementById('sim-status');
+        if (statusEl) {
+          statusEl.innerText = 'Escaped to Deep Space (E > 0)';
+          statusEl.style.color = '#f59e0b';
+        }
+        break;
+      }
+    }
+
+    if (probe) {
+      trail.push({ x: probe.x, y: probe.y, state: probe.state });
+      if (trail.length > 800) trail.shift();
+
+      const speedSq = probe.vx * probe.vx + probe.vy * probe.vy;
+      const kinetic = 0.5 * speedSq * 10;
+      const totalEnergy = kinetic + currentPotential;
+      const energyEl = document.getElementById('energy-display');
+      if (energyEl) {
+        energyEl.innerText = `${totalEnergy > 0 ? '+' : ''}${totalEnergy.toFixed(1)} J/kg`;
+      }
+    }
+  }
+
+  drawScene();
+  animId = requestAnimationFrame(animStep);
+}
+
+function drawScene() {
+  const handles = getCanvasAndContext();
+  if (!handles) return;
+  const { canvas, ctx } = handles;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 1. Spacetime metric background grid
+  ctx.strokeStyle = '#0f172a';
+  ctx.lineWidth = 1;
+  for (let gx = 0; gx < canvas.width; gx += 40) {
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvas.height); ctx.stroke();
+  }
+  for (let gy = 0; gy < canvas.height; gy += 40) {
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy); ctx.stroke();
+  }
+
+  // 2. Draw celestial bodies
+  if (simScene === 'earth') {
+    const cx = 380, cy = 210, r = 32;
+    const grad = ctx.createRadialGradient(cx, cy, r*0.8, cx, cy, r*2.2);
+    grad.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+    grad.addColorStop(1, 'rgba(59, 130, 246, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(cx, cy, r*2.2, 0, Math.PI*2); ctx.fill();
+
+    ctx.fillStyle = '#1e40af';
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#60a5fa';
+    ctx.lineWidth = 2; ctx.stroke();
+    
+    ctx.fillStyle = '#93c5fd';
+    ctx.font = '12px system-ui, sans-serif';
+    ctx.fillText('🌍 Earth (R = 6,371 km)', cx - 60, cy + r + 18);
+
+  } else if (simScene === 'bh') {
+    const cx = 380, cy = 210, rs = 22;
+    
+    const grad = ctx.createRadialGradient(cx, cy, rs, cx, cy, rs*3.5);
+    grad.addColorStop(0, 'rgba(239, 68, 68, 0.5)');
+    grad.addColorStop(0.5, 'rgba(245, 158, 11, 0.2)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(cx, cy, rs*3.5, 0, Math.PI*2); ctx.fill();
+
+    ctx.strokeStyle = '#f59e0b';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.arc(cx, cy, rs*1.5, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath(); ctx.arc(cx, cy, rs*3.0, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#000000';
+    ctx.beginPath(); ctx.arc(cx, cy, rs, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 2; ctx.stroke();
+
+    ctx.fillStyle = '#fca5a5';
+    ctx.font = '12px system-ui, sans-serif';
+    ctx.fillText('🕳️ Event Horizon (r_s)', cx - 55, cy + rs + 18);
+    ctx.fillStyle = '#fde68a';
+    ctx.fillText('Photon Sphere (1.5 r_s)', cx + rs*1.5 + 8, cy - 6);
+
+  } else if (simScene === 'binary') {
+    const c1x = 260, c1y = 210, r1 = 28;
+    const c2x = 500, c2y = 210, r2 = 20;
+
+    const l1x = 380, l1y = 210;
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath(); ctx.arc(l1x, l1y, 4, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fca5a5';
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillText('L1 (Saddle)', l1x - 24, l1y - 8);
+
+    ctx.fillStyle = '#0284c7';
+    ctx.beginPath(); ctx.arc(c1x, c1y, r1, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#bae6fd';
+    ctx.fillText('Planet 1 (M1)', c1x - 30, c1y + r1 + 16);
+
+    ctx.fillStyle = '#d97706';
+    ctx.beginPath(); ctx.arc(c2x, c2y, r2, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#fde68a';
+    ctx.fillText('Planet 2 (M2)', c2x - 30, c2y + r2 + 16);
+  }
+
+  // 3. Draw auto-running ambient satellites and their orbital tracks
+  ambientSatellites.forEach(sat => {
+    const center = sat.center || { x: 380, y: 210 };
+    const sx = center.x + sat.radius * Math.cos(sat.angle);
+    const sy = center.y + sat.radius * Math.sin(sat.angle);
+
+    // Orbit path ring
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.setLineDash([3, 5]);
+    ctx.beginPath();
+    ctx.arc(center.x, center.y, sat.radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Glowing satellite body
+    ctx.fillStyle = sat.color;
+    ctx.beginPath();
+    ctx.arc(sx, sy, sat.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Satellite label
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '10px system-ui, sans-serif';
+    ctx.fillText(sat.label, sx + 6, sy - 4);
+  });
+
+  // 4. Draw user-launched probe trajectory
+  if (trail.length > 1) {
+    ctx.lineWidth = 2;
+    for (let i = 1; i < trail.length; i++) {
+      ctx.beginPath();
+      ctx.moveTo(trail[i-1].x, trail[i-1].y);
+      ctx.lineTo(trail[i].x, trail[i].y);
+      
+      const alpha = Math.min(1.0, i / trail.length);
+      if (trail[i].state === 'crashed' || trail[i].state === 'swallowed') {
+        ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`;
+      } else if (trail[i].state === 'escaped') {
+        ctx.strokeStyle = `rgba(245, 158, 11, ${alpha})`;
+      } else {
+        ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+      }
+      ctx.stroke();
+    }
+  }
+
+  // 5. Draw launch origin marker and aim preview arrow
+  if (!probe || !probe.active) {
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath(); ctx.arc(probeOrigin.x, probeOrigin.y, 5, 0, Math.PI*2); ctx.fill();
+
+    const v0Input = document.getElementById('sim-v0');
+    const angleInput = document.getElementById('sim-angle');
+    const v0 = v0Input ? parseFloat(v0Input.value) : 5.8;
+    const angleDeg = angleInput ? parseFloat(angleInput.value) : 90;
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const arrowLen = v0 * 6.5;
+    const targetX = probeOrigin.x + arrowLen * Math.cos(angleRad);
+    const targetY = probeOrigin.y - arrowLen * Math.sin(angleRad);
+
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(probeOrigin.x, probeOrigin.y);
+    ctx.lineTo(targetX, targetY);
+    ctx.stroke();
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath();
+    ctx.arc(targetX, targetY, 3, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // 6. Draw user-launched probe
+  if (probe && probe.active) {
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(probe.x, probe.y, 4.5, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 2; ctx.stroke();
+  }
+}
+
+function startSimulationLoop() {
+  if (animId) cancelAnimationFrame(animId);
+  initAmbientSatellites();
+  setupCanvasEvents();
+  animId = requestAnimationFrame(animStep);
+}
+
+function initAllVisuals() {
+  if (typeof Plotly !== 'undefined') {
+    plotGravityWell();
+  }
+  startSimulationLoop();
+}
+
+// Attach to lifecycle
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => {
+    initAllVisuals();
+  });
+}
+
+window.addEventListener('load', () => {
+  initAllVisuals();
+});
+
+// Immediate execution fallback
+setTimeout(() => {
+  initAllVisuals();
+}, 250);
+</script>
+```
+
+
+### Data and code availability
+
+- **Interactive Simulations**: All 3D potential visualizers and 2D orbital sandboxes are implemented in client-side HTML5 Canvas and Plotly.js, self-contained within this post.
+- **Source Code**: Mathematical derivation notebooks and source files are hosted on GitHub: [`kamingfung/kamingfung.github.io`](https://github.com/kamingfung/kamingfung.github.io).
+- **Physical Constants**: Planetary and astrophysical parameters follow the standard CODATA/IAU recommended constants[^7].
+
+## Key takeaways
+
+- A gravitational well is the potential $\Phi(r) = -GM/r$; the sign of the total energy $E = K + U$ decides whether a body is bound ($E < 0$), parabolic ($E = 0$) or escapes ($E > 0$), and $v_{\text{esc}} = \sqrt{2GM/r}$ is the speed that makes $E = 0$.
+- Earth's well stops at its surface, $62.5\text{ MJ kg}^{-1}$ deep; the rocket equation $\Delta v = v_e \ln(m_0/m_f)$ turns that fixed depth into an exponential fuel fraction, which is why a launch vehicle is about 94% propellant.
+- A Schwarzschild black hole's well has no floor, and because its depth depends only on $r/r_s$ the ISCO, photon sphere and horizon sit at $-1/6$, $-1/3$ and $-1/2$ of $c^2$ for any mass.
+- Two orbiting masses produce a double well whose effective potential has five equilibria: three collinear saddle points ($L_1$ to $L_3$, unstable) and two triangular hills ($L_4$, $L_5$) stabilised by the Coriolis force when $M_1/M_2 > 24.96$.
+- Deepening a well linearly raises the fuel needed to leave it exponentially; a super-Earth twice our radius and mass would make chemical spaceflight impractical.
+
+[^1]: Misner, C. W., Thorne, K. S. & Wheeler, J. A. *Gravitation*. (W. H. Freeman, San Francisco, 1973). https://doi.org/10.1515/9781400889099
+[^2]: Newton, I. *Philosophiae Naturalis Principia Mathematica*. (J. Streater, London, 1687). https://doi.org/10.5479/sil.288219.39088015628391
+[^3]: Tsiolkovsky, K. E. Exploration of outer space by means of rocket devices. *Nauchnoe Obozrenie* **5**, 45–75 (1903).
+[^4]: Schwarzschild, K. Über das Gravitationsfeld eines Massenpunktes nach der Einsteinschen Theorie. *Sitzungsber. Preuss. Akad. Wiss.* **1916**, 189–196 (1916).
+[^5]: Kerr, R. P. Gravitational field of a spinning mass as an example of algebraically special metrics. *Phys. Rev. Lett.* **11**, 237–238 (1963). https://doi.org/10.1103/PhysRevLett.11.237
+[^6]: Lagrange, J. L. Essai sur le problème des trois corps. *Prix de l'Académie Royale des Sciences de Paris* **9**, 292 (1772).
+[^7]: Tiesinga, E., Mohr, P. J., Newell, D. B. & Taylor, B. N. CODATA recommended values of the fundamental physical constants: 2018. *Rev. Mod. Phys.* **93**, 025010 (2021). https://doi.org/10.1103/RevModPhys.93.025010
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/everyday-physics/index.html"><span>Series</span>Physics of Everyday Things</a><a class="mf-next" href="/blogs/atomic-cohesion-and-fracture.html"><span>Next</span>Why broken solids cannot re-bond</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

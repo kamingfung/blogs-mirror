@@ -1,0 +1,81 @@
+---
+title: What is an aerosol?
+description: A first look at cloud condensation nuclei and the Köhler curve, before the full treatment later in the series.
+date: 2026-08-27
+categories:
+- meteorology
+- atmospheric science
+- physics
+- thermodynamics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 4 · What clouds form on</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School physics. A little calculus appears in the droplet parts and is always optional.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Vapour will not condense onto nothing. Clouds form on microscopic particles already floating in the air, and without them the sky would need several hundred percent humidity.
+:::
+
+## Vapour needs a surface
+
+If the atmosphere contained only pure water vapor and nitrogen/oxygen, **clouds would almost never form**.
+
+For pure water vapor to condense spontaneously into a spherical droplet (**homogeneous nucleation**), it must overcome the enormous surface tension barrier ($2 \sigma / r$). Droplets smaller than a few nanometers have such high vapor pressure that they evaporate instantly unless the relative humidity exceeds **$300\% - 400\%$**!
+
+Nature solves this through **heterogeneous nucleation** using **Cloud Condensation Nuclei (CCN)**: microscopic aerosol particles ($0.1 - 2.0\text{ }\mu\text{m}$) such as sea salt ($\text{NaCl}$), sulfate aerosols ($\text{H}_2\text{SO}_4$, $(\text{NH}_4)_2\text{SO}_4$), mineral dust, and organic biogenic pollen.
+
+```{mermaid}
+flowchart TD
+    Air["Rising Moist Air Parcel"] --> Cool["Adiabatic Cooling: T approaches T_d"]
+    Cool --> Sat["Reaches S = e / e_s ≥ 100% (Supersaturation)"]
+    
+    Sat --> Pure{"Pure Water Vapor vs Aerosol CCN"}
+    Pure -- "Pure Air (No CCN)" --> Homogeneous["Homogeneous Nucleation Barrier<br/>Requires RH > 350% (No Clouds Form)"]
+    Pure -- "Aerosols Present (CCN)" --> Heterogeneous["Heterogeneous Nucleation on CCN<br/>Condensation at RH ≈ 100.1%"]
+    
+    Heterogeneous --> Kohler["Köhler Activation: r > r* (Critical Radius)"]
+    Kohler --> Droplet["Rapid Droplet Growth by Diffusion (10 - 20 μm)"]
+    Droplet --> Coalescence["Collision & Coalescence: Raindrops Form (> 1 mm)"]
+
+    class Air indigo
+    class Cool plum
+    class Sat sage
+    class Homogeneous rust
+    class Heterogeneous olive
+    class Kohler ochre
+    class Droplet sienna
+    class Coalescence terracotta
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef terracotta fill:#c97d62,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+## A first look at the Köhler curve
+
+The equilibrium saturation ratio $S = e / e_s$ over an aqueous solution droplet of radius $r$ containing dissolved solute mass $m_s$ is given by **Köhler Theory**:
+
+$$\ln(S) = \underbrace{\frac{2 \sigma_{\text{w/a}} M_w}{R T \rho_w r}}_{\text{Kelvin Effect (Curvature increases evaporation)}} - \underbrace{\frac{i \cdot \phi_s \cdot M_w \cdot m_s}{M_s \cdot \frac{4}{3}\pi \rho_w r^3}}_{\text{Raoult Effect (Solute lowers vapor pressure)}}$$
+
+When supersaturation slightly exceeds the critical threshold $S^* \approx 100.1\%$, the droplet crosses the critical radius $r^*$ and enters unstable runaway growth, ballooning into a full-sized cloud droplet ($10 - 30\text{ }\mu\text{m}$).
+
+## Key takeaways
+
+- Pure vapour will not condense into droplets at $100\%$ humidity; the curvature barrier means homogeneous nucleation needs $300$ to $400\%$ RH, which the atmosphere never provides.
+- Clouds form by heterogeneous nucleation on cloud condensation nuclei: sea salt, sulfate, mineral dust and organic particles $0.1$ to $2\ \mu\text{m}$ across.
+- The Köhler equation balances the Kelvin curvature term, which raises the equilibrium vapour pressure, against the Raoult solute term, which lowers it.
+- Once ambient supersaturation exceeds the critical value, about $100.1\%$ RH, the droplet passes its critical radius and grows without limit into a $10$ to $30\ \mu\text{m}$ cloud droplet.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/drop-shape-in-air.html"><span>Previous</span>How a drop deforms in air</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/why-clean-air-makes-no-cloud.html"><span>Next</span>Why clean air doesn&#x27;t make clouds</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

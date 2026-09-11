@@ -1,0 +1,70 @@
+---
+title: "Statistics"
+description: "The statistics the other series lean on, kept short and separate so any module can point here."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>8</dd></div>
+<div><dt>Modules</dt><dd>1 of 19 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>School maths. Python or R for the notebooks.</dd></div>
+</dl>
+
+## Part 1 · Describing data
+
+<ul class="syl">
+<li class="g">Histograms, quantiles and QQ plots<span class="m">Introductory · not written</span></li>
+<li class="g">Mean, median, and when they disagree<span class="m">Introductory · not written</span></li>
+<li class="g">Variance and standard error<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 2 · Comparing two samples
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ks_test/ks_test.html">The Kolmogorov–Smirnov test</a><span class="m">Intermediate</span></li>
+<li class="g">The t-test, and when not to use it<span class="m">Introductory · not written</span></li>
+<li class="g">Permutation tests<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 3 · Resampling
+
+<ul class="syl">
+<li class="g">Bootstrapping<span class="m">Intermediate · not written</span></li>
+<li class="g">Cross-validation<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 4 · Regression
+
+<ul class="syl">
+<li class="g">Least squares<span class="m">Introductory · not written</span></li>
+<li class="g">Is the trend significant?<span class="m">Intermediate · not written</span></li>
+<li class="g">Reading residuals<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 5 · Uncertainty
+
+<ul class="syl">
+<li class="g">Confidence intervals<span class="m">Introductory · not written</span></li>
+<li class="g">What a p-value is not<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 6 · Distributions
+
+<ul class="syl">
+<li class="g">Normal, lognormal, Poisson<span class="m">Introductory · not written</span></li>
+<li class="g">Heavy tails<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 7 · Bayesian basics
+
+<ul class="syl">
+<li class="g">Bayes&#x27; rule<span class="m">Introductory · not written</span></li>
+<li class="g">Priors in practice<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 8 · Experimental design
+
+<ul class="syl">
+<li class="g">Controls and randomisation<span class="m">Introductory · not written</span></li>
+<li class="g">Power, and how many samples<span class="m">Intermediate · not written</span></li>
+</ul>

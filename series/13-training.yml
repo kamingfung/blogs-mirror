@@ -1,0 +1,131 @@
+# Train to be a scientist — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. Anything without one is a gap: listed on
+# What's next, never in the nav. Module ids are permanent.
+#
+# Part 1 is a personal record with sources attached. It is not medical, dietary
+# or fitness advice, and every module in it says so in its TL;DR.
+title: Train to be a scientist
+slug: training
+order: 13
+about: "The parts of the training nobody examines you on: keeping the body that runs your mind in working order, explaining what you found, giving the work back to the field, and relearning something from scratch to prove you still can."
+assumes: "Nothing. Part 1 is one person's record with sources attached, not medical, dietary or fitness advice."
+parts:
+  - title: Looking after the machine you think with
+    modules:
+      - id: training/where-your-calories-come-from
+        title: Where your calories come from
+        level: introductory
+        path: blogs/where-your-calories-come-from.md
+        requires:
+          - training/reading-a-nutrition-study
+      - id: training/how-much-protein-really
+        title: How much protein, really
+        level: introductory
+        path: blogs/how-much-protein-really.md
+        requires:
+          - training/where-your-calories-come-from
+      - id: training/supplements-what-survives-scrutiny
+        title: "Supplements: what survives scrutiny"
+        level: introductory
+        path: blogs/supplements-what-survives-scrutiny.md
+        requires:
+          - training/reading-a-nutrition-study
+      - id: training/how-muscle-is-actually-built
+        title: How muscle is actually built
+        level: introductory
+        path: blogs/how-muscle-is-actually-built.md
+        requires:
+          - training/how-much-protein-really
+      - id: training/sleep-is-not-optional
+        title: Sleep is not optional
+        level: introductory
+        path: blogs/sleep-is-not-optional.md
+      - id: training/reading-a-nutrition-study
+        title: Reading a nutrition study without being fooled
+        level: intermediate
+        path: blogs/reading-a-nutrition-study.md
+        requires:
+          - statistics/what-a-p-value-is-not
+          - statistics/controls-and-randomisation
+
+  - title: Saying what you found
+    modules:
+      - id: training/writing-a-paper-people-finish
+        title: Writing a paper people finish
+        level: intermediate
+        requires:
+          - teaching-leading/answer-first
+      - id: training/giving-a-talk
+        title: Giving a talk
+        level: introductory
+        requires:
+          - teaching-leading/explaining-to-people-with-ten-minutes
+      - id: training/feedback-that-starts-from-strengths
+        title: Feedback that starts from strengths
+        level: introductory
+        requires:
+          - teaching-leading/formative-assessment
+      - id: training/peer-review-you-would-want-to-receive
+        title: Peer review you would want to receive
+        level: intermediate
+        requires:
+          - training/feedback-that-starts-from-strengths
+      - id: training/teaching-what-you-research
+        title: Teaching what you research
+        level: introductory
+        requires:
+          - teaching-leading/backward-design
+
+  - title: Giving it back
+    modules:
+      - id: training/your-first-contribution-to-a-community-model
+        title: Your first contribution to a community model
+        level: intermediate
+        requires:
+          - engineering/testing-analysis-code
+      - id: training/open-source-as-a-scientist
+        title: Open source as a scientist
+        level: introductory
+      - id: training/code-someone-else-can-run
+        title: Research code someone else can run
+        level: intermediate
+        requires:
+          - engineering/notebooks-vs-scripts
+      - id: training/outreach-that-is-not-a-press-release
+        title: Outreach that is not a press release
+        level: introductory
+        requires:
+          - teaching-leading/explaining-to-people-with-ten-minutes
+
+  - title: Relearning music theory as a scientist
+    modules:
+      - id: training/why-the-theory-never-stuck
+        title: Why the theory never stuck
+        level: introductory
+        path: blogs/why-the-theory-never-stuck.md
+      - id: training/intervals-as-ratios
+        title: Intervals as ratios
+        level: introductory
+        requires:
+          - waves/the-mathematics-of-music
+      - id: training/why-a-string-has-harmonics
+        title: Why a string has harmonics
+        level: introductory
+        requires:
+          - waves/standing-waves-and-resonance
+      - id: training/what-the-ear-does-with-a-chord
+        title: What the ear does with a chord
+        level: intermediate
+        requires:
+          - training/intervals-as-ratios
+      - id: training/what-instruments-are-made-of
+        title: What instruments are made of
+        level: introductory
+        requires:
+          - training/why-a-string-has-harmonics
+      - id: training/reading-notation-finally
+        title: Reading notation, finally
+        level: introductory
+        requires:
+          - training/intervals-as-ratios
+          - training/what-the-ear-does-with-a-chord

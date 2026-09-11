@@ -1,0 +1,176 @@
+# Forecasting with Machine Learning — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Forecasting with Machine Learning"
+slug: forecasting
+order: 7
+about: "Tabular machine learning for time series, from framing the problem to shipping a model, with agricultural data throughout."
+assumes: "Python and pandas. Basic statistics. No prior forecasting."
+parts:
+  - title: "Framing a forecast"
+    modules:
+      - id: forecasting/horizon-frequency-and-target
+        title: "Horizon, frequency and target"
+        level: introductory
+      - id: forecasting/leakage
+        title: "Leakage"
+        level: introductory
+      - id: forecasting/backtesting-properly
+        title: "Backtesting properly"
+        level: intermediate
+  - title: "Features"
+    modules:
+      - id: forecasting/feature-engineering-with-feature-engine
+        title: "Feature engineering with feature_engine"
+        level: intermediate
+        path: blogs/forecast/1_feature_engineering.ipynb
+        requires:
+          - forecasting/horizon-frequency-and-target
+          - forecasting/leakage
+      - id: forecasting/lags-and-rolling-windows
+        title: "Lags and rolling windows"
+        level: introductory
+      - id: forecasting/calendar-and-cyclical-encodings
+        title: "Calendar and cyclical encodings"
+        level: introductory
+  - title: "Models"
+    modules:
+      - id: forecasting/baselines-first
+        title: "Baselines first"
+        level: introductory
+      - id: forecasting/gradient-boosting-for-tabular-time-series
+        title: "Gradient boosting for tabular time series"
+        level: intermediate
+      - id: forecasting/ensemble-models
+        title: "Ensemble models"
+        level: intermediate
+        path: blogs/forecast/2_ensemble_models.ipynb
+        requires:
+          - forecasting/feature-engineering-with-feature-engine
+          - forecasting/gradient-boosting-for-tabular-time-series
+  - title: "Explaining forecasts"
+    modules:
+      - id: forecasting/shap
+        title: "SHAP"
+        level: intermediate
+        path: blogs/forecast/3_shap_explainability.ipynb
+        requires:
+          - forecasting/ensemble-models
+      - id: forecasting/partial-dependence
+        title: "Partial dependence"
+        level: intermediate
+  - title: "Multi-step forecasting"
+    modules:
+      - id: forecasting/direct-vs-recursive-in-darts
+        title: "Direct vs recursive in Darts"
+        level: intermediate
+        path: blogs/darts-direct-vs-recursive.md
+        requires:
+          - forecasting/horizon-frequency-and-target
+          - forecasting/backtesting-properly
+      - id: forecasting/multi-output-models
+        title: "Multi-output models"
+        level: intermediate
+  - title: "Forecasting distributions"
+    modules:
+      - id: forecasting/forecasting-a-size-distribution
+        title: "Forecasting a size distribution"
+        level: advanced
+        path: blogs/darts-size-distribution-forecast.ipynb
+        requires:
+          - forecasting/direct-vs-recursive-in-darts
+          - forecasting/compositional-data
+      - id: forecasting/compositional-data
+        title: "Compositional data"
+        level: intermediate
+  - title: "Awkward targets"
+    modules:
+      - id: forecasting/cross-entropy-for-bounded-targets
+        title: "Cross-entropy for bounded targets"
+        level: advanced
+        path: blogs/lightgbm-cross-entropy-bounded-target.md
+        requires:
+          - forecasting/gradient-boosting-for-tabular-time-series
+          - forecasting/log-and-boxcox-transforms
+      - id: forecasting/zeros-and-tweedie
+        title: "Zeros and Tweedie"
+        level: intermediate
+      - id: forecasting/log-and-boxcox-transforms
+        title: "Log and Box–Cox transforms"
+        level: introductory
+  - title: "Curves from partial data"
+    modules:
+      - id: forecasting/fitting-a-season-from-its-first-weeks
+        title: "Fitting a season from its first weeks"
+        level: advanced
+        path: blogs/curve-fitting-partial-timeseries.md
+        requires:
+          - forecasting/growth-curves
+          - statistics/least-squares
+      - id: forecasting/growth-curves
+        title: "Growth curves"
+        level: intermediate
+  - title: "Evaluating forecasts"
+    modules:
+      - id: forecasting/which-metric
+        title: "Which metric"
+        level: introductory
+      - id: forecasting/pinball-loss-and-quantiles
+        title: "Pinball loss and quantiles"
+        level: intermediate
+        requires:
+          - forecasting/which-metric
+      - id: forecasting/backtest-design
+        title: "Backtest design"
+        level: intermediate
+  - title: "Uncertainty"
+    modules:
+      - id: forecasting/quantile-regression
+        title: "Quantile regression"
+        level: intermediate
+      - id: forecasting/conformal-prediction
+        title: "Conformal prediction"
+        level: advanced
+        requires:
+          - forecasting/quantile-regression
+          - statistics/cross-validation
+  - title: "Hierarchies"
+    modules:
+      - id: forecasting/hierarchical-reconciliation
+        title: "Hierarchical reconciliation"
+        level: advanced
+        requires:
+          - forecasting/forecasting-many-series-at-once
+      - id: forecasting/forecasting-many-series-at-once
+        title: "Forecasting many series at once"
+        level: intermediate
+  - title: "Classical models"
+    modules:
+      - id: forecasting/ets-and-arima
+        title: "ETS and ARIMA"
+        level: intermediate
+      - id: forecasting/when-classical-beats-machine-learning
+        title: "When classical beats machine learning"
+        level: intermediate
+  - title: "Deep learning"
+    modules:
+      - id: forecasting/when-deep-learning-helps
+        title: "When deep learning helps"
+        level: intermediate
+      - id: forecasting/n-beats-and-tft
+        title: "N-BEATS and TFT"
+        level: advanced
+  - title: "Foundation models"
+    modules:
+      - id: forecasting/time-series-foundation-models
+        title: "Time series foundation models"
+        level: advanced
+  - title: "In production"
+    modules:
+      - id: forecasting/retraining-and-drift
+        title: "Retraining and drift"
+        level: intermediate
+      - id: forecasting/monitoring-a-forecast
+        title: "Monitoring a forecast"
+        level: intermediate

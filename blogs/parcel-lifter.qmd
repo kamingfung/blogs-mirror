@@ -1,0 +1,486 @@
+---
+title: Lift a parcel yourself
+description: An interactive parcel lifter that computes the lifting condensation level, and a 2D microphysics sandbox.
+date: 2026-08-27
+categories:
+- meteorology
+- atmospheric science
+- physics
+- thermodynamics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 2 · Stability</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/why-rising-air-cools.html">Why does rising air cool?</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Two simulators. Lift an air parcel and watch the cloud base appear, then set up a whole cloud and watch droplets grow on their nuclei.
+:::
+
+Experiment with the physics of cloud formation using the interactive simulators below.
+
+### Simulator 1: Thermodynamic Parcel Lifter & LCL Calculator
+
+Adjust the surface temperature ($T_0$), dew point ($T_{d0}$), and the environmental lapse rate. Watch the air parcel ascend along the **Dry Adiabatic Lapse Rate (DALR)**, strike the **Lifting Condensation Level (LCL)**, and transition into moist cloud growth!
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Surface Air Temp (T₀): <strong id="t0-val" style="color: #f87171;">26.0°C</strong></label>
+      <input type="range" id="slider-t0" min="10" max="40" step="0.5" value="26" oninput="updateParcelSim()" style="width: 100%; accent-color: #f87171;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Surface Dew Point (Td₀): <strong id="td-val" style="color: #38bdf8;">16.0°C</strong></label>
+      <input type="range" id="slider-td" min="-5" max="30" step="0.5" value="16" oninput="updateParcelSim()" style="width: 100%; accent-color: #38bdf8;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; font-weight: 600;">Environmental Lapse Rate: <strong id="elr-val" style="color: #a78bfa;">7.5 °C/km</strong></label>
+      <input type="range" id="slider-elr" min="4.0" max="11.0" step="0.2" value="7.5" oninput="updateParcelSim()" style="width: 100%; accent-color: #a78bfa;">
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; background: #020617; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; margin-bottom: 16px;">
+    <div>
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Cloud Base Altitude (LCL)</div>
+      <div id="res-lcl" style="font-size: 1.3em; font-weight: 700; color: #38bdf8; margin-top: 2px;">1,250 m</div>
+    </div>
+    <div>
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Surface Relative Humidity</div>
+      <div id="res-rh" style="font-size: 1.3em; font-weight: 700; color: #10b981; margin-top: 2px;">54.2 %</div>
+    </div>
+    <div>
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">Atmospheric Stability</div>
+      <div id="res-stability" style="font-size: 1.3em; font-weight: 700; color: #f59e0b; margin-top: 2px;">Conditionally Unstable</div>
+    </div>
+  </div>
+
+  <canvas id="parcel-canvas" width="720" height="340" style="width: 100%; height: auto; background: #0b1120; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+</div>
+```
+
+
+---
+
+### Simulator 2: 2D Cloud Microphysics & Lifting Sandbox
+
+Switch between **Thermal Convection**, **Mountain Orographic Lift**, and a **Cold Front Wedge**. Watch vapor molecules and aerosol CCN seeds get lifted, cool adiabatically, cross the condensation threshold, and assemble into billowy cloud structures in real time!
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <button id="btn-mode-conv" onclick="setLiftMode('convection')" style="background: #2563eb; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-weight: 600;">☀️ Thermal Convection</button>
+      <button id="btn-mode-oro" onclick="setLiftMode('orographic')" style="background: #334155; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-weight: 600;">⛰️ Mountain Orographic</button>
+      <button id="btn-mode-front" onclick="setLiftMode('frontal')" style="background: #334155; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-weight: 600;">❄️ Cold Front Wedge</button>
+    </div>
+    <div id="lift-caption" style="font-size: 0.85em; color: #94a3b8; font-style: italic;">
+      Solar heating creates buoyant plumes that condense at LCL into Cumulus.
+    </div>
+  </div>
+
+  <canvas id="cloud-micro-canvas" width="760" height="380" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+
+  <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #64748b; margin-top: 8px;">
+    <span>🔵 Blue dots: Invisible Water Vapor | ⚪ White clusters: Condensed Cloud Droplets</span>
+    <span>Dashed line: Lifting Condensation Level (Cloud Base)</span>
+  </div>
+</div>
+```
+
+
+---
+
+## Summary: The Journey from Molecule to Cloud
+
+1. **Evaporation**: Solar radiation pumps energy into liquid water, turning it into invisible water vapor with latent energy $L_v \approx 2.5\text{ MJ/kg}$.
+2. **Lifting & Expansion**: Buoyancy, terrain, or weather fronts force the air parcel upward into lower atmospheric pressure.
+3. **Adiabatic Cooling**: Expanding air performs work, cooling at the dry adiabatic lapse rate ($\approx 9.8^\circ\text{C/km}$) until reaching the Lifting Condensation Level (LCL).
+4. **Heterogeneous Nucleation**: Water vapor molecules condense onto microscopic aerosol seeds (CCN) once relative humidity exceeds $\approx 100.1\%$.
+5. **Macrostructure Assembly**: Trillions of microscopic $20\text{ }\mu\text{m}$ droplets scatter all visible wavelengths equally (Mie scattering), giving clouds their luminous white appearance.
+
+---
+
+```{=html}
+<script>
+// --- SIMULATOR 1: THERMODYNAMIC PARCEL DIAGRAM ---
+function updateParcelSim() {
+  const t0 = parseFloat(document.getElementById('slider-t0').value);
+  let td0 = parseFloat(document.getElementById('slider-td').value);
+  const elr = parseFloat(document.getElementById('slider-elr').value);
+
+  // Dew point cannot exceed temperature
+  if (td0 > t0) {
+    td0 = t0;
+    document.getElementById('slider-td').value = td0;
+  }
+
+  document.getElementById('t0-val').innerText = `${t0.toFixed(1)}°C`;
+  document.getElementById('td-val').innerText = `${td0.toFixed(1)}°C`;
+  document.getElementById('elr-val').innerText = `${elr.toFixed(1)} °C/km`;
+
+  // Calculate LCL (meters)
+  const z_lcl = Math.max(0, 125 * (t0 - td0));
+  document.getElementById('res-lcl').innerText = `${Math.round(z_lcl)} m`;
+
+  // Calculate Surface RH via Magnus approximation
+  const es = 6.112 * Math.exp((17.67 * t0) / (t0 + 243.5));
+  const e = 6.112 * Math.exp((17.67 * td0) / (td0 + 243.5));
+  const rh = Math.min(100, Math.max(0, (e / es) * 100));
+  document.getElementById('res-rh').innerText = `${rh.toFixed(1)} %`;
+
+  // Stability classification
+  const dalr = 9.8;
+  const malr = 5.5;
+  let stabilityText = "Stable";
+  let stabColor = "#10b981";
+
+  if (elr > dalr) {
+    stabilityText = "Absolutely Unstable (Severe Convection)";
+    stabColor = "#ef4444";
+  } else if (elr < malr) {
+    stabilityText = "Absolutely Stable (Stratus / Fog)";
+    stabColor = "#38bdf8";
+  } else {
+    stabilityText = "Conditionally Unstable (Cumulus / Showers)";
+    stabColor = "#f59e0b";
+  }
+
+  const stabEl = document.getElementById('res-stability');
+  stabEl.innerText = stabilityText;
+  stabEl.style.color = stabColor;
+
+  drawParcelDiagram(t0, td0, elr, z_lcl);
+}
+
+function drawParcelDiagram(t0, td0, elr, z_lcl) {
+  const canvas = document.getElementById('parcel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const padLeft = 60, padRight = 30, padTop = 30, padBottom = 40;
+  const w = canvas.width - padLeft - padRight;
+  const h = canvas.height - padTop - padBottom;
+
+  const maxAlt = 3500; // meters
+  const minTemp = -10, maxTemp = 40;
+
+  function toX(t) {
+    return padLeft + ((t - minTemp) / (maxTemp - minTemp)) * w;
+  }
+  function toY(z) {
+    return padTop + h - (z / maxAlt) * h;
+  }
+
+  // Draw Grid lines
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  for (let t = 0; t <= 40; t += 10) {
+    const gx = toX(t);
+    ctx.beginPath(); ctx.moveTo(gx, padTop); ctx.lineTo(gx, padTop + h); ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px system-ui';
+    ctx.fillText(`${t}°C`, gx - 10, padTop + h + 18);
+  }
+  for (let z = 0; z <= maxAlt; z += 1000) {
+    const gy = toY(z);
+    ctx.beginPath(); ctx.moveTo(padLeft, gy); ctx.lineTo(padLeft + w, gy); ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px system-ui';
+    ctx.fillText(`${z}m`, 14, gy + 4);
+  }
+
+  // Draw Cloud Deck above LCL
+  const y_lcl = toY(z_lcl);
+  if (z_lcl < maxAlt) {
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+    ctx.fillRect(padLeft, toY(maxAlt), w, y_lcl - toY(maxAlt));
+
+    ctx.strokeStyle = '#38bdf8';
+    ctx.setLineDash([4, 4]);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(padLeft, y_lcl);
+    ctx.lineTo(padLeft + w, y_lcl);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = '12px system-ui';
+    ctx.fillText(`☁️ LCL (Cloud Base): ${Math.round(z_lcl)} m`, padLeft + 14, y_lcl - 8);
+  }
+
+  // 1. Environmental Temperature Profile (ELR)
+  ctx.strokeStyle = '#a78bfa';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let z = 0; z <= maxAlt; z += 100) {
+    const t_env = t0 - (elr * (z / 1000));
+    const px = toX(t_env), py = toY(z);
+    if (z === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // 2. Rising Air Parcel Temperature Curve
+  ctx.strokeStyle = '#f87171';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  const dalr = 9.8;
+  const malr = 5.5;
+  const t_lcl = t0 - dalr * (z_lcl / 1000);
+
+  for (let z = 0; z <= maxAlt; z += 50) {
+    let t_parcel;
+    if (z <= z_lcl) {
+      t_parcel = t0 - dalr * (z / 1000);
+    } else {
+      t_parcel = t_lcl - malr * ((z - z_lcl) / 1000);
+    }
+    const px = toX(t_parcel), py = toY(z);
+    if (z === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // 3. Dew point profile below LCL
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  for (let z = 0; z <= z_lcl; z += 50) {
+    const td_z = td0 - 1.8 * (z / 1000);
+    const px = toX(td_z), py = toY(z);
+    if (z === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Legend
+  ctx.fillStyle = '#f87171'; ctx.fillText('● Rising Parcel Profile (DALR/MALR)', padLeft + 14, padTop + 20);
+  ctx.fillStyle = '#a78bfa'; ctx.fillText('● Environmental Profile (ELR)', padLeft + 14, padTop + 38);
+  ctx.fillStyle = '#38bdf8'; ctx.fillText('┄ Dew Point Profile', padLeft + 14, padTop + 56);
+}
+
+// --- SIMULATOR 2: 2D CLOUD MICROPHYSICS SANDBOX ---
+let liftMode = 'convection';
+let cloudParticles = [];
+let microAnimId = null;
+
+function setLiftMode(mode) {
+  liftMode = mode;
+  const btnConv = document.getElementById('btn-mode-conv');
+  const btnOro = document.getElementById('btn-mode-oro');
+  const btnFront = document.getElementById('btn-mode-front');
+  const cap = document.getElementById('lift-caption');
+
+  btnConv.style.background = '#334155';
+  btnOro.style.background = '#334155';
+  btnFront.style.background = '#334155';
+
+  if (mode === 'convection') {
+    btnConv.style.background = '#2563eb';
+    cap.innerText = 'Thermal Convection: Solar heating drives vertical buoyant thermals into cumulus clouds.';
+  } else if (mode === 'orographic') {
+    btnOro.style.background = '#059669';
+    cap.innerText = 'Mountain Orographic Lift: Wind ascends slope, condenses at ridge, dries on leeward side.';
+  } else if (mode === 'frontal') {
+    btnFront.style.background = '#8b5cf6';
+    cap.innerText = 'Cold Front Wedge: Dense wedge undercuts warm air mass, forcing rapid ascent and storms.';
+  }
+  initMicroParticles();
+}
+
+function initMicroParticles() {
+  cloudParticles = [];
+  const N = 120;
+  for (let i = 0; i < N; i++) {
+    cloudParticles.push(createParticle());
+  }
+}
+
+function createParticle() {
+  if (liftMode === 'convection') {
+    return {
+      x: 300 + (Math.random() - 0.5) * 180,
+      y: 350 + Math.random() * 30,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: - (1.2 + Math.random() * 1.5),
+      size: 2.5 + Math.random() * 1.5,
+      condensed: false
+    };
+  } else if (liftMode === 'orographic') {
+    return {
+      x: 20 + Math.random() * 200,
+      y: 320 + Math.random() * 40,
+      vx: 1.5 + Math.random() * 1.0,
+      vy: 0,
+      size: 2.5 + Math.random() * 1.5,
+      condensed: false
+    };
+  } else if (liftMode === 'frontal') {
+    return {
+      x: 360 + Math.random() * 300,
+      y: 320 + Math.random() * 40,
+      vx: - (1.2 + Math.random() * 1.0),
+      vy: 0,
+      size: 2.5 + Math.random() * 1.5,
+      condensed: false
+    };
+  }
+}
+
+function microAnimLoop() {
+  const canvas = document.getElementById('cloud-micro-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const lclY = 180; // Cloud condensation altitude line
+
+  // 1. Draw Environment Backdrop
+  if (liftMode === 'orographic') {
+    // Mountain
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath();
+    ctx.moveTo(100, 380);
+    ctx.lineTo(380, 140);
+    ctx.lineTo(660, 380);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 2; ctx.stroke();
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '12px system-ui';
+    ctx.fillText('Windward Slope', 180, 320);
+    ctx.fillText('Leeward Rain Shadow', 480, 320);
+
+  } else if (liftMode === 'frontal') {
+    // Cold Air Wedge
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+    ctx.beginPath();
+    ctx.moveTo(0, 380);
+    ctx.lineTo(480, 380);
+    ctx.lineTo(0, 140);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2; ctx.stroke();
+
+    ctx.fillStyle = '#60a5fa';
+    ctx.font = '12px system-ui';
+    ctx.fillText('❄️ Dense Cold Air Wedge', 60, 340);
+    ctx.fillStyle = '#f87171';
+    ctx.fillText('🔥 Warm Moist Air Overrunning', 460, 200);
+
+  } else if (liftMode === 'convection') {
+    // Solar Heating Ground Arrows
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.1)';
+    ctx.fillRect(200, 340, 360, 40);
+    ctx.fillStyle = '#fca5a5';
+    ctx.font = '12px system-ui';
+    ctx.fillText('☀️ Sun-Heated Ground Thermal Source', 270, 365);
+  }
+
+  // 2. Draw LCL Cloud Base Line
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
+  ctx.setLineDash([4, 4]);
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, lclY); ctx.lineTo(canvas.width, lclY); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = '11px system-ui';
+  ctx.fillText('☁️ LCL (Condensation Threshold)', 14, lclY - 6);
+
+  // 3. Update and Draw Particles
+  cloudParticles.forEach((p, idx) => {
+    // Kinematic updates based on mode
+    if (liftMode === 'convection') {
+      p.x += p.vx;
+      p.y += p.vy;
+      // Slight expansion above LCL
+      if (p.y < lclY) {
+        p.vx += (Math.random() - 0.5) * 0.15;
+      }
+    } else if (liftMode === 'orographic') {
+      // Ascend along mountain slope
+      if (p.x < 380) {
+        const slopeY = 380 - ((p.x - 100) / 280) * 240;
+        p.y = Math.min(p.y, slopeY - 10);
+        p.x += p.vx;
+        p.y -= 1.0;
+      } else {
+        // Descend and evaporate on leeward side
+        p.x += p.vx;
+        p.y += 1.2;
+      }
+    } else if (liftMode === 'frontal') {
+      // Forced up over cold front wedge
+      if (p.x > 180) {
+        p.x += p.vx;
+        p.y -= 1.3;
+      } else {
+        p.x += p.vx * 0.8;
+        p.y -= 0.5;
+      }
+    }
+
+    // Phase transition: Condensed above LCL
+    p.condensed = (p.y <= lclY && (liftMode !== 'orographic' || p.x < 440));
+
+    // Draw particle
+    ctx.beginPath();
+    if (p.condensed) {
+      // Cloud droplet (white glow, larger)
+      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.2);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+      grad.addColorStop(0.5, 'rgba(240, 249, 255, 0.6)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = grad;
+      ctx.arc(p.x, p.y, p.size * 2.2, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Invisible vapor molecule / CCN (faint blue)
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+      ctx.arc(p.x, p.y, p.size * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Reset particle if out of bounds
+    if (p.y < 40 || p.x < -20 || p.x > canvas.width + 20 || p.y > 400) {
+      cloudParticles[idx] = createParticle();
+    }
+  });
+
+  microAnimId = requestAnimationFrame(microAnimLoop);
+}
+
+function startAllCloudVisuals() {
+  updateParcelSim();
+  initMicroParticles();
+  if (microAnimId) cancelAnimationFrame(microAnimId);
+  microAnimId = requestAnimationFrame(microAnimLoop);
+}
+
+// Lifecycle hooks
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => {
+    startAllCloudVisuals();
+  });
+}
+window.addEventListener('load', () => {
+  startAllCloudVisuals();
+});
+setTimeout(() => {
+  startAllCloudVisuals();
+}, 250);
+</script>
+```
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/what-lifts-the-air.html"><span>Previous</span>What lifts the air</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/drop-shape-in-orbit.html"><span>Next</span>Why are drops round?</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

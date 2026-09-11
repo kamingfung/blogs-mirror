@@ -1,0 +1,200 @@
+---
+title: Direct vs recursive in Darts
+description: Recursive forecasting feeds its own errors back in. Direct forecasting trains one model per horizon. When each is the right call.
+date: 2026-05-09
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/forecasting/index.html">Forecasting with Machine Learning</a><span class="sep">·</span>Part 5 · Multi-step forecasting</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">Horizon, frequency and target</span> and <span class="unwritten" title="not written yet">Backtesting properly</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+A **recursive** forecaster rolls its own one-step predictions forward, so any bias at $t+1$ is treated as truth at $t+2$ and compounds across the horizon. A **direct** forecaster (`output_chunk_length = H` in Darts) maps the same observed lag window to each future step independently, so nothing is fed back. You will be able to inspect the training matrix Darts builds, run both on the same series, and choose between them for a seasonal target.
+:::
+
+```{mermaid}
+graph TD
+    subgraph Recursive Strategy
+        R0["History [t-L ... t]"] --> R1["Model -> Predict t+1"]
+        R1 --> R2["Append t+1 to History -> Predict t+2"]
+        R2 --> R3["Append t+2 to History -> Predict t+3 (Compounded Error)"]
+    end
+
+    subgraph Direct Strategy
+        D0["History [t-L ... t]"]
+        D0 --> D1["Model 1 -> Predict t+1"]
+        D0 --> D2["Model 2 -> Predict t+2"]
+        D0 --> D3["Model 3 -> Predict t+3 (Zero Drift)"]
+    end
+```
+
+## The multi-step forecasting problem
+
+When you first try to forecast several weeks ahead using a tree-based model, a reasonable question surfaces: if the model uses past values as features, what happens when you need those features for a week that is still in the future? The concern is that predicting week six requires knowing week five, which requires knowing week four, and so on — each step reaching back into territory that doesn't exist yet. This is the "holes" problem, and it is the reason the choice between recursive and direct forecasting matters far more than most pipeline documentation lets on.
+
+Darts resolves this with a concept called direct multi-step forecasting, controlled by the `output_chunk_length` parameter. The remainder of this post walks through what that means mechanically, how to inspect the training matrix the model actually learns from, and how to run a side-by-side comparison so the trade-offs become concrete rather than abstract.
+
+## The two strategies
+
+In a **recursive strategy**, the model predicts one step at a time. It produces a forecast for `t+1`, feeds that prediction back as an input, and uses it to predict `t+2`. The process repeats until the desired horizon is reached. This is intuitive and flexible: a single model can forecast any number of steps with no architectural changes. The cost is error accumulation. Any bias at `t+1` is treated as ground truth for `t+2`, so small inaccuracies compound across the horizon. For agricultural yields — which have seasonal floors and ceilings — a recursive model can drift into biologically implausible territory by the end of a harvest window.
+
+In a **direct strategy**, the model is trained to produce the entire forecast vector in one shot. Setting `output_chunk_length=8` in Darts tells the underlying LightGBM (or any regression model) to output eight values simultaneously. Each position in the output vector is trained against a specific future week using only the actual historical data available at the forecast origin. There are no intermediate predictions involved. The model for week six never asks what week five looked like.
+
+## How the training matrix is built
+
+The cleanest way to understand direct forecasting is to look at the tabular structure Darts constructs before the model ever sees a tree. For each point in time `t`, Darts creates a row with two parts: the input features (the lag window) and the output targets (the future window). With `lags=5` and `output_chunk_length=8`, every row contains the five most recent yield values and the eight subsequent yield values as separate labeled columns.
+
+You can extract this matrix directly using the internal dataset class:
+
+::: {.callout-note collapse="true"}
+## View Python Code: Inspecting the Darts Training Matrix
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from darts import TimeSeries
+from darts.models import LightGBMModel
+from darts.utils.data import MixedCovariatesSequentialDataset
+
+# --- 1. DATA ---
+# 100 weeks of simulated blueberry yield with trend and seasonality
+weeks = pd.date_range("2024-01-01", periods=100, freq="W")
+values = np.linspace(10, 85, 100) + 8 * np.sin(np.linspace(0, 12, 100))
+series = TimeSeries.from_times_and_values(weeks, values)
+
+# --- 2. CONFIGURATION ---
+L = 5   # Lag window
+H = 8   # Forecast horizon
+
+# --- 3. EXPORT THE TRAINING MATRIX ---
+train_dataset = MixedCovariatesSequentialDataset(
+    target_series=series,
+    input_chunk_length=L,
+    output_chunk_length=H
+)
+
+X_train, y_train = [], []
+for past_tgt, *_, fut_tgt in train_dataset:
+    X_train.append(past_tgt.flatten())
+    y_train.append(fut_tgt.flatten())
+
+matrix_df = pd.concat([
+    pd.DataFrame(X_train, columns=[f"lag_{i}" for i in range(L, 0, -1)]),
+    pd.DataFrame(y_train, columns=[f"horizon_{i}" for i in range(1, H + 1)])
+], axis=1)
+
+print("--- TRAINING MATRIX (first 3 rows) ---")
+print(matrix_df.head(3))
+```
+:::
+
+The resulting table is the skeleton of the entire model.  Notice that `lag_1` through `lag_5` are the same for every horizon column in a given row.  The model for `horizon_1` is trained on a direct mapping from the lag window to the very next week.  The model for `horizon_8` is trained on a direct mapping from that same lag window to the week eight steps out.  Neither model knows or cares what the intervening weeks look like.  The gap between the lags and the target is simply what the model learns to bridge.
+
+This is why there are no holes.  The past covariate window is fixed at the forecast origin.  Every horizon target is anchored to the same starting point, so there is nothing missing.
+
+**A note on data requirements**
+
+One practical constraint follows directly from this structure.  To create a single training row, Darts needs a complete window of `L + H` consecutive data points.  With `L=5` and `H=8`, every row requires 13 weeks.  From 100 weeks of history you therefore get roughly 87 training samples — acceptable, but a useful reminder that the minimum viable dataset grows with both lag depth and horizon length.  Running this setup on 20 weeks of data (as you might during prototyping) produces only about 7 samples, which is not enough for a gradient boosted tree to find any pattern.
+
+## Side-by-side comparison
+
+The following code trains both strategies on the same historical time series and visualizes where their forecasts diverge:
+
+::: {.callout-note collapse="true"}
+## View Python Benchmark & Visualization Code
+
+```python
+# --- 4. MODEL TRAINING ---
+lgbm_params = {
+    "min_child_samples": 5,
+    "n_estimators": 200,
+    "learning_rate": 0.05,
+    "verbosity": -1
+}
+
+direct_model = LightGBMModel(lags=L, output_chunk_length=H, **lgbm_params)
+recursive_model = LightGBMModel(lags=L, output_chunk_length=1, **lgbm_params)
+
+direct_model.fit(series)
+recursive_model.fit(series)
+
+direct_forecast = direct_model.predict(n=H)
+recursive_forecast = recursive_model.predict(n=H)
+
+# --- 5. VISUALIZATION (zoomed to the forecast region) ---
+plt.figure(figsize=(14, 7))
+
+# Full history, faded
+series.plot(label="Actual History", color="black", alpha=0.3, linewidth=1)
+
+# Recent history, emphasized
+series[-15:].plot(label="Recent History", color="black", linewidth=2.5, marker="o")
+
+# Forecasts
+direct_forecast.plot(
+    label=f"Direct (output_chunk_length={H})",
+    color="darkorange", linestyle="--", marker="s", linewidth=2
+)
+recursive_forecast.plot(
+    label="Recursive (output_chunk_length=1)",
+    color="seagreen", linestyle=":", marker="^", linewidth=2
+)
+
+# Shade the lag input window
+plt.axvspan(
+    series.end_time() - pd.Timedelta(weeks=L - 1),
+    series.end_time(),
+    color="gray", alpha=0.1, label=f"Input Lags (L={L})"
+)
+
+# Zoom to the forecast region
+zoom_weeks = 12
+start_view = series.end_time() - pd.Timedelta(weeks=zoom_weeks)
+end_view = direct_forecast.end_time() + pd.Timedelta(weeks=1)
+plt.xlim(start_view, end_view)
+
+y_min = series[-zoom_weeks:].values().min() * 0.9
+y_max = max(direct_forecast.values().max(), recursive_forecast.values().max()) * 1.1
+plt.ylim(y_min, y_max)
+
+plt.title("Direct vs Recursive: Forecast Comparison", fontsize=16, fontweight="bold")
+plt.xlabel("Timeline", fontsize=12)
+plt.ylabel("Yield (Tons)", fontsize=12)
+plt.legend(loc="upper left", frameon=True, shadow=True)
+plt.grid(True, which="both", linestyle="--", alpha=0.5)
+plt.tight_layout()
+plt.show()
+```
+:::
+
+The `output_chunk_length=1` configuration forces recursive behavior: Darts predicts one step and rolls it forward, using the previous prediction as the lag input for the next.  By week eight the recursive forecast has passed its own predictions through itself eight times.  Any systematic bias is fully compounded.  The direct forecast, by contrast, draws each of the eight predictions independently from the same observed lag window.
+
+**Does the direct model lose information for near-term horizons?**
+
+A subtle but important question: if every horizon uses the same lag window as its features, does the direct model actually use `t-1` when predicting `t+1`?
+
+Yes, it does.  With `lags=5`, the feature vector for every horizon contains `[t, t-1, t-2, t-3, t-4]`.  The model for `horizon_1` sees `t-1` just as clearly as the model for `horizon_8`.  What changes across horizons is not the input — it is the target the model was trained to predict.
+
+The confusion usually comes from comparing direct to recursive.  In a recursive model, predicting `t+6` depends on the prediction of `t+5`, which incorporates `t+4`, and so on, creating a chain that eventually connects back to `t-1` through several generations of inference.  In a direct model, `t+6` connects to `t-1` through a single learned mapping, derived entirely from historical data where both the lag and the target were observed.  The information is present in both strategies — it just travels a different route.
+
+**Which to use**
+
+For forecasts spanning several weeks or more, direct forecasting is the safer default.  Errors do not compound, the model cannot hallucinate trends that violate physical constraints, and every horizon is grounded in the same observed starting point.  Recursive forecasting remains useful when the immediate next step is the primary concern and the "momentum" of the current state is the strongest available signal.
+
+For anything resembling a seasonal harvest window — where biological limits cap growth, the same growth curve recurs annually, and a wrong prediction in week two should not torpedo week eight — setting `output_chunk_length` equal to the full horizon is the structural choice that keeps the model honest.
+
+## Key takeaways
+
+- A recursive model (`output_chunk_length=1`) feeds each prediction back as the next lag, so by week eight the forecast has passed through the model eight times and any bias has compounded.
+- A direct model (`output_chunk_length=H`) trains one output per horizon from the same observed lag window, so there are no "holes": every target is anchored to the forecast origin.
+- The direct model does not lose near-term information; `horizon_1` sees $t-1$ exactly as `horizon_8` does. What differs is the target, not the input.
+- Each training row needs `L + H` consecutive points, so 100 weeks with `L=5, H=8` gives about 87 samples and 20 weeks gives about 7, too few for a gradient-boosted tree.
+- Default to direct for multi-week seasonal horizons; recursive is worth keeping when the next step is what matters and current momentum is the strongest signal.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/forecast/3_shap_explainability.html"><span>Previous</span>SHAP</a><a class="mf-up" href="/series/forecasting/index.html"><span>Series</span>Forecasting with Machine Learning</a><a class="mf-next" href="/blogs/darts-size-distribution-forecast.html"><span>Next</span>Forecasting a size distribution</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

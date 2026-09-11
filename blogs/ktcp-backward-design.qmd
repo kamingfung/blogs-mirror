@@ -1,0 +1,97 @@
+---
+title: Backward design
+description: State what students should be able to do, derive the assessment from that, choose content last. The reordering is the whole method.
+date: 2026-08-28
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/teaching-leading/index.html">Teaching and Leading</a><span class="sep">·</span>Part 1 · Designing a course</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Nothing. Parts alternate between the classroom idea and its use at work.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Most course planning runs forward — pick a topic, gather content, write a test at the end. **Backward design** (Wiggins & McTighe) inverts it: state what students should be able to *do*, derive the assessment that would prove it, and only then choose the content that gets them there. The reordering is the whole point; it exposes material that serves the syllabus rather than the learner.
+:::
+
+In 2020, in the middle of my postdoc at MIT, I spent a semester in the Kaufman Teaching Certificate Program (KTCP) — a series of workshops on how to actually teach, capped off with designing a full syllabus and running two "microteaching" sessions in front of peers. I went in expecting a checklist of classroom tricks. I came out with a design habit I now use for far more than teaching: **decide what "done" looks like before you decide what to do.**
+
+This is the first of a short series pulling the useful bits out of that program — starting with the idea that shaped everything after it: Wiggins & McTighe's **backward design**.
+
+## Two ways to plan a course
+
+Most of us plan a course (or a project, or a lesson) the way we were taught to expect it: pick a topic, gather content, march through it in some order, then write a test at the end to check who was paying attention. Wiggins & McTighe call this **coverage-oriented** design, and their diagnosis is blunt — it optimizes for "getting through the material," not for anyone actually learning it.
+
+The alternative is **backward design**, and it has three stages, done in this order:
+
+1. **Identify desired results.** What should students understand or be able to do by the end — not "topics covered," but durable understandings and specific, observable outcomes?
+2. **Determine acceptable evidence.** Before you plan a single activity, decide what would count as proof that a student has reached stage 1. Think like an assessor, not a lecturer.
+3. **Plan learning experiences and instruction.** Only now do you pick activities, readings, and lectures — and only the ones that build toward the evidence you defined in stage 2.
+
+```{mermaid}
+flowchart LR
+    A["1. Identify desired results
+    (goals & enduring understandings)"] --> B["2. Determine acceptable evidence
+    (assessments, before any activity)"]
+    B --> C["3. Plan learning experiences
+    (lectures, activities, readings)"]
+    C -.->|"revisit & refine"| A
+```
+
+The order is the entire point. Plan activities first and you get their "twin sins":
+
+| Twin sin | What it looks like | Why it's seductive |
+|---|---|---|
+| **Activity-oriented** design | Fun, hands-on activities with no clear line back to a learning goal — "hands-on without being minds-on" | It's engaging in the moment, easy to plan, and *feels* like teaching |
+| **Coverage-oriented** design | Marching through the textbook, "teaching by mentioning it" | "We covered chapter 7" feels like progress, even if nobody could do anything new with chapter 7 afterward |
+
+Both fail the same test: neither one starts from what a student should be able to *do*.
+
+## The exercise that made it concrete
+
+The workshop's most useful drill wasn't a lecture on the theory — it was rewriting a vague goal into something measurable. Take a goal like "students will understand VSEPR theory." That's not evaluable; you can't write a test item for "understand." Push on the verb instead:
+
+| Vague goal | Specific, verb-driven outcome | What it lets you assess |
+|---|---|---|
+| "Understand VSEPR theory" | ***List*** the electron-domain geometries | A labeling/matching question |
+| | ***Explain*** why lone pairs distort bond angles | A short-answer or "explain the mechanism" question |
+| | ***Apply*** the theory to predict an unfamiliar molecule's shape | A transfer problem on a molecule never seen in class |
+
+Each verb implies a different kind of evidence, and once you've picked the verb, the assessment almost writes itself.
+
+::: {.callout-note}
+## Worked example: Earth System Modeling
+
+I used this to scaffold a course I designed as my KTCP capstone, **Earth System Modeling** — students build a computational model of the Earth's climate system, one subsystem at a time, and run their own perturbation experiments.
+
+Rather than starting from "here's what I want to lecture about," I started from the final deliverable: a report where a student *proposes* a scenario, *builds* the model component needed to test it, *validates* it against real data, and *presents* the result. Every earlier unit exists because it's a prerequisite skill for that final artifact — not because it seemed like an interesting topic to cover.
+:::
+
+I also decided to tell students this explicitly in the syllabus itself — not just design backward, but say so, so students understand why the units are ordered the way they are and what each one is preparing them for. Transparency about the design turned out to be its own teaching move, not just a nice-to-have.
+
+## Why this generalizes past the classroom
+
+If you've done any amount of engineering or data science work, this framing should feel familiar under a different name: define your success metric before you touch the model. A shocking number of analyses go sideways the same way a coverage-oriented course does — someone picks an interesting technique first ("let's try a transformer for this"), builds it, and only afterward asks what it was supposed to prove. Backward design is just that same discipline, made explicit, for teaching.
+
+The "twin sins" framing is the part I still use as a self-audit, well outside any classroom. Before starting any course, project, or analysis, I run it through this checklist:
+
+- [ ] I can state the desired result in one sentence, without naming a technique or activity
+- [ ] I know what evidence would prove the result was reached — and I wrote it down *before* planning any activity
+- [ ] Every planned activity traces back to a specific piece of that evidence
+- [ ] I'm not including an activity just because it's fun, familiar, or "covers" content
+- [ ] I could drop any single activity and still explain why the remaining ones are enough
+
+## Key takeaways
+
+- Backward design has three stages in a fixed order: state the desired results, decide what evidence would prove them, and only then choose the activities and content.
+- The two "twin sins" are activity-oriented design (engaging but untethered from a goal) and coverage-oriented design (marching through material); both start from what the teacher does rather than what the student should be able to do.
+- "Understand" is not assessable. Replace it with a verb (list, explain, apply) and the assessment almost writes itself.
+- Tell students the design logic in the syllabus itself; the transparency is a teaching move.
+- Outside the classroom, this is the discipline of defining the success metric before touching the model.
+
+**Next in this series:** who's actually in the room, and what makes them feel like they belong there — because none of the above matters if students don't feel like the course is meant for them.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/teaching-leading/index.html"><span>Series</span>Teaching and Leading</a><a class="mf-next" href="/blogs/ktcp-belonging-and-engagement.html"><span>Next</span>Belonging and engagement</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

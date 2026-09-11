@@ -1,0 +1,176 @@
+---
+title: Aerosol indirect effects
+description: Twomey brightening and Albrecht lifetime effects, and why pollution changes clouds more reliably than it changes anything else.
+date: 2026-08-28
+categories:
+- atmospheric science
+- aerosols
+- cloud physics
+- climate
+- air quality
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/aerosols-climate/index.html">Aerosols and climate</a><span class="sep">·</span>Part 3 · How aerosols change clouds</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/kohler-theory.html">Köhler theory</a> and <span class="unwritten" title="not written yet">Cloud albedo</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+More particles make more, smaller droplets. Clouds get brighter and rain less, and this is still the largest uncertainty in climate forcing.
+:::
+
+## Two indirect effects
+
+Anthropogenic emissions drastically alter tropospheric CCN populations, increasing aerosol number concentrations from $<100\text{ cm}^{-3}$ in pristine maritime regimes to $>10^4\text{ cm}^{-3}$ in polluted continental air.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730 412" style="width:100%;max-width:730px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Two panels of equal liquid water content: eight large droplets of 11.3 micrometre radius on the left versus sixty-four droplets of 5.6 micrometre radius on the right, with optical depth doubling from 12 to 24 and albedo rising from 0.47 to 0.64.">
+  <defs>
+    <marker id="twM" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+  </defs>
+  <text x="365.0" y="26.0" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">the same water, divided two ways</text>
+  <text x="365.0" y="47.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">LWC = 0.30 g m&#8315;&#179; and cloud depth &#916;z = 300 m in both panels</text>
+  <rect x="50" y="100" width="250" height="200" rx="8" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+  <text x="175.0" y="86.0" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Pristine marine air</text>
+  <rect x="430" y="100" width="250" height="200" rx="8" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+  <text x="555.0" y="86.0" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Polluted continental air</text>
+  <circle cx="100" cy="152" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="158" cy="152" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="216" cy="152" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="274" cy="152" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="100" cy="232" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="158" cy="232" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="216" cy="232" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="274" cy="232" r="18" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <circle cx="445" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="120" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="144" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="168" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="192" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="216" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="240" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="264" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="445" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="475" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="505" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="535" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="565" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="595" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="625" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <circle cx="655" cy="288" r="9" fill="var(--ink-indigo)" fill-opacity="0.20" stroke="var(--ink-indigo)" stroke-width="1.6"/>
+  <line x1="310.0" y1="190.0" x2="418.0" y2="190.0" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#twM)"/>
+  <text x="364.0" y="176.0" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">8&#215; CCN</text>
+  <text x="364.0" y="210.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">same water</text>
+  <text x="175.0" y="326.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">N<tspan font-size="0.74em" dy="3.2">d</tspan><tspan dy="-3.2"> = 50 cm&#8315;&#179;</tspan></text>
+  <text x="555.0" y="326.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">N<tspan font-size="0.74em" dy="3.2">d</tspan><tspan dy="-3.2"> = 400 cm&#8315;&#179;</tspan></text>
+  <text x="175.0" y="346.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">r<tspan font-size="0.74em" dy="3.2">e</tspan><tspan dy="-3.2"> = 11.3 &#181;m</tspan></text>
+  <text x="555.0" y="346.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">r<tspan font-size="0.74em" dy="3.2">e</tspan><tspan dy="-3.2"> = 5.6 &#181;m</tspan></text>
+  <text x="175.0" y="366.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">optical depth &#964; = 12</text>
+  <text x="555.0" y="366.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">optical depth &#964; = 24</text>
+  <text x="175.0" y="392.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="14" font-weight="600">albedo &#8776; 0.47</text>
+  <text x="555.0" y="392.0" text-anchor="middle" fill="var(--ink-rust)" font-size="14" font-weight="600">albedo &#8776; 0.64</text>
+</svg>
+<figcaption><strong>Figure 1 | Pollution brightens a cloud without adding a drop of water.</strong> Both panels hold the same liquid water content, so eight times the CCN count forces the effective radius down by exactly $8^{1/3} = 2$, from $11.3$ to $5.6\ \mu\text{m}$ — the circles are drawn to that scale. Since optical depth goes as $\tau \propto N_d r_e^2 \propto N_d^{1/3}$, halving the radius doubles $\tau$ from $12$ to $24$, lifting the two-stream albedo from about $0.47$ to $0.64$: the Twomey effect. The same shift also strips the large-drop tail that collision-coalescence needs, so rainout is suppressed and the brightened cloud persists longer — Albrecht’s lifetime effect.</figcaption>
+</figure>
+```
+
+
+### The Twomey albedo effect
+
+For a fixed cloud Liquid Water Path ($LWP = \int \rho_a q_L dz$), the effective droplet radius $r_e$ scales inversely with the cloud droplet number concentration $N_d$:
+
+$$r_e = \left( \frac{3 LWP}{4 \pi \rho_L N_d \Delta z} \right)^{1/3} \propto N_d^{-1/3}$$
+
+The cloud optical depth $\tau$ is inversely proportional to the effective droplet radius:
+
+$$\tau \approx \frac{3 LWP}{2 \rho_L r_e} \propto N_d^{1/3}$$
+
+As air pollution increases $N_d$, the available liquid water is partitioned across a vastly larger number of smaller droplets. The total surface area of water exposed to sunlight increases, enhancing the cloud's shortwave solar reflectance (albedo) and exerting a net negative (cooling) radiative forcing on the climate system.
+
+### The Albrecht lifetime effect
+
+In warm clouds (temperatures $> 0^\circ\text{C}$), rain forms via the **collision-coalescence process**. Larger droplets have higher terminal velocities and sweep up smaller droplets as they fall.
+
+The collection kernel $K(r_1, r_2)$ drops to near zero when droplet radii are below approximately $14\ \mu\text{m}$. In polluted clouds:
+1. High CCN counts keep mean droplet radii below the $14\ \mu\text{m}$ threshold ($r \approx 4\text{ to }8\ \mu\text{m}$).
+2. Collision-coalescence is shut down, suppressing drizzle and light rain.
+3. Clouds retain their liquid water longer, increasing cloud lifetime and global cloud fraction, further altering regional hydrological cycles.
+
+## Clean versus polluted clouds
+
+| Diagnostic Parameter | Clean Maritime Stratocumulus | Polluted Continental Stratus | Climate / Meteorological Consequence |
+| :--- | :--- | :--- | :--- |
+| **CCN Concentration ($S = 0.2\%$)** | $50 - 150\text{ cm}^{-3}$ | $1,500 - 8,000\text{ cm}^{-3}$ | High activation density |
+| **Droplet Number ($N_d$)** | $30 - 100\text{ cm}^{-3}$ | $500 - 2,500\text{ cm}^{-3}$ | Microphysical narrowing |
+| **Effective Radius ($r_e$)** | $14 - 22\ \mu\text{m}$ | $4 - 9\ \mu\text{m}$ | Enhanced optical depth $\tau$ |
+| **Cloud Albedo ($A_{\text{cloud}}$)** | $0.35 - 0.55$ | $0.65 - 0.85$ | Shortwave cooling |
+| **Autoconversion / Rain Initiation** | Rapid ($15 - 30\text{ min}$) | Inhibited ($> 2\text{ hours}$ or absent) | Suppressed surface precipitation |
+
+## Key takeaways
+
+- Pollution raises CCN from under $100\text{ cm}^{-3}$ in clean maritime air to over $10^4\text{ cm}^{-3}$ over polluted continents.
+- At fixed liquid water path, $r_e \propto N_d^{-1/3}$ and $\tau \propto N_d^{1/3}$: more droplets means smaller droplets, more surface area and a brighter cloud. That is the Twomey effect.
+- Collision-coalescence shuts down below about $14\ \mu\text{m}$, so polluted clouds with $4$ to $8\ \mu\text{m}$ droplets stop drizzling and live longer. That is the Albrecht effect.
+- Clean stratocumulus has an albedo of $0.35$ to $0.55$ and rains out in $15$ to $30$ minutes; polluted stratus reaches $0.65$ to $0.85$ and may not rain at all.
+
+## References
+
+1. **Köhler, H.** (1936). *The nucleus in and the growth of hygroscopic droplets*. Transactions of the Faraday Society, 32, 1152–1161. [doi:10.1039/TF9363201152](https://doi.org/10.1039/TF9363201152)
+2. **Twomey, S.** (1974). *Pollution and the planetary albedo*. Atmospheric Environment, 8(12), 1251–1256. [doi:10.1016/0004-6981(74)90004-3](https://doi.org/10.1016/0004-6981(74)90004-3)
+3. **Albrecht, B. A.** (1989). *Aerosols, cloud microphysics, and fractional cloudiness*. Science, 245(4923), 1227–1230. [doi:10.1126/science.245.4923.1227](https://doi.org/10.1126/science.245.4923.1227)
+4. **Seinfeld, J. H., & Pandis, S. N.** (2016). *Atmospheric Chemistry and Physics: From Air Pollution to Climate Change* (3rd ed.). John Wiley & Sons.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/dms-oxidation-climate.html"><span>Previous</span>DMS oxidation and marine clouds</a><a class="mf-up" href="/series/aerosols-climate/index.html"><span>Series</span>Aerosols and climate</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

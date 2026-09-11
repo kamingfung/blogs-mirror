@@ -1,0 +1,59 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # tools/prerender.py falls back to git history for any post without
+          # an explicit date. A shallow clone would make those collapse to the
+          # checkout mtime and scramble the homepage ordering.
+          fetch-depth: 0
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          # Same version used locally. Quarto's SCSS layering and raw-HTML
+          # handling differ between releases, so pin it.
+          version: 1.10.18
+
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          enable-cache: true
+
+      - name: Create the pre-render environment
+        # The pre-render script needs pyyaml, and `.venv/bin/python` is the
+        # interpreter named in _quarto.yml. Nothing is executed at render time,
+        # so this is the whole Python requirement — no notebook dependencies.
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+
+      - name: Render site
+        run: quarto render
+
+      - name: Deploy to Cloudflare
+        # Cloudflare rejects the whole deploy with `Asset too large.` if any
+        # single file in _site exceeds 25 MiB. That is a per-file cap, not a
+        # total, and the error names no file — check the largest outputs first.
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3
+        with:
+          # The action's default pins wrangler 3.90, which predates
+          # assets-only Workers and fails with "Missing entry-point" on a
+          # config that has `assets` but no `main`.
+          wranglerVersion: "4"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

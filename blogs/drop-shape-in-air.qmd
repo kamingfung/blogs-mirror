@@ -1,0 +1,151 @@
+---
+title: How a drop deforms in air
+description: Dynamic pressure against surface tension, the oblate shapes that result, and the Weber number that predicts breakup.
+date: 2026-08-28
+categories:
+- physics
+- fluid mechanics
+- surface tension
+- thermodynamics
+- microgravity
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 3 · Droplets</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/drop-shape-in-orbit.html">Why are drops round?</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Falling raindrops are never tear-shaped. Air pressure flattens the base, and past a few millimetres it bursts them.
+:::
+
+## Two competing forces
+
+In Earth's atmosphere, a falling droplet experiences two competing forces:
+1. **Cohesive Surface Tension Force** ($\propto \gamma d$), which acts to restore spherical symmetry.
+2. **Dynamic Aerodynamic Pressure** ($q = \frac{1}{2}\rho_a v^2$), which deforms the droplet's windward face.
+
+Contrary to common illustrations, falling raindrops are never tear-shaped. Their geometry evolves systematically across size regimes.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 286" style="width:100%;max-width:720px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Four raindrop shape regimes across increasing diameter: near-perfect sphere below 1 mm, oblate spheroid from 1 to 4 mm, inverted parachute from 4 to 6 mm, and hydrodynamic breakup above 6 mm.">
+  <defs>
+    <marker id="wdax" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color--light)"/>
+    </marker>
+  </defs>
+  <circle cx="90" cy="112" r="26" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="90" y="46" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">d &lt; 1 mm</text>
+  <text x="90" y="66" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">0.5–4.0 m s⁻¹</text>
+  <text x="90" y="176" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Near-perfect sphere</text>
+  <text x="90" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">surface tension</text>
+  <text x="90" y="212" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">dominates drag</text>
+  <path d="M 218 118 C 218 78, 292 78, 292 118 Q 255 136, 218 118 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="255" y="46" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">1–4 mm</text>
+  <text x="255" y="66" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">4.0–8.5 m s⁻¹</text>
+  <text x="255" y="176" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Oblate spheroid</text>
+  <text x="255" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">stagnation pressure</text>
+  <text x="255" y="212" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">flattens the base</text>
+  <path d="M 380 120 C 380 72, 464 72, 464 120 Q 422 92, 380 120 Z" fill="var(--ink-indigo)" fill-opacity="0.16" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="422" y="46" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">4–6 mm</text>
+  <text x="422" y="66" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">8.5–9.2 m s⁻¹</text>
+  <text x="422" y="176" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">Inverted parachute</text>
+  <text x="422" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">shear hollows</text>
+  <text x="422" y="212" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">the centre</text>
+  <path d="M 556 118 C 556 74, 640 74, 640 118" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2" stroke-dasharray="7 5"/>
+  <path d="M 556 118 q 12 -8 22 -2 M 622 116 q 10 -6 18 2" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <ellipse cx="598" cy="122" rx="44" ry="7" fill="none" stroke="var(--ink-rust)" stroke-width="2.4"/>
+  <circle cx="566" cy="98" r="4.5" fill="var(--ink-rust)" fill-opacity="0.55"/>
+  <circle cx="632" cy="94" r="3.5" fill="var(--ink-rust)" fill-opacity="0.55"/>
+  <circle cx="600" cy="80" r="3" fill="var(--ink-rust)" fill-opacity="0.55"/>
+  <circle cx="580" cy="86" r="2.4" fill="var(--ink-rust)" fill-opacity="0.55"/>
+  <circle cx="618" cy="104" r="2.4" fill="var(--ink-rust)" fill-opacity="0.55"/>
+  <text x="598" y="46" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">d &gt; 6 mm</text>
+  <text x="598" y="66" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">&gt; 9.2 m s⁻¹</text>
+  <text x="598" y="176" text-anchor="middle" fill="var(--ink-rust)" font-size="13.5" font-weight="600">Hydrodynamic breakup</text>
+  <text x="598" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">aerodynamic stress</text>
+  <text x="598" y="212" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">exceeds capillarity</text>
+  <line x1="60" y1="248" x2="672" y2="248" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#wdax)"/>
+  <text x="680" y="253" fill="var(--md-default-fg-color--light)" font-size="15" font-style="italic">d</text>
+  <text x="60" y="272" fill="var(--md-default-fg-color--light)" font-size="12.5">increasing equivalent diameter, and with it terminal velocity and Weber number</text>
+</svg>
+<figcaption><strong>Figure 1 | Falling raindrops are never tear-shaped; their geometry is set by the competition between surface tension and aerodynamic stress.</strong> Below $1\text{ mm}$ capillary pressure dominates and the drop stays spherical. From $1$ to $4\text{ mm}$ stagnation pressure at the base flattens the underside into an oblate spheroid — the familiar "hamburger bun". Between $4$ and $6\text{ mm}$ aerodynamic shear hollows the centre into an inverted parachute with a concave base. Above roughly $6\text{ mm}$ the drop cannot recover: the thin central bag bursts and the thicker toroidal rim (magenta) fragments into satellite drops. All four silhouettes share one colour because they are the same fluid in different force balances; only the breakup products are distinguished, since they are a different population.</figcaption>
+</figure>
+```
+
+
+## Shape regimes by diameter
+
+| Droplet Diameter ($d$) | Terminal Velocity ($v_\infty$) | Dominant Physics | Observed Morphology |
+| :--- | :--- | :--- | :--- |
+| **$< 1.0\text{ mm}$** | $0.5 - 4.0\text{ m s}^{-1}$ | Surface tension dominates over dynamic drag | Near-perfect sphere |
+| **$1.0 - 4.0\text{ mm}$** | $4.0 - 8.5\text{ m s}^{-1}$ | Stagnation pressure at base flattens bottom profile | Oblate spheroid ("hamburger bun") |
+| **$4.0 - 6.0\text{ mm}$** | $8.5 - 9.2\text{ m s}^{-1}$ | Aerodynamic shear hollows the droplet center | Inverted parachute / concave base |
+| **$> 6.0\text{ mm}$** | $> 9.2\text{ m s}^{-1}$ | Aerodynamic stress exceeds capillary restoring force | Hydrodynamic breakup (Rayleigh-Taylor instability) |
+
+## The Weber number
+
+The transition to instability is characterized by the dimensionless **Weber number** ($We$):
+
+$$We = \frac{\rho_a v_{\infty}^2 d}{\gamma}$$
+
+where:
+
+- $\rho_a$ is the ambient air density ($1.225\text{ kg m}^{-3}$ at sea level).
+- $v_\infty$ is the droplet terminal velocity ($\text{m s}^{-1}$).
+- $d$ is the equivalent droplet diameter ($\text{m}$).
+- $\gamma$ is the surface tension ($\text{N m}^{-1}$).
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 330" style="width:100%;max-width:600px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Pressure field around a falling raindrop: high stagnation pressure beneath the base pushes upward while low pressure over the shoulders pulls outward, flattening the drop.">
+  <defs>
+    <marker id="wdup" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/>
+    </marker>
+    <marker id="wdout" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-indigo)"/>
+    </marker>
+    <marker id="wdlead" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 7 3, 0 6" fill="var(--md-default-fg-color--light)"/>
+    </marker>
+  </defs>
+  <path d="M 216 178 C 216 108, 384 108, 384 178 Q 300 208, 216 178 Z"
+        fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+  <path d="M 224 140 q -34 -12 -60 -30" fill="none" stroke="var(--ink-indigo)" stroke-width="2.2" marker-end="url(#wdout)"/>
+  <path d="M 376 140 q 34 -12 60 -30" fill="none" stroke="var(--ink-indigo)" stroke-width="2.2" marker-end="url(#wdout)"/>
+  <path d="M 262 116 q -10 -26 -14 -44" fill="none" stroke="var(--ink-indigo)" stroke-width="2.2" marker-end="url(#wdout)"/>
+  <path d="M 338 116 q 10 -26 14 -44" fill="none" stroke="var(--ink-indigo)" stroke-width="2.2" marker-end="url(#wdout)"/>
+  <text x="300" y="52" text-anchor="middle" fill="var(--ink-indigo)" font-size="14.5" font-weight="600">Suction zone — low pressure</text>
+  <text x="300" y="72" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">flow accelerates over the shoulders, pulling the drop outward</text>
+  <line x1="248" y1="248" x2="248" y2="206" stroke="var(--ink-rust)" stroke-width="2.6" marker-end="url(#wdup)"/>
+  <line x1="300" y1="256" x2="300" y2="212" stroke="var(--ink-rust)" stroke-width="2.6" marker-end="url(#wdup)"/>
+  <line x1="352" y1="248" x2="352" y2="206" stroke="var(--ink-rust)" stroke-width="2.6" marker-end="url(#wdup)"/>
+  <text x="300" y="286" text-anchor="middle" fill="var(--ink-rust)" font-size="14.5" font-weight="600">Stagnation zone — high pressure</text>
+  <text x="300" y="306" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">relative updraft decelerates against the base, flattening it</text>
+  <path d="M 470 196 q -40 6 -78 -4" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#wdlead)"/>
+  <text x="476" y="192" fill="var(--md-default-fg-color)" font-size="13">flattened underside</text>
+  <text x="476" y="210" fill="var(--md-default-fg-color--light)" font-size="12.5">not a teardrop</text>
+  <text x="70" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">We ≈ 12</text>
+  <text x="70" y="214" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">at rupture</text>
+</svg>
+<figcaption><strong>Figure 2 | Deformation is the visible result of a pressure difference, not of falling motion.</strong> As the drop falls, air decelerating against its underside raises the local stagnation pressure (magenta, upward), while flow accelerating over the shoulders lowers the pressure there (blue, outward). Surface tension resists both, and the equilibrium shape is wherever the two balance — an oblate spheroid with a flattened, never pointed, base. The Weber number $We = \rho_a v_\infty^2 d / \gamma$ is exactly the ratio of that aerodynamic stress to the capillary restoring stress; once $We \gtrsim 12$ no equilibrium shape exists and the drop enters bag breakup.</figcaption>
+</figure>
+```
+
+
+When $We \gtrsim 12$, dynamic pressure hollows the droplet out into a thin liquid bag surrounded by a thicker toroidal rim. Within milliseconds, the central bag bursts into a fine mist of micro-droplets, while the toroidal rim fragments via capillary Plateau-Rayleigh instability into larger satellite drops. This imposes a strict natural upper limit on atmospheric raindrops of approximately $5\text{ to }6\text{ mm}$.
+
+## Key takeaways
+
+- A falling drop is shaped by surface tension pulling it spherical against dynamic pressure $\tfrac{1}{2}\rho_a v^2$ flattening its underside; it is never tear-shaped.
+- Below $1\text{ mm}$ the drop is a sphere; from $1$ to $4\text{ mm}$ it is an oblate "hamburger bun"; between $4$ and $6\text{ mm}$ the base hollows into an inverted parachute.
+- The Weber number $We = \rho_a v_\infty^2 d/\gamma$ is the ratio of aerodynamic stress to capillary stress; past $We \approx 12$ no equilibrium shape exists.
+- Bag breakup caps natural raindrops at roughly $5$ to $6\text{ mm}$: the thin bag bursts into mist and the rim fragments into satellite drops.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/drop-shape-in-orbit.html"><span>Previous</span>Why are drops round?</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/what-is-an-aerosol.html"><span>Next</span>What is an aerosol?</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

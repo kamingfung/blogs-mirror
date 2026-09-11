@@ -1,0 +1,167 @@
+---
+title: Harness engineering
+description: The model is no longer the constraint. What surrounds it, the tools, the orchestration, the context it is handed, now decides how good an agent is.
+date: 2026-04-06
+categories:
+- ai
+- data science
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/engineering/index.html">Engineering in Action</a><span class="sep">·</span>Part 2 · Working with AI agents</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">Instructions that agents actually follow</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Two teams kept the model fixed and changed only what surrounds it. LangChain went from 52.8% to 66.5% on Terminal Bench 2.0; three OpenAI engineers merged 1,500 pull requests with an agent and wrote none of the code by hand. This module names the six components of that surrounding system, the **harness**, shows how each team built theirs, and leaves you with three changes to make to your own setup this week.
+:::
+
+```{mermaid}
+graph TD
+    User["Developer / Task Intent"] --> Prompt["1. System Prompt & Rules (AGENTS.md)"]
+    Prompt --> Context["2. Active Context Management & Memory"]
+    Context --> Orchestrator["3. LLM Reasoning Core (The Horse)"]
+    
+    Orchestrator --> Middleware["4. Pre/Post Tool Middleware & Hooks"]
+    Middleware --> Tools["5. External Tool Execution (MCP, APIs, Shell)"]
+    Tools --> Verification["6. Automated Verification Loop (Tests & Linters)"]
+    
+    Verification -->|Success| PR["Clean Verified Output / PR"]
+    Verification -->|Failure Feedback| Memory["Update AGENTS.md / Self-Healing Loop"]
+    Memory --> Orchestrator
+```
+
+## The model is no longer the bottleneck
+
+LangChain ran an experiment where they kept the model completely unchanged and only improved the surrounding system, the "harness." Their Terminal Bench 2.0 score jumped from **52.8% to 66.5%**, pushing them from outside the top 30 into the **top 5**.
+
+At OpenAI, three engineers paired with a Codex Agent over five months and merged **1,500 pull requests**, roughly **one million lines of code**, with zero hand-written code. About ten times the output of a traditional team.
+
+Same horse. Different saddle, reins, and bit. Completely different race.
+
+### From prompt engineering to harness engineering
+
+The discipline has moved through three stages:
+
+- **Prompt Engineering (2022–2024):** The art of asking a model a well-formed question. Valuable, but limited in scope.
+- **Context Engineering (2025):** Focused on giving the model better inputs: richer, cleaner, more relevant context.
+- **Harness Engineering (2026):** Encompasses everything Context Engineering covers, and adds tool orchestration, middleware, evaluation systems, feedback loops, and safety guardrails.
+
+Context Engineering manages *what the model sees*. Harness Engineering also manages *what the model can do*, *how its outputs get verified*, and *what happens when things go wrong*. That is a shift in how you build with AI, not an increment.
+
+## Anatomy of a harness
+
+An Agent Harness is all the non-model code that wraps a language model. The model provides the intelligence. The harness makes that intelligence usable in production.
+
+The model is the horse. The harness, reins, saddle, bit, is what lets a rider direct it. Without the harness, the horse goes wherever it wants.
+
+A well-designed harness has **six components**:
+
+**1. System Prompt**: Defines the agent's identity, rules of engagement, and what "done" looks like. Think `CLAUDE.md` or `AGENTS.md`, configuration files that act as the agent's operating manual.
+
+**2. Tools**: The external capabilities the agent can call: MCP servers, Bash commands, APIs. The richer and more reliable these are, the more the agent can actually do.
+
+**3. Middleware / Hooks**: Deterministic logic injected before and after each tool call. For example: automatically running a linter before every commit, regardless of what the model decided to do.
+
+**4. Context Architecture**: Active management of context quality. As conversations grow longer, context degrades. Techniques like lazy loading and sliding windows keep quality high across long sessions.
+
+**5. Persistent Memory**: Lets the agent remember important information across sessions. Tools like `MEMORY.md` or git history serve as long-term recall.
+
+**6. Verification Loop**: Checks whether the agent's output is actually correct. This includes automated tests, lint checks, and cross-validation by sub-agents. The agent doesn't just produce; it verifies.
+
+None of these pieces are individually new. Designed as an integrated system, they compound. Missing any one of them limits the whole.
+
+## Two production harnesses
+
+### LangChain
+
+LangChain structured their harness as a composable middleware pipeline with four layers:
+
+- **LocalContextMiddleware**: Scans the directory structure and environment variables at startup so the agent always knows where its tools live. Dramatically reduces environment-related errors.
+- **LoopDetectionMiddleware**: Detects when an agent is spinning its wheels doing the same thing repeatedly and forces a strategy switch.
+- **ReasoningSandwichMiddleware**: Allocates more reasoning compute at the *planning* and *verification* stages, and normal compute during execution. (They called it the "reasoning sandwich.")
+- **PreCompletionChecklistMiddleware**: Forces a verification checklist before the agent is allowed to declare the task done.
+
+One finding from this experiment is counterintuitive but important: **maxing out reasoning compute made performance worse.** The highest reasoning setting ("xhigh") scored only 53.9%, because it kept timing out. The "high" setting, at 63.6%, was the sweet spot.
+
+How you *allocate* reasoning budget matters more than how much of it you have.
+
+### OpenAI Codex
+
+The team behind Codex Agent distilled their approach into four core principles:
+
+**1. If the agent can't see it, it doesn't exist.**
+All knowledge must live inside the codebase. Their `AGENTS.md` is about 100 lines long, but it acts as an index pointing to design docs, architecture diagrams, and quality scores, all version-controlled.
+
+**2. Constraints must be encoded, not just documented.**
+A rule in a wiki ("please don't make cross-layer calls") is optional. A structural test that enforces a dependency order, `Types → Config → Repo → Service → Runtime → UI`, and breaks CI if violated is unavoidable. Agents can't work around it.
+
+**3. Agents must be able to complete tasks end-to-end.**
+From reproducing a bug to writing code to running tests to opening a PR, the agent handles everything. The human spends about one minute reviewing.
+
+**4. Minimize merge friction.**
+If tests fail intermittently, auto-retry them. Don't let flaky tests block progress.
+
+They also run background Codex tasks on a schedule, scanning for code drift, updating quality scores, and opening refactor PRs automatically. A garbage collector for technical debt.
+
+### AGENTS.md as a feedback loop
+
+The configuration file is not a one-time setup; it is a **dynamic feedback loop**.
+
+The agent reads `AGENTS.md` at the start of a task. If it hits a failure, it writes the root cause and the solution *back into* `AGENTS.md`. The next agent that spins up reads the updated version, and won't make the same mistake.
+
+Every failure makes the harness smarter. The system learns from its own errors.
+
+## What changes for the engineer
+
+### You are already doing this, just not systematically
+
+If you have used any AI coding tool, you have already touched Harness Engineering without calling it that:
+
+- Written a `CLAUDE.md` or `.cursorrules` to set project conventions? That's a **System Prompt**.
+- Connected an MCP server so your agent can access a database or external service? That's **Tools**.
+- Set up a hook to run lint before committing? That's **Middleware**.
+- Used a `MEMORY.md` to carry key decisions across sessions? That's **Persistent Memory**.
+
+Harness Engineering is not a new technology. It is a **shift in mindset**: taking the practices you already have and designing them as a coherent, intentional system.
+
+### Three things you can do this week
+
+You don't need to redesign everything at once. Start here:
+
+**1. Write a real configuration file.**
+Document your project structure, naming conventions, common commands, and things the agent must never do. If the agent can't read it, it doesn't exist.
+
+**2. Turn your acceptance criteria into executable commands.**
+Don't write "code should be clean." Write `npm run lint && npm test`. Make "done" something a machine can verify.
+
+**3. Update your config every time the agent makes a mistake.**
+Record what went wrong and how to avoid it. This is the minimum viable feedback loop, and it works.
+
+These three changes alone, no new model required, will meaningfully improve what your agents can do.
+
+### The changing shape of the work
+
+The day-to-day workflow is already shifting for engineers who have adopted this model.
+
+**Before:** Read requirements → Write code → Write tests → Open PR → Wait for review → Merge.
+
+**After:** Clarify the goal → Define acceptance criteria → Configure the agent's environment → Launch → Review the PR → Update the config if something failed → Repeat.
+
+The bottleneck is no longer how fast you can write code. It is how clearly you can describe what success looks like, how well you can automate verification, and how thoughtfully you design the feedback loop.
+
+The engineer's job is moving from *"I'll write it"* to *"I'll define what right looks like, and let the agent execute."*
+
+## Key takeaways
+
+- With the model held fixed, LangChain's harness changes alone lifted Terminal Bench 2.0 from 52.8% to 66.5%; the harness, not the weights, was the constraint.
+- A harness has six parts: system prompt, tools, middleware, context architecture, persistent memory and a verification loop, and dropping any one of them caps the rest.
+- Reasoning budget is something to allocate, not maximise: LangChain's "xhigh" setting scored worse (53.9%) than "high" (63.6%) because it timed out.
+- A constraint the agent can route around is a suggestion; encode it as a structural test that breaks CI.
+- Treat `AGENTS.md` as a feedback loop: every failure the agent writes back into it is a mistake the next run does not repeat.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/typing.html"><span>Previous</span>The sneaky comma: inlay type hints</a><a class="mf-up" href="/series/engineering/index.html"><span>Series</span>Engineering in Action</a><a class="mf-next" href="/blogs/investment-comparator.html"><span>Next</span>Total return and reinvested dividends</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

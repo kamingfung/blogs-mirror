@@ -1,0 +1,118 @@
+---
+title: "Teaching and Leading"
+description: "What a teaching certificate taught a scientist, and how the same tools run a team: briefs, feedback, reviews, and explaining things to people who are busy."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>14</dd></div>
+<div><dt>Modules</dt><dd>4 of 37 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Nothing. Parts alternate between the classroom idea and its use at work.</dd></div>
+</dl>
+
+## Part 1 · Designing a course
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ktcp-backward-design.html">Backward design</a><span class="m">Introductory</span></li>
+<li class="g">Writing learning outcomes<span class="m">Introductory · not written</span></li>
+<li class="g">Aligning assessment<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 2 · Backward design at work
+
+<ul class="syl">
+<li class="g">Decide what done looks like first<span class="m">Introductory · not written</span></li>
+<li class="g">Writing a project brief<span class="m">Introductory · not written</span></li>
+<li class="g">Milestones as assessments<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 3 · Who is in the room
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ktcp-belonging-and-engagement.html">Belonging and engagement</a><span class="m">Introductory</span></li>
+<li class="g">Active learning<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 4 · Belonging on a team
+
+<ul class="syl">
+<li class="g">Psychological safety<span class="m">Introductory · not written</span></li>
+<li class="g">The first week: onboarding as course design<span class="m">Introductory · not written</span></li>
+<li class="g">Meetings people speak in<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 5 · Prior knowledge and feedback
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ktcp-prior-knowledge-and-feedback.html">Meeting students where they are</a><span class="m">Introductory</span></li>
+<li class="g">Formative assessment<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 6 · Feedback at work
+
+<ul class="syl">
+<li class="g">One-on-ones<span class="m">Introductory · not written</span></li>
+<li class="g">Code review as feedback<span class="m">Intermediate · not written</span></li>
+<li class="g">Giving hard feedback<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 7 · Grading
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ktcp-grading-and-practice.html">Grading, and what happens when you teach</a><span class="m">Introductory</span></li>
+<li class="g">Rubrics<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 8 · Grading at work
+
+<ul class="syl">
+<li class="g">Performance reviews without the A to F<span class="m">Introductory · not written</span></li>
+<li class="g">Rubrics for hiring<span class="m">Intermediate · not written</span></li>
+<li class="g">Calibration<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 9 · Explaining
+
+<ul class="syl">
+<li class="g">Answer first<span class="m">Introductory · not written</span></li>
+<li class="g">Explaining to people with ten minutes<span class="m">Introductory · not written</span></li>
+<li class="g">The one-slide summary<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 10 · Writing
+
+<ul class="syl">
+<li class="g">A memo people actually read<span class="m">Introductory · not written</span></li>
+<li class="g">Documentation as teaching<span class="m">Introductory · not written</span></li>
+<li class="g">Writing for people who skim<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 11 · Running a room
+
+<ul class="syl">
+<li class="g">Running a meeting like a class<span class="m">Introductory · not written</span></li>
+<li class="g">Workshops and retrospectives<span class="m">Intermediate · not written</span></li>
+<li class="g">Presenting data to a decision<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 12 · Leading
+
+<ul class="syl">
+<li class="g">Delegation as teaching<span class="m">Introductory · not written</span></li>
+<li class="g">Mentoring<span class="m">Introductory · not written</span></li>
+<li class="g">Growing people who will leave<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 13 · Teaching with notes
+
+<ul class="syl">
+<li class="g">Turning notes into a course<span class="m">Introductory · not written</span></li>
+<li class="g">Open courseware<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 14 · How learning works
+
+<ul class="syl">
+<li class="g">Memory and spacing<span class="m">Introductory · not written</span></li>
+<li class="g">Cognitive load<span class="m">Intermediate · not written</span></li>
+</ul>

@@ -1,0 +1,83 @@
+---
+title: Sleep is not optional
+description: Six hours a night for two weeks impairs performance as much as two nights without sleep, and the people it happens to cannot tell. What sleep does for memory, and why it decides whether the rest of this part works.
+date: 2026-09-05
+categories:
+- sleep
+- cognition
+- memory
+- evidence
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 1 · Looking after the machine you think with</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Nothing. Part 1 is one person&#x27;s record with sources attached, not medical, dietary or fitness advice.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Sleep is when the day's learning is consolidated and the brain's metabolic waste is cleared. Restrict it to six hours a night for two weeks and cognitive performance falls to the level of two full nights without sleep, while the people it is happening to rate themselves as only slightly tired. It also decides whether the previous three modules work: with the same calorie deficit, sleeping 5.5 hours instead of 8.5 cut fat loss by more than half. Seven to nine hours, a fixed wake time, and no caffeine within six hours of bed.
+:::
+
+*Personal record with sources attached. Not medical, dietary or fitness advice.*
+
+## What sleep does for a thinking job
+
+Memory is not written during the day. It is encoded, unstably, and then consolidated during sleep. Two decades of experiments show that a night of sleep after learning improves retention of both declarative memory, the facts and events, and procedural memory, the skills, relative to an equal period awake, and that the improvement depends on specific sleep stages: slow-wave sleep early in the night for facts, and rapid-eye-movement and stage 2 sleep later for skills.[^1] Learn something, then sleep, and you keep more of it than if you learn it and stay up. Every module on this site is asking you to do the first half; sleep is the second.
+
+The second job is maintenance. In 2013 a group showed in mice that the interstitial space in the brain expands by about 60 percent during sleep, and that the clearance of metabolites, including the amyloid-beta that accumulates in Alzheimer's disease, roughly doubles compared with waking.[^2] The brain cleans itself while it is off. This has since been observed in humans with imaging, though the mouse work remains the clearest.
+
+Neither of these is a nice-to-have for someone whose job is to think.
+
+## The experiment that should worry you
+
+In 2003 a study kept 48 healthy adults in a laboratory for two weeks and restricted them to four, six or eight hours in bed per night, with a comparison group kept awake for three days straight.[^3] Every day they took a battery of cognitive tests and rated their own sleepiness.
+
+The eight-hour group held steady. The six-hour group's performance declined steadily across the fortnight and, by day fourteen, matched the performance of people who had been awake for two full nights. The four-hour group was worse still. That part is unsurprising.
+
+The part that matters is the self-ratings. The six-hour group's reported sleepiness rose in the first few days and then plateaued at "slightly sleepy," while their performance kept falling. They had adapted to feeling tired without adapting to being impaired. Two weeks of a schedule that most working scientists would consider normal produced a deficit equivalent to total sleep deprivation, in people who thought they were fine.
+
+If you have ever thought you function well on six hours, this is the study that says you cannot tell.
+
+## Sleep and the rest of this part
+
+The three previous modules are about eating and training for a body that runs a mind. Sleep multiplies or divides all of them.
+
+Ten adults spent two fourteen-day periods on the same reduced-calorie diet, once with 8.5 hours in bed and once with 5.5.[^4] Weight loss was the same in both. Where it came from was not: with 8.5 hours, 1.4 kg of fat and 1.5 kg of lean mass were lost; with 5.5 hours, 0.6 kg of fat and 2.4 kg of lean mass. The short-sleep condition lost 55 percent less fat and 60 percent more muscle on an identical diet, and reported more hunger. Every gram of protein and every set from the earlier modules is working against this if sleep is short.
+
+At the population level, a meta-analysis of sixteen prospective studies covering 1.3 million people found a U-shaped relationship between sleep duration and mortality: both short sleep, under six hours, and long sleep, over nine, were associated with higher all-cause mortality than seven to eight hours.[^5] Observational, with the confounding that implies, but consistent with the mechanistic work. The consensus recommendation for adults is seven to nine hours.[^6]
+
+## What I changed
+
+Three things, in order of effect.
+
+A fixed wake time, seven days a week. Bedtime varies with the evening; wake time does not, and the body's clock locks onto the constant end. Within a fortnight the bedtime drifts to where it needs to be.
+
+Caffeine ends six hours before bed. A randomised trial gave 400 mg of caffeine at zero, three or six hours before bedtime and measured sleep objectively; the six-hour dose still cut total sleep by more than an hour and the participants did not report it.[^7] Same pattern as the restriction study: the impairment is real and the perception is not. For a 10 pm bedtime my last coffee is at 4 pm, and in practice at noon.
+
+Bright light in the morning and dim light at night. Cheap, and the clock responds to it directly.
+
+The eighth module in this part is about reading nutrition studies without being fooled. Its first lesson applies here: the experiments that matter measured sleep and performance directly, in a laboratory, over weeks. The ones that reassure you that you are fine on six hours are asking you how you feel.
+
+## Key takeaways
+
+- Memory consolidates during sleep, with facts favouring early slow-wave sleep and skills favouring later stages. Learning without sleep loses part of what was learned.
+- Six hours a night for fourteen days produced impairment equal to two nights of total deprivation, and the subjects rated themselves only slightly tired.
+- On the same calorie deficit, sleeping 5.5 hours instead of 8.5 cut fat loss by more than half and increased muscle loss.
+- Seven to nine hours is the consensus for adults; both shorter and longer sleep associate with higher mortality.
+- A fixed wake time and a caffeine cut-off six hours before bed are the two changes with the clearest evidence behind them.
+
+## References
+
+[^1]: Walker, M. P. & Stickgold, R. Sleep-dependent learning and memory consolidation. *Neuron* **44**, 121–133 (2004). https://doi.org/10.1016/j.neuron.2004.08.031
+[^2]: Xie, L. et al. Sleep drives metabolite clearance from the adult brain. *Science* **342**, 373–377 (2013). https://doi.org/10.1126/science.1241224
+[^3]: Van Dongen, H. P. A., Maislin, G., Mullington, J. M. & Dinges, D. F. The cumulative cost of additional wakefulness: dose-response effects on neurobehavioral functions and sleep physiology from chronic sleep restriction and total sleep deprivation. *Sleep* **26**, 117–126 (2003). https://doi.org/10.1093/sleep/26.2.117
+[^4]: Nedeltcheva, A. V., Kilkus, J. M., Imperial, J., Schoeller, D. A. & Penev, P. D. Insufficient sleep undermines dietary efforts to reduce adiposity. *Ann. Intern. Med.* **153**, 435–441 (2010). https://doi.org/10.7326/0003-4819-153-7-201010050-00006
+[^5]: Cappuccio, F. P., D'Elia, L., Strazzullo, P. & Miller, M. A. Sleep duration and all-cause mortality: a systematic review and meta-analysis of prospective studies. *Sleep* **33**, 585–592 (2010). https://doi.org/10.1093/sleep/33.5.585
+[^6]: Hirshkowitz, M. et al. National Sleep Foundation's sleep time duration recommendations: methodology and results summary. *Sleep Health* **1**, 40–43 (2015). https://doi.org/10.1016/j.sleh.2014.12.010
+[^7]: Drake, C., Roehrs, T., Shambroom, J. & Roth, T. Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. *J. Clin. Sleep Med.* **9**, 1195–1200 (2013). https://doi.org/10.5664/jcsm.3170
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/how-muscle-is-actually-built.html"><span>Previous</span>How muscle is actually built</a><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a><a class="mf-next" href="/blogs/reading-a-nutrition-study.html"><span>Next</span>Reading a nutrition study without being fooled</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

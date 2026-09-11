@@ -1,0 +1,65 @@
+---
+title: The growth curve of a berry
+description: A blueberry's weight over time traces a single, well-behaved sigmoid, not because growth is simple but because the two mechanisms behind it, division then expansion, always run in the same order. That constraint is what makes the curve forecastable from a few early weeks.
+date: 2026-09-06
+categories:
+- plant biology
+- fruit development
+- growth curves
+- horticulture
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a><span class="sep">·</span>Part 2 · From flower to fruit</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/cell-division-then-cell-expansion.html">Cell division, then cell expansion</a> and <a href="/blogs/the-carbon-budget-of-a-bush.html">The carbon budget of a bush</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Plot a blueberry's fresh weight against days since bloom and you get an S-shaped curve: slow at first, a steep middle, then a plateau as the fruit finishes. That shape is not a coincidence; it is what cell division followed by cell expansion looks like from the outside. Because the shape is constrained by biology that runs the same way every season, a partial curve measured in the first few weeks tightly constrains where the rest of it goes, which is exactly the forecasting problem the site's Forecasting series takes on next.
+:::
+
+## From two mechanisms to one curve
+
+The previous module split fruit growth into two phases: a short burst of cell division that sets the eventual cell count, followed by a much longer stretch of cell expansion that inflates those cells with water. Weigh the fruit through both phases and the two mechanisms merge into a single visible shape. Growth starts slowly, while cell number is still small and expansion has barely begun. It then accelerates, as a large, fixed population of cells all expand together and the fruit gains weight faster than at any other point in its development. Finally it decelerates and flattens, as cells approach their maximum size, the vacuole can inflate no further without rupturing the wall, and growth in weight all but stops even though the fruit is not yet fully ripe in colour or sugar. Slow, steep, flat: that is a sigmoid, and it is what you get whenever a fixed population of units all grow toward the same ceiling at roughly the same time.
+
+## Writing the curve down
+
+The standard way to describe this shape with a small number of interpretable parameters is the logistic growth function:
+
+$$W(t) = \frac{W_{\max}}{1 + e^{-k(t - t_0)}}$$
+
+Three parameters carry all the biology. $W_{\max}$ is the asymptotic final weight, set mostly during the cell-division phase and by how much of the plant's carbon budget this particular fruit can draw on. $t_0$ is the inflection point, the day of fastest growth, which falls near the transition from division into full expansion. $k$ is the growth rate around that inflection, shaped by temperature and water availability during the expansion phase. Real berries deviate from a perfectly symmetric logistic, and horticultural growth studies often fit a slightly more flexible relative, such as a Gompertz or Richards curve, to capture an expansion phase that ramps up faster than it decays. The three-parameter structure, though, an asymptote, a timing, and a rate, is the same regardless of which exact functional form fits best.
+
+```{mermaid}
+flowchart LR
+    A["Weeks 1-3: cell division<br/>slow weight gain, cell count fixed"] --> B["Weeks 4-8: cell expansion<br/>steep weight gain, W(t) crosses inflection t₀"]
+    B --> C["Final weeks: ripening<br/>weight plateaus near W_max, sugar and colour still changing"]
+
+    class A olive
+    class B indigo
+    class C plum
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+Commercial highbush cultivars typically run something on the order of six to ten weeks from bloom to harvest-ripe fruit, with the exact span depending heavily on cultivar and temperature; what matters for the shape of the curve is not the exact day count but that all three phases, division, expansion, and the final plateau, occur in that fixed order every season, on every bush, for every berry.
+
+## Why this makes forecasting tractable
+
+That fixed order is the reason a partial-season measurement is informative rather than just an early data point. If growth were free to take any shape, a curve measured only through week three would say almost nothing about weeks four through eight. But because every berry's growth is constrained to the same three-phase, one-directional process, cell division cannot restart once expansion begins, and the fruit cannot skip ahead to the plateau, an early curve segment already rules out most possible trajectories for the rest of the season. A steep early rise is consistent with an early $t_0$ and a shorter overall season; a slow start is consistent with a later inflection and more growth still to come.
+
+This is precisely the structure the [Forecasting with Machine Learning](../series/forecasting/index.qmd) series' module on [fitting a season from its first weeks](curve-fitting-partial-timeseries.qmd) exploits: rather than fitting a curve from scratch to a handful of early points, it morphs the current partial season against complete curves from past seasons, because every one of those past curves obeys the same biological ordering derived here. The statistics work because the plant does not have many ways to grow a berry.
+
+## Key takeaways
+
+- A berry's weight-over-time curve is sigmoidal because it is the visible sum of two sequential mechanisms: fixed-count cells that expand together toward a ceiling.
+- The logistic curve $W(t) = W_{\max}/(1 + e^{-k(t-t_0)})$ captures the shape in three biologically meaningful parameters: final size, timing of fastest growth, and growth rate.
+- The three developmental phases, division, expansion, plateau, occur in the same fixed order every season, which is what makes an early partial curve informative about the rest.
+- This constraint is the mechanistic reason the forecasting series can complete a season's growth curve from its first few weeks of data.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/cell-division-then-cell-expansion.html"><span>Previous</span>Cell division, then cell expansion</a><a class="mf-up" href="/series/plants/index.html"><span>Series</span>Plant biology, one blueberry at a time</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

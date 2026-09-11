@@ -1,0 +1,102 @@
+---
+title: Meeting students where they are
+description: Prior knowledge fails in four distinct ways, and each needs a different kind of feedback once students start doing the work.
+date: 2026-08-28
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/teaching-leading/index.html">Teaching and Leading</a><span class="sep">·</span>Part 5 · Prior knowledge and feedback</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Nothing. Parts alternate between the classroom idea and its use at work.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+"Prior knowledge" is not a prerequisite checklist. Ambrose & Lovett (2014) split it into four kinds — and each fails in its own way, including the case where knowledge is present but *inert*, or present but **wrong**. Diagnosing which kind you are facing decides what feedback will help once students start doing the work.
+:::
+
+Two more KTCP workshops sit naturally together: what students already know when they walk in, and what they need from you once they start doing the work. Both come down to the same underlying idea — you can't design good instruction, or give good feedback, without a fairly precise model of where a specific student currently stands.
+
+## Prior knowledge is bigger than content
+
+The instinct is to treat "prior knowledge" as a checklist of prerequisite facts — did they take the intro course, do they remember the formula. Ambrose & Lovett (2014) argue it's really four things at once:
+
+| Type of prior knowledge | What it means | Example failure mode |
+|---|---|---|
+| **Content knowledge** | Facts, procedures, terminology | A genuine gap in a prerequisite |
+| **Intellectual skills** | Domain-general abilities — evaluating evidence, writing an argument | Strong content knowledge, but can't structure an argument with it |
+| **Epistemological beliefs** | What a student thinks knowledge even *is* — fixed vs. malleable intelligence, memorizing vs. building models | Believes struggle proves they're "not a math person" |
+| **Metacognition** | Whether a student can accurately judge their own understanding | Confidently wrong — doesn't know what they don't know |
+
+Each of those can help or hurt independently. Prior knowledge helps when it's **accurate, sufficient, active, and appropriately applied**. It hurts in three distinct ways: it can be flatly **inaccurate** (a misconception a student will defend against evidence), **insufficient** (a genuine gap), or simply **inert** — technically present, but never cued, so the student never connects it to the new material because nobody prompted the connection. That last failure mode is the one I find easiest to overlook: the knowledge is there, it's just asleep.
+
+**Scaffolding** is the tool for building on it deliberately: support scaled inversely to what a student already has, explicitly designed to fade as they gain independence. It works because it manages cognitive load — working memory holds roughly five to seven items, and unguided trial-and-error on a new skill blows through that budget fast.
+
+```{mermaid}
+flowchart LR
+    subgraph S1["Stage 1: New skill"]
+        direction TB
+        A1["Worked examples"]
+        A2["Guiding questions"]
+        A3["Small, simple task"]
+    end
+    subgraph S2["Stage 2: Building competence"]
+        direction TB
+        B1["Partial examples"]
+        B2["Occasional prompts"]
+        B3["Moderate task"]
+    end
+    subgraph S3["Stage 3: Independence"]
+        direction TB
+        C1["No worked examples"]
+        C2["Self-directed"]
+        C3["Full-complexity task"]
+    end
+    S1 -->|"support fades"| S2 --> S3
+```
+
+::: {.callout-note}
+## Worked example: a leveled model sequence
+
+In my own course design, this showed up as a leveled sequence of climate models — a single-layer atmosphere, then a two-layer version, then a generalized N-layer model — where each stage is a scaffold for the next, and the support (worked derivations, guided questions) is heaviest at the start and deliberately withdrawn as students build competence.
+:::
+
+## Feedback has to be targeted, not just present
+
+The natural next question is what happens once a student is actually practicing. The workshop leaned on a chapter from *How Learning Works* (Ambrose et al., 2010) that opens with a blunt warning: effort plus feedback is not automatically learning, if the feedback isn't structured right. Good feedback works like a GPS — it tells you specifically where you are relative to a target and what to do about it — not like a map that just shows the whole terrain and leaves you to figure out your position.
+
+Two properties matter most: **content** (feedback needs to name specific criteria, not just deliver a score) and **timing** (earlier and more frequent generally helps, but not always — delaying feedback slightly, so a student attempts self-correction first, can produce better learning than immediate correction).
+
+**Feedback design checklist** — the practical prescriptions, in triage order:
+
+- [ ] Feedback names specific criteria, not just a score
+- [ ] It's prioritized (a few key fixes, not every possible error at once)
+- [ ] It's not so dense that a student can only fix the easy items and ignore the rest
+- [ ] Timing matches intent — immediate if the student can't self-correct, delayed if they can
+- [ ] Recurring errors are addressed at the group/class level, not repeated 20 times individually
+- [ ] Students are asked to state how they used the *last* round of feedback in their next submission
+
+Dwyer's (2010) work on praise adds a wording-level detail worth calling out on its own:
+
+| Praise type | Example phrasing | Effect |
+|---|---|---|
+| **Process praise** | "You tried three different approaches before this one worked" | Builds resilience, growth mindset, persistence after failure |
+| **Person praise** | "You're just good at this" | Reinforces fixed mindset — struggle later reads as proof of a limit, not a normal step |
+
+The effect is reportedly larger for women and underrepresented students, who are more prone to reading struggle as confirmation they don't belong — which loops straight back to the belonging discussion from the last post.
+
+For my own microteaching lesson, this meant designing feedback into the structure rather than adding it afterward: an in-class activity with a partially-filled table so students get an immediate self-check, and — because I knew from experience which mistakes students tend to make with this material — three pre-written fallback explanations ready for the misconceptions I expected to see, rather than improvising a response in the moment.
+
+## Key takeaways
+
+- Prior knowledge is four things, not one (Ambrose & Lovett, 2014): content, intellectual skills, epistemological beliefs and metacognition, and each can help or hurt on its own.
+- It fails in three distinct ways: inaccurate (a defended misconception), insufficient (a real gap) or inert (present but never cued); the inert case is the easiest to miss.
+- Scaffolding is support scaled inversely to what the student already has, designed from the start to fade, because working memory holds only five to seven items.
+- Feedback works like a GPS, not a map: name specific criteria, prioritise a few fixes, and time it so the student attempts self-correction first when they can.
+- Praise the process ("you tried three approaches"), not the person ("you're good at this"); person praise turns later struggle into evidence of a limit.
+
+**Next in this series:** feedback only means something if the grading system underneath it doesn't undercut it — which is where the program's most contrarian workshop comes in.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/ktcp-belonging-and-engagement.html"><span>Previous</span>Belonging and engagement</a><a class="mf-up" href="/series/teaching-leading/index.html"><span>Series</span>Teaching and Leading</a><a class="mf-next" href="/blogs/ktcp-grading-and-practice.html"><span>Next</span>Grading, and what happens when you teach</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

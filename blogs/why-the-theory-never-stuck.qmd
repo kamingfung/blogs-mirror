@@ -1,0 +1,82 @@
+---
+title: Why the theory never stuck
+description: Six years of school music theory left me able to name a treble clef and nothing else. What the science of learning says went wrong, and the plan for doing it again with the mechanism attached.
+date: 2026-09-05
+categories:
+- music
+- learning
+- memory
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 4 · Relearning music theory as a scientist</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Nothing. Part 1 is one person&#x27;s record with sources attached, not medical, dietary or fitness advice.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+I studied music theory for six years at school in Hong Kong and retained almost none of it. The failure was not effort or aptitude. It was that the theory was taught as notation, a set of symbols and rules with nothing underneath them, and memory research is clear that material with no structure to attach to does not survive. This part relearns the same theory with the mechanism first: the arithmetic of intervals, the physics of a vibrating string, the biology of the ear, the materials of instruments, and only then the notation those things were invented to record.
+:::
+
+## What I was taught, and what remained
+
+Music was a compulsory subject through primary and most of secondary school. I can reconstruct what was covered from the exercise books: the staff and clefs, note names and durations, time signatures, key signatures and the order of sharps and flats, intervals by number and quality, the major and minor scales, triads, and enough Italian to read a dynamic marking.
+
+What remains, thirty years on, is the ability to identify a treble clef, read a note if I count up from middle C, and clap a 4/4 bar. I could not have told you why an octave is called an octave, why a fifth sounds the way it does, what a key signature has to do with anything physical, or why a violin and a flute playing the same note sound different. I could once have written out the circle of fifths. I could never have said what it was a circle of.
+
+I passed the exams. I was told I had learned music theory. By the only test that matters, whether I can use it now, I had not.
+
+## Why it did not stick
+
+Memory research gives a fairly exact account of the failure.
+
+Craik and Lockhart's levels-of-processing framework showed in 1972 that what determines whether something is remembered is not how long or how often you rehearse it but how deeply it is processed at the time: material analysed for meaning is retained far better than material processed for its surface form.[^1] Learning that a perfect fifth is seven semitones is surface. Learning that a fifth is what you hear when one string vibrates three times for every two of another, and that seven semitones is the nearest the twelve-note scale can get to that ratio, is meaning. I was given the first and never the second.
+
+Bransford and Johnson demonstrated the same year that a passage which is nearly incomprehensible without context becomes memorable when the context is supplied first, and that supplying it afterward barely helps.[^2] Music theory as I was taught it was the passage without the context. The physics and mathematics that would have made it comprehensible were in other classrooms, taught by other teachers, never connected.
+
+Then there is how the material was practised. Rereading and copying were the methods; testing was for exams. Roediger and Karpicke showed in 2006 that being tested on material produces far better retention a week later than restudying it for the same time, even though restudying feels more productive and produces better performance immediately.[^3] A 2013 review of ten learning techniques rated practice testing and spaced practice as the two with the strongest evidence, and highlighting, rereading and summarising as the weakest.[^4] My schooling used the bottom of that list to prepare for a test, then stopped.
+
+None of this is a complaint about the teachers. Backward design, which I wrote about in the teaching series, would have started from the question "what should a student be able to do with this in twenty years?" and worked back. That question was not asked, and the answer to it, as it turned out, was nothing.
+
+## The plan
+
+Relearn the same theory, in the order that gives each piece something to attach to.
+
+**Mathematics first.** An interval is a frequency ratio. The octave is 2:1, the fifth 3:2, the fourth 4:3, the major third 5:4. Stacking twelve fifths does not land exactly on seven octaves, and the gap, the Pythagorean comma, is the reason equal temperament exists. The mathematics of music module in the waves series already covers this ground; this part depends on it and builds from it.
+
+**Physics second.** A string fixed at both ends can only vibrate at whole-number multiples of its lowest frequency. Those multiples are the harmonic series, and the intervals above fall out of it without anyone deciding them. The standing waves module is the prerequisite here, and the question this part adds is why the harmonics are exactly where they are.
+
+**Biology third.** Consonance is not a property of the sound. It is a property of the ear. The cochlea resolves frequencies into bands about a third of an octave wide, and two tones in the same band interfere in a way that is heard as roughness.[^5] The intervals we call consonant are the ones whose harmonics stay out of each other's bands. This is the module I most want to write, because it is the one that answers the question nobody would answer when I was eleven.
+
+**Materials fourth.** Why does a flute sound different from a violin on the same note? Because the harmonic series is the same but the weights on each harmonic differ, and those weights come from what the instrument is made of and how it is driven. Wood, brass, gut, steel and air each shape the spectrum differently. This is where chemistry enters music.
+
+**Notation last.** Once the ratios, the harmonics, the ear and the instruments are in place, the staff, the key signatures and the circle of fifths become what they always were: a compressed notation for physical facts. Learning it last means learning it as a record of things I already understand.
+
+## How I will know it worked
+
+The test cannot be the school test. The test is delayed retrieval without notes, months later, of things that were never memorised because they were derived.
+
+Three checks. First, from a string of known length and a 2:1 and 3:2 ratio, rebuild the major scale on paper and say where the twelve-note compromise enters. Second, hear an interval and say which one it is, and say why it sounds smooth or rough in terms of what the cochlea is doing. Third, look at a key signature and read it as a statement about frequency ratios rather than a list of sharps to remember.
+
+If I can do those three in a year, the theory stuck, and it stuck because it was attached to something. If I cannot, this part of the series will say so.
+
+## Key takeaways
+
+- Theory taught as notation without mechanism is processed at the surface, and surface processing does not produce durable memory.
+- Context supplied before the material makes it comprehensible and memorable; supplied after, it barely helps. The physics of music was never supplied at all.
+- Retrieval practice and spacing are the two learning techniques with the strongest evidence. Rereading and copying, the methods I was given, are among the weakest.
+- The plan attaches each piece of theory to its mechanism in order: ratios, harmonics, the ear, the instrument, and then the notation that records them.
+- Success is delayed, unprompted retrieval of things that were derived rather than memorised, and this part will report on it either way.
+
+## References
+
+[^1]: Craik, F. I. M. & Lockhart, R. S. Levels of processing: a framework for memory research. *J. Verbal Learn. Verbal Behav.* **11**, 671–684 (1972). https://doi.org/10.1016/S0022-5371(72)80001-X
+[^2]: Bransford, J. D. & Johnson, M. K. Contextual prerequisites for understanding: some investigations of comprehension and recall. *J. Verbal Learn. Verbal Behav.* **11**, 717–726 (1972). https://doi.org/10.1016/S0022-5371(72)80006-9
+[^3]: Roediger, H. L. & Karpicke, J. D. Test-enhanced learning: taking memory tests improves long-term retention. *Psychol. Sci.* **17**, 249–255 (2006). https://doi.org/10.1111/j.1467-9280.2006.01693.x
+[^4]: Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J. & Willingham, D. T. Improving students' learning with effective learning techniques: promising directions from cognitive and educational psychology. *Psychol. Sci. Public Interest* **14**, 4–58 (2013). https://doi.org/10.1177/1529100612453266
+[^5]: Plomp, R. & Levelt, W. J. M. Tonal consonance and critical bandwidth. *J. Acoust. Soc. Am.* **38**, 548–560 (1965). https://doi.org/10.1121/1.1909741
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/reading-a-nutrition-study.html"><span>Previous</span>Reading a nutrition study without being fooled</a><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

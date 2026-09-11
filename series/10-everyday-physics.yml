@@ -1,0 +1,115 @@
+# Physics of Everyday Things — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Physics of Everyday Things"
+slug: everyday-physics
+order: 10
+about: "Ordinary things explained from first principles, with the maths kept on a leash."
+assumes: "Curiosity. School physics helps."
+parts:
+  - title: "Gravity"
+    modules:
+      - id: everyday-physics/gravitational-wells
+        title: "Gravitational wells"
+        level: intermediate
+        path: blogs/gravitational-well.md
+      - id: everyday-physics/why-orbits-don-t-fall
+        title: "Why orbits don't fall"
+        level: introductory
+      - id: everyday-physics/tides
+        title: "Tides"
+        level: introductory
+  - title: "Solids"
+    modules:
+      - id: everyday-physics/why-broken-solids-cannot-re-bond
+        title: "Why broken solids cannot re-bond"
+        level: intermediate
+        path: blogs/atomic-cohesion-and-fracture.md
+      - id: everyday-physics/why-glass-is-transparent
+        title: "Why glass is transparent"
+        level: introductory
+      - id: everyday-physics/why-metals-are-shiny
+        title: "Why metals are shiny"
+        level: introductory
+  - title: "Friction"
+    modules:
+      - id: everyday-physics/why-static-friction-beats-kinetic
+        title: "Why static friction beats kinetic friction"
+        level: intermediate
+        path: blogs/why-static-friction-beats-kinetic.md
+        requires:
+          - everyday-physics/why-broken-solids-cannot-re-bond
+      - id: everyday-physics/how-wheels-cheat-friction
+        title: "How wheels cheat friction"
+        level: intermediate
+        path: blogs/how-wheels-cheat-friction.md
+        requires:
+          - everyday-physics/why-static-friction-beats-kinetic
+  - title: "Heat"
+    modules:
+      - id: everyday-physics/why-a-metal-spoon-feels-cold
+        title: "Why a metal spoon feels cold"
+        level: introductory
+      - id: everyday-physics/how-a-fridge-works
+        title: "How a fridge works"
+        level: introductory
+      - id: everyday-physics/why-ice-floats
+        title: "Why ice floats"
+        level: introductory
+  - title: "Light and colour"
+    modules:
+      - id: everyday-physics/why-the-sky-is-blue
+        title: "Why the sky is blue"
+        level: introductory
+      - id: everyday-physics/rainbows
+        title: "Rainbows"
+        level: introductory
+      - id: everyday-physics/why-soap-bubbles-are-coloured
+        title: "Why soap bubbles are coloured"
+        level: introductory
+  - title: "Fluids"
+    modules:
+      - id: everyday-physics/why-the-shower-curtain-moves-in
+        title: "Why the shower curtain moves in"
+        level: introductory
+      - id: everyday-physics/how-aeroplanes-stay-up
+        title: "How aeroplanes stay up"
+        level: introductory
+      - id: everyday-physics/why-honey-is-thick
+        title: "Why honey is thick"
+        level: introductory
+  - title: "Electricity and magnets"
+    modules:
+      - id: everyday-physics/how-a-battery-works
+        title: "How a battery works"
+        level: introductory
+      - id: everyday-physics/why-magnets-stick-to-fridges
+        title: "Why magnets stick to fridges"
+        level: introductory
+  - title: "Information and energy"
+    modules:
+      - id: everyday-physics/information-exchange-versus-energy
+        title: "Information exchange versus energy"
+        level: advanced
+        path: blogs/information-vs-energy.md
+        requires:
+          - everyday-physics/landauer-s-limit
+      - id: everyday-physics/landauer-s-limit
+        title: "Landauer's limit"
+        level: intermediate
+      - id: everyday-physics/why-computers-get-hot
+        title: "Why computers get hot"
+        level: introductory
+        requires:
+          - everyday-physics/landauer-s-limit
+  - title: "Time"
+    modules:
+      - id: everyday-physics/why-satellite-clocks-drift
+        title: "Why satellite clocks drift"
+        level: intermediate
+      - id: everyday-physics/entropy-and-the-arrow-of-time
+        title: "Entropy and the arrow of time"
+        level: intermediate
+        requires:
+          - everyday-physics/why-ice-floats

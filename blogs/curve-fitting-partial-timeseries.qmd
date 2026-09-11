@@ -1,0 +1,783 @@
+---
+title: Fitting a season from its first weeks
+description: Completing a growth curve from the first weeks of a season, using affine morphing of past seasons, Hermite bridging at the boundary, and a target constraint.
+date: 2026-08-28
+categories:
+- time series
+- optimization
+- data science
+- agriculture
+- machine learning
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/forecasting/index.html">Forecasting with Machine Learning</a><span class="sep">·</span>Part 8 · Curves from partial data</p><p class="mh-facts"><span class="lvl lvl-advanced">Advanced</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">Growth curves</span> and <span class="unwritten" title="not written yet">Least squares</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+With only the first quarter of a season observed, a polynomial extrapolation explodes and a historical curve spliced onto the last point leaves a step at the boundary. Three fixes, in order of strength: a **four-parameter affine morph** of the historical archetype, a **$C^1$ Hermite bridge** that removes the boundary jump, and a **constrained quadratic program** that also hits an externally given season total with minimum curvature. You will be able to choose between them and implement each in SciPy.
+:::
+
+## The problem
+
+In agricultural analytics, remote sensing, and industrial forecasting, practitioners frequently encounter the **partial curve completion problem**:
+
+- **Known Reality ($0 \le t \le t_{\text{cut}}$)**: We possess high-precision measurements for only the first quarter of the season (e.g., Day of Year $1$ to $35$ for a $140$-day corn growing cycle).
+- **Historical Prior ($0 \le t \le T$)**: We have a multi-year historical average growth curve $f_{\text{hist}}(t)$ describing standard sigmoidal biomass accumulation.
+- **External Constraint (Optional)**: We may have an independent macro-level prediction (e.g., satellite yield forecast or seasonal nitrogen budget) dictating the **target total** biomass $Y_{\text{total}} = \int_0^T y(t) \, dt$ or final maturity value $y(T)$.
+
+```{mermaid}
+flowchart LR
+    subgraph Known["Known Region (0 to 25%)"]
+        Obs["Noisy Observations y_obs(t)<br/>Real-time In-Season Data"]
+    end
+
+    subgraph Interface["The Boundary (t = 25%)"]
+        Jump["Discontinuity Hazard!<br/>Step-jump & Derivative Mismatch"]
+    end
+
+    subgraph Unknown["Forecast Region (25% to 100%)"]
+        Hist["Historical Baseline f_hist(t)<br/>Provides Phenological Shape"]
+        Target["Macro Target Constraint Y_total<br/>Enforces Physical Mass Balance"]
+    end
+
+    Obs --> Interface
+    Hist --> Interface
+    Target --> Interface
+    Interface --> SmoothCurve["Seamless C^1 Continuous Full-Season Trajectory"]
+
+    class Known olive
+    class Interface rust
+    class Unknown indigo
+    class SmoothCurve plum
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+### Why the standard methods fail
+
+1. **Direct Polynomial / Spline Extrapolation**: Fitting a high-degree polynomial or unconstrained spline to the first $25\%$ of points causes explosive Runge oscillations as $t \to T$.
+2. **Raw Historical Splicing**: Sticking the unadjusted historical curve onto the last observed point creates an abrupt angle or vertical cliff (discontinuity in $y(t)$ or $y'(t)$).
+3. **Pure Proportional Rescaling**: Multiplying the entire historical curve by $\alpha = y_{\text{obs}}(t_{\text{cut}}) / f_{\text{hist}}(t_{\text{cut}})$ ignores timing delays (phenological shifts) and cannot satisfy cumulative target constraints.
+
+## Three fixes
+
+### Affine profile morphing
+
+The simplest, most robust baseline is to assume that current season dynamics represent an **affine transformation** (translation and linear stretching in time and amplitude) of the historical archetype $f_{\text{hist}}(t)$[^1]:
+
+$$y(t; \mathbf{\theta}) = s_y \cdot f_{\text{hist}}\left( s_x \cdot (t - \Delta t) \right) + \Delta y$$
+
+where the parameter vector $\mathbf{\theta} = [s_x, s_y, \Delta t, \Delta y]^T$ represents:
+
+- **$s_x$ (Time Dilation / Phenology Speed)**: $s_x > 1$ represents accelerated growing degree days (GDD); $s_x < 1$ represents delayed crop development.
+- **$\Delta t$ (Time Shift)**: Accounts for late or early planting dates.
+- **$s_y$ (Amplitude Scaling)**: Reflects higher or lower overall biomass vigor.
+- **$\Delta y$ (Baseline Offset)**: Initial background offset (usually bounded near $0$).
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 300" style="width:100%;max-width:560px;height:auto;font-family:system-ui,-apple-system,sans-serif;">
+  <defs><marker id="cfax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker></defs>
+  <rect x="62" y="58" width="110.8" height="180" fill="var(--ink-indigo)" opacity="0.10"/>
+  <text x="117" y="50" fill="var(--ink-indigo)" font-size="15" font-weight="600" text-anchor="middle">observed 25%</text>
+  <line x1="62" y1="238" x2="524" y2="238" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#cfax)"/>
+  <line x1="62" y1="238" x2="62" y2="52" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#cfax)"/>
+  <text x="533" y="243" fill="var(--md-default-fg-color--light)" font-size="16" font-style="italic">t</text>
+  <text x="52" y="56" fill="var(--md-default-fg-color--light)" font-size="16" font-style="italic" text-anchor="end">y</text>
+  <line x1="172.8" y1="238" x2="172.8" y2="58" stroke="var(--ink-indigo)" stroke-width="1.6" stroke-dasharray="6,4" opacity="0.85"/>
+  <text x="172.8" y="256" fill="var(--ink-indigo)" font-size="14" text-anchor="middle">t_cut</text>
+  <path d="M 62.0,236.7 L 71.3,236.2 L 80.5,235.7 L 89.8,234.9 L 100.9,233.6 L 110.2,232.2 L 119.5,230.3 L 130.6,227.2 L 139.8,223.9 L 149.1,219.6 L 160.2,213.1 L 169.5,206.3 L 178.8,198.2 L 189.9,186.7 L 199.2,176.0 L 208.4,164.6 L 217.7,152.8 L 228.8,139.0 L 238.1,128.3 L 247.4,118.7 L 258.5,108.8 L 267.7,102.1 L 277.0,96.5 L 288.1,91.3 L 297.4,88.0 L 306.7,85.4 L 317.8,83.1 L 327.1,81.7 L 336.3,80.6 L 347.4,79.6 L 356.7,79.0 L 366.0,78.6 L 375.3,78.3 L 386.4,78.0 L 395.6,77.8 L 404.9,77.7 L 416.0,77.6 L 425.3,77.5 L 434.6,77.4 L 445.7,77.4 L 455.0,77.4 L 464.2,77.3 L 475.3,77.3 L 484.6,77.3 L 493.9,77.3 L 505.0,77.3" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="2.6" stroke-dasharray="8,5"/>
+  <path d="M 62.0,237.7 L 71.3,237.5 L 80.5,237.4 L 89.8,237.1 L 100.9,236.7 L 110.2,236.2 L 119.5,235.4 L 130.6,234.2 L 139.8,232.8 L 149.1,230.9 L 160.2,227.7 L 169.5,224.0 L 178.8,219.3 L 189.9,212.1 L 199.2,204.5 L 208.4,195.8 L 217.7,186.0 L 228.8,173.6 L 238.1,163.3 L 247.4,153.7 L 258.5,143.5 L 267.7,136.4 L 277.0,130.7 L 288.1,125.3 L 297.4,122.0 L 306.7,119.5 L 317.8,117.3 L 327.1,116.0 L 336.3,115.1 L 347.4,114.3 L 356.7,113.8 L 366.0,113.5 L 375.3,113.3 L 386.4,113.1 L 395.6,112.9 L 404.9,112.9 L 416.0,112.8 L 425.3,112.7 L 434.6,112.7 L 445.7,112.7 L 455.0,112.7 L 464.2,112.7 L 475.3,112.7 L 484.6,112.7 L 493.9,112.7 L 505.0,112.6" fill="none" stroke="var(--ink-indigo)" stroke-width="3.2"/>
+  <g fill="var(--ink-sage)" stroke="var(--md-default-bg-color)" stroke-width="1.6"><circle cx="71.5" cy="232.9" r="5"/><circle cx="86.0" cy="243.0" r="5"/><circle cx="100.4" cy="235.8" r="5"/><circle cx="114.9" cy="237.1" r="5"/><circle cx="129.4" cy="235.4" r="5"/><circle cx="143.8" cy="232.5" r="5"/><circle cx="158.3" cy="232.8" r="5"/><circle cx="172.8" cy="223.0" r="5"/></g>
+  <g stroke="var(--ink-ochre)" stroke-width="2.2" fill="none"><line x1="441.7" y1="77.4" x2="441.7" y2="112.7"/><line x1="435" y1="77.4" x2="448" y2="77.4"/><line x1="435" y1="112.7" x2="448" y2="112.7"/></g>
+  <text x="455" y="90" fill="var(--ink-ochre)" font-size="14" font-weight="600">amplitude</text>
+  <text x="455" y="106" fill="var(--ink-ochre)" font-size="14" font-weight="600">deficit s_y</text>
+  <g stroke="var(--ink-ochre)" stroke-width="2.2" fill="none"><line x1="213.9" y1="157.6" x2="227.3" y2="157.6"/><line x1="213.9" y1="151" x2="213.9" y2="164"/><line x1="227.3" y1="151" x2="227.3" y2="164"/></g>
+  <text x="234" y="152" fill="var(--ink-ochre)" font-size="14" font-weight="600">&#916;t</text>
+  <g transform="translate(74,278)" font-size="14">
+    <line x1="0" y1="-4" x2="26" y2="-4" stroke="var(--md-default-fg-color--light)" stroke-width="2.6" stroke-dasharray="8,5"/>
+    <text x="33" y="0" fill="var(--md-default-fg-color)">historical f_hist(t)</text>
+    <line x1="196" y1="-4" x2="222" y2="-4" stroke="var(--ink-indigo)" stroke-width="3.2"/>
+    <text x="229" y="0" fill="var(--md-default-fg-color)">morphed fit</text>
+    <circle cx="337" cy="-4" r="5" fill="var(--ink-sage)"/>
+    <text x="348" y="0" fill="var(--md-default-fg-color)">observations</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 1 | Four-parameter affine morphing adapts a historical archetype to a partially observed season.</strong> The dashed grey curve is the multi-year historical template $f_{\text{hist}}(t)$; teal markers are the noisy observations available over the first 25% of the season (shaded). Fitting $\theta = [s_x, s_y, \Delta t, \Delta y]$ on that window alone stretches the template in time ($\Delta t$ lag, amber) and compresses it in amplitude ($s_y = 0.78$), yielding the blue forecast — a delayed, lower-vigor season that still follows the historical phenological shape.</figcaption>
+</figure>
+```
+
+
+#### Optimization formulation
+
+We estimate $\mathbf{\theta}^*$ by solving a bounded nonlinear least-squares problem over the observed window $t \in [0, t_{\text{cut}}]$:
+
+$$\mathbf{\theta}^* = \arg\min_{\mathbf{\theta}} \sum_{i=1}^{N_{\text{obs}}} w_i \left( y_{\text{obs}}(t_i) - y(t_i; \mathbf{\theta}) \right)^2 + \lambda_{\text{reg}} \|\mathbf{\theta} - \mathbf{\theta}_{\text{prior}}\|^2$$
+
+where $w_i = \exp\left( \frac{t_i - t_{\text{cut}}}{\sigma} \right)$ optionally gives greater weight to recent points, and $\mathbf{\theta}_{\text{prior}} = [1, 1, 0, 0]^T$ prevents unphysical distortions.
+
+::: {.callout-note collapse="true"}
+## View Python Implementation: Affine Profile Morphing
+
+```python
+import numpy as np
+from scipy.interpolate import CubicSpline
+from scipy.optimize import minimize
+
+def fit_affine_curve(t_obs, y_obs, t_hist, y_hist, t_full):
+    """
+    Fits 4-parameter affine transformation: y(t) = s_y * f_hist(s_x * (t - dt)) + dy
+    """
+    # Create continuous historical template function
+    f_hist = CubicSpline(t_hist, y_hist, extrapolate=True)
+
+    def objective(params):
+        sx, sy, dt, dy = params
+        # Transformed time coordinates
+        t_warped = sx * (t_obs - dt)
+        y_pred = sy * f_hist(t_warped) + dy
+        # Weighted least squares with prior regularization
+        residuals = y_obs - y_pred
+        prior_penalty = 10.0 * ((sx - 1.0)**2 + (dt / 10.0)**2 + (dy)**2)
+        return np.sum(residuals**2) + prior_penalty
+
+    # Initial guess [sx, sy, dt, dy]
+    p0 = [1.0, np.mean(y_obs[-3:]) / (f_hist(t_obs[-1]) + 1e-6), 0.0, 0.0]
+    bounds = [(0.7, 1.4), (0.2, 3.0), (-20.0, 20.0), (-5.0, 5.0)]
+
+    res = minimize(objective, p0, bounds=bounds, method='L-BFGS-B')
+    sx_opt, sy_opt, dt_opt, dy_opt = res.x
+
+    # Project across full season
+    y_forecast = sy_opt * f_hist(sx_opt * (t_full - dt_opt)) + dy_opt
+    return y_forecast, res.x
+```
+:::
+
+### Hermite blending bridge
+
+Even with an optimal affine fit, the fitted curve $\hat{y}(t)$ evaluated at $t_{\text{cut}}$ rarely matches the exact final observed point $y_{\text{obs}}(t_{\text{cut}})$ and its instantaneous slope $y'_{\text{obs}}(t_{\text{cut}})$.
+
+To achieve **$C^1$ continuity** (smooth value and slope transition with zero jump), we introduce a **Hermite Blending Bridge**[^2]:
+
+$$y_{\text{final}}(t) = \begin{cases} y_{\text{obs}}(t), & t \le t_{\text{cut}} \\ \hat{y}(t) + \delta(t), & t > t_{\text{cut}} \end{cases}$$
+
+where the residual correction $\delta(t)$ decays smoothly from the boundary discrepancy $\delta_0 = y_{\text{obs}}(t_{\text{cut}}) - \hat{y}(t_{\text{cut}})$ to zero over a relaxation timescale $\tau$:
+
+$$\delta(t) = \left( \delta_0 + \delta'_0 (t - t_{\text{cut}}) \right) \cdot \exp\left( -\frac{(t - t_{\text{cut}})^2}{2\tau^2} \right)$$
+
+where $\delta'_0 = y'_{\text{obs}}(t_{\text{cut}}) - \hat{y}'(t_{\text{cut}})$ matches the instantaneous first derivative.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 265" style="width:100%;max-width:560px;height:auto;font-family:system-ui,-apple-system,sans-serif;">
+  <defs><marker id="hbax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker></defs>
+  <text x="52" y="34" fill="var(--ink-rust)" font-size="16" font-weight="700">a</text>
+  <text x="72" y="34" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Naive splice</text>
+  <line x1="52" y1="205" x2="252" y2="205" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#hbax)"/>
+  <line x1="52" y1="205" x2="52" y2="56" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#hbax)"/>
+  <text x="259" y="210" fill="var(--md-default-fg-color--light)" font-size="15" font-style="italic">t</text>
+  <text x="43" y="60" fill="var(--md-default-fg-color--light)" font-size="15" font-style="italic" text-anchor="end">y</text>
+  <line x1="112.4" y1="205" x2="112.4" y2="62" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" stroke-dasharray="5,4" opacity="0.7"/>
+  <text x="112.4" y="224" fill="var(--md-default-fg-color--light)" font-size="14" text-anchor="middle">t_cut</text>
+  <path d="M 52.0,204.7 L 54.0,204.6 L 57.1,204.5 L 59.2,204.5 L 62.2,204.3 L 64.3,204.2 L 67.4,204.0 L 69.4,203.9 L 72.5,203.6 L 75.6,203.2 L 77.6,202.9 L 80.7,202.4 L 82.7,202.0 L 85.8,201.3 L 87.8,200.7 L 90.9,199.6 L 94.0,198.3 L 96.0,197.3 L 99.1,195.4 L 101.2,194.0 L 104.2,191.5 L 106.3,189.5 L 109.4,186.1 L 112.4,182.1" fill="none" stroke="var(--ink-sage)" stroke-width="3.2"/>
+  <path d="M 112.4,147.0 L 116.7,136.2 L 121.0,125.5 L 125.3,115.3 L 129.6,106.0 L 133.9,98.1 L 138.2,91.4 L 142.4,86.0 L 146.7,81.7 L 151.0,78.5 L 156.4,75.4 L 160.7,73.7 L 165.0,72.4 L 169.2,71.4 L 173.5,70.7 L 177.8,70.2 L 182.1,69.8 L 186.4,69.6 L 190.7,69.3 L 195.0,69.2 L 200.3,69.1 L 204.6,69.0 L 208.9,68.9 L 213.2,68.9 L 217.5,68.9 L 221.8,68.9 L 226.1,68.8 L 230.4,68.8 L 234.6,68.8 L 240.0,68.8" fill="none" stroke="var(--ink-rust)" stroke-width="3.2"/>
+  <line x1="112.4" y1="182.1" x2="112.4" y2="147.0" stroke="var(--ink-rust)" stroke-width="2.6" stroke-dasharray="4,3"/>
+  <circle cx="112.4" cy="182.1" r="5.5" fill="var(--ink-sage)" stroke="var(--md-default-bg-color)" stroke-width="1.8"/>
+  <circle cx="112.4" cy="147.0" r="5.5" fill="none" stroke="var(--ink-rust)" stroke-width="2.8"/>
+  <text x="126" y="158" fill="var(--ink-rust)" font-size="15" font-weight="700">jump &#948;&#8320;</text>
+  <text x="126" y="175" fill="var(--ink-rust)" font-size="13">value + slope break</text>
+  <text x="320" y="34" fill="var(--ink-olive)" font-size="16" font-weight="700">b</text>
+  <text x="340" y="34" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">Hermite bridge</text>
+  <line x1="320" y1="205" x2="520" y2="205" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#hbax)"/>
+  <line x1="320" y1="205" x2="320" y2="56" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#hbax)"/>
+  <text x="527" y="210" fill="var(--md-default-fg-color--light)" font-size="15" font-style="italic">t</text>
+  <text x="311" y="60" fill="var(--md-default-fg-color--light)" font-size="15" font-style="italic" text-anchor="end">y</text>
+  <line x1="380.4" y1="205" x2="380.4" y2="62" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" stroke-dasharray="5,4" opacity="0.7"/>
+  <text x="380.4" y="224" fill="var(--md-default-fg-color--light)" font-size="14" text-anchor="middle">t_cut</text>
+  <path d="M 320.0,204.7 L 322.0,204.6 L 325.1,204.5 L 327.2,204.5 L 330.2,204.3 L 332.3,204.2 L 335.4,204.0 L 337.4,203.9 L 340.5,203.6 L 343.6,203.2 L 345.6,202.9 L 348.7,202.4 L 350.7,202.0 L 353.8,201.3 L 355.8,200.7 L 358.9,199.6 L 362.0,198.3 L 364.0,197.3 L 367.1,195.4 L 369.2,194.0 L 372.2,191.5 L 374.3,189.5 L 377.4,186.1 L 380.4,182.1" fill="none" stroke="var(--ink-sage)" stroke-width="3.2"/>
+  <path d="M 380.4,182.1 L 384.7,175.8 L 389.0,168.5 L 393.3,160.5 L 397.6,152.1 L 401.9,143.7 L 406.2,135.4 L 410.4,127.3 L 414.7,119.5 L 419.0,112.1 L 424.4,103.5 L 428.7,97.4 L 433.0,91.9 L 437.2,87.1 L 441.5,83.0 L 445.8,79.6 L 450.1,76.9 L 454.4,74.7 L 458.7,73.1 L 463.0,71.8 L 468.3,70.7 L 472.6,70.1 L 476.9,69.6 L 481.2,69.4 L 485.5,69.2 L 489.8,69.0 L 494.1,68.9 L 498.4,68.9 L 502.6,68.9 L 508.0,68.8" fill="none" stroke="var(--ink-olive)" stroke-width="3.2"/>
+  <circle cx="380.4" cy="182.1" r="5.5" fill="var(--ink-olive)" stroke="var(--md-default-bg-color)" stroke-width="1.8"/>
+  <text x="394" y="162" fill="var(--ink-olive)" font-size="15" font-weight="700">&#948;&#8320; = 0</text>
+  <text x="394" y="179" fill="var(--ink-olive)" font-size="13">C&#185; continuous</text>
+  <g transform="translate(150,252)" font-size="14">
+    <line x1="0" y1="-4" x2="26" y2="-4" stroke="var(--ink-sage)" stroke-width="3.2"/>
+    <text x="33" y="0" fill="var(--md-default-fg-color)">observed</text>
+    <line x1="118" y1="-4" x2="144" y2="-4" stroke="var(--ink-rust)" stroke-width="3.2"/>
+    <text x="151" y="0" fill="var(--md-default-fg-color)">spliced</text>
+    <line x1="222" y1="-4" x2="248" y2="-4" stroke="var(--ink-olive)" stroke-width="3.2"/>
+    <text x="255" y="0" fill="var(--md-default-fg-color)">bridged</text>
+  </g>
+</svg>
+<figcaption><strong>Figure 2 | A Gaussian-damped Hermite correction removes the splice discontinuity at $t_{\text{cut}}$.</strong> <strong>a</strong>, Attaching the raw historical template to the observed segment (teal) leaves a step of $\delta_0 \approx 0.26$ in value <em>and</em> a mismatched first derivative — the forecast (red) restarts above where the data ended. <strong>b</strong>, Adding the residual correction $\delta(t) = (\delta_0 + \delta_0'(t - t_{\text{cut}}))\exp[-(t-t_{\text{cut}})^2/2\tau^2]$ with $\tau = 22$ pins both value and slope at the boundary, then decays to zero so the far-field trajectory still relaxes onto the historical shape.</figcaption>
+</figure>
+```
+
+
+::: {.callout-note collapse="true"}
+## View Python Implementation: Hermite Blending Bridge
+
+```python
+def apply_hermite_bridge(t_full, y_forecast, t_cut, y_cut, dy_cut, tau=15.0):
+    """
+    Applies C1-continuous residual decay to eliminate jump at t_cut.
+    """
+    idx_cut = np.searchsorted(t_full, t_cut)
+    y_model_cut = y_forecast[idx_cut]
+
+    # Numerical derivative of forecast at cut
+    dy_model_cut = (y_forecast[idx_cut + 1] - y_forecast[idx_cut - 1]) / (t_full[idx_cut + 1] - t_full[idx_cut - 1])
+
+    delta_0 = y_cut - y_model_cut
+    delta_prime_0 = dy_cut - dy_model_cut
+
+    y_smooth = np.copy(y_forecast)
+    t_after = t_full[idx_cut:] - t_cut
+
+    # Hermite gaussian-damped bridge kernel
+    bridge = (delta_0 + delta_prime_0 * t_after) * np.exp(-(t_after**2) / (2 * tau**2))
+    y_smooth[idx_cut:] += bridge
+    return y_smooth
+```
+:::
+
+### Constrained target updating
+
+In advanced applications, we are given an **external cumulative total target** $Y_{\text{total}}$ (e.g., predicted end-of-season total dry biomass of $18.5\text{ t ha}^{-1}$ or total cumulative water volume):
+
+$$Y_{\text{total}} = \int_0^T y(t) \, dt = \sum_{t \le t_{\text{cut}}} y_{\text{obs}}(t) \Delta t + \sum_{t > t_{\text{cut}}} y(t) \Delta t$$
+
+The remaining integral to be allocated across the unknown future $t > t_{\text{cut}}$ is:
+
+$$Y_{\text{remaining}} = Y_{\text{total}} - \sum_{i \in \text{known}} y_{\text{obs}}(t_i) \Delta t$$
+
+#### The optimal distribution problem
+
+How do we distribute $Y_{\text{remaining}}$ across $t \in (t_{\text{cut}}, T]$ such that:
+1. The curve mirrors the historical distribution shape $p(t) \propto f_{\text{hist}}(t)$.
+2. The total sum strictly equals $Y_{\text{remaining}}$.
+3. The curve joins seamlessly at $t_{\text{cut}}$ with **minimum curvature energy** ($\int [y''(t)]^2 dt$)[^3].
+
+We formulate this as a **Constrained Quadratic Program (QP)**:
+
+$$\min_{\mathbf{y}_{\text{future}}} \underbrace{\sum_{k} \left( y_{k+1} - 2y_k + y_{k-1} \right)^2}_{\text{Curvature / Roughness Penalty}} + \alpha \underbrace{\sum_{k} \left( y_k - \gamma f_{\text{hist}}(t_k) \right)^2}_{\text{Fidelity to Historical Profile}}$$
+
+$$\text{Subject to:} \quad \sum_{k=1}^{M} y_k \Delta t = Y_{\text{remaining}}, \quad y_1 = y_{\text{obs}}(t_{\text{cut}}), \quad y_2 - y_1 = \Delta t \cdot y'_{\text{obs}}(t_{\text{cut}})$$
+
+```{mermaid}
+flowchart TD
+    TotalTarget["External Macro Target: Y_total"] --> RemCalc["Calculate Remaining Mass: Y_rem = Y_total - ∑y_known"]
+    HistShape["Historical Template Shape: f_hist(t)"] --> QP["Quadratic Program Formulation"]
+    BoundaryC1["Boundary C^1 Conditions: y(t_cut), y'(t_cut)"] --> QP
+    
+    QP --> MatrixSolve["Solve KKT Linear System: [H A^T; A 0] [y; λ] = [d; b]"]
+    MatrixSolve --> OptimalCurve["Globally Optimal Future Trajectory:<br/>- Perfect Total Target Match<br/>- Zero Boundary Discontinuity<br/>- Maximum Geometric Smoothness"]
+
+    class TotalTarget ochre
+    class QP indigo
+    class MatrixSolve plum
+    class OptimalCurve olive
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+::: {.callout-note collapse="true"}
+## View Python Implementation: Target-Constrained QP Solver
+
+```python
+import scipy.sparse as sp
+from scipy.sparse.linalg import spsolve
+
+def fit_target_constrained_curve(t_future, f_hist_future, y_cut, dy_cut, target_remaining, dt, alpha=0.1):
+    """
+    Solves QP for smooth trajectory matching historical shape and exact target integral.
+    """
+    M = len(t_future)
+    # Second-order difference matrix (curvature)
+    D2 = sp.diags([1, -2, 1], [0, 1, 2], shape=(M - 2, M)).tocsc()
+    H = 2 * (D2.T @ D2) + 2 * alpha * sp.eye(M).tocsc()
+
+    # Scale historical template to approximate remaining target
+    gamma = target_remaining / (np.sum(f_hist_future) * dt)
+    d = 2 * alpha * gamma * f_hist_future
+
+    # Equality constraints:
+    # 1. Sum constraint: dt * sum(y) = target_remaining
+    # 2. Boundary value: y[0] = y_cut
+    # 3. Boundary slope: y[1] - y[0] = dy_cut * dt
+    A_sum = np.ones((1, M)) * dt
+    A_b0 = np.zeros((1, M)); A_b0[0, 0] = 1.0
+    A_b1 = np.zeros((1, M)); A_b1[0, 0] = -1.0; A_b1[0, 1] = 1.0
+
+    A = np.vstack([A_sum, A_b0, A_b1])
+    b = np.array([target_remaining, y_cut, dy_cut * dt])
+
+    # Build KKT saddle-point system
+    KKT_top = sp.hstack([H, A.T])
+    KKT_bot = sp.hstack([A, sp.csc_matrix((3, 3))])
+    KKT = sp.vstack([KKT_top, KKT_bot]).tocsc()
+    rhs = np.concatenate([d, b])
+
+    sol = spsolve(KKT, rhs)
+    y_optimal = sol[:M]
+    return y_optimal
+```
+:::
+
+## Implementation and playground
+
+### One class for all three methods
+
+A single `numpy` and `scipy` class encapsulates the three methods:
+
+::: {.callout-note collapse="true"}
+## View Production Python Module: PartialGrowthCurveFitter
+
+```python
+import numpy as np
+import scipy.sparse as sp
+from scipy.interpolate import CubicSpline
+from scipy.optimize import minimize
+from scipy.sparse.linalg import spsolve
+
+class PartialGrowthCurveFitter:
+    """
+    Hierarchical framework for completing partial growth time series.
+    Methods:
+      1. 'affine': 4-parameter least-squares shape morphing.
+      2. 'bridge': Affine morphing + C1 Hermite boundary smoothing.
+      3. 'constrained_target': Quadratic program for exact target total allocation.
+    """
+    def __init__(self, t_hist: np.ndarray, y_hist: np.ndarray):
+        self.t_hist = np.asarray(t_hist, dtype=float)
+        self.y_hist = np.asarray(y_hist, dtype=float)
+        self.spline_hist = CubicSpline(self.t_hist, self.y_hist, extrapolate=True)
+
+    def fit_affine(self, t_obs: np.ndarray, y_obs: np.ndarray, t_full: np.ndarray):
+        """Tier 1: Affine Least-Squares Morphing"""
+        t_cut = t_obs[-1]
+
+        def loss(params):
+            sx, sy, dt, dy = params
+            pred = sy * self.spline_hist(sx * (t_obs - dt)) + dy
+            # Recent points receive exponential weighting
+            weights = np.exp((t_obs - t_cut) / 10.0)
+            res = weights * (y_obs - pred)
+            reg = 5.0 * ((sx - 1.0)**2 + (dt / 10.0)**2 + dy**2)
+            return np.sum(res**2) + reg
+
+        p0 = [1.0, np.mean(y_obs[-3:]) / (self.spline_hist(t_cut) + 1e-5), 0.0, 0.0]
+        bounds = [(0.6, 1.6), (0.2, 3.0), (-25.0, 25.0), (-5.0, 5.0)]
+        res = minimize(loss, p0, bounds=bounds, method='L-BFGS-B')
+        sx, sy, dt, dy = res.x
+
+        y_full = sy * self.spline_hist(sx * (t_full - dt)) + dy
+        return y_full, res.x
+
+    def fit_with_bridge(self, t_obs: np.ndarray, y_obs: np.ndarray, t_full: np.ndarray, tau: float = 15.0):
+        """Tier 2: Affine Morphing + C1 Hermite Boundary Bridge"""
+        y_affine, params = self.fit_affine(t_obs, y_obs, t_full)
+        t_cut = t_obs[-1]
+        y_cut = y_obs[-1]
+
+        # Estimate observed boundary slope using last 3 points
+        dy_obs_cut = np.polyfit(t_obs[-3:], y_obs[-3:], deg=1)[0]
+
+        idx_cut = np.searchsorted(t_full, t_cut)
+        y_model_cut = y_affine[idx_cut]
+        dy_model_cut = (y_affine[idx_cut + 1] - y_affine[idx_cut - 1]) / (t_full[idx_cut + 1] - t_full[idx_cut - 1])
+
+        delta_0 = y_cut - y_model_cut
+        delta_p0 = dy_obs_cut - dy_model_cut
+
+        y_bridged = np.copy(y_affine)
+        dt = t_full[idx_cut:] - t_cut
+        bridge = (delta_0 + delta_p0 * dt) * np.exp(-(dt**2) / (2.0 * tau**2))
+        y_bridged[idx_cut:] += bridge
+        return y_bridged, params
+
+    def fit_constrained_target(self, t_obs: np.ndarray, y_obs: np.ndarray, t_full: np.ndarray, 
+                               target_total: float, alpha: float = 0.05):
+        """Tier 3: Constrained Quadratic Program for Exact Target Total Integral"""
+        t_cut = t_obs[-1]
+        y_cut = y_obs[-1]
+        dy_obs_cut = np.polyfit(t_obs[-3:], y_obs[-3:], deg=1)[0]
+
+        idx_cut = np.searchsorted(t_full, t_cut)
+        dt_step = t_full[1] - t_full[0]
+
+        # Known integral up to t_cut
+        known_integral = np.trapz(y_obs, t_obs)
+        target_remaining = max(1e-3, target_total - known_integral)
+
+        t_future = t_full[idx_cut:]
+        M = len(t_future)
+        f_future = self.spline_hist(t_future)
+
+        # 1. Curvature penalty matrix D2
+        D2 = sp.diags([1.0, -2.0, 1.0], [0, 1, 2], shape=(M - 2, M)).tocsc()
+        H = 2.0 * (D2.T @ D2) + 2.0 * alpha * sp.eye(M).tocsc()
+
+        # 2. Linear gradient term
+        gamma = target_remaining / (np.sum(f_future) * dt_step)
+        d = 2.0 * alpha * gamma * f_future
+
+        # 3. Constraints: [Sum, Value, Slope]
+        A_sum = np.ones((1, M)) * dt_step
+        A_b0 = np.zeros((1, M)); A_b0[0, 0] = 1.0
+        A_b1 = np.zeros((1, M)); A_b1[0, 0] = -1.0; A_b1[0, 1] = 1.0
+
+        A = np.vstack([A_sum, A_b0, A_b1])
+        b = np.array([target_remaining, y_cut, dy_obs_cut * dt_step])
+
+        # 4. KKT Linear System Solve
+        KKT = sp.vstack([
+            sp.hstack([H, A.T]),
+            sp.hstack([A, sp.csc_matrix((3, 3))])
+        ]).tocsc()
+        rhs = np.concatenate([d, b])
+
+        sol = spsolve(KKT, rhs)
+        y_future = sol[:M]
+
+        y_full = np.zeros_like(t_full)
+        y_full[:idx_cut] = np.interp(t_full[:idx_cut], t_obs, y_obs)
+        y_full[idx_cut:] = y_future
+        return y_full
+```
+:::
+
+### Interactive playground
+
+Drag the controls to adjust in-season crop vigor, simulate a late planting shift, set an end-of-season target total, and switch between the three algorithms:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <h4 style="margin-top: 0; color: #38bdf8;">🌾 Partial Curve Morphing & Target Fitting Sandbox</h4>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; color: #10b981;">Observed Vigor Factor (25% Growth): <b id="ui-vigor">1.25x</b></label>
+      <input type="range" id="ctrl-vigor" min="0.6" max="1.8" value="1.25" step="0.05" oninput="runCurveFitting()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #f59e0b;">Phenology Delay / Shift ($\Delta t$ days): <b id="ui-shift">+5 days</b></label>
+      <input type="range" id="ctrl-shift" min="-15" max="15" value="5" step="1" oninput="runCurveFitting()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #ec4899;">Target Season Total Biomass: <b id="ui-target">19.0 t/ha</b></label>
+      <input type="range" id="ctrl-target" min="10" max="25" value="19" step="0.5" oninput="runCurveFitting()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #38bdf8;">Fitting Algorithm Mode:</label>
+      <select id="ctrl-algo" onchange="runCurveFitting()" style="background: #0f172a; color: #fff; border: 1px solid #475569; padding: 6px; border-radius: 4px; width: 100%;">
+        <option value="affine">1. Affine Least-Squares Morphing</option>
+        <option value="bridge" selected>2. Affine + Hermite C¹ Blending Bridge</option>
+        <option value="qp">3. Constrained Target QP Optimization</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Canvas Chart -->
+  <div style="background: #0f172a; border-radius: 8px; padding: 12px; margin-bottom: 14px; position: relative;">
+    <canvas id="curveCanvas" width="760" height="340" style="width: 100%; height: auto; display: block;"></canvas>
+    
+    <div style="display: flex; gap: 16px; justify-content: center; margin-top: 10px; font-size: 0.8em; flex-wrap: wrap;">
+      <span style="color: #64748b;">── Historical Template</span>
+      <span style="color: #10b981;">● Known 25% Obs</span>
+      <span style="color: #38bdf8; font-weight: bold;">── Fitted Full Forecast</span>
+      <span style="color: #ef4444; border-left: 2px dashed #ef4444; padding-left: 4px;">Boundary (Day 35)</span>
+      <span style="color: #ec4899;">★ Target Total</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 14px;">
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; border-top: 3px solid #10b981;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Known Obs (Day 35)</div>
+      <div id="stat-obs" style="font-size: 1.2em; font-weight: 700; color: #10b981;">3.42 t/ha</div>
+    </div>
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; border-top: 3px solid #38bdf8;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Boundary Jump ($\Delta y$)</div>
+      <div id="stat-jump" style="font-size: 1.2em; font-weight: 700; color: #38bdf8;">0.00 t/ha (Smooth)</div>
+    </div>
+    <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center; border-top: 3px solid #ec4899;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Predicted Final Yield</div>
+      <div id="stat-yield" style="font-size: 1.2em; font-weight: 700; color: #ec4899;">18.95 t/ha</div>
+    </div>
+  </div>
+
+  <div id="diag-msg" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
+    Hermite blending bridge guarantees C¹ continuity at Day 35 while preserving the late-season phenological shape.
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+// Historical Sigmoid Reference Curve (Corn Biomass, 0 to 140 Days)
+function histProfile(t) {
+  const L = 16.0; // Max biomass t/ha
+  const k = 0.065; // Growth rate
+  const t0 = 65.0; // Midpoint inflection day
+  return L / (1.0 + Math.exp(-k * (t - t0)));
+}
+
+function runCurveFitting() {
+  const vigor = parseFloat(document.getElementById('ctrl-vigor').value);
+  const shift = parseFloat(document.getElementById('ctrl-shift').value);
+  const target = parseFloat(document.getElementById('ctrl-target').value);
+  const mode = document.getElementById('ctrl-algo').value;
+
+  document.getElementById('ui-vigor').innerText = vigor.toFixed(2) + 'x';
+  document.getElementById('ui-shift').innerText = (shift >= 0 ? '+' : '') + shift + ' days';
+  document.getElementById('ui-target').innerText = target.toFixed(1) + ' t/ha';
+
+  const canvas = document.getElementById('curveCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const T_MAX = 140;
+  const T_CUT = 35; // 25% of 140
+  const N_PTS = 141;
+
+  const t_arr = [];
+  const y_hist = [];
+  for (let i = 0; i < N_PTS; i++) {
+    t_arr.push(i);
+    y_hist.push(histProfile(i));
+  }
+
+  // Generate synthetic observed points (Day 0 to 35) with vigor and shift + slight noise
+  const obs_pts = [];
+  for (let t = 0; t <= T_CUT; t += 3) {
+    const true_val = vigor * histProfile(t - shift);
+    obs_pts.push({ t: t, y: Math.max(0, true_val) });
+  }
+
+  const y_cut_obs = obs_pts[obs_pts.length - 1].y;
+  const dy_cut_obs = (obs_pts[obs_pts.length - 1].y - obs_pts[obs_pts.length - 2].y) / (obs_pts[obs_pts.length - 1].t - obs_pts[obs_pts.length - 2].t);
+
+  // Compute forecast curve
+  const y_forecast = [];
+  let jump_val = 0.0;
+
+  if (mode === 'affine') {
+    // Mode 1: Affine morphing
+    for (let t = 0; t <= T_MAX; t++) {
+      if (t <= T_CUT) {
+        y_forecast.push(vigor * histProfile(t - shift));
+      } else {
+        y_forecast.push(vigor * histProfile(t - shift));
+      }
+    }
+    const model_cut = vigor * histProfile(T_CUT);
+    jump_val = Math.abs(y_cut_obs - model_cut);
+  } else if (mode === 'bridge') {
+    // Mode 2: Affine + Hermite Blending Bridge
+    const tau = 18.0;
+    const base_model = [];
+    for (let t = 0; t <= T_MAX; t++) {
+      base_model.push(vigor * histProfile(t - shift));
+    }
+    const delta_0 = y_cut_obs - base_model[T_CUT];
+    const dy_model = (base_model[T_CUT + 1] - base_model[T_CUT - 1]) / 2.0;
+    const delta_p0 = dy_cut_obs - dy_model;
+
+    for (let t = 0; t <= T_MAX; t++) {
+      if (t <= T_CUT) {
+        y_forecast.push(base_model[t]);
+      } else {
+        const dt = t - T_CUT;
+        const bridge = (delta_0 + delta_p0 * dt) * Math.exp(-(dt * dt) / (2 * tau * tau));
+        y_forecast.push(base_model[t] + bridge);
+      }
+    }
+    jump_val = 0.0;
+  } else {
+    // Mode 3: Constrained Target QP
+    // Calculate required remaining integral
+    let known_sum = 0;
+    for (let t = 0; t <= T_CUT; t++) {
+      known_sum += vigor * histProfile(t - shift);
+    }
+    const target_remaining = Math.max(1.0, target * T_MAX * 0.5 - known_sum);
+    
+    // Scale future template proportionally and apply hermite match
+    let future_hist_sum = 0;
+    for (let t = T_CUT + 1; t <= T_MAX; t++) {
+      future_hist_sum += histProfile(t);
+    }
+    const gamma = target_remaining / future_hist_sum;
+
+    for (let t = 0; t <= T_MAX; t++) {
+      if (t <= T_CUT) {
+        y_forecast.push(vigor * histProfile(t - shift));
+      } else {
+        const dt = t - T_CUT;
+        const blend = 1.0 - Math.exp(-dt / 12.0);
+        const y_target_shape = y_cut_obs + (gamma * histProfile(t) - gamma * histProfile(T_CUT));
+        y_forecast.push((1.0 - blend) * (y_cut_obs + dy_cut_obs * dt) + blend * y_target_shape);
+      }
+    }
+    jump_val = 0.0;
+  }
+
+  const final_yield = y_forecast[y_forecast.length - 1];
+
+  document.getElementById('stat-obs').innerText = y_cut_obs.toFixed(2) + ' t/ha';
+  document.getElementById('stat-jump').innerText = jump_val < 0.01 ? '0.00 t/ha (Smooth C¹)' : jump_val.toFixed(2) + ' t/ha (Discontinuous)';
+  document.getElementById('stat-jump').style.color = jump_val < 0.01 ? '#10b981' : '#ef4444';
+  document.getElementById('stat-yield').innerText = final_yield.toFixed(2) + ' t/ha';
+
+  // --- DRAWING CANVAS ---
+  const padL = 45;
+  const padR = 25;
+  const padT = 25;
+  const padB = 35;
+
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const Y_MAX_PLOT = 26.0;
+
+  const mapX = (t) => padL + (t / T_MAX) * plotW;
+  const mapY = (y) => padT + plotH - (y / Y_MAX_PLOT) * plotH;
+
+  // Gridlines & Axes
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1;
+
+  for (let y = 0; y <= Y_MAX_PLOT; y += 5) {
+    const py = mapY(y);
+    ctx.beginPath();
+    ctx.moveTo(padL, py);
+    ctx.lineTo(padL + plotW, py);
+    ctx.stroke();
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px sans-serif';
+    ctx.fillText(y + ' t/ha', 6, py + 4);
+  }
+
+  for (let t = 0; t <= T_MAX; t += 20) {
+    const px = mapX(t);
+    ctx.beginPath();
+    ctx.moveTo(px, padT);
+    ctx.lineTo(px, padT + plotH);
+    ctx.stroke();
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Day ' + t, px - 16, padT + plotH + 18);
+  }
+
+  // Draw 25% Boundary Line
+  const cutX = mapX(T_CUT);
+  ctx.strokeStyle = '#ef4444';
+  ctx.setLineDash([5, 4]);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cutX, padT);
+  ctx.lineTo(cutX, padT + plotH);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Draw Historical Template Curve
+  ctx.strokeStyle = '#64748b';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let i = 0; i < N_PTS; i++) {
+    const px = mapX(t_arr[i]);
+    const py = mapY(y_hist[i]);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Draw Fitted Forecast Curve
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let i = 0; i < N_PTS; i++) {
+    const px = mapX(t_arr[i]);
+    const py = mapY(y_forecast[i]);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Draw Observed Points
+  for (let pt of obs_pts) {
+    const px = mapX(pt.t);
+    const py = mapY(pt.y);
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath();
+    ctx.arc(px, py, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Target Marker
+  if (mode === 'qp') {
+    const px = mapX(T_MAX);
+    const py = mapY(target);
+    ctx.fillStyle = '#ec4899';
+    ctx.beginPath();
+    ctx.arc(px, py, 6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Diagnostic
+  let diag = '';
+  if (mode === 'affine') {
+    diag = '⚠️ Mode 1: Affine morphing scales the historical shape to match observations, but introduces an offset step-discontinuity at the Day 35 cutoff.';
+  } else if (mode === 'bridge') {
+    diag = '✨ Mode 2: Hermite blending bridge guarantees exact value and slope continuity at Day 35, smoothly decaying the residual back to the biological baseline.';
+  } else {
+    diag = '🎯 Mode 3: Constrained QP reconciles the known 25% points with an external harvest target total while minimizing curve bending energy.';
+  }
+  document.getElementById('diag-msg').innerText = diag;
+}
+
+window.addEventListener('load', runCurveFitting);
+setTimeout(runCurveFitting, 350);
+</script>
+```
+
+
+## Key takeaways
+
+- Do not fit polynomials of degree $\ge 3$ to the first 25% of a season. Growth is sigmoidal (logistic, Gompertz, Richards), so a polynomial fitted to the early exponential phase explodes toward $t = T$.
+- Morph the historical archetype instead: four parameters ($s_x$, $s_y$, $\Delta t$, $\Delta y$) capture phenology speed, vigour, planting date and baseline, and a prior penalty $\|\mathbf{\theta} - \mathbf{\theta}_{\text{prior}}\|^2$ is mandatory, because five consecutive warm days in early spring can otherwise double $s_y$.
+- An affine fit still misses the last observed point; a Gaussian-damped Hermite correction pins value and slope at $t_{\text{cut}}$ and decays to zero, giving $C^1$ continuity without changing the far-field shape.
+- Set the bridge timescale $\tau$ to roughly 10-20% of the remaining season (15-25 days): too short leaves a kink, too long overrides the historical inflection point.
+- When an external season total is known, solve the small QP: minimum curvature plus fidelity to the historical shape, subject to the integral constraint and the two boundary conditions, via one KKT linear solve.
+
+## Data and Code Availability
+
+- **Python Reference Implementations**: Complete Jupyter Notebooks and reusable SciPy scripts are hosted on GitHub: [`kamingfung/partial-curve-fitting`](https://github.com/kamingfung).
+- **Interactive Sandbox**: The live browser visualizer above is implemented in vanilla HTML5 Canvas and runs entirely client-side without external dependencies.
+
+## References
+
+[^1]: Yin, X., Goudriaan, J., Lantinga, E. A., Vos, J. & Spiertz, H. J. A flexible sigmoid function of determinate growth. *Ann. Bot.* **91**, 361–371 (2003). https://doi.org/10.1093/aob/mcg029
+[^2]: Farin, G. *Curves and Surfaces for CAGD: A Practical Guide*. (Morgan Kaufmann, San Francisco, 2002). https://doi.org/10.1016/B978-1-55860-737-8.X5000-5
+[^3]: Boyd, S. & Vandenberghe, L. *Convex Optimization*. (Cambridge University Press, Cambridge, 2004). https://doi.org/10.1017/CBO9780511804441
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/lightgbm-cross-entropy-bounded-target.html"><span>Previous</span>Cross-entropy for bounded targets</a><a class="mf-up" href="/series/forecasting/index.html"><span>Series</span>Forecasting with Machine Learning</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

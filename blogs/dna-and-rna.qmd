@@ -1,0 +1,587 @@
+---
+title: DNA and RNA
+description: The blueprint that stays in the nucleus, the copy that leaves it, and the machine that reads the copy into protein.
+date: 2026-08-27
+categories:
+- biology
+- genetics
+- biochemistry
+- molecular biology
+- simulation
+- interactive
+---
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+A cell keeps two nucleic acids because one job needs a durable archive and the other needs a disposable, reactive copy. DNA differs from RNA by one oxygen on the sugar, one base (thymine for uracil) and a second strand, and those three differences explain where each molecule lives and how long it lasts. After this module you can trace a gene from DNA through mRNA to protein, read a codon table, and predict what a single-base mutation does.
+:::
+
+Every living organism on Earth, from the bacteria in a hot spring to the oak tree in your park and the trillions of cells in your body, runs on two nucleic acid molecules: **DNA** and **RNA**. Underneath the jargon (nucleotides, transcription, codons, ribosomes) is a small and orderly information system.
+
+## Blueprint and photocopy
+
+To see why life needs *both* DNA and RNA, imagine a manufacturing company building complex machines:
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 316" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A cell drawn as a factory: a blue nucleus holding the DNA double helix, a magenta mRNA copy leaving it, a ribosome reading that copy, and a folded protein chain as the product.">
+<defs>
+<marker id="dnaFlow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+</defs>
+<text x="120" y="32" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">1  Master archive</text>
+<text x="342" y="32" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">2  Working copy</text>
+<text x="500" y="32" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">3  Assembly line</text>
+<text x="660" y="32" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14.5" font-weight="600">4  Machine</text>
+<rect x="16" y="48" width="728" height="250" rx="24" fill="none" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" stroke-dasharray="7 6"/>
+<circle cx="120" cy="170" r="76" fill="var(--ink-indigo)" fill-opacity="0.12" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+<path d="M 120 100 C 145 111, 145 125, 120 136 C 95 147, 95 161, 120 172 C 143 181, 143 189, 120 197" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+<path d="M 120 100 C 95 111, 95 125, 120 136 C 145 147, 145 161, 120 172 C 97 181, 97 189, 120 197" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+<line x1="102" y1="118" x2="138" y2="118" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<line x1="102" y1="154" x2="138" y2="154" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<line x1="106" y1="186" x2="134" y2="186" stroke="var(--md-default-fg-color--light)" stroke-width="1.6"/>
+<text x="120" y="226" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="16" font-weight="600">DNA</text>
+<text x="120" y="272" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">nucleus (the vault)</text>
+<line x1="204" y1="176" x2="280" y2="176" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#dnaFlow)"/>
+<text x="242" y="164" text-anchor="middle" fill="var(--ink-rust)" font-size="12.5" font-weight="600">transcription</text>
+<path d="M 292 176 q 12 -12 25 0 q 13 12 25 0 q 12 -12 25 0 q 13 12 25 0" fill="none" stroke="var(--ink-rust)" stroke-width="2.6"/>
+<text x="342" y="152" text-anchor="middle" fill="var(--ink-rust)" font-size="13" font-weight="600">mRNA</text>
+<line x1="400" y1="176" x2="452" y2="176" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#dnaFlow)"/>
+<text x="426" y="164" text-anchor="middle" fill="var(--ink-rust)" font-size="12.5" font-weight="600">translation</text>
+<ellipse cx="500" cy="190" rx="44" ry="28" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+<ellipse cx="500" cy="154" rx="34" ry="20" fill="var(--ink-indigo)" fill-opacity="0.14" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+<line x1="456" y1="184" x2="548" y2="184" stroke="var(--ink-rust)" stroke-width="2.6"/>
+<text x="500" y="246" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">ribosome</text>
+<text x="500" y="264" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">rRNA + tRNA</text>
+<line x1="556" y1="184" x2="600" y2="184" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#dnaFlow)"/>
+<path d="M 606 200 C 622 168, 646 208, 664 176 C 680 148, 706 184, 724 158" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.8"/>
+<circle cx="606" cy="200" r="5" fill="var(--ink-indigo)" fill-opacity="0.55"/>
+<circle cx="632" cy="182" r="5" fill="var(--ink-indigo)" fill-opacity="0.55"/>
+<circle cx="664" cy="176" r="5" fill="var(--ink-indigo)" fill-opacity="0.55"/>
+<circle cx="694" cy="168" r="5" fill="var(--ink-indigo)" fill-opacity="0.55"/>
+<circle cx="724" cy="158" r="5" fill="var(--ink-indigo)" fill-opacity="0.55"/>
+<text x="664" y="232" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">protein</text>
+<text x="664" y="250" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">the working machine</text>
+<text x="342" y="288" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">cytoplasm (the factory floor)</text>
+</svg>
+<figcaption><strong>Figure 1 | The cell never lets the master copy leave the vault; it exports disposable photocopies instead.</strong> DNA stays inside the nucleus, where the double strand keeps a backup of every base on the opposite strand. Transcription writes a single-stranded mRNA copy of one gene (magenta), and only that copy crosses into the cytoplasm, where ribosomes read it in triplets and tRNA delivers the matching amino acids. Magenta marks information in transit and blue marks the durable molecules — the archive and the finished protein — which is why a damaged transcript costs the cell minutes of work rather than the gene itself.</figcaption>
+</figure>
+```
+
+
+- **DNA (Deoxyribonucleic Acid)** is the **long-term archival database**. It stays safely protected inside the cell nucleus, ensuring the organism's genetic instructions remain pristine across decades and generations.
+- **RNA (Ribonucleic Acid)** is the **mobile operational messenger and tool**. It is transient, chemically active, and acts as the bridge that carries instructions out of the nucleus to the factory floor.
+- **Proteins** are the **physical hardware**. They do virtually all the heavy lifting: digesting food, contracting muscles, fighting infections, and transmitting nerve signals.
+
+## Three chemical differences
+
+Both DNA and RNA are polymers composed of repeating units called **nucleotides**. Every nucleotide contains three pieces:
+1. A **Phosphate group** ($\text{PO}_4^{3-}$).
+2. A **5-Carbon Sugar ring** (Pentose).
+3. A **Nitrogenous Base** (the alphabet letters: A, T, G, C, U).
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 328" style="width:100%;max-width:660px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A nucleotide drawn as a phosphate group bonded through the 5-prime carbon to a pentose ring, with the base attached at the 1-prime carbon and the 2-prime carbon carrying hydrogen in DNA or a hydroxyl group in RNA.">
+<text x="330" y="26" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">One atom at the 2&#8242; carbon divides DNA from RNA</text>
+<text x="112" y="50" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">phosphate</text>
+<text x="112" y="68" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">PO&#8324;&#179;&#8315;</text>
+<line x1="128" y1="112" x2="176" y2="124" stroke="var(--ink-indigo)" stroke-width="2.6"/>
+<line x1="176" y1="124" x2="239" y2="165" stroke="var(--ink-indigo)" stroke-width="2.6"/>
+<circle cx="112" cy="98" r="22" fill="var(--ink-indigo)" fill-opacity="0.18" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+<text x="112" y="104" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">P</text>
+<text x="182" y="112" fill="var(--md-default-fg-color--light)" font-size="12.5">5&#8242; CH&#8322;</text>
+<polygon points="300,121 361,165 338,237 262,237 239,165" fill="var(--ink-indigo)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+<text x="300" y="110" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">O4&#8242;</text>
+<text x="368" y="190" fill="var(--md-default-fg-color--light)" font-size="12.5">C1&#8242;</text>
+<text x="232" y="190" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">C4&#8242;</text>
+<text x="330" y="262" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">C2&#8242;</text>
+<text x="270" y="262" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">C3&#8242;</text>
+<text x="300" y="196" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">pentose ring</text>
+<line x1="361" y1="165" x2="420" y2="150" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+<rect x="420" y="124" width="150" height="52" rx="8" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+<text x="495" y="146" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">nitrogenous base</text>
+<text x="495" y="166" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">A   T   G   C   U</text>
+<line x1="262" y1="237" x2="226" y2="282" stroke="var(--md-default-fg-color)" stroke-width="2.4"/>
+<text x="150" y="302" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">3&#8242;&#8212;OH links to the next nucleotide</text>
+<line x1="338" y1="237" x2="374" y2="282" stroke="var(--ink-rust)" stroke-width="2.8"/>
+<circle cx="374" cy="282" r="5.5" fill="var(--ink-rust)"/>
+<text x="392" y="272" fill="var(--ink-rust)" font-size="14" font-weight="600">DNA:  2&#8242;&#8212;H</text>
+<text x="392" y="294" fill="var(--ink-rust)" font-size="14" font-weight="600">RNA:  2&#8242;&#8212;OH</text>
+<text x="392" y="314" fill="var(--md-default-fg-color--light)" font-size="12.5">that one oxygen trades stability for reactivity</text>
+</svg>
+<figcaption><strong>Figure 2 | The chemical difference between DNA and RNA is a single oxygen on one carbon.</strong> Every nucleotide is the same three-part assembly: a phosphate joined through the 5&#8242; carbon to a five-membered sugar ring (blue, the backbone), which carries the information-bearing base off its 1&#8242; carbon and links to the next unit through 3&#8242;&#8212;OH. Only the 2&#8242; position differs (magenta): DNA carries $-\text{H}$ there, RNA carries $-\text{OH}$. That hydroxyl is a built-in nucleophile that can attack the neighbouring phosphate, so RNA hydrolyses in minutes to hours while deoxyribose keeps DNA readable for millennia.</figcaption>
+</figure>
+```
+
+
+| Feature | DNA (Deoxyribonucleic Acid) | RNA (Ribonucleic Acid) | Why the Difference Matters |
+| :--- | :--- | :--- | :--- |
+| **Sugar Molecule** | **2'-Deoxyribose** (Contains $-\text{H}$ at 2' carbon) | **Ribose** (Contains $-\text{OH}$ at 2' carbon) | The missing oxygen in DNA makes it chemically unreactive and resilient for centuries. The extra oxygen in RNA makes it flexible and reactive. |
+| **Nitrogenous Bases** | **A**denine, **T**hymine, **G**uanine, **C**ytosine | **A**denine, **U**racil, **G**uanine, **C**ytosine | Thymine has an extra methyl group ($-\text{CH}_3$) that protects DNA from mutation repairs; Uracil is cheaper for cells to synthesize rapidly. |
+| **Strand Architecture** | **Double-stranded helix** (Two antiparallel strands intertwined) | **Single-stranded** (Folds into complex 3D loops, hairpins, and knots) | DNA's double strand provides an automatic backup copy on the opposite strand ($A=T, G \equiv C$). RNA can fold like a protein to catalyze chemical reactions. |
+| **Cellular Location** | Confined to the **Nucleus** (and Mitochondria) | Synthesized in Nucleus, active in **Cytoplasm & Ribosomes** | Keeps the master genome insulated from cellular metabolism and degradation. |
+| **Lifespan** | **Permanent** (Lifespan of the organism / centuries in fossils) | **Transient** (Minutes to hours, degraded after use) | Allows cells to turn protein production on and off dynamically. |
+
+### The alphabet and base-pairing rules
+
+DNA's stability and ability to replicate flawlessly depends on **complementary base pairing** discovered by Watson, Crick, and Franklin in 1953:
+
+```
+        Complementary Base Pairing Hydrogen Bonds
+
+     Adenine (A) ═══════════ Thymine (T)     [2 Hydrogen Bonds]
+     Guanine (G) ≡≡≡≡≡≡≡≡≡≡≡ Cytosine (C)    [3 Hydrogen Bonds - Stronger!]
+
+In RNA transcription:
+     Adenine (A) ═══════════ Uracil (U)      [2 Hydrogen Bonds]
+```
+
+Because $G \equiv C$ pairs share **three** hydrogen bonds while $A=T$ pairs share only **two**, organisms living in boiling geothermal vents (thermophiles) typically have genomes with high $G-C$ content to prevent their DNA from melting at extreme temperatures!
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" style="width:100%;max-width:760px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A seven-base DNA duplex with hydrogen-bond rungs, two for A-T pairs and three for G-C pairs, and arrows down to the mRNA transcript in which uracil replaces thymine.">
+<text x="76" y="44" fill="var(--md-default-fg-color)" font-size="15.5" font-weight="600">One letter changes: uracil replaces thymine</text>
+<defs>
+<marker id="dnaTx" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+</defs>
+<line x1="83" y1="95" x2="513" y2="95" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="83" y1="175" x2="513" y2="175" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="83" y1="268" x2="513" y2="268" stroke="var(--ink-rust)" stroke-width="2" opacity="0.5"/>
+<line x1="95" y1="114" x2="95" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="105" y1="114" x2="105" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="161" y1="114" x2="161" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="171" y1="114" x2="171" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="224" y1="114" x2="224" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="232" y1="114" x2="232" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="240" y1="114" x2="240" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="290" y1="114" x2="290" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="298" y1="114" x2="298" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="306" y1="114" x2="306" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="356" y1="114" x2="356" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="364" y1="114" x2="364" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="372" y1="114" x2="372" y2="156" stroke="var(--ink-indigo)" stroke-width="2.2"/>
+<line x1="425" y1="114" x2="425" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="435" y1="114" x2="435" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="491" y1="114" x2="491" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<line x1="501" y1="114" x2="501" y2="156" stroke="var(--md-default-fg-color--light)" stroke-width="2"/>
+<circle cx="100" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="100" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+<circle cx="100" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="100" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">T</text>
+<circle cx="100" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.10" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="100" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+<circle cx="166" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="166" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">T</text>
+<circle cx="166" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="166" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+<circle cx="166" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.28" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="166" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">U</text>
+<circle cx="232" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="232" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">G</text>
+<circle cx="232" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="232" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">C</text>
+<circle cx="232" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.10" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="232" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">G</text>
+<circle cx="298" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="298" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">C</text>
+<circle cx="298" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="298" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">G</text>
+<circle cx="298" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.10" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="298" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">C</text>
+<circle cx="364" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="364" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">C</text>
+<circle cx="364" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="364" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">G</text>
+<circle cx="364" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.10" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="364" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">C</text>
+<circle cx="430" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="430" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">T</text>
+<circle cx="430" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="430" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+<circle cx="430" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.28" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="430" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">U</text>
+<circle cx="496" cy="95" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="496" y="100" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+<circle cx="496" cy="175" r="17" fill="var(--md-default-fg-color--light)" fill-opacity="0.10" stroke="var(--md-default-fg-color)" stroke-width="1.8"/>
+<text x="496" y="180" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">T</text>
+<circle cx="496" cy="268" r="17" fill="var(--ink-rust)" fill-opacity="0.10" stroke="var(--ink-rust)" stroke-width="1.8"/>
+<text x="496" y="273" text-anchor="middle" fill="var(--md-default-fg-color)" font-size="15" font-weight="600">A</text>
+<line x1="166" y1="196" x2="166" y2="246" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#dnaTx)"/>
+<line x1="298" y1="196" x2="298" y2="246" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#dnaTx)"/>
+<line x1="430" y1="196" x2="430" y2="246" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#dnaTx)"/>
+<text x="76" y="101" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="13">5&#8242;</text>
+<text x="76" y="181" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="13">3&#8242;</text>
+<text x="76" y="274" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="13">5&#8242;</text>
+<text x="528" y="101" fill="var(--md-default-fg-color--light)" font-size="13">3&#8242;</text>
+<text x="528" y="181" fill="var(--md-default-fg-color--light)" font-size="13">5&#8242;</text>
+<text x="528" y="274" fill="var(--md-default-fg-color--light)" font-size="13">3&#8242;</text>
+<text x="560" y="101" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">sense strand</text>
+<text x="560" y="181" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">template strand</text>
+<text x="560" y="274" fill="var(--ink-rust)" font-size="13" font-weight="600">mRNA transcript</text>
+<text x="560" y="130" fill="var(--md-default-fg-color--light)" font-size="12.5">A=T: two hydrogen bonds</text>
+<text x="560" y="150" fill="var(--md-default-fg-color--light)" font-size="12.5">G&#8801;C: three, drawn in blue</text>
+<text x="520" y="224" fill="var(--md-default-fg-color--light)" font-size="13">RNA polymerase copies the template</text>
+</svg>
+<figcaption><strong>Figure 3 | The transcript reads off the template strand, which is why it comes out matching the sense strand.</strong> RNA polymerase pairs each template base with its complement, so the mRNA reproduces the sense sequence with one substitution: uracil in place of thymine (darker magenta). The rungs count hydrogen bonds &#8212; two for $\text{A}=\text{T}$, three for $\text{G}\equiv\text{C}$ (blue) &#8212; and because the triple bond costs more energy to separate, thermophiles that live in geothermal vents run $\text{G}$&#8211;$\text{C}$-rich genomes to keep their DNA from melting.</figcaption>
+</figure>
+```
+
+
+## From code to protein
+
+The **Central Dogma of Molecular Biology** (formulated by Francis Crick) describes the two-step translation process that turns genetic letters into physical proteins:
+
+```{mermaid}
+flowchart LR
+    subgraph Step1["Step 1: Transcription (In Nucleus)"]
+        DNA["Master DNA Helix"] -->|RNA Polymerase| mRNA["Messenger RNA (mRNA)"]
+    end
+
+    subgraph Step2["Step 2: Translation (In Cytoplasm)"]
+        mRNA --> Ribosome["Ribosome Factory (rRNA)"]
+        tRNA["Transfer RNA (tRNA)<br/>with Amino Acids"] --> Ribosome
+        Ribosome --> Protein["Folded Protein Chain<br/>(Enzyme / Muscle / Antibody)"]
+    end
+
+    class DNA indigo
+    class mRNA plum
+    class Ribosome sienna
+    class tRNA ochre
+    class Protein olive
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sienna fill:#6c2b27,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+### Codons, the genetic code dictionary
+
+The ribosome reads the mRNA strand in triplets called **codons**. With 4 possible bases ($A, U, G, C$), there are $4^3 = 64$ possible codons, which encode the **20 standard amino acids**:
+
+- **Start Codon**: `AUG` (encodes **Methionine**, signals the ribosome to start building).
+- **Stop Codons**: `UAA`, `UAG`, `UGA` (signal the ribosome to release the completed protein).
+- **Degeneracy**: Multiple codons encode the same amino acid (e.g., `GCU`, `GCC`, `GCA`, `GCG` all encode **Alanine**), making the genetic code resilient against random point mutations.
+
+### RNA is more than a messenger
+
+Messenger RNA (mRNA) is the type most people have heard of, especially since mRNA vaccines, but RNA does several other jobs in the cell:
+
+```{mermaid}
+graph TD
+    RNA["RNA Types in the Cell"]
+    
+    RNA --> Coding["Coding RNA"]
+    Coding --> mRNA["mRNA (Messenger RNA)<br/>Carries copy of protein recipe"]
+    
+    RNA --> NonCoding["Functional / Non-Coding RNA"]
+    NonCoding --> tRNA["tRNA (Transfer RNA)<br/>Molecular adapter carrying amino acids"]
+    NonCoding --> rRNA["rRNA (Ribosomal RNA)<br/>The catalytic engine of ribosomes"]
+    NonCoding --> Ribozyme["Ribozymes<br/>Catalytic RNA cutting & splicing molecules"]
+    NonCoding --> Regulatory["Regulatory RNA (miRNA / siRNA)<br/>Controls gene volume & silences viruses"]
+
+    class RNA indigo
+    class mRNA plum
+    class tRNA ochre
+    class rRNA sage
+    class Ribozyme rust
+    class Regulatory olive
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+#### The RNA World hypothesis
+
+Did life start with DNA or with protein? Neither can come first on its own:
+
+- DNA cannot replicate without proteins (polymerases).
+- Proteins cannot be manufactured without DNA instructions.
+
+This classic "chicken-and-egg" problem was solved when scientists discovered that **RNA can do both**:
+1. RNA can store genetic information like DNA.
+2. RNA can fold into 3D catalytic shapes (**ribozymes**) to perform chemical reactions like proteins.
+
+Over 3.8 billion years ago, life began in an **RNA World**. Later, life evolved DNA for superior archival data storage and proteins for superior mechanical and chemical strength.
+
+## Interactive molecular laboratory
+
+### Transcriber and mutation tester
+
+Enter any DNA sequence, or pick a preset gene. The tool transcribes the DNA into mRNA and decodes the codons into a coloured polypeptide chain. Change a single nucleotide to see the effect of **silent**, **missense** and **frameshift mutations**.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+    <label style="font-size: 0.9em; font-weight: 600;">DNA Coding Strand ($5' \to 3'$):</label>
+    <div style="display: flex; gap: 6px;">
+      <button onclick="setDnaPreset('insulin')" style="background: #2563eb; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Preset: Insulin Segment</button>
+      <button onclick="setDnaPreset('gfp')" style="background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Preset: GFP (Fluorescent)</button>
+      <button onclick="setDnaPreset('sickle')" style="background: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; cursor: pointer;">Preset: Sickle Cell Mutation</button>
+    </div>
+  </div>
+
+  <input type="text" id="dna-input" value="ATG GCC AAA TTT GGT TAA" oninput="runTranslation()" style="width: 100%; background: #0f172a; border: 1px solid #475569; color: #38bdf8; font-family: monospace; font-size: 1.1em; letter-spacing: 2px; padding: 10px 14px; border-radius: 6px; text-transform: uppercase; margin-bottom: 14px;">
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px;">
+    <div style="background: #020617; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">1. Transcribed mRNA ($5' \to 3'$)</div>
+      <div id="mrna-output" style="font-family: monospace; font-size: 1.05em; color: #fbbf24; font-weight: 700; margin-top: 4px; word-break: break-all; letter-spacing: 2px;">AUGGCCAAAUUUGGUUAA</div>
+    </div>
+    <div style="background: #020617; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
+      <div style="font-size: 0.75em; color: #94a3b8; text-transform: uppercase;">2. Translated Polypeptide</div>
+      <div id="protein-output" style="font-family: system-ui; font-size: 1.0em; font-weight: 600; color: #34d399; margin-top: 4px;">Met — Ala — Lys — Phe — Gly — [STOP]</div>
+    </div>
+  </div>
+
+  <div style="font-size: 0.8em; color: #94a3b8; margin-bottom: 8px;">Codon Assembly Chain:</div>
+  <div id="codon-chips" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px;"></div>
+</div>
+```
+
+
+### Animated double helix
+
+The complementary double helix rotates as base pairs ($A=T, G \equiv C$) zip together through hydrogen bonding.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <div style="font-size: 0.9em; font-weight: 600;">Double Helix Hydrogen-Bonded Molecular Grid</div>
+    <div style="font-size: 0.8em; color: #94a3b8;">Click canvas to add a base pair pulse</div>
+  </div>
+  <canvas id="dna-helix-canvas" width="740" height="260" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+  <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.8em; margin-top: 10px;">
+    <span style="color: #38bdf8;">■ Adenine (A)</span>
+    <span style="color: #f87171;">■ Thymine (T)</span>
+    <span style="color: #34d399;">■ Guanine (G)</span>
+    <span style="color: #fbbf24;">■ Cytosine (C)</span>
+  </div>
+</div>
+```
+
+
+## Key takeaways
+
+- DNA is the archive: double-stranded, 2'-deoxyribose sugar, thymine ($T$), and it never leaves the nucleus.
+- RNA is the messenger and the tool: single-stranded, ribose sugar, uracil ($U$), it travels to the cytoplasm and can fold into catalytic ribozymes.
+- The one extra oxygen on ribose is why RNA hydrolyses in minutes to hours while DNA stays readable for millennia.
+- The workflow is $\text{DNA} \xrightarrow{\text{Transcription}} \text{mRNA} \xrightarrow{\text{Translation}} \text{Protein}$, read three bases at a time from `AUG` to a stop codon.
+- The code is universal: every human, animal, plant and virus uses the same 64-codon dictionary, and its redundancy is what makes many point mutations silent.
+
+```{=html}
+<script>
+// --- SIMULATOR 1: CODON TRANSLATOR ---
+const geneticCode = {
+  'AUG': { aa: 'Met (Start)', code: 'Met', type: 'start' },
+  'UUU': { aa: 'Phe', code: 'Phe', type: 'hydrophobic' }, 'UUC': { aa: 'Phe', code: 'Phe', type: 'hydrophobic' },
+  'UUA': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' }, 'UUG': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' },
+  'CUU': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' }, 'CUC': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' },
+  'CUA': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' }, 'CUG': { aa: 'Leu', code: 'Leu', type: 'hydrophobic' },
+  'AUU': { aa: 'Ile', code: 'Ile', type: 'hydrophobic' }, 'AUC': { aa: 'Ile', code: 'Ile', type: 'hydrophobic' },
+  'AUA': { aa: 'Ile', code: 'Ile', type: 'hydrophobic' },
+  'GUU': { aa: 'Val', code: 'Val', type: 'hydrophobic' }, 'GUC': { aa: 'Val', code: 'Val', type: 'hydrophobic' },
+  'GUA': { aa: 'Val', code: 'Val', type: 'hydrophobic' }, 'GUG': { aa: 'Val', code: 'Val', type: 'hydrophobic' },
+  'UCU': { aa: 'Ser', code: 'Ser', type: 'polar' }, 'UCC': { aa: 'Ser', code: 'Ser', type: 'polar' },
+  'UCA': { aa: 'Ser', code: 'Ser', type: 'polar' }, 'UCG': { aa: 'Ser', code: 'Ser', type: 'polar' },
+  'CCU': { aa: 'Pro', code: 'Pro', type: 'special' }, 'CCC': { aa: 'Pro', code: 'Pro', type: 'special' },
+  'CCA': { aa: 'Pro', code: 'Pro', type: 'special' }, 'CCG': { aa: 'Pro', code: 'Pro', type: 'special' },
+  'ACU': { aa: 'Thr', code: 'Thr', type: 'polar' }, 'ACC': { aa: 'Thr', code: 'Thr', type: 'polar' },
+  'ACA': { aa: 'Thr', code: 'Thr', type: 'polar' }, 'ACG': { aa: 'Thr', code: 'Thr', type: 'polar' },
+  'GCU': { aa: 'Ala', code: 'Ala', type: 'hydrophobic' }, 'GCC': { aa: 'Ala', code: 'Ala', type: 'hydrophobic' },
+  'GCA': { aa: 'Ala', code: 'Ala', type: 'hydrophobic' }, 'GCG': { aa: 'Ala', code: 'Ala', type: 'hydrophobic' },
+  'UAU': { aa: 'Tyr', code: 'Tyr', type: 'polar' }, 'UAC': { aa: 'Tyr', code: 'Tyr', type: 'polar' },
+  'CAU': { aa: 'His', code: 'His', type: 'basic' }, 'CAC': { aa: 'His', code: 'His', type: 'basic' },
+  'CAA': { aa: 'Gln', code: 'Gln', type: 'polar' }, 'CAG': { aa: 'Gln', code: 'Gln', type: 'polar' },
+  'AAU': { aa: 'Asn', code: 'Asn', type: 'polar' }, 'AAC': { aa: 'Asn', code: 'Asn', type: 'polar' },
+  'AAA': { aa: 'Lys', code: 'Lys', type: 'basic' }, 'AAG': { aa: 'Lys', code: 'Lys', type: 'basic' },
+  'GAU': { aa: 'Asp', code: 'Asp', type: 'acidic' }, 'GAC': { aa: 'Asp', code: 'Asp', type: 'acidic' },
+  'GAA': { aa: 'Glu', code: 'Glu', type: 'acidic' }, 'GAG': { aa: 'Glu', code: 'Glu', type: 'acidic' },
+  'UGU': { aa: 'Cys', code: 'Cys', type: 'special' }, 'UGC': { aa: 'Cys', code: 'Cys', type: 'special' },
+  'UGG': { aa: 'Trp', code: 'Trp', type: 'hydrophobic' },
+  'CGU': { aa: 'Arg', code: 'Arg', type: 'basic' }, 'CGC': { aa: 'Arg', code: 'Arg', type: 'basic' },
+  'CGA': { aa: 'Arg', code: 'Arg', type: 'basic' }, 'CGG': { aa: 'Arg', code: 'Arg', type: 'basic' },
+  'AGU': { aa: 'Ser', code: 'Ser', type: 'polar' }, 'AGC': { aa: 'Ser', code: 'Ser', type: 'polar' },
+  'AGA': { aa: 'Arg', code: 'Arg', type: 'basic' }, 'AGG': { aa: 'Arg', code: 'Arg', type: 'basic' },
+  'GGU': { aa: 'Gly', code: 'Gly', type: 'special' }, 'GGC': { aa: 'Gly', code: 'Gly', type: 'special' },
+  'GGA': { aa: 'Gly', code: 'Gly', type: 'special' }, 'GGG': { aa: 'Gly', code: 'Gly', type: 'special' },
+  'UAA': { aa: '[STOP]', code: 'STOP', type: 'stop' },
+  'UAG': { aa: '[STOP]', code: 'STOP', type: 'stop' },
+  'UGA': { aa: '[STOP]', code: 'STOP', type: 'stop' }
+};
+
+function runTranslation() {
+  const inputEl = document.getElementById('dna-input');
+  if (!inputEl) return;
+  
+  let rawDna = inputEl.value.toUpperCase().replace(/[^ATGC]/g, '');
+  inputEl.value = rawDna;
+
+  // 1. Transcribe DNA to mRNA (T -> U)
+  const mrna = rawDna.replace(/T/g, 'U');
+  document.getElementById('mrna-output').innerText = mrna.match(/.{1,3}/g)?.join(' ') || '';
+
+  // 2. Translate Codons
+  const codons = [];
+  for (let i = 0; i < mrna.length; i += 3) {
+    if (i + 3 <= mrna.length) {
+      codons.push(mrna.substring(i, i + 3));
+    }
+  }
+
+  const aaList = [];
+  const chipsContainer = document.getElementById('codon-chips');
+  chipsContainer.innerHTML = '';
+
+  codons.forEach((codon, idx) => {
+    const match = geneticCode[codon] || { aa: '???', code: '???', type: 'unknown' };
+    aaList.push(match.aa);
+
+    let bgColor = '#334155';
+    let textColor = '#fff';
+    if (match.type === 'start') { bgColor = '#059669'; }
+    else if (match.type === 'stop') { bgColor = '#dc2626'; }
+    else if (match.type === 'hydrophobic') { bgColor = '#1e3a8a'; }
+    else if (match.type === 'polar') { bgColor = '#0284c7'; }
+    else if (match.type === 'basic') { bgColor = '#7c3aed'; }
+    else if (match.type === 'acidic') { bgColor = '#b45309'; }
+
+    const chip = document.createElement('div');
+    chip.style.background = bgColor;
+    chip.style.color = textColor;
+    chip.style.padding = '6px 10px';
+    chip.style.borderRadius = '6px';
+    chip.style.fontSize = '0.85em';
+    chip.style.fontFamily = 'monospace';
+    chip.style.display = 'flex';
+    chip.style.flexDirection = 'column';
+    chip.style.alignItems = 'center';
+    chip.innerHTML = `<strong>${codon}</strong><span style="font-size: 0.8em; opacity: 0.9;">${match.code}</span>`;
+    chipsContainer.appendChild(chip);
+  });
+
+  document.getElementById('protein-output').innerText = aaList.length > 0 ? aaList.join(' — ') : 'No valid codons';
+}
+
+function setDnaPreset(preset) {
+  const input = document.getElementById('dna-input');
+  if (!input) return;
+  if (preset === 'insulin') {
+    input.value = "ATG TTT GTG AAC CAA CAC CTG TGC GGC TCA CAC CTG TAA";
+  } else if (preset === 'gfp') {
+    input.value = "ATG AGT AAA GGA GAA GAA CTT TTC ACT GGA GTT GTC TAA";
+  } else if (preset === 'sickle') {
+    // Sickle cell GAG (Glu) -> GTG (Val) mutation
+    input.value = "ATG GTG CAC CTG ACT CCT GTG GAG AAG TCT GCC GTT ACT TAA";
+  }
+  runTranslation();
+}
+
+// --- SIMULATOR 2: 2D ANIMATED DNA DOUBLE HELIX CANVAS ---
+let dnaHelixAnimId = null;
+let helixAngle = 0;
+
+const baseColors = {
+  'A': '#38bdf8', // Light blue
+  'T': '#f87171', // Red/pink
+  'G': '#34d399', // Green
+  'C': '#fbbf24'  // Amber/yellow
+};
+
+const baseSequence = ['A', 'T', 'G', 'C', 'C', 'A', 'A', 'T', 'T', 'G', 'G', 'C', 'T', 'A', 'G', 'C', 'A', 'T'];
+const compSequence = ['T', 'A', 'C', 'G', 'G', 'T', 'T', 'A', 'A', 'C', 'C', 'G', 'A', 'T', 'C', 'G', 'T', 'A'];
+
+function drawDnaHelix() {
+  const canvas = document.getElementById('dna-helix-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  helixAngle += 0.025;
+  const centerY = canvas.height / 2;
+  const amplitude = 55;
+  const spacing = 40;
+  const startX = 30;
+
+  for (let i = 0; i < baseSequence.length; i++) {
+    const x = startX + i * spacing;
+    if (x > canvas.width - 20) break;
+
+    const phase = helixAngle + i * 0.45;
+    const y1 = centerY + Math.sin(phase) * amplitude;
+    const y2 = centerY - Math.sin(phase) * amplitude;
+    const depth = Math.cos(phase); // -1 (back) to +1 (front)
+
+    // Hydrogen bond rung
+    ctx.strokeStyle = `rgba(148, 163, 184, ${0.25 + 0.35 * (depth + 1) / 2})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, y1);
+    ctx.lineTo(x, y2);
+    ctx.stroke();
+
+    // Base 1
+    const b1 = baseSequence[i];
+    ctx.fillStyle = baseColors[b1];
+    ctx.beginPath();
+    ctx.arc(x, y1, 6 + 2 * depth, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Base 2
+    const b2 = compSequence[i];
+    ctx.fillStyle = baseColors[b2];
+    ctx.beginPath();
+    ctx.arc(x, y2, 6 - 2 * depth, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Draw continuous backbone strands
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let i = 0; i < baseSequence.length; i++) {
+    const x = startX + i * spacing;
+    const phase = helixAngle + i * 0.45;
+    const y1 = centerY + Math.sin(phase) * amplitude;
+    if (i === 0) ctx.moveTo(x, y1); else ctx.lineTo(x, y1);
+  }
+  ctx.stroke();
+
+  ctx.strokeStyle = '#f43f5e';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let i = 0; i < baseSequence.length; i++) {
+    const x = startX + i * spacing;
+    const phase = helixAngle + i * 0.45;
+    const y2 = centerY - Math.sin(phase) * amplitude;
+    if (i === 0) ctx.moveTo(x, y2); else ctx.lineTo(x, y2);
+  }
+  ctx.stroke();
+
+  dnaHelixAnimId = requestAnimationFrame(drawDnaHelix);
+}
+
+function initDnaVisuals() {
+  runTranslation();
+  if (dnaHelixAnimId) cancelAnimationFrame(dnaHelixAnimId);
+  dnaHelixAnimId = requestAnimationFrame(drawDnaHelix);
+}
+
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => {
+    initDnaVisuals();
+  });
+}
+window.addEventListener('load', () => {
+  initDnaVisuals();
+});
+setTimeout(() => {
+  initDnaVisuals();
+}, 250);
+</script>
+```
+

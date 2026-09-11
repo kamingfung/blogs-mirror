@@ -1,0 +1,51 @@
+# Mirror of the MkDocs site at blogs.kamingfung.workers.dev, built with Quarto.
+# Source layout is mirrored exactly, so every relative image reference in a post
+# keeps working: docs/blogs/foo.md -> blogs/foo.qmd, assets copied alongside.
+project:
+  type: website
+  output-dir: _site
+  pre-render:
+    # Generates the palette stylesheets AND the curriculum sidebar/syllabus
+    # pages from series/*.yml. Ports hooks/palette.py and hooks/curriculum.py.
+    - .venv/bin/python tools/prerender.py
+
+# Written by tools/prerender.py on every render. Quarto reads it after the
+# pre-render step, verified on a cold start with no file present.
+metadata-files:
+  - _sidebar.yml
+
+website:
+  title: "Blogs"
+  description: "Course-style notes on atmospheric science, forecasting and scientific computing."
+  site-url: https://blogs-mirror.kamingfung.workers.dev
+  search:
+    location: sidebar
+  page-footer:
+    left: "Mirror of [blogs.kamingfung.workers.dev](https://blogs.kamingfung.workers.dev)"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme:
+      light: [cosmo, _palette-light.scss, custom.scss]
+      dark: [darkly, _palette-dark.scss, custom.scss]
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-summary: "Show code"
+    code-copy: true
+    html-math-method: mathjax
+    include-in-header: mathjax-config.html
+    # Homepage hero CSS carried over from the MkDocs site. curriculum.css is
+    # NOT here: tools/curriculum.py generates its own, already rewritten from
+    # Material variables onto Bootstrap and the --ink-* tokens, and wires it
+    # through _sidebar.yml.
+    css:
+      - styles/home.css
+    fig-align: center
+    anchor-sections: true
+    link-external-newwindow: true
+
+# Committed outputs ship as they are. No cell is ever re-run.
+execute:
+  enabled: false

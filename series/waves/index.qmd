@@ -1,0 +1,94 @@
+---
+title: "Waves, Sound and Imaging"
+description: "One idea, the wave, followed from a plucked string through Fourier analysis to a brain scan."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>11</dd></div>
+<div><dt>Modules</dt><dd>8 of 28 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>School physics and trigonometry.</dd></div>
+</dl>
+
+## Part 1 · What is a wave
+
+<ul class="syl">
+<li class="w"><a href="/blogs/wave-transverse-longitudinal.html">Transverse and longitudinal</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/describing-a-wave.html">Describing a wave</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/the-wave-equation.html">The wave equation</a><span class="m">Intermediate</span></li>
+</ul>
+
+## Part 2 · Superposition
+
+<ul class="syl">
+<li class="w"><a href="/blogs/wave-interference.html">Interference</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/standing-waves.html">Standing waves and resonance</a><span class="m">Introductory</span></li>
+<li class="g">Beats<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 3 · Sound and music
+
+<ul class="syl">
+<li class="w"><a href="/blogs/math-of-music.html">The mathematics of music</a><span class="m">Introductory</span></li>
+<li class="g">Why octaves sound the same<span class="m">Introductory · not written</span></li>
+<li class="g">Timbre<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 4 · Fourier
+
+<ul class="syl">
+<li class="w"><a href="/blogs/fourier-transform-audio.html">The Fourier transform and audio</a><span class="m">Intermediate</span></li>
+<li class="g">The DFT and the FFT<span class="m">Intermediate · not written</span></li>
+<li class="g">Sampling and aliasing<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 5 · Filters
+
+<ul class="syl">
+<li class="g">Low-pass, high-pass, band-pass<span class="m">Intermediate · not written</span></li>
+<li class="g">Convolution<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Light
+
+<ul class="syl">
+<li class="g">Electromagnetic waves<span class="m">Introductory · not written</span></li>
+<li class="g">Diffraction<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 7 · Spins and resonance
+
+<ul class="syl">
+<li class="g">NMR basics<span class="m">Intermediate · not written</span></li>
+<li class="g">Relaxation: T1 and T2<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 8 · MRI
+
+<ul class="syl">
+<li class="w"><a href="/blogs/mri-what-it-sees.html">What MRI sees</a><span class="m">Intermediate</span></li>
+<li class="g">k-space<span class="m">Intermediate · not written</span></li>
+<li class="g">Contrast: TR and TE<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 9 · Perfusion and function
+
+<ul class="syl">
+<li class="g">Perfusion imaging<span class="m">Intermediate · not written</span></li>
+<li class="g">BOLD and fMRI<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 10 · Other imaging
+
+<ul class="syl">
+<li class="g">CT<span class="m">Introductory · not written</span></li>
+<li class="g">Ultrasound<span class="m">Introductory · not written</span></li>
+<li class="g">PET<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 11 · Waves in the Earth
+
+<ul class="syl">
+<li class="g">Seismic waves<span class="m">Introductory · not written</span></li>
+<li class="g">Ocean waves<span class="m">Introductory · not written</span></li>
+</ul>

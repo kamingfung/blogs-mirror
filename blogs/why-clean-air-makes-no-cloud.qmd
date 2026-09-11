@@ -1,0 +1,138 @@
+---
+title: Why clean air doesn't make clouds
+description: The free energy barrier to forming a droplet out of pure vapour, and why it needs several hundred percent humidity to clear.
+date: 2026-08-28
+categories:
+- atmospheric science
+- aerosols
+- cloud physics
+- climate
+- air quality
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 4 · What clouds form on</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/what-is-an-aerosol.html">What is an aerosol?</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Homogeneous nucleation needs a supersaturation the atmosphere never reaches. The energy barrier says why a droplet cannot start from nothing.
+:::
+
+```{mermaid}
+graph TD
+    subgraph Thermodynamics["1. Thermodynamics of Nucleation"]
+        T1["Pure Water Vapor (Homogeneous)"] -->|Kelvin Penalty: RH > 400%| T2["Thermodynamically Infeasible"]
+        T3["Aerosol Ingestion (CCN)"] -->|Köhler Activation: RH ~ 100.1%| T4["Heterogeneous Droplet Nucleation"]
+    end
+    subgraph AerosolEffects["2. Anthropogenic Pollution Impact"]
+        T4 --> P1["Pristine Air: Low CCN -> Few, Large Droplets"]
+        T4 --> P2["Polluted Air: High CCN -> Many, Small Droplets"]
+        P2 --> P3["Twomey Effect (Increased Solar Albedo / Cooling)"]
+        P2 --> P4["Albrecht Effect (Precipitation Suppression & Longer Lifetime)"]
+    end
+```
+
+## Why clouds need seeds
+
+In the troposphere, air cools as it ascends adiabatically. As temperature drops, the saturation vapor pressure $e_s(T)$ decreases exponentially according to the Clausius-Clapeyron relation. However, reaching $100\%$ Relative Humidity ($S = e/e_s = 1.0$) is insufficient to spontaneously form a cloud.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 372" style="width:100%;max-width:930px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Plot of Gibbs free energy versus embryo radius, rising to a barrier at the critical radius and then falling, with the barrier height annotated for one percent and four hundred percent supersaturation.">
+  <defs>
+    <marker id="agAx" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color--light)"/></marker>
+    <marker id="agM" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+  </defs>
+  <line x1="90.0" y1="300.0" x2="580.0" y2="300.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#agAx)"/>
+  <line x1="90.0" y1="300.0" x2="90.0" y2="22.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#agAx)"/>
+  <line x1="90.0" y1="92.3" x2="540.0" y2="92.3" stroke="var(--md-default-fg-color--light)" stroke-width="1.3" stroke-dasharray="6 5"/>
+  <text x="536.0" y="84.3" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#916;G = 0</text>
+  <line x1="84.0" y1="40.4" x2="90.0" y2="40.4" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="79.0" y="44.9" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#916;G&#8727;</text>
+  <line x1="84.0" y1="92.3" x2="90.0" y2="92.3" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="79.0" y="96.8" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">0</text>
+  <line x1="84.0" y1="144.2" x2="90.0" y2="144.2" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="79.0" y="148.7" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;1</text>
+  <line x1="84.0" y1="196.2" x2="90.0" y2="196.2" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="79.0" y="200.7" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;2</text>
+  <line x1="84.0" y1="248.1" x2="90.0" y2="248.1" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="79.0" y="252.6" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;3</text>
+  <line x1="84.0" y1="300.0" x2="90.0" y2="300.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="79.0" y="304.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;4</text>
+  <line x1="90.0" y1="300.0" x2="90.0" y2="306.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="90.0" y="322.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">0</text>
+  <line x1="197.5" y1="300.0" x2="197.5" y2="306.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="197.5" y="322.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">0.5 r&#8727;</text>
+  <line x1="305.0" y1="300.0" x2="305.0" y2="306.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="305.0" y="322.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">r&#8727;</text>
+  <line x1="412.5" y1="300.0" x2="412.5" y2="306.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="412.5" y="322.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">1.5 r&#8727;</text>
+  <line x1="520.0" y1="300.0" x2="520.0" y2="306.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="520.0" y="322.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">2 r&#8727;</text>
+  <polyline points="90.0,92.3 94.3,92.2 98.6,92.1 102.9,91.8 107.2,91.4 111.5,90.9 115.8,90.2 120.1,89.5 124.4,88.7 128.7,87.9 133.0,86.9 137.3,85.9 141.6,84.8 145.9,83.6 150.2,82.4 154.5,81.1 158.8,79.8 163.1,78.4 167.4,77.0 171.7,75.5 176.0,74.0 180.3,72.5 184.6,71.0 188.9,69.5 193.2,67.9 197.5,66.3 201.8,64.8 206.1,63.2 210.4,61.7 214.7,60.2 219.0,58.7 223.3,57.2 227.6,55.7 231.9,54.3 236.2,52.9 240.5,51.6 244.8,50.3 249.1,49.1 253.4,47.9 257.7,46.8 262.0,45.8 266.3,44.8 270.6,43.9 274.9,43.2 279.2,42.4 283.5,41.8 287.8,41.3 292.1,40.9 296.4,40.6 300.7,40.4 305.0,40.4 309.3,40.4 313.6,40.6 317.9,41.0 322.2,41.4 326.5,42.0 330.8,42.8 335.1,43.7 339.4,44.8 343.7,46.0 348.0,47.4 352.3,49.0 356.6,50.8 360.9,52.7 365.2,54.9 369.5,57.2 373.8,59.7 378.1,62.5 382.4,65.4 386.7,68.6 391.0,72.0 395.3,75.6 399.6,79.4 403.9,83.5 408.2,87.8 412.5,92.3 416.8,97.1 421.1,102.2 425.4,107.5 429.7,113.0 434.0,118.9 438.3,125.0 442.6,131.4 446.9,138.1 451.2,145.1 455.5,152.3 459.8,159.9 464.1,167.8 468.4,175.9 472.7,184.4 477.0,193.2 481.3,202.4 485.6,211.8 489.9,221.6 494.2,231.8 498.5,242.3 502.8,253.1 507.1,264.3 511.4,275.8 515.7,287.7" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <line x1="90.0" y1="40.4" x2="305.0" y2="40.4" stroke="var(--ink-rust)" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="305.0" y1="40.4" x2="305.0" y2="300.0" stroke="var(--ink-rust)" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <circle cx="305.0" cy="40.4" r="5" fill="var(--ink-rust)"/>
+  <text x="315.0" y="32.4" text-anchor="start" fill="var(--ink-rust)" font-size="13" font-weight="600">critical nucleus (r&#8727;, &#916;G&#8727;)</text>
+  <circle cx="412.5" cy="92.3" r="4.5" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2.2"/>
+  <line x1="455.0" y1="112.0" x2="417.5" y2="96.3" stroke="var(--md-default-fg-color--light)" stroke-width="1.2"/>
+  <text x="459.0" y="116.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">embryo viable</text>
+  <text x="180.3" y="146.8" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">surface term</text>
+  <text x="180.3" y="163.8" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">+4&#960;r&#178;&#947; wins</text>
+  <text x="420.0" y="205.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">volume term</text>
+  <text x="420.0" y="222.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;r&#179; wins</text>
+  <text x="305.0" y="346.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">embryo radius r (in units of the critical radius r&#8727;)</text>
+  <text transform="translate(30 165) rotate(-90)" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13">&#916;G(r) / &#916;G&#8727;</text>
+  <line x1="552.0" y1="36.0" x2="552.0" y2="290.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <text x="570.0" y="60.0" text-anchor="start" fill="var(--md-default-fg-color)" font-size="14" font-weight="600">Why pure vapour never nucleates</text>
+  <text x="570.0" y="88.0" text-anchor="start" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">S = 1.01 (typical cloud updraught)</text>
+  <text x="570.0" y="108.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">r&#8727; = 2&#947;M / (&#961;RT ln S) &#8776; 108 nm</text>
+  <text x="570.0" y="127.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">&#916;G&#8727; &#8776; 9 &#215; 10&#8309; k<tspan font-size="0.74em" dy="3.2">B</tspan><tspan dy="-3.2">T</tspan></text>
+  <text x="570.0" y="146.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">nucleation rate &#8733; e&#8315;&#916;G&#8727;/k<tspan font-size="0.74em" dy="3.2">B</tspan><tspan dy="-3.2">T &#8776; 0</tspan></text>
+  <text x="570.0" y="186.0" text-anchor="start" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">S &#8776; 4 (i.e. 400 % RH)</text>
+  <text x="570.0" y="206.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">r&#8727; &#8776; 0.8 nm</text>
+  <text x="570.0" y="225.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">&#916;G&#8727; &#8776; 50 k<tspan font-size="0.74em" dy="3.2">B</tspan><tspan dy="-3.2">T</tspan></text>
+  <text x="570.0" y="244.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">only now does the barrier fall</text>
+  <text x="570.0" y="263.0" text-anchor="start" fill="var(--md-default-fg-color--light)" font-size="12.5">within reach of thermal noise</text>
+  <text x="570.0" y="292.0" text-anchor="start" fill="var(--ink-rust)" font-size="13" font-weight="600">Earth&#8217;s troposphere never</text>
+  <text x="570.0" y="311.0" text-anchor="start" fill="var(--ink-rust)" font-size="13" font-weight="600">exceeds S &#8776; 1.02.</text>
+</svg>
+<figcaption><strong>Figure 1 | Homogeneous nucleation fails not because it is forbidden, but because the energy barrier is a million times larger than thermal noise.</strong> Assembling a droplet from vapour costs surface energy that grows as $r^2$ and gains bulk condensation energy that grows as $r^3$, so $\Delta G$ rises to a maximum $\Delta G^*$ at the critical radius $r^*$ before turning over; plotted in reduced units the curve is exactly $\Delta G/\Delta G^* = 3u^2 - 2u^3$ with $u = r/r^*$, crossing zero at $u = 1.5$. At the $S = 1.01$ supersaturations real updraughts reach, $r^* \approx 108\text{ nm}$ and $\Delta G^* \approx 9 \times 10^5\,k_BT$ — and because the nucleation rate carries $e^{-\Delta G^*/k_BT}$, that is indistinguishable from never. Only near $S \approx 4$ does the barrier drop to roughly $50\,k_BT$, which is why the atmosphere must instead borrow a pre-existing surface.</figcaption>
+</figure>
+```
+
+
+## The homogeneous nucleation barrier
+
+The total change in Gibbs free energy to assemble an embryonic pure water droplet of radius $r$ directly from the gas phase is:
+
+$$\Delta G_{\text{hom}}(r) = -\frac{4}{3} \pi r^3 \frac{\rho_L R T}{M_w} \ln(S) + 4 \pi r^2 \gamma_{wv}$$
+
+where:
+
+- $S = e / e_s(T)$ is the vapor saturation ratio ($S > 1$ represents supersaturation).
+- $\rho_L$ is the density of liquid water ($1000\text{ kg m}^{-3}$).
+- $M_w$ is the molar mass of water ($0.018015\text{ kg mol}^{-1}$).
+- $\gamma_{wv}$ is the liquid-vapor surface tension ($\approx 0.073\text{ N m}^{-1}$).
+
+Differentiating with respect to $r$ yields the critical droplet radius $r^*$ and the critical energy barrier $\Delta G^*$:
+
+$$r^* = \frac{2 M_w \gamma_{wv}}{\rho_L R T \ln(S)}, \qquad \Delta G^* = \frac{16 \pi M_w^2 \gamma_{wv}^3}{3 (\rho_L R T \ln S)^2}$$
+
+Because molecules on a sharply curved convex surface have fewer neighboring liquid bonds, the local vapor pressure is elevated (the **Kelvin effect**). For pure water clusters to survive without evaporating at typical ambient supersaturations ($S \approx 1.001\text{ to }1.01$), the required cluster radius would need to be macroscopically large. For an embryonic cluster of $r \sim 1\text{ nm}$, spontaneous nucleation requires $S > 4.0$ (Relative Humidity $> 400\%$). 
+
+Because ambient atmospheric supersaturations rarely exceed $1.01$ ($0.1\% - 1.0\%$), **homogeneous nucleation does not occur in the troposphere**.
+
+## Key takeaways
+
+- Reaching $100\%$ relative humidity is not enough: assembling a droplet from vapour costs surface energy that grows as $r^2$ before the bulk energy gain that grows as $r^3$ takes over.
+- The barrier $\Delta G^*$ sits at the critical radius $r^* = 2 M_w \gamma_{wv} / (\rho_L R T \ln S)$; at $S = 1.01$ it is about $9 \times 10^5\,k_BT$, and the nucleation rate scales as $e^{-\Delta G^*/k_BT}$.
+- Only near $S \approx 4$ ($400\%$ RH) does the barrier fall to tens of $k_BT$; real updraughts reach $0.1$ to $1\%$, so homogeneous nucleation never happens in the troposphere.
+- Clouds therefore borrow a pre-existing surface, an aerosol particle, which is where Köhler theory picks up.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/what-is-an-aerosol.html"><span>Previous</span>What is an aerosol?</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/kohler-theory.html"><span>Next</span>Köhler theory</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

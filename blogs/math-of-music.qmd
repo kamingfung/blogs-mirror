@@ -1,0 +1,440 @@
+---
+title: The mathematics of music
+description: String-length ratios, why some intervals sound consonant, the Pythagorean comma, and the compromise that is equal temperament.
+date: 2026-08-27
+categories:
+- mathematics
+- music
+- acoustics
+- physics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/waves/index.html">Waves, Sound and Imaging</a><span class="sep">·</span>Part 3 · Sound and music</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/standing-waves.html">Standing waves and resonance</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Consonant intervals are small integer frequency ratios ($2:1$ octave, $3:2$ fifth, $4:3$ fourth), and dissonance is the audible beating that appears when the ratio is not simple. Twelve stacked fifths miss seven octaves by the Pythagorean comma ($(\frac{3}{2})^{12} \neq 2^7$), so no pure-ratio scale can close; 12-tone equal temperament spreads that error evenly with a semitone ratio of $\sqrt[12]{2} \approx 1.05946$. A Web Audio playground at the end lets you hear both.
+:::
+
+Why do certain combinations of musical notes sound uplifting, triumphant, or sweet, while others sound tense, jarring, or harsh?
+
+To our ears, music feels like an emotional art form. But beneath every chord, melody, and scale lies **mathematics**. Over 2,500 years ago, Greek philosophers discovered that the sensation of musical harmony is driven by simple integer ratios.
+
+## Ratios the ear hears
+
+### The monochord, where pitch is geometry
+
+Around 500 BCE, Pythagoras experimented with a **monochord**—a wooden soundbox with a single stretched vibrating string and a movable bridge. He observed a profound physical law: **musical harmony is governed by small whole-number ratios of string lengths**.
+
+```
+             Pythagorean String Length Ratios & Musical Intervals
+                                                                          Frequency Ratio
+Full String (1.0)       [═══════════════════════════════════] C4 (Fundamental)  1 : 1 (261.6 Hz)
+Octave (1/2 length)     [═══════════════════]                 C5 (Double Pitch) 2 : 1 (523.2 Hz)
+Perfect 5th (2/3 length)[═════════════════════════]           G4 (Fifth)        3 : 2 (392.0 Hz)
+Perfect 4th (3/4 length)[═══════════════════════════════]     F4 (Fourth)       4 : 3 (348.8 Hz)
+Major 3rd (4/5 length)  [═════════════════════════════════]   E4 (Major Third)  5 : 4 (327.0 Hz)
+```
+
+```{mermaid}
+flowchart TD
+    Pythagoras["Pluck Stretched String of Length L (Frequency f0)"]
+    
+    Pythagoras --> Half["Divide String in Half: L / 2"]
+    Pythagoras --> TwoThird["Divide String at 2/3: 2L / 3"]
+    Pythagoras --> ThreeFourth["Divide String at 3/4: 3L / 4"]
+    Pythagoras --> FourFifth["Divide String at 4/5: 4L / 5"]
+
+    Half --> Octave["Octave (2:1 Ratio)<br/>Identical note, higher register"]
+    TwoThird --> Fifth["Perfect 5th (3:2 Ratio)<br/>Most powerful harmonic interval (C -> G)"]
+    ThreeFourth --> Fourth["Perfect 4th (4:3 Ratio)<br/>Resonant foundational step (C -> F)"]
+    FourFifth --> Third["Major 3rd (5:4 Ratio)<br/>Bright, cheerful chord tone (C -> E)"]
+
+    class Pythagoras indigo
+    class Octave plum
+    class Fifth olive
+    class Fourth sage
+    class Third ochre
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+When you pluck an open string, it vibrates at frequency $f_0$. If you press your finger down at the exact midpoint ($1/2$ length), the string vibrates twice as fast ($2f_0$). The human brain recognizes $2f_0$ as the exact same musical note, just one **octave** higher.
+
+### Consonance, dissonance and acoustic beating
+
+Why do simple ratios like $2:1$, $3:2$, and $4:3$ sound pleasing (**consonant**), while complex ratios like $45:32$ (the dreaded *tritone* or "devil's interval") sound tense and jarring (**dissonant**)?
+
+The secret lies in **wave interference** and **acoustic beating**.
+
+When two sound waves with frequencies $f_1$ and $f_2$ play simultaneously, their combined waveform is:
+
+$$y(t) = \sin(2\pi f_1 t) + \sin(2\pi f_2 t) = \underbrace{2 \cos\left( 2\pi \frac{f_1 - f_2}{2} t \right)}_{\text{Pulsing Envelope}} \cdot \underbrace{\sin\left( 2\pi \frac{f_1 + f_2}{2} t \right)}_{\text{Carrier Pitch}}$$
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 436" style="width:100%;max-width:930px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Waveform plot of two summed sine waves at 40 and 45 hertz over 400 milliseconds, with a slow magenta envelope whose nulls at 100 and 300 milliseconds mark a beat period of 200 milliseconds.">
+  <defs>
+    <marker id="mzAx" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color--light)"/></marker>
+    <marker id="mzB" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-indigo)"/></marker>
+  </defs>
+  <line x1="80.0" y1="310.0" x2="750.0" y2="310.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#mzAx)"/>
+  <line x1="80.0" y1="310.0" x2="80.0" y2="62.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.6" marker-end="url(#mzAx)"/>
+  <line x1="80.0" y1="190.0" x2="728.0" y2="190.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line x1="74.0" y1="290.0" x2="80.0" y2="290.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="69.0" y="294.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;2</text>
+  <line x1="74.0" y1="240.0" x2="80.0" y2="240.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="69.0" y="244.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">&#8722;1</text>
+  <line x1="74.0" y1="190.0" x2="80.0" y2="190.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="69.0" y="194.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">0</text>
+  <line x1="74.0" y1="140.0" x2="80.0" y2="140.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="69.0" y="144.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">1</text>
+  <line x1="74.0" y1="90.0" x2="80.0" y2="90.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="69.0" y="94.5" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="12.5">2</text>
+  <line x1="80.0" y1="310.0" x2="80.0" y2="316.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="80.0" y="332.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">0</text>
+  <line x1="240.0" y1="310.0" x2="240.0" y2="316.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="240.0" y="332.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">100</text>
+  <line x1="400.0" y1="310.0" x2="400.0" y2="316.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="400.0" y="332.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">200</text>
+  <line x1="560.0" y1="310.0" x2="560.0" y2="316.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="560.0" y="332.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">300</text>
+  <line x1="720.0" y1="310.0" x2="720.0" y2="316.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <text x="720.0" y="332.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">400</text>
+  <line x1="160.0" y1="310.0" x2="160.0" y2="313.5" stroke="var(--md-default-fg-color--light)" stroke-width="1.1"/>
+  <line x1="320.0" y1="310.0" x2="320.0" y2="313.5" stroke="var(--md-default-fg-color--light)" stroke-width="1.1"/>
+  <line x1="480.0" y1="310.0" x2="480.0" y2="313.5" stroke="var(--md-default-fg-color--light)" stroke-width="1.1"/>
+  <line x1="640.0" y1="310.0" x2="640.0" y2="313.5" stroke="var(--md-default-fg-color--light)" stroke-width="1.1"/>
+  <polyline points="80.0,90.0 83.2,90.0 86.4,90.2 89.6,90.4 92.8,90.8 96.0,91.2 99.2,91.8 102.4,92.4 105.6,93.1 108.8,94.0 112.0,94.9 115.2,95.9 118.4,97.0 121.6,98.2 124.8,99.5 128.0,100.9 131.2,102.4 134.4,103.9 137.6,105.6 140.8,107.3 144.0,109.1 147.2,111.0 150.4,112.9 153.6,115.0 156.8,117.1 160.0,119.3 163.2,121.5 166.4,123.9 169.6,126.3 172.8,128.7 176.0,131.2 179.2,133.8 182.4,136.4 185.6,139.1 188.8,141.8 192.0,144.6 195.2,147.4 198.4,150.3 201.6,153.2 204.8,156.1 208.0,159.1 211.2,162.1 214.4,165.1 217.6,168.2 220.8,171.3 224.0,174.4 227.2,177.5 230.4,180.6 233.6,183.7 236.8,186.9 240.0,190.0 243.2,193.1 246.4,196.3 249.6,199.4 252.8,202.5 256.0,205.6 259.2,208.7 262.4,211.8 265.6,214.9 268.8,217.9 272.0,220.9 275.2,223.9 278.4,226.8 281.6,229.7 284.8,232.6 288.0,235.4 291.2,238.2 294.4,240.9 297.6,243.6 300.8,246.2 304.0,248.8 307.2,251.3 310.4,253.7 313.6,256.1 316.8,258.5 320.0,260.7 323.2,262.9 326.4,265.0 329.6,267.1 332.8,269.0 336.0,270.9 339.2,272.7 342.4,274.4 345.6,276.1 348.8,277.6 352.0,279.1 355.2,280.5 358.4,281.8 361.6,283.0 364.8,284.1 368.0,285.1 371.2,286.0 374.4,286.9 377.6,287.6 380.8,288.2 384.0,288.8 387.2,289.2 390.4,289.6 393.6,289.8 396.8,290.0 400.0,290.0 403.2,290.0 406.4,289.8 409.6,289.6 412.8,289.2 416.0,288.8 419.2,288.2 422.4,287.6 425.6,286.9 428.8,286.0 432.0,285.1 435.2,284.1 438.4,283.0 441.6,281.8 444.8,280.5 448.0,279.1 451.2,277.6 454.4,276.1 457.6,274.4 460.8,272.7 464.0,270.9 467.2,269.0 470.4,267.1 473.6,265.0 476.8,262.9 480.0,260.7 483.2,258.5 486.4,256.1 489.6,253.7 492.8,251.3 496.0,248.8 499.2,246.2 502.4,243.6 505.6,240.9 508.8,238.2 512.0,235.4 515.2,232.6 518.4,229.7 521.6,226.8 524.8,223.9 528.0,220.9 531.2,217.9 534.4,214.9 537.6,211.8 540.8,208.7 544.0,205.6 547.2,202.5 550.4,199.4 553.6,196.3 556.8,193.1 560.0,190.0 563.2,186.9 566.4,183.7 569.6,180.6 572.8,177.5 576.0,174.4 579.2,171.3 582.4,168.2 585.6,165.1 588.8,162.1 592.0,159.1 595.2,156.1 598.4,153.2 601.6,150.3 604.8,147.4 608.0,144.6 611.2,141.8 614.4,139.1 617.6,136.4 620.8,133.8 624.0,131.2 627.2,128.7 630.4,126.3 633.6,123.9 636.8,121.5 640.0,119.3 643.2,117.1 646.4,115.0 649.6,112.9 652.8,111.0 656.0,109.1 659.2,107.3 662.4,105.6 665.6,103.9 668.8,102.4 672.0,100.9 675.2,99.5 678.4,98.2 681.6,97.0 684.8,95.9 688.0,94.9 691.2,94.0 694.4,93.1 697.6,92.4 700.8,91.8 704.0,91.2 707.2,90.8 710.4,90.4 713.6,90.2 716.8,90.0 720.0,90.0" fill="none" stroke="var(--ink-rust)" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="7 5"/>
+  <polyline points="80.0,290.0 83.2,290.0 86.4,289.8 89.6,289.6 92.8,289.2 96.0,288.8 99.2,288.2 102.4,287.6 105.6,286.9 108.8,286.0 112.0,285.1 115.2,284.1 118.4,283.0 121.6,281.8 124.8,280.5 128.0,279.1 131.2,277.6 134.4,276.1 137.6,274.4 140.8,272.7 144.0,270.9 147.2,269.0 150.4,267.1 153.6,265.0 156.8,262.9 160.0,260.7 163.2,258.5 166.4,256.1 169.6,253.7 172.8,251.3 176.0,248.8 179.2,246.2 182.4,243.6 185.6,240.9 188.8,238.2 192.0,235.4 195.2,232.6 198.4,229.7 201.6,226.8 204.8,223.9 208.0,220.9 211.2,217.9 214.4,214.9 217.6,211.8 220.8,208.7 224.0,205.6 227.2,202.5 230.4,199.4 233.6,196.3 236.8,193.1 240.0,190.0 243.2,186.9 246.4,183.7 249.6,180.6 252.8,177.5 256.0,174.4 259.2,171.3 262.4,168.2 265.6,165.1 268.8,162.1 272.0,159.1 275.2,156.1 278.4,153.2 281.6,150.3 284.8,147.4 288.0,144.6 291.2,141.8 294.4,139.1 297.6,136.4 300.8,133.8 304.0,131.2 307.2,128.7 310.4,126.3 313.6,123.9 316.8,121.5 320.0,119.3 323.2,117.1 326.4,115.0 329.6,112.9 332.8,111.0 336.0,109.1 339.2,107.3 342.4,105.6 345.6,103.9 348.8,102.4 352.0,100.9 355.2,99.5 358.4,98.2 361.6,97.0 364.8,95.9 368.0,94.9 371.2,94.0 374.4,93.1 377.6,92.4 380.8,91.8 384.0,91.2 387.2,90.8 390.4,90.4 393.6,90.2 396.8,90.0 400.0,90.0 403.2,90.0 406.4,90.2 409.6,90.4 412.8,90.8 416.0,91.2 419.2,91.8 422.4,92.4 425.6,93.1 428.8,94.0 432.0,94.9 435.2,95.9 438.4,97.0 441.6,98.2 444.8,99.5 448.0,100.9 451.2,102.4 454.4,103.9 457.6,105.6 460.8,107.3 464.0,109.1 467.2,111.0 470.4,112.9 473.6,115.0 476.8,117.1 480.0,119.3 483.2,121.5 486.4,123.9 489.6,126.3 492.8,128.7 496.0,131.2 499.2,133.8 502.4,136.4 505.6,139.1 508.8,141.8 512.0,144.6 515.2,147.4 518.4,150.3 521.6,153.2 524.8,156.1 528.0,159.1 531.2,162.1 534.4,165.1 537.6,168.2 540.8,171.3 544.0,174.4 547.2,177.5 550.4,180.6 553.6,183.7 556.8,186.9 560.0,190.0 563.2,193.1 566.4,196.3 569.6,199.4 572.8,202.5 576.0,205.6 579.2,208.7 582.4,211.8 585.6,214.9 588.8,217.9 592.0,220.9 595.2,223.9 598.4,226.8 601.6,229.7 604.8,232.6 608.0,235.4 611.2,238.2 614.4,240.9 617.6,243.6 620.8,246.2 624.0,248.8 627.2,251.3 630.4,253.7 633.6,256.1 636.8,258.5 640.0,260.7 643.2,262.9 646.4,265.0 649.6,267.1 652.8,269.0 656.0,270.9 659.2,272.7 662.4,274.4 665.6,276.1 668.8,277.6 672.0,279.1 675.2,280.5 678.4,281.8 681.6,283.0 684.8,284.1 688.0,285.1 691.2,286.0 694.4,286.9 697.6,287.6 700.8,288.2 704.0,288.8 707.2,289.2 710.4,289.6 713.6,289.8 716.8,290.0 720.0,290.0" fill="none" stroke="var(--ink-rust)" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="7 5"/>
+  <polyline points="80.0,190.0 81.6,163.6 83.2,139.1 84.8,118.3 86.4,102.5 88.0,93.1 89.6,90.5 91.2,95.0 92.8,106.2 94.4,123.4 96.0,145.2 97.6,170.0 99.2,196.2 100.8,221.7 102.4,244.9 104.0,263.9 105.6,277.6 107.2,285.0 108.8,285.6 110.4,279.4 112.0,266.9 113.6,249.2 115.2,227.4 116.8,203.2 118.4,178.3 120.0,154.6 121.6,133.8 123.2,117.1 124.8,105.9 126.4,100.7 128.0,102.0 129.6,109.5 131.2,122.5 132.8,140.1 134.4,160.8 136.0,183.3 137.6,205.8 139.2,226.8 140.8,244.7 142.4,258.4 144.0,266.9 145.6,269.9 147.2,267.1 148.8,259.0 150.4,246.2 152.0,229.7 153.6,210.9 155.2,191.2 156.8,171.9 158.4,154.4 160.0,140.0 161.6,129.6 163.2,123.7 164.8,122.7 166.4,126.5 168.0,134.6 169.6,146.4 171.2,160.7 172.8,176.6 174.4,192.8 176.0,208.2 177.6,221.6 179.2,232.2 180.8,239.3 182.4,242.6 184.0,242.1 185.6,237.9 187.2,230.5 188.8,220.7 190.4,209.3 192.0,197.1 193.6,185.2 195.2,174.3 196.8,165.3 198.4,158.6 200.0,154.6 201.6,153.5 203.2,155.0 204.8,158.9 206.4,164.7 208.0,171.8 209.6,179.6 211.2,187.4 212.8,194.5 214.4,200.6 216.0,205.2 217.6,208.0 219.2,209.2 220.8,208.7 222.4,206.8 224.0,203.9 225.6,200.4 227.2,196.7 228.8,193.2 230.4,190.3 232.0,188.2 233.6,187.0 235.2,186.7 236.8,187.3 238.4,188.5 240.0,190.0 241.6,191.5 243.2,192.7 244.8,193.3 246.4,193.0 248.0,191.8 249.6,189.7 251.2,186.8 252.8,183.3 254.4,179.6 256.0,176.1 257.6,173.2 259.2,171.3 260.8,170.8 262.4,172.0 264.0,174.8 265.6,179.4 267.2,185.5 268.8,192.6 270.4,200.4 272.0,208.2 273.6,215.3 275.2,221.1 276.8,225.0 278.4,226.5 280.0,225.4 281.6,221.4 283.2,214.7 284.8,205.7 286.4,194.8 288.0,182.9 289.6,170.7 291.2,159.3 292.8,149.5 294.4,142.1 296.0,137.9 297.6,137.4 299.2,140.7 300.8,147.8 302.4,158.4 304.0,171.8 305.6,187.2 307.2,203.4 308.8,219.3 310.4,233.6 312.0,245.4 313.6,253.5 315.2,257.3 316.8,256.3 318.4,250.4 320.0,240.0 321.6,225.6 323.2,208.1 324.8,188.8 326.4,169.1 328.0,150.3 329.6,133.8 331.2,121.0 332.8,112.9 334.4,110.1 336.0,113.1 337.6,121.6 339.2,135.3 340.8,153.2 342.4,174.2 344.0,196.7 345.6,219.2 347.2,239.9 348.8,257.5 350.4,270.5 352.0,278.0 353.6,279.3 355.2,274.1 356.8,262.9 358.4,246.2 360.0,225.4 361.6,201.7 363.2,176.8 364.8,152.6 366.4,130.8 368.0,113.1 369.6,100.6 371.2,94.4 372.8,95.0 374.4,102.4 376.0,116.1 377.6,135.1 379.2,158.3 380.8,183.8 382.4,210.0 384.0,234.8 385.6,256.6 387.2,273.8 388.8,285.0 390.4,289.5 392.0,286.9 393.6,277.5 395.2,261.7 396.8,240.9 398.4,216.4 400.0,190.0 401.6,163.6 403.2,139.1 404.8,118.3 406.4,102.5 408.0,93.1 409.6,90.5 411.2,95.0 412.8,106.2 414.4,123.4 416.0,145.2 417.6,170.0 419.2,196.2 420.8,221.7 422.4,244.9 424.0,263.9 425.6,277.6 427.2,285.0 428.8,285.6 430.4,279.4 432.0,266.9 433.6,249.2 435.2,227.4 436.8,203.2 438.4,178.3 440.0,154.6 441.6,133.8 443.2,117.1 444.8,105.9 446.4,100.7 448.0,102.0 449.6,109.5 451.2,122.5 452.8,140.1 454.4,160.8 456.0,183.3 457.6,205.8 459.2,226.8 460.8,244.7 462.4,258.4 464.0,266.9 465.6,269.9 467.2,267.1 468.8,259.0 470.4,246.2 472.0,229.7 473.6,210.9 475.2,191.2 476.8,171.9 478.4,154.4 480.0,140.0 481.6,129.6 483.2,123.7 484.8,122.7 486.4,126.5 488.0,134.6 489.6,146.4 491.2,160.7 492.8,176.6 494.4,192.8 496.0,208.2 497.6,221.6 499.2,232.2 500.8,239.3 502.4,242.6 504.0,242.1 505.6,237.9 507.2,230.5 508.8,220.7 510.4,209.3 512.0,197.1 513.6,185.2 515.2,174.3 516.8,165.3 518.4,158.6 520.0,154.6 521.6,153.5 523.2,155.0 524.8,158.9 526.4,164.7 528.0,171.8 529.6,179.6 531.2,187.4 532.8,194.5 534.4,200.6 536.0,205.2 537.6,208.0 539.2,209.2 540.8,208.7 542.4,206.8 544.0,203.9 545.6,200.4 547.2,196.7 548.8,193.2 550.4,190.3 552.0,188.2 553.6,187.0 555.2,186.7 556.8,187.3 558.4,188.5 560.0,190.0 561.6,191.5 563.2,192.7 564.8,193.3 566.4,193.0 568.0,191.8 569.6,189.7 571.2,186.8 572.8,183.3 574.4,179.6 576.0,176.1 577.6,173.2 579.2,171.3 580.8,170.8 582.4,172.0 584.0,174.8 585.6,179.4 587.2,185.5 588.8,192.6 590.4,200.4 592.0,208.2 593.6,215.3 595.2,221.1 596.8,225.0 598.4,226.5 600.0,225.4 601.6,221.4 603.2,214.7 604.8,205.7 606.4,194.8 608.0,182.9 609.6,170.7 611.2,159.3 612.8,149.5 614.4,142.1 616.0,137.9 617.6,137.4 619.2,140.7 620.8,147.8 622.4,158.4 624.0,171.8 625.6,187.2 627.2,203.4 628.8,219.3 630.4,233.6 632.0,245.4 633.6,253.5 635.2,257.3 636.8,256.3 638.4,250.4 640.0,240.0 641.6,225.6 643.2,208.1 644.8,188.8 646.4,169.1 648.0,150.3 649.6,133.8 651.2,121.0 652.8,112.9 654.4,110.1 656.0,113.1 657.6,121.6 659.2,135.3 660.8,153.2 662.4,174.2 664.0,196.7 665.6,219.2 667.2,239.9 668.8,257.5 670.4,270.5 672.0,278.0 673.6,279.3 675.2,274.1 676.8,262.9 678.4,246.2 680.0,225.4 681.6,201.7 683.2,176.8 684.8,152.6 686.4,130.8 688.0,113.1 689.6,100.6 691.2,94.4 692.8,95.0 694.4,102.4 696.0,116.1 697.6,135.1 699.2,158.3 700.8,183.8 702.4,210.0 704.0,234.8 705.6,256.6 707.2,273.8 708.8,285.0 710.4,289.5 712.0,286.9 713.6,277.5 715.2,261.7 716.8,240.9 718.4,216.4 720.0,190.0" fill="none" stroke="var(--md-default-fg-color)" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+  <line x1="240.0" y1="80.0" x2="240.0" y2="310.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <line x1="560.0" y1="80.0" x2="560.0" y2="310.0" stroke="var(--md-default-fg-color--light)" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <text x="240.0" y="130.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5" font-weight="600">silence</text>
+  <text x="560.0" y="130.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5" font-weight="600">silence</text>
+  <line x1="396.0" y1="52.0" x2="82.0" y2="52.0" stroke="var(--ink-indigo)" stroke-width="2" marker-end="url(#mzB)"/>
+  <line x1="84.0" y1="52.0" x2="398.0" y2="52.0" stroke="var(--ink-indigo)" stroke-width="2" marker-end="url(#mzB)"/>
+  <line x1="80.0" y1="46.0" x2="80.0" y2="58.0" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <line x1="400.0" y1="46.0" x2="400.0" y2="58.0" stroke="var(--ink-indigo)" stroke-width="2"/>
+  <text x="240.0" y="40.0" text-anchor="middle" fill="var(--ink-indigo)" font-size="13" font-weight="600">T<tspan font-size="0.74em" dy="3.2">beat</tspan><tspan dy="-3.2"> = 1 / |f&#8321; &#8722; f&#8322;| = 200 ms (5 throbs per second)</tspan></text>
+  <text x="728.0" y="94.0" text-anchor="start" fill="var(--ink-rust)" font-size="12.5" font-weight="600">envelope</text>
+  <text x="400.0" y="356.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13.5">time t (ms)</text>
+  <text transform="translate(30 190) rotate(-90)" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="13.5">displacement y(t) (arbitrary units)</text>
+  <text x="80.0" y="20.0" text-anchor="start" fill="var(--md-default-fg-color)" font-size="13" font-weight="600">y(t) = sin(2&#960;f&#8321;t) + sin(2&#960;f&#8322;t), f&#8321; = 40 Hz, f&#8322; = 45 Hz</text>
+  <text x="400.0" y="378.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">the envelope crosses zero at 100 and 300 ms: the two tones cancel and the note briefly disappears</text>
+  <text x="400.0" y="398.0" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">low pitches are plotted so single cycles resolve; the envelope algebra is identical at any pitch</text>
+</svg>
+<figcaption><strong>Figure 1 | Dissonance is not a property of either note — it is the throb their sum acquires.</strong> Adding two sines of $40$ and $45\text{ Hz}$ factors exactly into a carrier at the mean pitch $(f_1+f_2)/2 = 42.5\text{ Hz}$ multiplied by a slow envelope $2\cos[2\pi\,(f_1-f_2)t/2]$, drawn here in magenta. The envelope crosses zero twice per cycle, so loudness peaks every $T_{\text{beat}} = 1/|f_1-f_2| = 200\text{ ms}$ — five audible throbs a second, exactly the rate a piano tuner listens for. Push $|f_1-f_2|$ up to $15\text{–}40\text{ Hz}$ and the ear can no longer resolve individual throbs; the roughness fuses into the grating sensation we call dissonance. Simple integer ratios escape this entirely, because their overtones coincide instead of nearly coinciding, and $|f_1-f_2|$ for every matching pair is zero.</figcaption>
+</figure>
+```
+
+
+- **Slow beating ($1 - 5\text{ Hz}$)**: The volume throbs gently (used by piano tuners to tune unisons).
+- **Rapid beating ($15 - 40\text{ Hz}$)**: The ear cannot separate individual pulses, perceiving a harsh, grating friction. **This is dissonance.**
+- **Harmonic alignment (Simple integer ratios)**: Overtones fall into exact matching frequencies ($2f_1 = 3f_2$). There is zero phase clash and no acoustic beating. **This is consonance.**
+
+### The harmonic series
+
+When a physical string or acoustic air column vibrates, it doesn't vibrate at only one frequency. Boundary conditions force it to vibrate simultaneously in integer multiples called the **Harmonic Series**:
+
+$$f_n = n \cdot f_0 \quad (n = 1, 2, 3, 4, 5, \dots)$$
+
+```
+        The First 6 Harmonics of Root Note C2 (65.4 Hz)
+
+Harmonic   Frequency Multiple   Musical Note   Interval from Fundamental
+  1st            1 f₀              C2          Fundamental Root
+  2nd            2 f₀              C3          Octave (2:1)
+  3rd            3 f₀              G3          Perfect 5th (3:2)
+  4th            4 f₀              C4          Double Octave (4:1)
+  5th            5 f₀              E4          Major 3rd (5:4)
+  6th            6 f₀              G4          Octave + 5th (6:1)
+```
+
+Every time you hear a single note played on a cello, trumpet, or piano, your ear is secretly hearing the entire **Major Triad chord** ($C - E - G$) embedded within the physics of the harmonic series!
+
+---
+
+## The comma and the compromise
+
+### The Pythagorean comma
+
+Pythagoras attempted to construct an entire 12-note musical scale by starting at a root note and repeatedly stacking **Perfect Fifths** (multiplying by $3/2$):
+
+$$C \xrightarrow{\times 3/2} G \xrightarrow{\times 3/2} D \xrightarrow{\times 3/2} A \xrightarrow{\times 3/2} E \dots$$
+
+After stacking 12 consecutive fifths, you should theoretically return to the exact same note (7 octaves higher):
+
+```{mermaid}
+graph LR
+    C["C"] --> G["G"] --> D["D"] --> A["A"] --> E["E"] --> B["B"]
+    B --> Fs["F#"] --> Cs["C#"] --> Gs["G#"] --> Ds["D#"] --> As["A#"] --> F["F"] --> CEnd["C (Cycle Closes?)"]
+
+    class C indigo
+    class CEnd rust
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+Mathematically, 12 fifths must equal 7 octaves:
+
+$$\left(\frac{3}{2}\right)^{12} \stackrel{?}{=} 2^7$$
+
+Let us calculate the numbers:
+
+$$\left(\frac{3}{2}\right)^{12} = \frac{531,441}{4,096} \approx 129.746338$$
+
+$$2^7 = 128$$
+
+They do **not** match!
+
+$$\frac{129.746338}{128} \approx 1.013643 \quad (\text{a discrepancy of } \approx 23.46 \text{ musical cents})$$
+
+This small fractional error is the **Pythagorean Comma**. Because no power of $3$ can ever equal a power of $2$ ($3^{12} \ne 2^{19}$ by the Fundamental Theorem of Arithmetic), a purely integer-based musical scale **can never close its circle perfectly**.
+
+For over a millennium, instruments tuned to pure fifths suffered from the infamous **Wolf Fifth**—a note so dissonant and out of tune that it sounded like the howling of a wolf.
+
+### 12-tone equal temperament
+
+During the Renaissance, musicians and mathematicians realized that instead of making 11 intervals pure and leaving one horrible "wolf interval", they could distribute the Pythagorean Comma equally across all 12 semitones.
+
+In **12-Tone Equal Temperament (12-TET)**, the frequency ratio between every adjacent semitone is geometrically identical:
+
+$$r = \sqrt[12]{2} = 2^{1/12} \approx 1.059463094$$
+
+The frequency $f_n$ of any note $n$ semitones above reference pitch $A_4 = 440\text{ Hz}$ is:
+
+$$f_n = 440 \times 2^{n/12}$$
+
+| Interval | Pure Integer Ratio | Pure Ratio Value | 12-TET Equal Ratio ($2^{n/12}$) | Difference (Cents) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Unison** | $1 : 1$ | $1.0000$ | $2^{0/12} = 1.0000$ | $0.0\text{ ¢}$ (Exact) |
+| **Minor 3rd** | $6 : 5$ | $1.2000$ | $2^{3/12} \approx 1.1892$ | $-15.6\text{ ¢}$ (Slightly flat) |
+| **Major 3rd** | $5 : 4$ | $1.2500$ | $2^{4/12} \approx 1.2599$ | $+13.7\text{ ¢}$ (Slightly sharp) |
+| **Perfect 4th** | $4 : 3$ | $1.3333$ | $2^{5/12} \approx 1.3348$ | $+2.0\text{ ¢}$ (Nearly perfect) |
+| **Tritone** | $45 : 32$ | $1.4063$ | $2^{6/12} = \sqrt{2} \approx 1.4142$ | $+9.8\text{ ¢}$ |
+| **Perfect 5th** | $3 : 2$ | $1.5000$ | $2^{7/12} \approx 1.4983$ | $-2.0\text{ ¢}$ (Practically imperceptible!) |
+| **Octave** | $2 : 1$ | $2.0000$ | $2^{12/12} = 2.0000$ | $0.0\text{ ¢}$ (Exact) |
+
+Equal Temperament sacrificed mathematical perfection by making every Major 3rd slightly sharp by 14 cents, but it gave humanity a profound gift: **the ability to play in all 12 musical keys without retuning the instrument.**
+
+---
+
+## Interactive harmony and beating laboratory
+
+Use the interactive Web Audio playground below to listen to pure consonant ratios vs. dissonant beating frequencies and watch their interference waveforms in real time.
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid #334155; border-radius: 12px; padding: 20px; margin: 24px 0; color: #f8fafc; font-family: system-ui, sans-serif;">
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <button id="btn-audio-harmony" onclick="toggleHarmonyAudio()" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 700;">▶ Play Dual Tones</button>
+      <button onclick="setRatioPreset(1.0, 'Unison (1:1)')" style="background: #334155; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">1:1 (Unison)</button>
+      <button onclick="setRatioPreset(1.5, 'Perfect 5th (3:2)')" style="background: #334155; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">3:2 (Fifth)</button>
+      <button onclick="setRatioPreset(1.25, 'Major 3rd (5:4)')" style="background: #334155; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">5:4 (Third)</button>
+      <button onclick="setRatioPreset(1.045, 'Dissonant Beating (440 vs 460 Hz)')" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em;">⚡ Harsh Beating</button>
+    </div>
+    <div style="font-size: 0.85em; color: #94a3b8;">
+      Interval: <strong id="interval-name" style="color: #38bdf8;">Perfect 5th (3:2)</strong>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; font-size: 0.85em;">
+    <div>
+      <label>Base Tone ($f_1$): <strong id="disp-f1" style="color: #38bdf8;">440.0</strong> Hz (A4)</label>
+      <input type="range" id="slider-f1" min="220" max="660" step="5" value="440" oninput="updateHarmonyTones()" style="width: 100%; accent-color: #38bdf8;">
+    </div>
+    <div>
+      <label>Second Tone Ratio ($f_2 / f_1$): <strong id="disp-ratio" style="color: #10b981;">1.500</strong></label>
+      <input type="range" id="slider-ratio" min="1.0" max="2.0" step="0.005" value="1.5" oninput="updateHarmonyTones()" style="width: 100%; accent-color: #10b981;">
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+      <div>Beat Frequency: <strong id="disp-beat" style="color: #f59e0b;">0.0 Hz</strong></div>
+      <div style="font-size: 0.8em; color: #94a3b8;">Second Tone: <span id="disp-f2">660.0 Hz</span></div>
+    </div>
+  </div>
+
+  <canvas id="canvas-harmony-wave" width="740" height="200" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b; display: block;"></canvas>
+
+  <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #64748b; margin-top: 8px;">
+    <span>Combined waveform superposition $y(t) = \sin(2\pi f_1 t) + \sin(2\pi f_2 t)$</span>
+    <span>Notice how slight frequency offsets create undulating beating envelopes!</span>
+  </div>
+</div>
+```
+
+
+---
+
+```{=html}
+<script>
+// --- WEB AUDIO API FOR HARMONY & BEATING ---
+let harmAudioCtx = null;
+let harmOsc1 = null;
+let harmOsc2 = null;
+let harmGain = null;
+let isHarmPlaying = false;
+
+let baseF1 = 440;
+let toneRatio = 1.5;
+let harmAnimId = null;
+let harmPhase = 0;
+
+function initHarmonyAudio() {
+  if (!harmAudioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    harmAudioCtx = new AudioContext();
+
+    harmGain = harmAudioCtx.createGain();
+    harmGain.gain.setValueAtTime(0.18, harmAudioCtx.currentTime);
+    harmGain.connect(harmAudioCtx.destination);
+
+    harmOsc1 = harmAudioCtx.createOscillator();
+    harmOsc2 = harmAudioCtx.createOscillator();
+
+    harmOsc1.type = 'sine';
+    harmOsc2.type = 'sine';
+
+    harmOsc1.frequency.setValueAtTime(baseF1, harmAudioCtx.currentTime);
+    harmOsc2.frequency.setValueAtTime(baseF1 * toneRatio, harmAudioCtx.currentTime);
+
+    harmOsc1.connect(harmGain);
+    harmOsc2.connect(harmGain);
+
+    harmOsc1.start();
+    harmOsc2.start();
+  }
+}
+
+function toggleHarmonyAudio() {
+  if (!harmAudioCtx) {
+    initHarmonyAudio();
+  }
+
+  const btn = document.getElementById('btn-audio-harmony');
+  if (harmAudioCtx.state === 'suspended') {
+    harmAudioCtx.resume();
+    isHarmPlaying = true;
+    btn.innerText = '⏸ Pause Tones';
+    btn.style.background = '#ef4444';
+  } else if (harmAudioCtx.state === 'running') {
+    harmAudioCtx.suspend();
+    isHarmPlaying = false;
+    btn.innerText = '▶ Play Dual Tones';
+    btn.style.background = '#10b981';
+  }
+}
+
+function updateHarmonyTones() {
+  const f1Slider = document.getElementById('slider-f1');
+  const ratioSlider = document.getElementById('slider-ratio');
+
+  if (f1Slider) baseF1 = parseFloat(f1Slider.value);
+  if (ratioSlider) toneRatio = parseFloat(ratioSlider.value);
+
+  const f2 = baseF1 * toneRatio;
+  const beat = Math.abs(f1 - f2);
+
+  document.getElementById('disp-f1').innerText = baseF1.toFixed(1);
+  document.getElementById('disp-ratio').innerText = toneRatio.toFixed(3);
+  document.getElementById('disp-f2').innerText = `${f2.toFixed(1)} Hz`;
+  document.getElementById('disp-beat').innerText = `${Math.abs(baseF1 - f2).toFixed(1)} Hz`;
+
+  if (harmOsc1 && harmOsc2 && harmAudioCtx) {
+    harmOsc1.frequency.setTargetAtTime(baseF1, harmAudioCtx.currentTime, 0.02);
+    harmOsc2.frequency.setTargetAtTime(f2, harmAudioCtx.currentTime, 0.02);
+  }
+}
+
+function setRatioPreset(r, name) {
+  const ratioSlider = document.getElementById('slider-ratio');
+  if (ratioSlider) {
+    ratioSlider.value = r;
+    document.getElementById('interval-name').innerText = name;
+  }
+  updateHarmonyTones();
+}
+
+function drawHarmonyWave() {
+  const canvas = document.getElementById('canvas-harmony-wave');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  harmPhase += 0.04;
+  const midY = canvas.height / 2;
+
+  // Centerline
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, midY);
+  ctx.lineTo(canvas.width, midY);
+  ctx.stroke();
+
+  // Superposition waveform
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+
+  const f2 = baseF1 * toneRatio;
+  const scale = canvas.height * 0.22;
+  const numPoints = canvas.width;
+
+  for (let px = 0; px < numPoints; px++) {
+    const t = (px / numPoints) * 0.015; // 15 ms window
+    const y1 = Math.sin(2 * Math.PI * baseF1 * t + harmPhase);
+    const y2 = Math.sin(2 * Math.PI * f2 * t + harmPhase * toneRatio);
+    const netY = y1 + y2;
+
+    const py = midY - netY * scale;
+    if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  harmAnimId = requestAnimationFrame(drawHarmonyWave);
+}
+
+function initHarmonyApp() {
+  updateHarmonyTones();
+  if (harmAnimId) cancelAnimationFrame(harmAnimId);
+  harmAnimId = requestAnimationFrame(drawHarmonyWave);
+}
+
+if (typeof document$ !== 'undefined') {
+  document$.subscribe(() => {
+    initHarmonyApp();
+  });
+}
+window.addEventListener('load', () => {
+  initHarmonyApp();
+});
+setTimeout(() => {
+  initHarmonyApp();
+}, 250);
+</script>
+```
+
+
+## Key takeaways
+
+- Halve a string and its pitch doubles; the octave, fifth, fourth and major third are the length ratios $1/2$, $2/3$, $3/4$ and $4/5$.
+- Two tones at $f_1$ and $f_2$ sum to a carrier at their mean pitch inside an envelope that throbs at $|f_1 - f_2|$; slow beating is a tuning aid, beating at $15$ to $40\text{ Hz}$ is what we call dissonance.
+- A vibrating string sounds the whole harmonic series $f_n = n f_0$ at once, so a single low C already contains the major triad.
+- Twelve pure fifths overshoot seven octaves by about $23.46$ cents, the Pythagorean comma, because no power of $3$ can equal a power of $2$.
+- Equal temperament sets every semitone to $2^{1/12}$, leaving fifths $2$ cents flat and major thirds $14$ cents sharp in exchange for playing in all twelve keys without retuning.
+
+Two questions remain: how an instrument produces its **timbre** (tone colour), and how a computer decomposes a chord into its individual frequencies. [The Fourier transform and audio](fourier-transform-audio.qmd) answers both.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/standing-waves.html"><span>Previous</span>Standing waves and resonance</a><a class="mf-up" href="/series/waves/index.html"><span>Series</span>Waves, Sound and Imaging</a><a class="mf-next" href="/blogs/fourier-transform-audio.html"><span>Next</span>The Fourier transform and audio</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

@@ -1,0 +1,212 @@
+---
+title: Enhanced rock weathering
+description: Spreading crushed silicate on farmland to draw down carbon dioxide. What it does to soil pH, and what that in turn does to nitrous oxide and ammonia.
+date: 2026-08-27
+categories:
+- carbon dioxide removal
+- biogeochemistry
+- land surface modeling
+- nitrogen cycle
+- soil science
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/air-land-climate/index.html">Air, Land and Climate</a><span class="sep">·</span>Part 8 · Removing carbon on land</p><p class="mh-facts"><span class="lvl lvl-advanced">Advanced</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">Fixed nitrogen</span> and <span class="unwritten" title="not written yet">The land model: CLM</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Spreading crushed basalt on cropland draws down $\text{CO}_2$, but dissolving it also raises soil $\text{pH}$, and that moves the nitrogen cycle. Adding geochemical kinetics and $\text{pH}$-dependent microbial enzymes to the Community Land Model ($\text{CLM5}$) shows a $0.5–1.2$ unit $\text{pH}$ rise activates $\text{N}_2\text{O}$ reductase, cutting agricultural $\text{N}_2\text{O}$ by $16–35\%$ for a $12–20\%$ climate bonus on top of carbon capture, while pushing more ammonium toward volatile ammonia. After this module you can explain why $\text{pH}$ is the one knob both effects hang from.
+:::
+
+## How crushed rock removes carbon
+
+Natural silicate weathering is the Earth's multi-million-year thermostat[^1]. Silicate minerals (like forsterite olivine or calcium/magnesium-rich basalt) react with dissolved carbonic acid in rainwater:
+
+$$\text{Mg}_2\text{SiO}_4 + 4\text{CO}_2 + 4\text{H}_2\text{O} \to 2\text{Mg}^{2+} + 4\text{HCO}_3^- + \text{H}_4\text{SiO}_4$$
+
+The resulting dissolved bicarbonate ($\text{HCO}_3^-$) and calcium/magnesium ions are carried by rivers to the oceans, where they precipitate into stable marine carbonate rocks for hundreds of thousands of years.
+
+```{mermaid}
+flowchart LR
+    AtmosphereCO2["Atmospheric CO2 + Rainwater (H2CO3)"] --> SoilAmendment["Crushed Basalt / Silicate Rock Applied to Cropland"]
+    SoilAmendment --> Reaction["Rapid Dissolution & Weathering: Release of Ca2+, Mg2+, Base Cations"]
+    Reaction --> DissolvedBicarbonate["Dissolved Bicarbonate (HCO3-) Runoff to Oceans"]
+    DissolvedBicarbonate --> MarineStorage["Permanent Ocean Carbonate Storage (>100,000 yrs)"]
+    
+    Reaction --> SoilpH["Soil pH Neutralization (pH rises +0.5 to +1.5)"]
+    SoilpH --> MicrobialShift["Shifts Nitrification & Denitrification Enzyme Kinetics"]
+    MicrobialShift --> N2OSuppression["Suppresses N2O Emissions (Potent GHG Reduced)"]
+
+    class AtmosphereCO2 indigo
+    class SoilAmendment olive
+    class MarineStorage plum
+    class N2OSuppression sage
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+By pulverizing basalt to fine grains ($\lt 100\ \mu\text{m}$) and applying it to active agricultural fields, **Enhanced Rock Weathering (ERW)** accelerates this geological reaction from geological epochs into human-scale years[^2].
+
+## What the pH shift does to nitrogen
+
+Carbon removal has been modelled heavily; the soil nitrogen cycle it sits inside has not. When basalt dissolves, it releases base cations ($\text{Ca}^{2+}, \text{Mg}^{2+}, \text{K}^+$), consuming $\text{H}^+$ protons and neutralizing acidic agricultural soils:
+
+Soil $\text{pH}$ is the single control knob that both branches of this pathway hang from: raising it accelerates nitrification and unlocks the final $\text{N}_2\text{O} \rightarrow \text{N}_2$ reduction step (the climate co-benefit, teal), while simultaneously pushing the ammonium-ammonia equilibrium toward volatile gas (the air-quality cost, magenta).
+
+```{mermaid}
+flowchart TD
+    Basalt["Crushed Basalt Weathering<br/>Soil pH rises +0.5 to +1.5"] --> NH4
+    Fert["Applied Nitrogen Fertilizer"] --> NH4["Soil Ammonium Pool (NH4+)"]
+    NH4 -->|"Higher pH shifts NH4+ / NH3 equilibrium"| NH3["Ammonia Gas (NH3)<br/>Volatilization risk rises: air-quality cost"]
+    NH4 -->|"Autotrophic nitrification runs faster near neutral pH"| NOx["Nitrite / Nitrate (NO2- / NO3-)"]
+    NOx -->|Denitrification| NO["Nitric Oxide (NO)"]
+    NO --> N2O["Nitrous Oxide (N2O)<br/>GWP-100 = 273x CO2"]
+    N2O -->|"N2O reductase fully active at pH 6.5 to 7.2"| N2["Inert Dinitrogen (N2)<br/>N2O emission falls: climate co-benefit"]
+
+    class Basalt indigo
+    class NH3 rust
+    class N2 indigo
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+### The two nitrogen feedbacks
+
+1. **$\text{N}_2\text{O}$ Emission Suppression (Massive Climate Co-Benefit)**: $\text{N}_2\text{O}$ has a Global Warming Potential $273\times$ stronger than $\text{CO}_2$ over a 100-year horizon. At low acidic $\text{pH}$, the bacterial enzyme **$\text{N}_2\text{O}$ reductase** is structurally inhibited, causing incomplete denitrification that exhausts $\text{N}_2\text{O}$. When $\text{ERW}$ elevates soil $\text{pH}$ toward neutrality ($6.5–7.2$), $\text{N}_2\text{O}$ reductase is fully activated, converting $\text{N}_2\text{O}$ all the way to harmless $\text{N}_2$ gas[^3].
+2. **$\text{NH}_3$ Volatilization Risk (Air Quality Trade-off)**: In the ammonium-ammonia equilibrium ($\text{NH}_4^+ \rightleftharpoons \text{NH}_3 + \text{H}^+$), higher $\text{pH}$ shifts the chemical balance toward un-ionized volatile ammonia gas ($\text{NH}_3$).
+
+## Simulating it in CLM5
+
+In our paper in *Geoscientific Model Development*[^4], we implemented explicit geochemical kinetics and $\text{pH}$-dependent microbial enzyme modules within **CLM5 / CESM2**. Global cropland results at $10\text{ t basalt ha}^{-1}\text{ yr}^{-1}$:
+
+| Agricultural Region | Direct $\text{CO}_2$ Capture ($\text{t CO}_2\text{ ha}^{-1}\text{ yr}^{-1}$) | Soil $\text{pH}$ Shift ($\Delta\text{pH}$) | Soil $\text{N}_2\text{O}$ Emission Change | Net Climate Benefit Multiplier |
+| :--- | :--- | :--- | :--- | :--- |
+| **US Corn Belt (Midwest)** | $2.1–3.4\text{ t}$ | $+0.72$ | **$-24.5\%$ reduction** | **$+16\%$ cooling bonus** |
+| **North China Plain** | $1.8–2.9\text{ t}$ | $+0.48$ | **$-18.2\%$ reduction** | **$+12\%$ cooling bonus** |
+| **Tropical Brazil (Oxisoils)** | $3.5–5.2\text{ t}$ | $+1.15$ | **$-34.8\%$ reduction** | **$+21\%$ cooling bonus** |
+| **Western Europe** | $1.5–2.4\text{ t}$ | $+0.55$ | **$-21.0\%$ reduction** | **$+14\%$ cooling bonus** |
+
+### Explore rate and starting acidity
+
+Move the application rate and the baseline soil $\text{pH}$ to see how the $\text{N}_2\text{O}$ bonus and the $\text{NH}_3$ risk trade off:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <h4 style="margin-top: 0; color: #10b981;">⛰️ Cropland ERW Carbon-Nitrogen Multiplier</h4>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; color: #94a3b8;">Basalt Application Rate: <b id="rate-val">10 t/ha/yr</b></label>
+      <input type="range" id="sim-rate" min="0" max="30" value="10" step="2" oninput="updateErwSim()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #94a3b8;">Baseline Soil pH: <b id="ph-val">5.4 (Acidic)</b></label>
+      <input type="range" id="sim-ph" min="4.5" max="7.5" value="5.4" step="0.1" oninput="updateErwSim()" style="width: 100%;">
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px;">
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #10b981;">
+      <div style="font-size: 0.75em; color: #94a3b8;">CO₂ Captured</div>
+      <div id="res-co2" style="font-size: 1.3em; font-weight: 700; color: #10b981;">2.4 t/ha/yr</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #38bdf8;">
+      <div style="font-size: 0.75em; color: #94a3b8;">N₂O Slashed</div>
+      <div id="res-n2o" style="font-size: 1.3em; font-weight: 700; color: #38bdf8;">-26.4%</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #f59e0b;">
+      <div style="font-size: 0.75em; color: #94a3b8;">NH₃ Risk Factor</div>
+      <div id="res-nh3-risk" style="font-size: 1.3em; font-weight: 700; color: #f59e0b;">+8.5%</div>
+    </div>
+    <div style="background: #0f172a; padding: 12px; border-radius: 8px; text-align: center; border-top: 3px solid #ec4899;">
+      <div style="font-size: 0.75em; color: #94a3b8;">Net GHG Benefit Bonus</div>
+      <div id="res-bonus" style="font-size: 1.3em; font-weight: 700; color: #ec4899;">+17.8%</div>
+    </div>
+  </div>
+
+  <div id="erw-text" style="font-size: 0.9em; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 10px; border-radius: 4px;">
+    Acidic agricultural soils derive the largest N2O mitigation bonus from enhanced rock weathering.
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+function updateErwSim() {
+  const rate = parseFloat(document.getElementById('sim-rate').value);
+  const ph0 = parseFloat(document.getElementById('sim-ph').value);
+
+  document.getElementById('rate-val').innerText = rate + ' t/ha/yr';
+  document.getElementById('ph-val').innerText = ph0.toFixed(1) + (ph0 < 6.0 ? ' (Acidic)' : (ph0 < 7.0 ? ' (Neutral)' : ' (Alkaline)'));
+
+  const delta_ph = Math.min(1.8, rate * 0.075 * (7.5 - ph0) / 2.0);
+  const final_ph = ph0 + delta_ph;
+
+  const co2_cap = (rate * 0.24).toFixed(1);
+  
+  // N2O reduction is highest when raising acidic pH toward 6.8-7.2
+  let n2o_red = 0;
+  if (ph0 < 7.0 && rate > 0) {
+    n2o_red = Math.min(45, (7.0 - ph0) * 18 * Math.min(1.0, rate / 15.0));
+  }
+
+  // NH3 increase occurs as pH exceeds 6.8
+  let nh3_inc = 0;
+  if (final_ph > 6.5 && rate > 0) {
+    nh3_inc = (final_ph - 6.5) * 12 * Math.min(1.0, rate / 12.0);
+  }
+
+  const bonus = (n2o_red * 0.65).toFixed(1);
+
+  document.getElementById('res-co2').innerText = co2_cap + ' t/ha/yr';
+  document.getElementById('res-n2o').innerText = rate === 0 ? '0%' : '-' + n2o_red.toFixed(1) + '%';
+  document.getElementById('res-nh3-risk').innerText = rate === 0 ? '0%' : '+' + nh3_inc.toFixed(1) + '%';
+  document.getElementById('res-bonus').innerText = rate === 0 ? '0%' : '+' + bonus + '%';
+
+  let txt = '';
+  if (rate === 0) {
+    txt = 'Baseline cropland status: no active rock weathering carbon removal.';
+  } else if (ph0 < 6.0) {
+    txt = '🌱 Highly Acidic Soil: Strongest N2O suppression response. Basalt neutralizes toxic soil acidity while providing a massive non-CO2 climate mitigation dividend.';
+  } else {
+    txt = '⚠️ Near-Neutral Soil: High carbon capture rate, but monitor surface ammonia emissions to prevent downwind air quality trade-offs.';
+  }
+  document.getElementById('erw-text').innerText = txt;
+}
+window.addEventListener('load', updateErwSim);
+setTimeout(updateErwSim, 300);
+</script>
+```
+
+
+### Data and code
+
+- **Land Surface Model**: The modified $\text{CLM5}$ land surface biogeochemical model is hosted in the [CESM Development Portal](https://github.com/ESCOMP/CTSM).
+- **Simulation Scripts**: Global spatial gridded datasets, soil parameterizations, and run scripts are archived on Zenodo[^5].
+
+## Key takeaways
+
+- Basalt dissolution turns $\text{CO}_2$ into bicarbonate that rivers carry to the ocean, where it is stored as carbonate for over $100{,}000$ years; grinding to $\lt 100\ \mu\text{m}$ makes the reaction run in years rather than epochs.
+- The base cations released consume $\text{H}^+$ and raise soil $\text{pH}$ by about $0.5–1.2$ units, and $\text{pH}$ is the single control both nitrogen effects hang from.
+- Near-neutral $\text{pH}$ ($6.5–7.2$) fully activates $\text{N}_2\text{O}$ reductase, so denitrification runs to $\text{N}_2$ and $\text{N}_2\text{O}$ (GWP-100 of $273$) falls $16–35\%$; the same shift pushes $\text{NH}_4^+$ toward volatile $\text{NH}_3$.
+- Life-cycle assessments that count only inorganic carbon weathering understate the greenhouse-gas mitigation of ERW by $10–20\%$.
+- Deploy first on acidic, heavily fertilised cropland (Brazilian Cerrado, Southeast Asian rice-paddy rotations, US Midwest maize) to get carbon capture, yield gains and nitrogen-oxide cuts together.
+
+## References
+
+[^1]: Walker, J. C. G., Hays, P. B. & Kasting, J. F. A negative feedback mechanism for the long-term stabilization of Earth's surface temperature. *J. Geophys. Res.* **86**, 9776–9782 (1981). https://doi.org/10.1029/JC086iC10p09776
+[^2]: Beerling, D. J. et al. Farming with crops and rocks to address global climate, food and soil security. *Nat. Plants* **4**, 138–147 (2018). https://doi.org/10.1038/s41477-018-0108-y
+[^3]: Bakken, L. R., Bergaust, L., Liu, B. & Frostegård, Å. Regulation of $\text{N}_2\text{O}$ emissions based on microbial genomics. *Curr. Opin. Chem. Biol.* **16**, 550–559 (2012). https://doi.org/10.1016/j.cbpa.2012.10.001
+[^4]: Val Martin, M., Blanc-Betes, E., Fung, K. M., Kantzas, E. P., Kantola, I. B. et al. Improving nitrogen cycling in a land surface model (CLM5) to quantify soil $\text{N}_2\text{O}$, $\text{NO}$ and $\text{NH}_3$ emissions from enhanced rock weathering with croplands. *Geosci. Model Dev.* **16**, 5783–5801 (2023). https://doi.org/10.5194/gmd-16-5783-2023
+[^5]: Kantzas, E. P. et al. Substantial carbon dioxide removal through enhanced rock weathering on croplands. *Zenodo* https://doi.org/10.5281/zenodo.5554620 (2022).
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/intercropping-air-quality.html"><span>Previous</span>Intercropping</a><a class="mf-up" href="/series/air-land-climate/index.html"><span>Series</span>Air, Land and Climate</a><a class="mf-next" href="/blogs/agriculture-climate-challenges.html"><span>Next</span>Agriculture under climate extremes</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

@@ -1,0 +1,146 @@
+# Earth Data in Python and R — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Earth Data in Python and R"
+slug: earth-data
+order: 8
+about: "The tools for gridded, vector and image data in the Earth sciences, and how to plot the result without lying."
+assumes: "Some programming in any language."
+parts:
+  - title: "Getting started"
+    modules:
+      - id: earth-data/python-basics-for-mapping
+        title: "Python basics for mapping"
+        level: introductory
+        path: blogs/python-basics-cesm/index.md
+  - title: "Gridded data with xarray"
+    modules:
+      - id: earth-data/scaling-a-netcdf-subset
+        title: "Scaling a NetCDF subset"
+        level: intermediate
+        path: blogs/partial-scaling-netcdf/index.md
+        requires:
+          - earth-data/python-basics-for-mapping
+          - earth-data/dimensions-coordinates-and-attributes
+      - id: earth-data/dimensions-coordinates-and-attributes
+        title: "Dimensions, coordinates and attributes"
+        level: introductory
+      - id: earth-data/resampling-and-grouping-in-time
+        title: "Resampling and grouping in time"
+        level: intermediate
+        requires:
+          - earth-data/dimensions-coordinates-and-attributes
+  - title: "Regridding"
+    modules:
+      - id: earth-data/regridding-crop-data-for-climate-models
+        title: "Regridding crop data for climate models"
+        level: intermediate
+        path: blogs/r-regridding/index.md
+        requires:
+          - earth-data/conservative-vs-bilinear
+      - id: earth-data/regridding-in-python-with-xesmf
+        title: "Regridding in Python with xESMF"
+        level: intermediate
+        requires:
+          - earth-data/dimensions-coordinates-and-attributes
+          - earth-data/conservative-vs-bilinear
+      - id: earth-data/conservative-vs-bilinear
+        title: "Conservative vs bilinear"
+        level: intermediate
+  - title: "Regions and masks"
+    modules:
+      - id: earth-data/regional-analysis-in-r
+        title: "Regional analysis in R"
+        level: intermediate
+        path: blogs/regional-analysis-r/index.md
+      - id: earth-data/regionmask-in-python
+        title: "regionmask in Python"
+        level: intermediate
+        requires:
+          - earth-data/geopandas-basics
+  - title: "Vector data"
+    modules:
+      - id: earth-data/downloading-building-footprints
+        title: "Downloading building footprints"
+        level: intermediate
+        path: blogs/ms-buildings/index.md
+        requires:
+          - earth-data/geopandas-basics
+      - id: earth-data/geopandas-basics
+        title: "GeoPandas basics"
+        level: introductory
+      - id: earth-data/projections
+        title: "Projections"
+        level: introductory
+  - title: "Maps"
+    modules:
+      - id: earth-data/mapping-pm2-5-by-county
+        title: "Mapping PM2.5 by county"
+        level: introductory
+        path: blogs/pm25/plot_pm25_usa_by_county.ipynb
+        requires:
+          - earth-data/geopandas-basics
+          - earth-data/choropleth-pitfalls
+      - id: earth-data/an-atlantic-centred-map
+        title: "An Atlantic-centred map"
+        level: introductory
+        path: blogs/atlantic-centered-map/index.md
+        note: "Assumes ggplot2."
+      - id: earth-data/choropleth-pitfalls
+        title: "Choropleth pitfalls"
+        level: introductory
+      - id: earth-data/cartopy
+        title: "Cartopy"
+        level: intermediate
+        requires:
+          - earth-data/projections
+  - title: "ggplot2"
+    modules:
+      - id: earth-data/direct-labels-on-bar-charts
+        title: "Direct labels on bar charts"
+        level: introductory
+        path: blogs/barchart-with-labels/index.md
+        note: "Assumes ggplot2."
+      - id: earth-data/colorbars
+        title: "Colorbars"
+        level: introductory
+        path: blogs/setting-color-bars/index.md
+        note: "Assumes ggplot2."
+      - id: earth-data/special-symbols-in-labels
+        title: "Special symbols in labels"
+        level: introductory
+        path: blogs/parsing-special-symbols/index.md
+        note: "Assumes ggplot2."
+  - title: "Colour"
+    modules:
+      - id: earth-data/colourblind-safe-palettes
+        title: "Colourblind-safe palettes"
+        level: introductory
+      - id: earth-data/sequential-diverging-categorical
+        title: "Sequential, diverging, categorical"
+        level: introductory
+  - title: "Images and rasters"
+    modules:
+      - id: earth-data/shadow-detection-with-scikit-image
+        title: "Shadow detection with scikit-image"
+        level: intermediate
+        path: blogs/segment-shadow-python/index.md
+      - id: earth-data/rasterio
+        title: "rasterio"
+        level: intermediate
+  - title: "Bigger than memory"
+    modules:
+      - id: earth-data/dask-and-chunking
+        title: "Dask and chunking"
+        level: intermediate
+        requires:
+          - earth-data/dimensions-coordinates-and-attributes
+      - id: earth-data/zarr
+        title: "Zarr"
+        level: intermediate
+  - title: "Interactive maps"
+    modules:
+      - id: earth-data/folium
+        title: "folium"
+        level: introductory

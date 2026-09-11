@@ -1,0 +1,60 @@
+---
+title: "How clouds form"
+description: "Water vapour to raindrop: what has to happen, in order, and why each step needs the one before it."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>6</dd></div>
+<div><dt>Modules</dt><dd>12 of 19 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>School physics. A little calculus appears in the droplet parts and is always optional.</dd></div>
+</dl>
+
+## Part 1 · Water and rising air
+
+<ul class="syl">
+<li class="w"><a href="/blogs/how-much-water-air-holds.html">How much water can air hold?</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/why-rising-air-cools.html">Why does rising air cool?</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/what-lifts-the-air.html">What lifts the air</a><span class="m">Introductory</span></li>
+<li class="g">Fog: cloud without lifting<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 2 · Stability
+
+<ul class="syl">
+<li class="g">Lapse rates and stability<span class="m">Intermediate · not written</span></li>
+<li class="g">Inversions and trapped pollution<span class="m">Intermediate · not written</span></li>
+<li class="w"><a href="/blogs/parcel-lifter.html">Lift a parcel yourself</a><span class="m">Introductory</span></li>
+</ul>
+
+## Part 3 · Droplets
+
+<ul class="syl">
+<li class="w"><a href="/blogs/drop-shape-in-orbit.html">Why are drops round?</a><span class="m">Intermediate</span></li>
+<li class="w"><a href="/blogs/drop-shape-in-air.html">How a drop deforms in air</a><span class="m">Intermediate</span></li>
+<li class="g">The Kelvin effect: why small drops evaporate<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 4 · What clouds form on
+
+<ul class="syl">
+<li class="w"><a href="/blogs/what-is-an-aerosol.html">What is an aerosol?</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/why-clean-air-makes-no-cloud.html">Why clean air doesn&#x27;t make clouds</a><span class="m">Intermediate</span></li>
+<li class="w"><a href="/blogs/kohler-theory.html">Köhler theory</a><span class="m">Intermediate</span></li>
+<li class="w"><a href="/blogs/where-ccn-come-from.html">Where CCN come from</a><span class="m">Introductory</span></li>
+</ul>
+
+## Part 5 · From droplet to rain
+
+<ul class="syl">
+<li class="g">Why cloud droplets don&#x27;t fall<span class="m">Introductory · not written</span></li>
+<li class="w"><a href="/blogs/drop-coalescence.html">How drops merge</a><span class="m">Intermediate</span></li>
+<li class="g">Warm rain<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Naming what you see
+
+<ul class="syl">
+<li class="w"><a href="/blogs/cloud-types.html">Cloud types</a><span class="m">Introductory</span></li>
+<li class="g">Contrails<span class="m">Introductory · not written</span></li>
+</ul>

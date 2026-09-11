@@ -1,0 +1,227 @@
+---
+title: DMS oxidation and marine clouds
+description: Ocean plankton emit dimethyl sulfide. What the atmosphere does with it, including the HPMTF pathway, and why it changes how bright marine clouds are.
+date: 2026-08-27
+categories:
+- atmospheric chemistry
+- climate modeling
+- aerosols
+- marine biology
+- biogeochemistry
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/aerosols-climate/index.html">Aerosols and climate</a><span class="sep">·</span>Part 1 · Where aerosols come from</p><p class="mh-facts"><span class="lvl lvl-advanced">Advanced</span></p><p class="mh-assumes">Assumes <a href="/blogs/kohler-theory.html">Köhler theory</a> and <a href="/blogs/where-ccn-come-from.html">Where CCN come from</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Ocean phytoplankton emit dimethyl sulfide ($\text{DMS}$), whose oxidation products seed marine clouds and set the pre-industrial aerosol baseline. Models long missed a fast autoxidation route to hydroperoxymethyl thioformate ($\text{HPMTF}$); adding it to $\text{CESM2}$ sends about a third of marine sulfur through $\text{HPMTF}$, moves sulfate aloft and shifts anthropogenic aerosol forcing by $+0.11\text{ W m}^{-2}$. Afterwards you can explain why one intermediate changes a global forcing estimate.
+:::
+
+## The marine sulfur cycle and the CLAW hypothesis
+
+In 1987, Charlson, Lovelock, Andreae, and Warren proposed the famous **CLAW Hypothesis**[^1]: oceanic phytoplankton produce dimethyl sulfide ($\text{CH}_3\text{SCH}_3$, or $\text{DMS}$), which ventilates into the atmosphere, oxidizes into sulfuric acid ($\text{H}_2\text{SO}_4$) and methanesulfonic acid ($\text{MSA}$), and forms **cloud condensation nuclei (CCN)**. These CCN brighten marine stratus clouds, increasing planetary albedo and cooling the surface:
+
+```{mermaid}
+flowchart LR
+    Phyto["Marine Phytoplankton (DMSP)"] -->|Enzymatic Cleavage| DMS_Ocean["Oceanic DMS"]
+    DMS_Ocean -->|Air-Sea Gas Transfer| DMS_Atm["Atmospheric DMS Gas"]
+    DMS_Atm -->|OH / NO3 / Halogen Oxidation| SO2["SO2 + H2SO4 + MSA"]
+    DMS_Atm -->|Isomerization Autoxidation| HPMTF["HPMTF Intermediate"]
+    SO2 -->|New Particle Formation & Condensation| CCN["Marine Cloud Condensation Nuclei"]
+    HPMTF -->|Cloud Droplet Scavenging| CloudSulfate["In-Cloud Aqueous Sulfate"]
+    CCN -->|Aerosol Indirect Effect| CloudAlbedo["Brightened Marine Stratocumulus"]
+    CloudAlbedo -->|Solar Reflection| Cooling["Surface Climate Cooling"]
+
+    class Phyto olive
+    class DMS_Atm indigo
+    class HPMTF ochre
+    class CloudAlbedo plum
+    class Cooling sage
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+Despite its foundational role, global Earth System Models have long struggled with high uncertainty in pristine oceanic aerosol indirect forcing. A primary reason was an incomplete chemical picture: classical models assumed $\text{DMS}$ oxidized solely via simple H-abstraction and OH-addition into $\text{SO}_2$ and $\text{DMSO}$.
+
+## Fast autoxidation to HPMTF
+
+In 2019–2020, airborne mass spectrometry measurements during the NASA ATom campaign and laboratory chamber kinetics discovered a previously unrepresented intermediate: **hydroperoxymethyl thioformate** ($\text{HOOCH}_2\text{SCHO}$, or $\text{HPMTF}$)[^2].
+
+When $\text{OH}$ abstracts a hydrogen atom from $\text{DMS}$, the resulting peroxy radical undergoes rapid intramolecular H-shift isomerization (autoxidation):
+
+$$\text{CH}_3\text{SCH}_2\text{O}_2 \xrightarrow{\text{intramolecular H-shift}} \cdot\text{CH}_2\text{SCH}_2\text{OOH} \xrightarrow{+\text{O}_2} \text{O}_2\text{CH}_2\text{SCH}_2\text{OOH} \xrightarrow{\text{fast decomposition}} \text{HOOCH}_2\text{SCHO} (\text{HPMTF}) + \text{OH}$$
+
+```{mermaid}
+flowchart TD
+    DMS["DMS (CH3SCH3)"] -->|"OH addition"| DMSO["DMSO / DMSO2"]
+    DMS -->|"OH or NO3 H-abstraction"| RO2["CH3SCH2OO peroxy radical"]
+    DMSO --> MSA["MSA / SO2 / H2SO4"]
+    RO2 -->|"traditional NO or HO2 route"| SO2["SO2 + formaldehyde"]
+    RO2 -->|"intramolecular H-shift autoxidation"| HPMTF["HPMTF (HOOCH2SCHO)"]
+    HPMTF -->|"gas-phase OH, cloud-free air"| OCS["OCS / SO2 lofted aloft"]
+    HPMTF -->|"cloud droplet uptake"| AQ["in-cloud aqueous sulfate"]
+    SO2 --> CCN["new particle formation, CCN"]
+    MSA --> CCN
+
+    class HPMTF rust
+    style AQ stroke:#1E88E5,stroke-width:3px
+    style OCS stroke:#1E88E5,stroke-width:3px
+    classDef rust fill:#a04b2d,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+```
+
+### Why HPMTF matters for the sulfur budget
+1. **Cloud Droplet Scavenging**: $\text{HPMTF}$ is moderately soluble ($H \approx 10^4 - 10^5\text{ M atm}^{-1}$) and is rapidly scavenged by cloud droplets, bypassing traditional gas-phase $\text{SO}_2$ intermediate stages[^3].
+2. **Vertical Redistribution**: In cloud-free marine boundary layers, $\text{HPMTF}$ has a longer chemical lifetime, allowing sulfur to be lofted into the free troposphere where lower temperatures favor new particle nucleation.
+
+## Global modeling with CESM2 / CAM6-chem
+
+In our study published in *Atmospheric Chemistry and Physics*[^4], we implemented a comprehensive DMS oxidation mechanism—incorporating explicit $\text{HPMTF}$ gas-phase photochemistry, halogen ($\text{BrO}, \text{Cl}$) reactions, and multi-phase cloud droplet uptake—into the **Community Earth System Model (CESM2 / CAM6-chem)**.
+
+### Key atmospheric impacts
+
+| Parameter | Classical Mechanism (No HPMTF) | Updated Explicit Mechanism (With HPMTF) | Global Shift |
+| :--- | :--- | :--- | :--- |
+| **Global DMS Oxidation Flux to HPMTF** | $0\text{ Tg S yr}^{-1}$ | $8.7\text{ Tg S yr}^{-1}$ | **35% of total sulfur flux** |
+| **Marine Boundary Layer $\text{SO}_2$** | High ($40–120\text{ ppt}$) | Reduced by $20–45\%$ | Better agreement with ATom observations |
+| **Cloud Condensation Nuclei ($\text{CCN}_{0.1\%}$)** | Overestimated in boundary layer | Redistributed to free troposphere | $-12\%$ at surface, $+18\%$ aloft |
+| **Pre-Industrial Radiative Baseline** | Less reflective marine clouds | Elevated pristine background CCN | Shifts baseline albedo |
+| **Anthropogenic Aerosol Forcing ($\Delta F_{\text{aer}}$)** | $-1.38\text{ W m}^{-2}$ | $-1.27\text{ W m}^{-2}$ | **$+0.11\text{ W m}^{-2}$ warming offset** |
+
+### Interactive simulator
+
+Explore how temperature, cloud liquid water content, and radical concentrations govern the branch point between traditional $\text{SO}_2$ formation and the $\text{HPMTF}$ autoxidation channel:
+
+```{=html}
+<div style="background: var(--md-code-bg-color, #1e293b); border: 1px solid var(--md-typeset-table-color, #334155); border-radius: 12px; padding: 20px; margin: 24px 0; color: #e2e8f0; font-family: system-ui, sans-serif;">
+  <h4 style="margin-top: 0; color: #38bdf8;">🌊 Marine Sulfur Chemical Flux Partitioning</h4>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px;">
+    <div>
+      <label style="font-size: 0.85em; color: #94a3b8;">Temperature (K): <b id="temp-val">285 K</b></label>
+      <input type="range" id="sim-temp" min="260" max="305" value="285" step="1" oninput="updateDmsSim()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #94a3b8;">Cloud Liquid Water Content ($g/m^3$): <b id="lwc-val">0.20</b></label>
+      <input type="range" id="sim-lwc" min="0.0" max="1.0" value="0.20" step="0.02" oninput="updateDmsSim()" style="width: 100%;">
+    </div>
+    <div>
+      <label style="font-size: 0.85em; color: #94a3b8;">OH Radical Conc. ($10^6 \text{ molec/cm}^3$): <b id="oh-val">1.5</b></label>
+      <input type="range" id="sim-oh" min="0.2" max="5.0" value="1.5" step="0.1" oninput="updateDmsSim()" style="width: 100%;">
+    </div>
+  </div>
+
+  <div style="background: #0f172a; border-radius: 8px; padding: 16px; margin-bottom: 14px;">
+    <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 6px;">
+      <span>HPMTF Channel (Autoxidation)</span>
+      <b id="hpmtf-pct" style="color: #f59e0b;">38.4%</b>
+    </div>
+    <div style="background: #334155; border-radius: 4px; height: 12px; overflow: hidden; margin-bottom: 12px;">
+      <div id="hpmtf-bar" style="background: #f59e0b; width: 38.4%; height: 100%;"></div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 6px;">
+      <span>Direct SO₂ / MSA Channel (Traditional)</span>
+      <b id="so2-pct" style="color: #38bdf8;">61.6%</b>
+    </div>
+    <div style="background: #334155; border-radius: 4px; height: 12px; overflow: hidden;">
+      <div id="so2-bar" style="background: #38bdf8; width: 61.6%; height: 100%;"></div>
+    </div>
+  </div>
+
+  <div id="sim-diagnostic" style="font-size: 0.9em; background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px; border-radius: 4px;">
+    Warmer tropical temperatures accelerate the intramolecular H-shift rate, boosting HPMTF formation to over 45% of total DMS flux.
+  </div>
+</div>
+```
+
+
+```{=html}
+<script>
+function updateDmsSim() {
+  const T = parseFloat(document.getElementById('sim-temp').value);
+  const LWC = parseFloat(document.getElementById('sim-lwc').value);
+  const OH = parseFloat(document.getElementById('sim-oh').value);
+
+  document.getElementById('temp-val').innerText = T + ' K (' + (T - 273.15).toFixed(1) + '°C)';
+  document.getElementById('lwc-val').innerText = LWC.toFixed(2);
+  document.getElementById('oh-val').innerText = OH.toFixed(1);
+
+  // Reaction kinetics approximation:
+  // k_autoxidation strongly temperature dependent ~ exp(-Ea/RT)
+  const k_auto = 0.25 * Math.exp(0.045 * (T - 280));
+  const k_trad = 0.35 + 0.1 * OH;
+  
+  const total = k_auto + k_trad;
+  const hpmtf_ratio = Math.min(0.75, Math.max(0.10, k_auto / total));
+  const so2_ratio = 1.0 - hpmtf_ratio;
+
+  const hpmtf_pct = (hpmtf_ratio * 100).toFixed(1);
+  const so2_pct = (so2_ratio * 100).toFixed(1);
+
+  document.getElementById('hpmtf-pct').innerText = hpmtf_pct + '%';
+  document.getElementById('so2-pct').innerText = so2_pct + '%';
+  document.getElementById('hpmtf-bar').style.width = hpmtf_pct + '%';
+  document.getElementById('so2-bar').style.width = so2_pct + '%';
+
+  let diag = '';
+  if (T < 273) {
+    diag = '❄️ Polar / Sub-polar Regime: Slower isomerization suppresses HPMTF autoxidation; traditional OH-addition dominates, prolonging DMS lifetime.';
+  } else if (LWC > 0.4) {
+    diag = '☁️ Cloudy Marine Boundary Layer: High liquid water content rapidly scavenges HPMTF into cloud droplets, bypassing gas-phase SO₂ and directly feeding aqueous sulfate.';
+  } else {
+    diag = '☀️ Pristine Tropical / Subtropical Marine Air: Fast H-shift autoxidation routes over 40% of DMS through HPMTF, enabling sulfur lofting to the upper troposphere.';
+  }
+  document.getElementById('sim-diagnostic').innerText = diag;
+}
+window.addEventListener('load', updateDmsSim);
+setTimeout(updateDmsSim, 300);
+</script>
+```
+
+
+### Climate implications and the radiative baseline
+
+Why does a chemical intermediate matter so much for global climate projections?
+
+The answer lies in the **pre-industrial aerosol baseline**[^5]. Anthropogenic aerosol radiative forcing is calculated as the *difference* in cloud albedo between the modern polluted atmosphere and the pre-industrial unperturbed atmosphere:
+
+$$\Delta F_{\text{aer}} = F_{\text{modern}} - F_{\text{pre-industrial}}$$
+
+In pre-industrial times, natural $\text{DMS}$ was the dominant source of cloud-forming particles over the oceans. Because cloud albedo is a logarithmic function of droplet concentration ($A \propto \ln N_d$), brightening clouds in an already pristine regime produces a much larger radiative response than adding aerosols to a polluted continent.
+
+By correctly accounting for $\text{HPMTF}$ multi-phase loss and sulfur redistribution, global models refine the pre-industrial CCN baseline, reducing climate sensitivity uncertainty in IPCC-class Earth system models.
+
+### Data and code availability
+
+- **Model Integration**: The chemical mechanism is implemented in the Community Earth System Model (CESM2.1 / CAM6-chem), available through the [NCAR CESM repository](https://www.cesm.ucar.edu).
+- **Observational Datasets**: Airborne observational validation data were obtained from the NASA Atmospheric Tomography (ATom) mission[^6].
+- **Source Code**: Analysis scripts and mechanism definitions are archived on GitHub: [`kamingfung/DMS-HPMTF-CESM`](https://github.com/kamingfung).
+
+## Key takeaways
+
+- DMS from phytoplankton is the main natural source of sulfate CCN over the oceans; the CLAW hypothesis links it to marine cloud brightness and surface cooling.
+- Classical mechanisms sent all DMS through H-abstraction and OH-addition to $\text{SO}_2$ and $\text{DMSO}$; the fast intramolecular H-shift to $\text{HPMTF}$ was missing.
+- In CESM2 / CAM6-chem the HPMTF route carries about $35\%$ of the DMS sulfur flux ($8.7\text{ Tg S yr}^{-1}$), cuts marine boundary layer $\text{SO}_2$ by $20$ to $45\%$ and moves CCN from the surface into the free troposphere.
+- HPMTF's fate depends on clouds: in cloudy air it is scavenged into droplets as aqueous sulfate; in cloud-free air it lives long enough to loft sulfur aloft.
+- Because cloud albedo goes as $\ln N_d$, changing the pristine pre-industrial baseline changes the anthropogenic forcing estimate: $\Delta F_{\text{aer}}$ moves from $-1.38$ to $-1.27\text{ W m}^{-2}$, a $+0.11\text{ W m}^{-2}$ offset.
+
+## References
+
+[^1]: Charlson, R. J., Lovelock, J. E., Andreae, M. O. & Warren, S. G. Oceanic phytoplankton, atmospheric sulphur, cloud albedo and climate. *Nature* **326**, 655–661 (1987). https://doi.org/10.1038/326655a0
+[^2]: Veres, P. R. et al. Global airborne sampling reveals a previously overlooked dimethyl sulfide oxidation product in the marine atmosphere. *Proc. Natl. Acad. Sci. USA* **117**, 4505–4510 (2020). https://doi.org/10.1073/pnas.1919344117
+[^3]: Berndt, T. et al. Fast autoxidation of dimethyl sulfide in the marine atmosphere. *J. Phys. Chem. A* **124**, 3608–3618 (2020). https://doi.org/10.1021/acs.jpca.0c02111
+[^4]: Fung, K. M., Heald, C. L., Kroll, J. H., Wang, S., Jo, D. S., Gettelman, A., Lu, Z., Liu, X. et al. Exploring DMS oxidation and implications for global aerosol radiative forcing. *Atmos. Chem. Phys.* **22**, 1549–1573 (2022). https://doi.org/10.5194/acp-22-1549-2022
+[^5]: Carslaw, K. S. et al. Large contribution of natural aerosols to uncertainty in indirect forcing. *Nature* **503**, 67–71 (2013). https://doi.org/10.1038/nature12674
+[^6]: Wofsy, S. C. et al. *ATom: Merged Atmospheric Chemistry, Trace Gases, and Aerosols Data*. (ORNL DAAC, Oak Ridge, Tennessee, USA, 2018). https://doi.org/10.3334/ORNLDAAC/1581
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/aerosols-climate/index.html"><span>Series</span>Aerosols and climate</a><a class="mf-next" href="/blogs/aerosol-indirect-effects.html"><span>Next</span>Aerosol indirect effects</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

@@ -1,0 +1,45 @@
+---
+title: What lifts the air
+description: Convection, orographic lifting, frontal wedging and low-level convergence, and the clouds and weather each produces.
+date: 2026-08-27
+categories:
+- meteorology
+- atmospheric science
+- physics
+- thermodynamics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/cloud-formation/index.html">How clouds form</a><span class="sep">·</span>Part 1 · Water and rising air</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/why-rising-air-cools.html">Why does rising air cool?</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Air only cools if something makes it rise. There are four mechanisms, and each leaves a different kind of cloud behind.
+:::
+
+## Four lifting mechanisms
+
+Air does not rise on its own; it requires dynamic lifting mechanisms:
+
+| Lifting Mechanism | Physical Trigger | Typical Cloud Formations | Weather Produced |
+| :--- | :--- | :--- | :--- |
+| **Convective Lifting** | Solar heating warms the ground; hot buoyant thermals ascend | Cumulus humilis, towering Cumulus congestus, Cumulonimbus | Afternoon summer showers, hail, lightning |
+| **Orographic Lifting** | Wind forces moist air mass up the slope of a mountain range | Cap clouds, Lenticular clouds, Stratus | Heavy windward rain/snow, dry leeward rain shadows |
+| **Frontal Wedging** | Dense cold air undercuts warm moist air (or warm air rides over cold wedge) | Nimbostratus (warm front), Squall line Cumulonimbus (cold front) | Steady continuous rain or violent squalls |
+| **Low-Level Convergence** | Converging surface winds (e.g., ITCZ, low pressure cyclones) squeeze air upward | Tropical cloud clusters, widespread stratiform blankets | Monsoons, hurricanes, broad frontal precipitation |
+
+## Key takeaways
+
+- Cooling needs lift; air does not rise on its own, so every cloud has a mechanism behind it.
+- Convection builds heaped clouds and afternoon showers; orographic lift wrings out the windward slope and leaves a rain shadow to the lee.
+- Frontal wedging gives steady nimbostratus rain at a warm front and squall-line cumulonimbus at a cold front.
+- Low-level convergence, as in the ITCZ or a cyclone, lifts air over wide areas and drives monsoons and hurricanes.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/why-rising-air-cools.html"><span>Previous</span>Why does rising air cool?</a><a class="mf-up" href="/series/cloud-formation/index.html"><span>Series</span>How clouds form</a><a class="mf-next" href="/blogs/parcel-lifter.html"><span>Next</span>Lift a parcel yourself</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

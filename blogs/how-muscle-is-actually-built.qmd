@@ -1,0 +1,75 @@
+---
+title: How muscle is actually built
+description: Hypertrophy responds to mechanical tension repeated with enough weekly volume, taken close to effort, at least twice a week per muscle. Load matters less than most programmes assume.
+date: 2026-09-05
+categories:
+- training
+- muscle
+- physiology
+- evidence
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 1 · Looking after the machine you think with</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">Assumes <a href="/blogs/how-much-protein-really.html">How much protein, really</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Muscle grows in response to mechanical tension, repeated often enough, with the protein to build from. The meta-analytic evidence reduces to three numbers: at least ten hard sets per muscle per week, spread over two or more sessions, at any load from 30 to 80 percent of your maximum as long as sets are taken close to failure. Damage is not required and soreness is not a signal. Progress is slow, measurable, and front-loaded into the first year.
+:::
+
+*Personal record with sources attached. Not medical, dietary or fitness advice.*
+
+## What the muscle is responding to
+
+Three mechanisms have been proposed for training-induced hypertrophy: mechanical tension, muscle damage and metabolic stress.[^1] Twenty years of work has sorted them.
+
+Mechanical tension is the primary driver. A fibre under load, especially while lengthening, activates mechanosensors that increase muscle protein synthesis over the following one to two days. Metabolic stress, the burn and swelling of a long set, contributes mainly by recruiting more fibres as the early ones fatigue, which puts tension on fibres that would otherwise have rested.
+
+Damage turns out to be a bystander. A study tracking untrained men through ten weeks of training measured protein synthesis and muscle damage at weeks one, three and ten.[^2] Synthesis was highest in week one but so was damage, and the early synthesis went to repair rather than growth. Only once damage had attenuated, by week three, did synthesis correlate with actual hypertrophy. Soreness is a sign you did something unfamiliar, not a sign you grew.
+
+## The three numbers
+
+**Volume.** A meta-analysis of fifteen studies found a dose-response relationship between weekly sets per muscle group and hypertrophy: fewer than five sets produced about 5 percent growth over a study, five to nine about 7 percent, ten or more about 10 percent.[^3] The relationship was roughly linear across that range, with no clear ceiling in the data. Ten hard sets a week per muscle is the evidence-based floor; more may help, with diminishing return and rising recovery cost.
+
+**Frequency.** Splitting those sets across two sessions rather than one produced more growth in a meta-analysis of ten studies, with no additional benefit clearly shown beyond two.[^4] The mechanism is the one-to-two-day synthesis window: a muscle trained once a week spends most of the week at baseline.
+
+**Load.** The finding that surprised me. Comparing training at loads below 60 percent of one-repetition maximum against loads above it, across 21 studies, hypertrophy was not significantly different.[^5] Strength gains favoured heavy loads, because strength is partly a skill at lifting heavy. Size did not care, as long as sets were taken close to failure. Thirty repetitions with a light weight and eight with a heavy one grow the same muscle, provided both end near the point where another repetition is not possible.
+
+What this frees you from is the idea that a particular rep range is magic. What it does not free you from is effort. A set stopped comfortably short of failure at a light load does little.
+
+## Progression, and how fast this goes
+
+The muscle adapts to the stimulus it receives, so the stimulus has to increase. This is progressive overload, and it means one of four things goes up over weeks: the load, the repetitions at a load, the sets, or the range of motion. Tracking it in a notebook or an app is the difference between training and exercising. I log every set. When a number has not moved in a month, something in the programme, the protein or the sleep is wrong.
+
+The rate is slow. An untrained adult doing everything right gains on the order of a kilogram of muscle a month for the first few months, then a fraction of that, then less again.[^1] After the first year, a kilogram or two over a whole year is a good result. Anyone promising more is selling something covered in the previous module.
+
+A programme that meets the three numbers, for someone with three sessions a week, looks like: each major muscle group trained in two of the three sessions, three to four sets per exercise, two exercises per muscle group, sets taken to within one or two repetitions of failure, load or repetitions increased whenever the previous target was met.
+
+## Why this is in a series about being a scientist
+
+Because the body runs the mind, and resistance training has effects that reach past the muscle. A review of the clinical evidence summarises the consistent findings: improved insulin sensitivity, reduced visceral fat, increased bone density, better blood pressure and lipid profiles, and improved cognitive function in older adults.[^6] The World Health Organization's 2020 guidelines ask for muscle-strengthening activity on two or more days a week for all adults, alongside aerobic activity.[^7] Two sessions is the evidence-based minimum for health, and it happens to be the frequency the hypertrophy data supports too.
+
+## Key takeaways
+
+- Mechanical tension drives growth. Damage and soreness are side effects of novelty, not signals of progress.
+- Ten or more hard sets per muscle per week, spread over at least two sessions, is the evidence-based floor.
+- Load from 30 to 80 percent of maximum produces similar hypertrophy if sets end near failure. Heavy loads build more strength, not more size.
+- Progress requires something to increase over time, and requires writing it down to know whether it has.
+- Two strength sessions a week is both the World Health Organization minimum for health and the frequency the growth data supports.
+
+## References
+
+[^1]: Schoenfeld, B. J. The mechanisms of muscle hypertrophy and their application to resistance training. *J. Strength Cond. Res.* **24**, 2857–2872 (2010). https://doi.org/10.1519/JSC.0b013e3181e840f3
+[^2]: Damas, F. et al. Resistance training-induced changes in integrated myofibrillar protein synthesis are related to hypertrophy only after attenuation of muscle damage. *J. Physiol.* **594**, 5209–5222 (2016). https://doi.org/10.1113/JP272472
+[^3]: Schoenfeld, B. J., Ogborn, D. & Krieger, J. W. Dose-response relationship between weekly resistance training volume and increases in muscle mass: a systematic review and meta-analysis. *J. Sports Sci.* **35**, 1073–1082 (2017). https://doi.org/10.1080/02640414.2016.1210197
+[^4]: Schoenfeld, B. J., Ogborn, D. & Krieger, J. W. Effects of resistance training frequency on measures of muscle hypertrophy: a systematic review and meta-analysis. *Sports Med.* **46**, 1689–1697 (2016). https://doi.org/10.1007/s40279-016-0543-8
+[^5]: Schoenfeld, B. J., Grgic, J., Ogborn, D. & Krieger, J. W. Strength and hypertrophy adaptations between low- vs. high-load resistance training: a systematic review and meta-analysis. *J. Strength Cond. Res.* **31**, 3508–3523 (2017). https://doi.org/10.1519/JSC.0000000000002200
+[^6]: Westcott, W. L. Resistance training is medicine: effects of strength training on health. *Curr. Sports Med. Rep.* **11**, 209–216 (2012). https://doi.org/10.1249/JSR.0b013e31825dabb8
+[^7]: Bull, F. C. et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. *Br. J. Sports Med.* **54**, 1451–1462 (2020). https://doi.org/10.1136/bjsports-2020-102955
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/supplements-what-survives-scrutiny.html"><span>Previous</span>Supplements: what survives scrutiny</a><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a><a class="mf-next" href="/blogs/sleep-is-not-optional.html"><span>Next</span>Sleep is not optional</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

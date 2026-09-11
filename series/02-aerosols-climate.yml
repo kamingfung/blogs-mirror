@@ -1,0 +1,47 @@
+# Aerosols and climate — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. Anything without one is a gap: listed on
+# What's next, never in the nav. Module ids are permanent.
+title: Aerosols and climate
+slug: aerosols-climate
+order: 2
+about: What the particles in the air do to cloud brightness, and why that is still the largest uncertainty in climate forcing.
+assumes: How clouds form, parts 3 and 4. Some chemistry.
+parts:
+- title: Where aerosols come from
+  modules:
+  - id: aerosols-climate/sea-spray
+    title: Sea spray
+    level: introductory
+    requires:
+    - cloud-formation/where-ccn-come-from
+  - id: aerosols-climate/dms-oxidation-and-marine-clouds
+    title: DMS oxidation and marine clouds
+    level: advanced
+    path: blogs/dms-oxidation-climate.md
+    requires:
+    - cloud-formation/kohler-theory
+    - cloud-formation/where-ccn-come-from
+- title: Clouds and the energy budget
+  modules:
+  - id: aerosols-climate/do-clouds-warm-or-cool
+    title: Do clouds warm or cool?
+    level: intermediate
+  - id: aerosols-climate/cloud-albedo
+    title: Cloud albedo
+    level: intermediate
+    requires:
+    - aerosols-climate/do-clouds-warm-or-cool
+- title: How aerosols change clouds
+  modules:
+  - id: aerosols-climate/aerosol-indirect-effects
+    title: Aerosol indirect effects
+    level: intermediate
+    path: blogs/aerosol-indirect-effects.md
+    requires:
+    - cloud-formation/kohler-theory
+    - aerosols-climate/cloud-albedo
+  - id: aerosols-climate/ship-tracks
+    title: Ship tracks
+    level: introductory
+    requires:
+    - aerosols-climate/aerosol-indirect-effects

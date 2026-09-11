@@ -1,0 +1,52 @@
+---
+title: "Train to be a scientist"
+description: "The parts of the training nobody examines you on: keeping the body that runs your mind in working order, explaining what you found, giving the work back to the field, and relearning something from scratch to prove you still can."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>4</dd></div>
+<div><dt>Modules</dt><dd>7 of 21 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Nothing. Part 1 is one person&#x27;s record with sources attached, not medical, dietary or fitness advice.</dd></div>
+</dl>
+
+## Part 1 · Looking after the machine you think with
+
+<ul class="syl">
+<li class="w"><a href="/blogs/where-your-calories-come-from.html">Where your calories come from</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/how-much-protein-really.html">How much protein, really</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/supplements-what-survives-scrutiny.html">Supplements: what survives scrutiny</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/how-muscle-is-actually-built.html">How muscle is actually built</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/sleep-is-not-optional.html">Sleep is not optional</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/reading-a-nutrition-study.html">Reading a nutrition study without being fooled</a><span class="m">Intermediate</span></li>
+</ul>
+
+## Part 2 · Saying what you found
+
+<ul class="syl">
+<li class="g">Writing a paper people finish<span class="m">Intermediate · not written</span></li>
+<li class="g">Giving a talk<span class="m">Introductory · not written</span></li>
+<li class="g">Feedback that starts from strengths<span class="m">Introductory · not written</span></li>
+<li class="g">Peer review you would want to receive<span class="m">Intermediate · not written</span></li>
+<li class="g">Teaching what you research<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 3 · Giving it back
+
+<ul class="syl">
+<li class="g">Your first contribution to a community model<span class="m">Intermediate · not written</span></li>
+<li class="g">Open source as a scientist<span class="m">Introductory · not written</span></li>
+<li class="g">Research code someone else can run<span class="m">Intermediate · not written</span></li>
+<li class="g">Outreach that is not a press release<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 4 · Relearning music theory as a scientist
+
+<ul class="syl">
+<li class="w"><a href="/blogs/why-the-theory-never-stuck.html">Why the theory never stuck</a><span class="m">Introductory</span></li>
+<li class="g">Intervals as ratios<span class="m">Introductory · not written</span></li>
+<li class="g">Why a string has harmonics<span class="m">Introductory · not written</span></li>
+<li class="g">What the ear does with a chord<span class="m">Intermediate · not written</span></li>
+<li class="g">What instruments are made of<span class="m">Introductory · not written</span></li>
+<li class="g">Reading notation, finally<span class="m">Introductory · not written</span></li>
+</ul>

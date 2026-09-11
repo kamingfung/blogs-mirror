@@ -1,0 +1,45 @@
+---
+title: The carbon budget of a bush
+description: A bush spends carbon before it earns it back, on roots, wood, next year's flower buds, and this year's fruit, all competing for the same pool. Fruit size is what is left over.
+date: 2026-09-06
+categories:
+- plant biology
+- carbon allocation
+- horticulture
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a><span class="sep">·</span>Part 1 · What a plant is doing all day</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/photosynthesis-in-one-leaf.html">Photosynthesis, in one leaf</a> and <span class="unwritten" title="not written yet">Respiration: the cost of being alive</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Photosynthesis produces gross carbon; the plant's own respiration spends a large share of it just staying alive before anything gets allocated. What remains is net carbon, and it does not go to the fruit by default. Roots, new wood, and next year's flower buds all draw from the same pool, and a heavy fruit crop competes with the very growth that would produce next year's crop.
+:::
+
+## Gross in, respiration out
+
+A leaf's photosynthesis produces what physiologists call gross primary production: total $\text{CO}_2$ fixed before any of it is spent. The bush spends a large share of that immediately on respiration, in every living cell, day and night, light or dark. Two kinds of respiration draw on the pool. Maintenance respiration keeps existing tissue alive, turning over proteins and holding ion gradients, and it scales with how much living tissue there is; a bigger, older bush pays a larger maintenance bill before it can grow at all. Growth respiration is the additional cost of building new tissue, since converting sugar into root, stem, or fruit is not free.
+
+$$\text{Net carbon gain} = \text{Gross photosynthesis} - \text{Maintenance respiration} - \text{Growth respiration}$$
+
+What is left after both is the net carbon actually available to build something, and it is consistently smaller than gross photosynthesis suggests, particularly on a cloudy week or in a stressed plant where photosynthesis is depressed but maintenance respiration keeps running.
+
+## A source, and several sinks competing for it
+
+Physiologists split a plant into sources, tissue producing more carbon than it uses, mostly mature leaves, and sinks, tissue consuming more than it produces: expanding roots, new shoots, developing flower buds, and fruit. In spring a blueberry bush runs several sinks simultaneously, and they are not served in an order that favours the one you are trying to grow.
+
+Fruit is a strong sink while it is expanding, since a growing berry imports sugar faster than almost any other tissue on the plant. But it is competing against next year's flower buds, which are already being initiated on this year's new wood while this year's fruit is still ripening, and against the vegetative growth, new stems and roots, that determines how large a source the bush will be next season. A bush that sets an unusually heavy fruit crop can finish the season with weaker flower buds and less new wood, producing a smaller crop the year after: alternate bearing, and the reason commercial growers thin flowers or fruit rather than let every one develop. The carbon budget does not know which sink you prefer; it is allocated by proximity, sink strength, and timing, and a heavier draw on one sink is a smaller draw on the others.
+
+## Key takeaways
+
+- Net carbon available for growth is gross photosynthesis minus maintenance respiration, which scales with existing tissue, and growth respiration, the cost of building new tissue.
+- The plant allocates net carbon among competing sinks: roots, new wood, next year's flower buds, and this year's fruit.
+- A heavy fruit crop draws carbon away from the vegetative growth and flower-bud formation that determine next year's crop, which is why growers thin.
+- The next module follows this budget into a single fruit, from fertilisation to the shape of its growth curve.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/photosynthesis-in-one-leaf.html"><span>Previous</span>Photosynthesis, in one leaf</a><a class="mf-up" href="/series/plants/index.html"><span>Series</span>Plant biology, one blueberry at a time</a><a class="mf-next" href="/blogs/pollination-and-fruit-set.html"><span>Next</span>Pollination and fruit set</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

@@ -1,0 +1,32 @@
+---
+title: "Aerosols and climate"
+description: "What the particles in the air do to cloud brightness, and why that is still the largest uncertainty in climate forcing."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to advanced</dd></div>
+<div><dt>Parts</dt><dd>3</dd></div>
+<div><dt>Modules</dt><dd>2 of 6 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>How clouds form, parts 3 and 4. Some chemistry.</dd></div>
+</dl>
+
+## Part 1 · Where aerosols come from
+
+<ul class="syl">
+<li class="g">Sea spray<span class="m">Introductory · not written</span></li>
+<li class="w"><a href="/blogs/dms-oxidation-climate.html">DMS oxidation and marine clouds</a><span class="m">Advanced</span></li>
+</ul>
+
+## Part 2 · Clouds and the energy budget
+
+<ul class="syl">
+<li class="g">Do clouds warm or cool?<span class="m">Intermediate · not written</span></li>
+<li class="g">Cloud albedo<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 3 · How aerosols change clouds
+
+<ul class="syl">
+<li class="w"><a href="/blogs/aerosol-indirect-effects.html">Aerosol indirect effects</a><span class="m">Intermediate</span></li>
+<li class="g">Ship tracks<span class="m">Introductory · not written</span></li>
+</ul>

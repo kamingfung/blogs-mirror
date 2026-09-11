@@ -1,0 +1,201 @@
+---
+title: What MRI sees
+description: Why MRI is the tool for soft tissue and CT is not, and the spin physics that produces the signal. TR, TE, k-space and BOLD defined properly.
+date: 2026-09-03
+categories:
+- biomedical engineering
+- mri
+- physics
+- neuroscience
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/waves/index.html">Waves, Sound and Imaging</a><span class="sep">·</span>Part 8 · MRI</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">NMR basics</span> and <span class="unwritten" title="not written yet">Relaxation: T1 and T2</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+An MRI scanner does not photograph tissue; it times how quickly hydrogen nuclei, tipped out of alignment with a strong magnetic field, return to it. That recovery rate depends on the molecular environment of each proton, so water bound to protein relaxes differently from free water and the machine converts a **timing** difference into an anatomical one. This is why MRI dominates soft-tissue imaging where CT sees almost nothing, and why two numbers, $\text{TR}$ and $\text{TE}$, can turn the same anatomy into images that look like photographic negatives of each other.
+:::
+
+## Start with the question the modality answers
+
+Every imaging technique measures one physical interaction and infers structure from it. The useful way to compare them is not by resolution or cost but by **what physical property creates the contrast** — because that determines what the technique can and cannot ever see.
+
+| Modality | Physical interaction | Contrast comes from | Ionising? | Blind to |
+| :--- | :--- | :--- | :--- | :--- |
+| **Radiography / CT** | X-ray photoelectric absorption | Electron density, $\propto Z^{3}$ | Yes | Soft tissues, which differ little in $Z$ |
+| **Ultrasound** | Reflection of $\text{MHz}$ pressure waves | Acoustic impedance mismatch | No | Anything behind bone or gas |
+| **PET / SPECT** | Annihilation photons from an injected tracer | Where the tracer accumulates — metabolism, receptor density | Yes | Anatomy; it images function on a blurry map |
+| **MRI** | Nuclear magnetic resonance of $^{1}\text{H}$ | Proton density **and** relaxation times, which depend on molecular environment | No | Cortical bone and air, which hold almost no mobile protons |
+
+Two consequences fall out immediately.
+
+**CT is superb at exactly what MRI is bad at.** Bone is dense in high-$Z$ calcium, so it dominates an X-ray image; it is also protons-poor and rigid, so it is nearly silent in MRI. For a suspected skull fracture or an acute bleed at 3 a.m., CT is the right instrument — seconds to acquire, unambiguous, and available.
+
+**MRI's advantage is that it has more than one contrast mechanism.** Grey matter and white matter have almost identical electron density; CT can barely separate them. But their water is held differently — myelin lipid bilayers restrict it, cortical water is freer — so their relaxation times differ substantially, and MRI separates them trivially. This is the whole reason MRI owns neuroimaging.
+
+## The physics, in the order the machine uses it
+
+### 1. Why hydrogen
+
+A nucleus has spin angular momentum $\mathbf{I}$ and hence a magnetic moment $\boldsymbol{\mu} = \gamma \mathbf{I}$, but only if it has an odd number of protons or neutrons — an even-even nucleus like $^{12}\text{C}$ or $^{16}\text{O}$ has $I = 0$ and is invisible. Hydrogen wins on three counts at once: it has $I = 1/2$, the largest gyromagnetic ratio of any stable nucleus at $\gamma/2\pi = 42.58\text{ MHz T}^{-1}$, and it is the most abundant nucleus in the body because you are mostly water and fat.
+
+So a clinical MRI is a **map of mobile hydrogen**, weighted by its chemical surroundings. Protons locked into a crystal lattice or a rigid macromolecule relax far too fast to contribute, which is why cortical bone and calcification read as black.
+
+### 2. Precession, and the frequency the scanner listens at
+
+Place a proton in a static field $B_0$ and its moment precesses about that field at the **Larmor frequency**:
+
+$$\omega_0 = \gamma B_0$$
+
+At $B_0 = 3\text{ T}$ this is about $128\text{ MHz}$ — the FM radio band, which is precisely why the receive chain is a radio-frequency engineering problem. This single equation is the source of nearly everything else in MRI, because it says the precession frequency is *proportional to the local field*. Make the field vary in space and frequency becomes a position label. Hold that thought for §4.
+
+### 3. Excitation and relaxation, where the contrast lives
+
+At equilibrium the spin population is very slightly biased along $B_0$ — at body temperature and $3\text{ T}$, an excess of only a few spins per million, which is why MRI is a fundamentally signal-starved technique. That tiny net magnetisation $M_0$ is what we manipulate.
+
+A resonant RF pulse at $\omega_0$ tips $M_0$ away from $B_0$ by a **flip angle** set by the pulse's amplitude and duration. A $90^\circ$ pulse puts all of it in the transverse plane, where it precesses and induces a measurable voltage in a receive coil. Then it returns to equilibrium by two independent processes:
+
+- **$T_1$, spin-lattice relaxation** — recovery of magnetisation *along* $B_0$, as spins dump energy into their molecular surroundings. It is efficient when the molecular tumbling rate is near $\omega_0$, so it depends strongly on how large and mobile the host molecule is. Fat is short-$T_1$; free water long.
+- **$T_2$, spin-spin relaxation** — decay of magnetisation *within* the transverse plane, as spins that see slightly different local fields from their neighbours drift out of phase. Water in a restricted environment dephases faster.
+
+Crucially $T_1$ and $T_2$ are **not the same measurement in different units**; they respond to different aspects of the molecular environment, and always $T_2 \le T_1$. Having two independent clocks per voxel is what gives MRI its contrast range.
+
+A third clock matters in practice. **$T_2^{*}$** is the *observed* transverse decay, faster than $T_2$ because it also includes dephasing from static magnet inhomogeneity and from susceptibility differences at tissue boundaries:
+
+$$\frac{1}{T_2^{*}} = \frac{1}{T_2} + \frac{1}{T_2'}$$
+
+The $T_2'$ part is reversible — a $180^\circ$ pulse flips the accumulated phase and the spins re-converge into an **echo**. The $T_2$ part is random and cannot be recovered. That distinction is the basis of the spin-echo sequence, and, inverted, of how functional MRI detects blood oxygenation.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 292" style="width:100%;max-width:740px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="A spin-echo pulse sequence timing diagram showing a 90 degree pulse, a 180 degree refocusing pulse, the free induction decay, the echo, and the intervals TE and TR.">
+  <defs>
+    <marker id="mrA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+    <marker id="mrS" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto-start-reverse"><polygon points="0 0, 8 3, 0 6" fill="var(--ink-rust)"/></marker>
+    <marker id="mrE" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--ink-rust)"/></marker>
+  </defs>
+  <text x="14" y="46" fill="var(--md-default-fg-color--light)" font-size="13" font-weight="600">RF</text>
+  <line x1="60" y1="60" x2="700" y2="60" stroke="var(--md-default-fg-color--light)" stroke-width="1.2"/>
+  <path d="M 96 60 q 6 -34 12 0 q 6 34 12 0" fill="none" stroke="var(--ink-indigo)" stroke-width="2.4"/>
+  <text x="108" y="26" text-anchor="middle" fill="var(--ink-indigo)" font-size="12.5" font-weight="600">90°</text>
+  <path d="M 300 60 q 6 -34 12 0 q 6 34 12 0" fill="none" stroke="var(--ink-indigo)" stroke-width="2.4"/>
+  <text x="312" y="26" text-anchor="middle" fill="var(--ink-indigo)" font-size="12.5" font-weight="600">180°</text>
+  <path d="M 516 60 q 6 -34 12 0 q 6 34 12 0" fill="none" stroke="var(--ink-indigo)" stroke-width="2.4"/>
+  <text x="528" y="26" text-anchor="middle" fill="var(--ink-indigo)" font-size="12.5" font-weight="600">90°</text>
+  <text x="14" y="126" fill="var(--md-default-fg-color--light)" font-size="13" font-weight="600">Signal</text>
+  <line x1="60" y1="140" x2="700" y2="140" stroke="var(--md-default-fg-color--light)" stroke-width="1.2"/>
+  <path d="M 108 140 C 122 96, 150 130, 166 138 C 176 143, 186 139, 196 140" fill="none" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <text x="150" y="92" fill="var(--md-default-fg-color--light)" font-size="12">FID decays at T₂*</text>
+  <path d="M 430 140 C 448 112, 470 100, 486 100 C 502 100, 524 112, 542 140" fill="none" stroke="var(--ink-sage)" stroke-width="2.6"/>
+  <text x="486" y="92" text-anchor="middle" fill="var(--ink-sage)" font-size="12.5" font-weight="600">echo</text>
+  <line x1="108" y1="164" x2="486" y2="164" stroke="var(--ink-rust)" stroke-width="2" marker-start="url(#mrS)" marker-end="url(#mrE)"/>
+  <text x="297" y="182" text-anchor="middle" fill="var(--ink-rust)" font-size="13.5" font-weight="600">TE — echo time, sets T₂ weighting</text>
+  <line x1="108" y1="212" x2="528" y2="212" stroke="var(--ink-rust)" stroke-width="2" marker-start="url(#mrS)" marker-end="url(#mrE)"/>
+  <text x="318" y="230" text-anchor="middle" fill="var(--ink-rust)" font-size="13.5" font-weight="600">TR — repetition time, sets T₁ weighting</text>
+  <line x1="312" y1="70" x2="312" y2="130" stroke="var(--md-default-fg-color--light)" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="318" y="126" fill="var(--md-default-fg-color--light)" font-size="12">refocus at TE⁄2</text>
+  <line x1="60" y1="252" x2="700" y2="252" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#mrA)"/>
+  <text x="704" y="257" fill="var(--md-default-fg-color--light)" font-size="14" font-style="italic">t</text>
+  <text x="60" y="274" fill="var(--md-default-fg-color--light)" font-size="12.5">one repetition; the whole block repeats once per phase-encoding step, which is why a scan takes minutes</text>
+</svg>
+<figcaption><strong>Figure 1 | Two timing numbers, TR and TE, decide what the image is a picture of.</strong> A $90^\circ$ pulse tips the magnetisation into the transverse plane, where it induces a free induction decay that dies away with $T_2^{*}$. A $180^\circ$ pulse at $\text{TE}/2$ reverses the field-inhomogeneity dephasing and recalls the signal as an <em>echo</em> at $\text{TE}$ (teal), so the echo amplitude reports true $T_2$ rather than $T_2^{*}$. Waiting a short $\text{TR}$ before the next $90^\circ$ pulse leaves tissues incompletely recovered along $z$ and therefore separated by $T_1$; a long $\text{TR}$ erases that difference. Same anatomy, same hardware — the contrast is chosen entirely by where you put these two numbers.</figcaption>
+</figure>
+```
+
+
+### 4. Turning frequency into position
+
+The scanner adds three **gradient** coils that make $B_0$ vary linearly along $x$, $y$ and $z$. Via Larmor, a field gradient is a frequency gradient, so position is encoded in the signal's frequency and phase:
+
+- **Slice selection** — apply a gradient along $z$ and transmit RF in a narrow bandwidth. Only the slab whose Larmor frequency falls inside that band is excited.
+- **Frequency encoding** — during readout, a gradient along $x$ makes each column precess at its own frequency.
+- **Phase encoding** — a brief gradient along $y$ before readout leaves each row with its own accumulated phase offset.
+
+What the coil records is therefore not an image but a set of spatial-frequency samples. That sample space is called **k-space**, and the image is its inverse Fourier transform. Low $k$ carries contrast and gross shape; high $k$ carries edges and fine detail.
+
+This also answers a question every student asks: **why does a scan take minutes when the signal itself lasts milliseconds?** Because one repetition fills only one line of k-space. A $256$-row image needs $256$ phase-encoding steps, each separated by a $\text{TR}$ of hundreds of milliseconds to let $T_1$ recovery happen. Multiply out and you get minutes. Essentially all of MRI's engineering history is the fight to fill k-space faster.
+
+## The vocabulary, and what it buys
+
+### Timing and contrast
+
+| Term | What it is | Why it matters |
+| :--- | :--- | :--- |
+| $\text{TR}$, repetition time | Interval between successive excitations of the same slice | Controls how much $T_1$ recovery occurs. **Short $\text{TR}$ → $T_1$ weighting** |
+| $\text{TE}$, echo time | Delay from excitation to sampling the echo | Controls how much $T_2$ decay occurs. **Long $\text{TE}$ → $T_2$ weighting** |
+| $\text{TI}$, inversion time | Delay after a $180^\circ$ inversion before excitation | Lets you null a tissue whose magnetisation is crossing zero — the trick behind FLAIR |
+| Flip angle | Angle the RF pulse tips $M_0$ through | Trades signal against speed; small angles allow very short $\text{TR}$ |
+| Saturation | Repeatedly exciting spins faster than they can recover, driving their signal down | The mechanism behind $T_1$ contrast, and the mechanism behind time-of-flight angiography |
+
+The practical upshot: a **$T_1$-weighted** image (short $\text{TR}$, short $\text{TE}$) shows fat bright and fluid dark — good anatomy. A **$T_2$-weighted** image (long $\text{TR}$, long $\text{TE}$) shows fluid bright — good pathology, because most disease involves oedema. The same brain, opposite appearance.
+
+### Flow and angiography
+
+**Time-of-flight is the most badly named term in the field.** In ultrasound or PET, time-of-flight means literally timing a signal's travel. In MRI it means nothing of the kind, and no interval is measured.
+
+TOF angiography works by **saturation**. Repeatedly exciting a slice with short $\text{TR}$ drives stationary tissue into saturation — it never fully recovers, so its signal falls. Blood, however, is *flowing*: fresh, fully relaxed spins from outside the slice arrive continuously, having never seen an RF pulse. They give full signal against a suppressed background, so vessels appear bright. The "flight" is the blood's motion into the slice, not a timed measurement. It follows that TOF fails where flow is slow or runs in-plane — a real diagnostic limitation, not a technicality.
+
+| Term | Mechanism |
+| :--- | :--- |
+| **TOF-MRA** | Inflow of unsaturated spins against a saturated background. No contrast agent needed |
+| **Phase-contrast** | Moving spins accumulate extra phase along a gradient; phase becomes a velocity measurement, giving quantitative flow |
+| **ASL**, arterial spin labelling | Magnetically tag blood water upstream, image downstream, subtract. Perfusion imaging with no injection |
+
+### Diffusion and function
+
+| Term | What it measures |
+| :--- | :--- |
+| **DWI** | Signal loss from random water motion. Add a strong gradient pair and diffusing spins dephase while static ones do not |
+| **$b$-value** | The diffusion-weighting strength, from gradient amplitude and duration. Higher $b$, more sensitivity, less signal |
+| **ADC** | Apparent diffusion coefficient — fit across $b$-values to get a quantitative map, free of $T_2$ contamination |
+| **FLAIR** | Fluid-attenuated inversion recovery. A $T_2$-weighted scan with $\text{TI}$ tuned to null CSF, so periventricular lesions stop hiding next to bright fluid |
+| **BOLD** | Blood-oxygen-level-dependent contrast. Deoxyhaemoglobin is paramagnetic and shortens $T_2^{*}$; activity raises local oxygenated flow, lengthens $T_2^{*}$, and brightens the signal by a few percent |
+
+Note what DWI buys clinically: within minutes of an ischaemic stroke, failing ion pumps let water shift intracellularly where its motion is restricted. Diffusion drops, DWI goes bright, and the infarct is visible **hours before** it appears on CT. That is the single clearest example of MRI imaging physiology rather than structure.
+
+### Reconstruction
+
+| Term | Meaning |
+| :--- | :--- |
+| **Gradient** | A coil making $B_0$ vary linearly in space, so frequency encodes position |
+| **k-space** | The spatial-frequency domain the scanner actually samples. Centre = contrast, periphery = detail |
+| **Slice selection** | Exciting one slab by matching RF bandwidth to a gradient |
+| **Phase / frequency encoding** | Position labels written into the signal's phase and frequency |
+| **Fourier transform** | The inverse transform of k-space *is* the image |
+
+### What this buys, and what it costs
+
+MRI's strengths follow from the physics rather than from engineering polish: no ionising radiation, so it is repeatable and usable in children and in pregnancy; multiple independent contrast mechanisms in one session; and the ability to image physiology — diffusion, perfusion, oxygenation — not just anatomy.
+
+The costs follow just as directly. It is slow, because k-space must be filled line by line while waiting on $T_1$. It is sensitive to motion, because encoding is spread over minutes. It is expensive, needing a superconducting magnet and cryogenics. And it is **contraindicated with ferromagnetic implants**, because a $3\text{ T}$ field exerts real force. None of these are incidental; each is the direct price of the mechanism that gives the contrast.
+
+## Key takeaways
+
+- MRI is a map of mobile hydrogen: the signal comes from protons in water and fat, which is why cortical bone and air read black and soft tissue is where MRI wins.
+- The Larmor relation $\omega_0 = \gamma B_0$ makes precession frequency proportional to the local field, so gradient coils turn frequency and phase into position and the image is the inverse Fourier transform of k-space.
+- $T_1$ and $T_2$ are two independent clocks per voxel; short $\text{TR}$ weights the image by $T_1$ and long $\text{TE}$ weights it by $T_2$, so the same brain can appear with fluid dark or fluid bright.
+- $T_2^{*}$ adds reversible dephasing to $T_2$; a $180^\circ$ pulse undoes it to form a spin echo, and BOLD fMRI reads the same effect through blood oxygenation.
+- Every cost of MRI, its slowness, motion sensitivity, expense and the implant contraindication, is the direct price of the mechanism that produces its contrast.
+
+This module covers what MRI is for, how it compares physically to the other modalities, and the physics needed to read the vocabulary. Two further modules follow.
+
+**Part 2 — the mathematics.** The Bloch equations and their solutions, the rotating frame, why the signal equation takes the form it does, k-space trajectories and sampling, and where each weighting expression actually comes from.
+
+**Part 3 — clinical signals.** Sequence families in practice: how to read $T_1$w, $T_2$w, FLAIR, DWI/ADC, SWI, MRA and fMRI together, what artefacts mimic pathology, and how the intraoperative case discussed in [Intraoperative MRI for Stroke](cerebral-hyperperfusion-mri.qmd) fits in.
+
+### References and further reading
+
+- Bloch, F. (1946). Nuclear induction. *Physical Review*, **70**(7-8), 460-474. [DOI:10.1103/PhysRev.70.460](https://doi.org/10.1103/PhysRev.70.460)
+- Hahn, E. L. (1950). Spin echoes. *Physical Review*, **80**(4), 580-594. [DOI:10.1103/PhysRev.80.580](https://doi.org/10.1103/PhysRev.80.580)
+- Lauterbur, P. C. (1973). Image formation by induced local interactions: examples employing nuclear magnetic resonance. *Nature*, **242**, 190-191. [DOI:10.1038/242190a0](https://doi.org/10.1038/242190a0)
+- Ogawa, S., et al. (1990). Brain magnetic resonance imaging with contrast dependent on blood oxygenation. *PNAS*, **87**(24), 9868-9872. [DOI:10.1073/pnas.87.24.9868](https://doi.org/10.1073/pnas.87.24.9868)
+- Le Bihan, D., et al. (1986). MR imaging of intravoxel incoherent motions. *Radiology*, **161**(2), 401-407. [DOI:10.1148/radiology.161.2.3763909](https://doi.org/10.1148/radiology.161.2.3763909)
+- Haacke, E. M., et al. (1999). *Magnetic Resonance Imaging: Physical Principles and Sequence Design*. Wiley.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/fourier-transform-audio.html"><span>Previous</span>The Fourier transform and audio</a><a class="mf-up" href="/series/waves/index.html"><span>Series</span>Waves, Sound and Imaging</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

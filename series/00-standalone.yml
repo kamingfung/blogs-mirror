@@ -1,0 +1,12 @@
+# Posts that belong to no series. Listed in the nav under Seminars.
+seminars:
+  - title: "DNA and RNA"
+    path: blogs/dna-and-rna.md
+    level: introductory
+    note: "Would seed a molecular biology series once two more exist."
+
+# Listed on What’s next as leaving the blog; not in the nav.
+move_to_academic:
+  - title: "Predicting cerebral hyperperfusion with PWI-MRI"
+    path: blogs/cerebral-hyperperfusion-mri.md
+    note: "A clinical paper summary. Belongs in the academic archive."

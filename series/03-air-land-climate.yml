@@ -1,0 +1,182 @@
+# Air, Land and Climate — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Air, Land and Climate"
+slug: air-land-climate
+order: 3
+about: "Air pollution, the nitrogen cycle, farming, and how land and atmosphere feed back on each other in Earth system models."
+assumes: "School chemistry. Parts 1 and 5 of Clouds and Aerosols help but are not required."
+parts:
+  - title: "What is in the air"
+    modules:
+      - id: air-land-climate/what-pm2-5-is-and-why-2-5
+        title: "What PM2.5 is, and why 2.5"
+        level: introductory
+      - id: air-land-climate/ozone-good-up-high-bad-nearby
+        title: "Ozone: good up high, bad nearby"
+        level: introductory
+      - id: air-land-climate/units-standards-and-what-unhealthy-means
+        title: "Units, standards, and what \"unhealthy\" means"
+        level: introductory
+  - title: "Where aerosols come from"
+    modules:
+      - id: air-land-climate/primary-and-secondary-aerosols
+        title: "Primary and secondary aerosols"
+        level: introductory
+      - id: air-land-climate/organic-aerosols-health-versus-climate
+        title: "Organic aerosols: health versus climate"
+        level: advanced
+        path: blogs/organic-aerosols-health-climate.md
+        requires:
+          - air-land-climate/primary-and-secondary-aerosols
+          - air-land-climate/exposureresponse-curves
+      - id: air-land-climate/black-carbon
+        title: "Black carbon"
+        level: intermediate
+  - title: "Ozone chemistry"
+    modules:
+      - id: air-land-climate/nox-vocs-and-sunlight
+        title: "NOx, VOCs and sunlight"
+        level: intermediate
+      - id: air-land-climate/why-ozone-peaks-in-the-afternoon
+        title: "Why ozone peaks in the afternoon"
+        level: intermediate
+      - id: air-land-climate/ozone-titration-in-cities
+        title: "Ozone titration in cities"
+        level: intermediate
+  - title: "The nitrogen cascade"
+    modules:
+      - id: air-land-climate/fixed-nitrogen
+        title: "Fixed nitrogen"
+        level: introductory
+      - id: air-land-climate/where-ammonia-comes-from
+        title: "Where ammonia comes from"
+        level: introductory
+      - id: air-land-climate/deposition-how-nitrogen-leaves-the-air
+        title: "Deposition: how nitrogen leaves the air"
+        level: intermediate
+  - title: "Ammonia, forests and ozone"
+    modules:
+      - id: air-land-climate/ammonia-deposition-and-ozone-feedbacks
+        title: "Ammonia deposition and ozone feedbacks"
+        level: advanced
+        path: blogs/ammonia-deposition-ozone.md
+        requires:
+          - air-land-climate/where-ammonia-comes-from
+          - air-land-climate/deposition-how-nitrogen-leaves-the-air
+          - air-land-climate/nox-vocs-and-sunlight
+      - id: air-land-climate/stomata-and-dry-deposition
+        title: "Stomata and dry deposition"
+        level: intermediate
+      - id: air-land-climate/leaf-area-index
+        title: "Leaf area index"
+        level: intermediate
+  - title: "Fertiliser and the atmosphere"
+    modules:
+      - id: air-land-climate/fertiliser-nitrogen-and-aerosol-cooling-in-cesm2
+        title: "Fertiliser nitrogen and aerosol cooling in CESM2"
+        level: advanced
+        path: blogs/cesm2-fertilizer-climate-feedback.md
+        requires:
+          - air-land-climate/what-an-earth-system-model-is
+          - air-land-climate/fixed-nitrogen
+          - cloud-formation/kohler-theory
+      - id: air-land-climate/n2o-the-forgotten-greenhouse-gas
+        title: "N2O, the forgotten greenhouse gas"
+        level: intermediate
+      - id: air-land-climate/emission-factors
+        title: "Emission factors"
+        level: intermediate
+  - title: "Farming that cleans the air"
+    modules:
+      - id: air-land-climate/intercropping
+        title: "Intercropping"
+        level: introductory
+        path: blogs/intercropping-air-quality.md
+        requires:
+          - air-land-climate/where-ammonia-comes-from
+      - id: air-land-climate/precision-fertilisation
+        title: "Precision fertilisation"
+        level: intermediate
+      - id: air-land-climate/manure-and-livestock
+        title: "Manure and livestock"
+        level: introductory
+  - title: "Removing carbon on land"
+    modules:
+      - id: air-land-climate/enhanced-rock-weathering
+        title: "Enhanced rock weathering"
+        level: advanced
+        path: blogs/enhanced-rock-weathering-nitrogen.md
+        requires:
+          - air-land-climate/fixed-nitrogen
+          - air-land-climate/the-land-model-clm
+      - id: air-land-climate/biochar
+        title: "Biochar"
+        level: intermediate
+      - id: air-land-climate/afforestation-trade-offs
+        title: "Afforestation trade-offs"
+        level: intermediate
+  - title: "Climate and food"
+    modules:
+      - id: air-land-climate/agriculture-under-climate-extremes
+        title: "Agriculture under climate extremes"
+        level: introductory
+        path: blogs/agriculture-climate-challenges.md
+        requires:
+          - air-land-climate/how-ozone-damages-crops
+      - id: air-land-climate/how-ozone-damages-crops
+        title: "How ozone damages crops"
+        level: intermediate
+      - id: air-land-climate/heat-stress-on-crops
+        title: "Heat stress on crops"
+        level: intermediate
+  - title: "Earth system models"
+    modules:
+      - id: air-land-climate/what-an-earth-system-model-is
+        title: "What an Earth system model is"
+        level: introductory
+      - id: air-land-climate/the-land-model-clm
+        title: "The land model: CLM"
+        level: intermediate
+      - id: air-land-climate/coupling-land-and-atmosphere
+        title: "Coupling land and atmosphere"
+        level: advanced
+        requires:
+          - air-land-climate/what-an-earth-system-model-is
+          - air-land-climate/the-land-model-clm
+  - title: "Air pollution and health"
+    modules:
+      - id: air-land-climate/exposureresponse-curves
+        title: "Exposure–response curves"
+        level: intermediate
+      - id: air-land-climate/counting-deaths-from-air-pollution
+        title: "Counting deaths from air pollution"
+        level: intermediate
+      - id: air-land-climate/who-is-exposed
+        title: "Who is exposed"
+        level: introductory
+  - title: "Measuring air quality"
+    modules:
+      - id: air-land-climate/monitors-sensors-and-satellites
+        title: "Monitors, sensors and satellites"
+        level: introductory
+      - id: air-land-climate/reanalysis-and-chemical-transport-models
+        title: "Reanalysis and chemical transport models"
+        level: intermediate
+  - title: "Smoke and fire"
+    modules:
+      - id: air-land-climate/wildfire-smoke
+        title: "Wildfire smoke"
+        level: introductory
+      - id: air-land-climate/crop-residue-burning
+        title: "Crop residue burning"
+        level: intermediate
+  - title: "Policy"
+    modules:
+      - id: air-land-climate/what-the-clean-air-act-did
+        title: "What the Clean Air Act did"
+        level: introductory
+      - id: air-land-climate/co-benefits-of-climate-policy
+        title: "Co-benefits of climate policy"
+        level: intermediate

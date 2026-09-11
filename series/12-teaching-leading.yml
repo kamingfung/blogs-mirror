@@ -1,0 +1,200 @@
+# Teaching and Leading — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. `split_from` means it is still inside that longer post.
+# Anything with neither is a gap: listed on What's next, never in the nav.
+
+title: "Teaching and Leading"
+slug: teaching-leading
+order: 12
+about: "What a teaching certificate taught a scientist, and how the same tools run a team: briefs, feedback, reviews, and explaining things to people who are busy."
+assumes: "Nothing. Parts alternate between the classroom idea and its use at work."
+parts:
+  - title: "Designing a course"
+    modules:
+      - id: teaching-leading/backward-design
+        title: "Backward design"
+        level: introductory
+        path: blogs/ktcp-backward-design.md
+      - id: teaching-leading/writing-learning-outcomes
+        title: "Writing learning outcomes"
+        level: introductory
+        requires:
+          - teaching-leading/backward-design
+      - id: teaching-leading/aligning-assessment
+        title: "Aligning assessment"
+        level: introductory
+        requires:
+          - teaching-leading/writing-learning-outcomes
+  - title: "Backward design at work"
+    modules:
+      - id: teaching-leading/decide-what-done-looks-like-first
+        title: "Decide what done looks like first"
+        level: introductory
+        requires:
+          - teaching-leading/backward-design
+      - id: teaching-leading/writing-a-project-brief
+        title: "Writing a project brief"
+        level: introductory
+        requires:
+          - teaching-leading/decide-what-done-looks-like-first
+      - id: teaching-leading/milestones-as-assessments
+        title: "Milestones as assessments"
+        level: introductory
+        requires:
+          - teaching-leading/aligning-assessment
+  - title: "Who is in the room"
+    modules:
+      - id: teaching-leading/belonging-and-engagement
+        title: "Belonging and engagement"
+        level: introductory
+        path: blogs/ktcp-belonging-and-engagement.md
+        requires:
+          - teaching-leading/backward-design
+      - id: teaching-leading/active-learning
+        title: "Active learning"
+        level: introductory
+  - title: "Belonging on a team"
+    modules:
+      - id: teaching-leading/psychological-safety
+        title: "Psychological safety"
+        level: introductory
+        requires:
+          - teaching-leading/belonging-and-engagement
+      - id: teaching-leading/the-first-week-onboarding-as-course-design
+        title: "The first week: onboarding as course design"
+        level: introductory
+        requires:
+          - teaching-leading/backward-design
+          - teaching-leading/psychological-safety
+      - id: teaching-leading/meetings-people-speak-in
+        title: "Meetings people speak in"
+        level: introductory
+  - title: "Prior knowledge and feedback"
+    modules:
+      - id: teaching-leading/meeting-students-where-they-are
+        title: "Meeting students where they are"
+        level: introductory
+        path: blogs/ktcp-prior-knowledge-and-feedback.md
+      - id: teaching-leading/formative-assessment
+        title: "Formative assessment"
+        level: introductory
+  - title: "Feedback at work"
+    modules:
+      - id: teaching-leading/one-on-ones
+        title: "One-on-ones"
+        level: introductory
+        requires:
+          - teaching-leading/formative-assessment
+      - id: teaching-leading/code-review-as-feedback
+        title: "Code review as feedback"
+        level: intermediate
+        requires:
+          - teaching-leading/giving-hard-feedback
+      - id: teaching-leading/giving-hard-feedback
+        title: "Giving hard feedback"
+        level: introductory
+  - title: "Grading"
+    modules:
+      - id: teaching-leading/grading-and-what-happens-when-you-teach
+        title: "Grading, and what happens when you teach"
+        level: introductory
+        path: blogs/ktcp-grading-and-practice.md
+      - id: teaching-leading/rubrics
+        title: "Rubrics"
+        level: introductory
+  - title: "Grading at work"
+    modules:
+      - id: teaching-leading/performance-reviews-without-the-a-to-f
+        title: "Performance reviews without the A to F"
+        level: introductory
+        requires:
+          - teaching-leading/grading-and-what-happens-when-you-teach
+          - teaching-leading/rubrics
+      - id: teaching-leading/rubrics-for-hiring
+        title: "Rubrics for hiring"
+        level: intermediate
+        requires:
+          - teaching-leading/rubrics
+      - id: teaching-leading/calibration
+        title: "Calibration"
+        level: intermediate
+        requires:
+          - teaching-leading/rubrics-for-hiring
+  - title: "Explaining"
+    modules:
+      - id: teaching-leading/answer-first
+        title: "Answer first"
+        level: introductory
+      - id: teaching-leading/explaining-to-people-with-ten-minutes
+        title: "Explaining to people with ten minutes"
+        level: introductory
+        requires:
+          - teaching-leading/answer-first
+      - id: teaching-leading/the-one-slide-summary
+        title: "The one-slide summary"
+        level: introductory
+        requires:
+          - teaching-leading/answer-first
+  - title: "Writing"
+    modules:
+      - id: teaching-leading/a-memo-people-actually-read
+        title: "A memo people actually read"
+        level: introductory
+        requires:
+          - teaching-leading/answer-first
+      - id: teaching-leading/documentation-as-teaching
+        title: "Documentation as teaching"
+        level: introductory
+        requires:
+          - teaching-leading/meeting-students-where-they-are
+      - id: teaching-leading/writing-for-people-who-skim
+        title: "Writing for people who skim"
+        level: introductory
+  - title: "Running a room"
+    modules:
+      - id: teaching-leading/running-a-meeting-like-a-class
+        title: "Running a meeting like a class"
+        level: introductory
+        requires:
+          - teaching-leading/active-learning
+      - id: teaching-leading/workshops-and-retrospectives
+        title: "Workshops and retrospectives"
+        level: intermediate
+      - id: teaching-leading/presenting-data-to-a-decision
+        title: "Presenting data to a decision"
+        level: intermediate
+        requires:
+          - teaching-leading/answer-first
+  - title: "Leading"
+    modules:
+      - id: teaching-leading/delegation-as-teaching
+        title: "Delegation as teaching"
+        level: introductory
+        requires:
+          - teaching-leading/backward-design
+      - id: teaching-leading/mentoring
+        title: "Mentoring"
+        level: introductory
+        requires:
+          - teaching-leading/one-on-ones
+      - id: teaching-leading/growing-people-who-will-leave
+        title: "Growing people who will leave"
+        level: intermediate
+  - title: "Teaching with notes"
+    modules:
+      - id: teaching-leading/turning-notes-into-a-course
+        title: "Turning notes into a course"
+        level: introductory
+        requires:
+          - teaching-leading/backward-design
+          - teaching-leading/aligning-assessment
+      - id: teaching-leading/open-courseware
+        title: "Open courseware"
+        level: introductory
+  - title: "How learning works"
+    modules:
+      - id: teaching-leading/memory-and-spacing
+        title: "Memory and spacing"
+        level: introductory
+      - id: teaching-leading/cognitive-load
+        title: "Cognitive load"
+        level: intermediate

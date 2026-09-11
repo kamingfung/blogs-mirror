@@ -1,0 +1,98 @@
+# Plant biology — syllabus. Source of truth for nav order, levels and prerequisites.
+# A module with `path` exists. Anything without one is a gap: listed on
+# What's next, never in the nav. Module ids are permanent.
+#
+# One crop runs through the whole series. Every module uses the blueberry as
+# its worked example, so a reader who finishes knows one plant properly.
+title: Plant biology, one blueberry at a time
+slug: plants
+order: 4
+about: "How a plant works, followed through a single crop: what a blueberry bush is doing from bud to harvest, and why every yield question starts in the leaf."
+assumes: "School biology. The forecasting series models this crop's data; this series explains where the data comes from."
+parts:
+  - title: What a plant is doing all day
+    modules:
+      - id: plants/photosynthesis-in-one-leaf
+        title: Photosynthesis, in one leaf
+        level: introductory
+        path: blogs/photosynthesis-in-one-leaf.md
+      - id: plants/respiration-the-cost-of-being-alive
+        title: "Respiration: the cost of being alive"
+        level: introductory
+        requires: [plants/photosynthesis-in-one-leaf]
+      - id: plants/the-carbon-budget-of-a-bush
+        title: The carbon budget of a bush
+        level: intermediate
+        path: blogs/the-carbon-budget-of-a-bush.md
+        requires: [plants/photosynthesis-in-one-leaf, plants/respiration-the-cost-of-being-alive]
+  - title: From flower to fruit
+    modules:
+      - id: plants/pollination-and-fruit-set
+        title: Pollination and fruit set
+        level: introductory
+        path: blogs/pollination-and-fruit-set.md
+      - id: plants/cell-division-then-cell-expansion
+        title: Cell division, then cell expansion
+        level: intermediate
+        path: blogs/cell-division-then-cell-expansion.md
+        requires: [plants/pollination-and-fruit-set]
+      - id: plants/the-growth-curve-of-a-berry
+        title: The growth curve of a berry
+        level: intermediate
+        path: blogs/the-growth-curve-of-a-berry.md
+        requires: [plants/cell-division-then-cell-expansion, plants/the-carbon-budget-of-a-bush]
+  - title: Water and nutrients
+    modules:
+      - id: plants/roots-and-why-blueberries-want-acid-soil
+        title: Roots, and why blueberries want acid soil
+        level: introductory
+      - id: plants/ericoid-mycorrhizae
+        title: Ericoid mycorrhizae
+        level: intermediate
+        requires: [plants/roots-and-why-blueberries-want-acid-soil]
+      - id: plants/nitrogen-as-ammonium-not-nitrate
+        title: Nitrogen as ammonium, not nitrate
+        level: intermediate
+        requires: [plants/roots-and-why-blueberries-want-acid-soil, air-land-climate/fixed-nitrogen]
+  - title: Ripening
+    modules:
+      - id: plants/why-blueberries-are-blue
+        title: "Why blueberries are blue: anthocyanins"
+        level: introductory
+      - id: plants/sugar-acid-and-what-ripe-measures
+        title: Sugar, acid, and what "ripe" measures
+        level: introductory
+      - id: plants/why-a-picked-blueberry-stops
+        title: "Non-climacteric: why a picked blueberry stops"
+        level: intermediate
+        requires: [plants/sugar-acid-and-what-ripe-measures]
+      - id: plants/the-bloom
+        title: "The bloom: the wax coat and what it protects"
+        level: introductory
+  - title: Seasons and stress
+    modules:
+      - id: plants/chill-hours-and-dormancy
+        title: Chill hours and dormancy
+        level: introductory
+        requires: [prediction/climate-vs-weather]
+      - id: plants/frost-and-the-night-the-crop-is-lost
+        title: Frost, and the night the crop is lost
+        level: introductory
+        requires: [plants/pollination-and-fruit-set]
+      - id: plants/heat-and-drought-stomata-close
+        title: "Heat and drought: the stomata close"
+        level: intermediate
+        requires: [plants/photosynthesis-in-one-leaf]
+  - title: Breeding
+    modules:
+      - id: plants/highbush-lowbush-rabbiteye
+        title: Highbush, lowbush, rabbiteye
+        level: introductory
+      - id: plants/what-breeders-select-for
+        title: What breeders select for
+        level: intermediate
+        requires: [plants/sugar-acid-and-what-ripe-measures, plants/the-growth-curve-of-a-berry]
+      - id: plants/ploidy-and-why-blueberries-are-odd
+        title: Ploidy, and why blueberries are odd
+        level: intermediate
+        requires: [plants/highbush-lowbush-rabbiteye]

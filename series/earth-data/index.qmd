@@ -1,0 +1,92 @@
+---
+title: "Earth Data in Python and R"
+description: "The tools for gridded, vector and image data in the Earth sciences, and how to plot the result without lying."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>11</dd></div>
+<div><dt>Modules</dt><dd>11 of 26 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Some programming in any language.</dd></div>
+</dl>
+
+## Part 1 · Getting started
+
+<ul class="syl">
+<li class="w"><a href="/blogs/python-basics-cesm/index.html">Python basics for mapping</a><span class="m">Introductory</span></li>
+</ul>
+
+## Part 2 · Gridded data with xarray
+
+<ul class="syl">
+<li class="w"><a href="/blogs/partial-scaling-netcdf/index.html">Scaling a NetCDF subset</a><span class="m">Intermediate</span></li>
+<li class="g">Dimensions, coordinates and attributes<span class="m">Introductory · not written</span></li>
+<li class="g">Resampling and grouping in time<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 3 · Regridding
+
+<ul class="syl">
+<li class="w"><a href="/blogs/r-regridding/index.html">Regridding crop data for climate models</a><span class="m">Intermediate</span></li>
+<li class="g">Regridding in Python with xESMF<span class="m">Intermediate · not written</span></li>
+<li class="g">Conservative vs bilinear<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 4 · Regions and masks
+
+<ul class="syl">
+<li class="w"><a href="/blogs/regional-analysis-r/index.html">Regional analysis in R</a><span class="m">Intermediate</span></li>
+<li class="g">regionmask in Python<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 5 · Vector data
+
+<ul class="syl">
+<li class="w"><a href="/blogs/ms-buildings/index.html">Downloading building footprints</a><span class="m">Intermediate</span></li>
+<li class="g">GeoPandas basics<span class="m">Introductory · not written</span></li>
+<li class="g">Projections<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 6 · Maps
+
+<ul class="syl">
+<li class="w"><a href="/blogs/pm25/plot_pm25_usa_by_county.html">Mapping PM2.5 by county</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/atlantic-centered-map/index.html">An Atlantic-centred map</a><span class="m">Introductory</span></li>
+<li class="g">Choropleth pitfalls<span class="m">Introductory · not written</span></li>
+<li class="g">Cartopy<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 7 · ggplot2
+
+<ul class="syl">
+<li class="w"><a href="/blogs/barchart-with-labels/index.html">Direct labels on bar charts</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/setting-color-bars/index.html">Colorbars</a><span class="m">Introductory</span></li>
+<li class="w"><a href="/blogs/parsing-special-symbols/index.html">Special symbols in labels</a><span class="m">Introductory</span></li>
+</ul>
+
+## Part 8 · Colour
+
+<ul class="syl">
+<li class="g">Colourblind-safe palettes<span class="m">Introductory · not written</span></li>
+<li class="g">Sequential, diverging, categorical<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 9 · Images and rasters
+
+<ul class="syl">
+<li class="w"><a href="/blogs/segment-shadow-python/index.html">Shadow detection with scikit-image</a><span class="m">Intermediate</span></li>
+<li class="g">rasterio<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 10 · Bigger than memory
+
+<ul class="syl">
+<li class="g">Dask and chunking<span class="m">Intermediate · not written</span></li>
+<li class="g">Zarr<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 11 · Interactive maps
+
+<ul class="syl">
+<li class="g">folium<span class="m">Introductory · not written</span></li>
+</ul>

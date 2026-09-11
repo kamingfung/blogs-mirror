@@ -1,0 +1,58 @@
+---
+title: "Engineering in Action"
+description: "Building things that work, from Python tooling and AI agents to a 3D-printed cast."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to intermediate</dd></div>
+<div><dt>Parts</dt><dd>6</dd></div>
+<div><dt>Modules</dt><dd>4 of 17 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Some programming.</dd></div>
+</dl>
+
+## Part 1 · Reading your own code
+
+<ul class="syl">
+<li class="w"><a href="/blogs/typing.html">The sneaky comma: inlay type hints</a><span class="m">Introductory</span></li>
+<li class="g">Linters and formatters<span class="m">Introductory · not written</span></li>
+<li class="g">Type checkers<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 2 · Working with AI agents
+
+<ul class="syl">
+<li class="w"><a href="/blogs/harness-engineering.html">Harness engineering</a><span class="m">Intermediate</span></li>
+<li class="g">Instructions that agents actually follow<span class="m">Intermediate · not written</span></li>
+<li class="g">Evaluating agent output<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 3 · Small tools people use
+
+<ul class="syl">
+<li class="w"><a href="/blogs/investment-comparator.html">Total return and reinvested dividends</a><span class="m">Introductory</span></li>
+<li class="g">From notebook to app<span class="m">Introductory · not written</span></li>
+<li class="g">Deploying a Streamlit app<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 4 · Reproducible analysis
+
+<ul class="syl">
+<li class="g">Environments that don&#x27;t break<span class="m">Introductory · not written</span></li>
+<li class="g">Notebooks vs scripts<span class="m">Introductory · not written</span></li>
+<li class="g">Testing analysis code<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 5 · Version control for scientists
+
+<ul class="syl">
+<li class="g">Git for one person<span class="m">Introductory · not written</span></li>
+<li class="g">Git for a team<span class="m">Intermediate · not written</span></li>
+</ul>
+
+## Part 6 · Physical engineering
+
+<ul class="syl">
+<li class="w"><a href="/blogs/triangular-cast-geometry.html">Why triangles? 3D-printed cast geometry</a><span class="m">Intermediate</span></li>
+<li class="g">Finite elements in ten minutes<span class="m">Intermediate · not written</span></li>
+<li class="g">3D printing basics<span class="m">Introductory · not written</span></li>
+</ul>

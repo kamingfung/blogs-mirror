@@ -1,0 +1,100 @@
+---
+title: The wave equation
+description: The classical wave equation and its general solution as two shapes travelling in opposite directions.
+date: 2026-08-27
+categories:
+- physics
+- mathematics
+- signal processing
+- acoustics
+- simulation
+- interactive
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/waves/index.html">Waves, Sound and Imaging</a><span class="sep">·</span>Part 1 · What is a wave</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/describing-a-wave.html">Describing a wave</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+One second-order partial differential equation describes a plucked string, a sound wave and a light wave. d'Alembert's solution says why.
+:::
+
+## d'Alembert's equation
+
+In 1746, French mathematician Jean le Rond d'Alembert derived the universal partial differential equation governing all classical wave phenomena:
+
+$$\frac{\partial^2 y}{\partial t^2} = v^2 \frac{\partial^2 y}{\partial x^2}$$
+
+```
+Physical Meaning of the Wave Equation:
+[Acceleration of medium at point x] = v² × [Spatial Curvature of wave at point x]
+```
+
+### Deriving it for a stretched string
+
+Take a string of mass per unit length $\mu$ under tension $T$, displaced slightly so that its slope $\partial y/\partial x$ is everywhere small. Look at a short element between $x$ and $x + \Delta x$. The tension pulls on both ends along the string, and because the slopes at the two ends differ, the transverse components do not cancel:
+
+$$F_y \approx T \left[ \left.\frac{\partial y}{\partial x}\right|_{x + \Delta x} - \left.\frac{\partial y}{\partial x}\right|_{x} \right] \approx T \frac{\partial^2 y}{\partial x^2}\, \Delta x$$
+
+The element has mass $\mu \Delta x$, so Newton's second law reads
+
+$$\mu \Delta x \frac{\partial^2 y}{\partial t^2} = T \frac{\partial^2 y}{\partial x^2}\, \Delta x \implies \frac{\partial^2 y}{\partial t^2} = \frac{T}{\mu} \frac{\partial^2 y}{\partial x^2}$$
+
+This is the wave equation with $v^2 = T/\mu$. Nothing about waves was assumed; the equation fell out of $F = ma$ applied to a piece of string, and the speed came with it. The same procedure applied to a slab of air (pressure differences instead of tension, density instead of $\mu$) gives $v^2 = B/\rho$, and applied to Maxwell's equations gives $v^2 = 1/(\varepsilon_0 \mu_0)$.
+
+The equation also says something physical at a glance. Where the string is curved downward, at a crest, $\partial^2 y/\partial x^2 < 0$ and so the acceleration is downward: the crest is being pulled back toward equilibrium. Where it is curved upward, in a trough, it is pushed up. Curvature is the restoring force, and $v^2$ is how strongly the medium responds to it.
+
+## The general solution
+
+Any function $f$ whose arguments are $(x - vt)$ or $(x + vt)$ is a valid solution:
+
+$$y(x, t) = f(x - vt) + g(x + vt)$$
+
+- $f(x - vt)$: A wave packet of arbitrary shape traveling **to the right** at speed $v$.
+- $g(x + vt)$: A wave packet traveling **to the left** at speed $v$.
+
+### Checking the solution
+
+Set $u = x - vt$ and $y = f(u)$. By the chain rule, $\partial y/\partial x = f'(u)$ and $\partial y/\partial t = -v f'(u)$, so
+
+$$\frac{\partial^2 y}{\partial x^2} = f''(u), \qquad \frac{\partial^2 y}{\partial t^2} = v^2 f''(u)$$
+
+and the equation is satisfied identically, whatever the shape $f$. The same holds for $g(x + vt)$ with $-v$ in place of $v$. Because the equation is linear, the sum of the two is also a solution, and d'Alembert showed that every solution can be written this way: two arbitrary shapes, one moving each way, each keeping its form exactly as it goes.
+
+That last point is worth pausing on. A pulse sent down a string under this equation arrives with the same shape it left with; the equation contains no mechanism for it to spread or distort. Media that do distort pulses, deep water for surface waves or glass for light, obey more complicated equations in which $v$ depends on frequency. That dependence is called **dispersion**, and it is what lets a prism separate white light into colours. The classical wave equation is the non-dispersive ideal.
+
+### The sinusoid as a special case
+
+The travelling sinusoid from the previous module, $y = A\sin(kx - \omega t)$, is $f(x - vt)$ with $f(u) = A \sin(ku)$ and $\omega = kv$. Substituting it directly into the equation gives
+
+$$-\omega^2 A \sin(kx - \omega t) = -v^2 k^2 A \sin(kx - \omega t) \implies \omega^2 = v^2 k^2$$
+
+so a sinusoid is a solution only if $\omega/k = v$. That is the relation $v = \lambda f$ again, now derived rather than asserted: the wave equation fixes the ratio of $\omega$ to $k$, and the medium fixes $v$. Any frequency is allowed, but the medium then dictates the wavelength.
+
+## One equation, many media
+
+The wave equation has the same form for every classical wave; only the value of $v^2$ changes, and in each case it is a stiffness divided by an inertia.
+
+| System | Displacement $y$ | Stiffness | Inertia | $v$ |
+| :--- | :--- | :--- | :--- | :--- |
+| Stretched string | Transverse position | Tension $T$ | Mass per length $\mu$ | $\sqrt{T/\mu}$ |
+| Sound in a fluid | Pressure, or particle displacement | Bulk modulus $B$ | Density $\rho$ | $\sqrt{B/\rho}$ |
+| Sound in a solid rod | Longitudinal displacement | Young's modulus $E$ | Density $\rho$ | $\sqrt{E/\rho}$ |
+| Light in vacuum | Electric field | $1/\varepsilon_0$ (by analogy) | $\mu_0$ (by analogy) | $1/\sqrt{\varepsilon_0 \mu_0}$ |
+
+The last row is the historical prize. In 1865 Maxwell reduced his equations for the electric and magnetic fields in empty space to exactly this form and computed $1/\sqrt{\varepsilon_0 \mu_0}$ from two laboratory constants measured with coils and capacitors. The result, about $3.1 \times 10^{8}\text{ m/s}$ with the values of the day, matched the measured speed of light, and that agreement was the argument that light is an electromagnetic wave. A century of physics followed from recognising a familiar equation in an unfamiliar place.
+
+## Key equations
+
+- $\partial^2 y/\partial t^2 = v^2\, \partial^2 y/\partial x^2$: the acceleration of the medium at a point is proportional to the curvature of the wave there, and the constant of proportionality is the square of the wave speed.
+- $y(x, t) = f(x - vt) + g(x + vt)$: every solution is a right-moving shape plus a left-moving shape, each travelling at $v$ without changing form.
+- $\omega^2 = v^2 k^2$: a sinusoid solves the equation only if $\omega/k = v$, which is $v = \lambda f$ derived from the dynamics.
+- $v^2 = T/\mu$ for a string, $B/\rho$ for sound and $1/(\varepsilon_0 \mu_0)$ for light: in every case a stiffness over an inertia, and the last one identified light as an electromagnetic wave.
+- The equation is linear, so any sum of solutions is also a solution; that is what makes superposition, interference and standing waves possible.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/describing-a-wave.html"><span>Previous</span>Describing a wave</a><a class="mf-up" href="/series/waves/index.html"><span>Series</span>Waves, Sound and Imaging</a><a class="mf-next" href="/blogs/wave-interference.html"><span>Next</span>Interference</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

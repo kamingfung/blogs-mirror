@@ -1,0 +1,165 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# The site's colour object — the single source of truth for colour, the way
+# series/*.yml is the single source of truth for structure.
+#
+# hooks/palette.py reads this file and generates:
+#   * docs/stylesheets/palette.css   — the --fall-* tokens and the Material map
+#   * docs/stylesheets/diagrams.css  — SVG utility classes
+#   * the classDef block injected into every flowchart that uses one
+#
+# Never hand-edit those three. Change a colour here and it changes everywhere:
+# theme, level badges, flowchart chips, inline SVG, figures.
+#
+# A module picks a set with `palette: <name>` in its frontmatter. Without one
+# it gets `default`.
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ── the nine hues ──────────────────────────────────────────────────────────
+# `row` is the luminance band, and it decides where the hue is legible:
+#   dark  — >= 4.5:1 on paper, so text-safe in LIGHT mode
+#   light — >= 4.5:1 on slate, so text-safe in DARK mode
+# `ink` is the only text colour that clears 4.5:1 when the hue is a fill.
+#
+# `on_paper` / `on_slate` name the variant to use when the hue is INK — a line,
+# a dot, a label — rather than a fill. A fill carries its own contrast; ink has
+# to fight the page, so each hue needs a counterpart on the ground where its own
+# luminance fails. These drive the --ink-* tokens and the .fill-*/.stroke-*
+# classes that figures and inline SVG use.
+hues:
+  indigo:       {hex: "#1d4a62", row: dark,  ink: "#ffffff", on_paper: indigo,       on_slate: indigo-lt}
+  burnt-umber:  {hex: "#3b1a18", row: dark,  ink: "#ffffff", on_paper: burnt-umber,  on_slate: terracotta-lt}
+  burnt-sienna: {hex: "#6c2b27", row: dark,  ink: "#ffffff", on_paper: burnt-sienna, on_slate: terracotta}
+  plum:         {hex: "#48304a", row: dark,  ink: "#ffffff", on_paper: plum,         on_slate: plum-lt}
+  rust:         {hex: "#a04b2d", row: dark,  ink: "#ffffff", on_paper: rust,         on_slate: terracotta-lt}
+  olive:        {hex: "#5b6e34", row: dark,  ink: "#ffffff", on_paper: olive,        on_slate: sage}
+  ochre:        {hex: "#d69a2e", row: light, ink: "#3b1a18", on_paper: ochre-dk,     on_slate: ochre}
+  terracotta:   {hex: "#c97d62", row: light, ink: "#3b1a18", on_paper: rust,         on_slate: terracotta}
+  sage:         {hex: "#95a87f", row: light, ink: "#3b1a18", on_paper: olive,        on_slate: sage}
+
+# ── tints ──────────────────────────────────────────────────────────────────
+# Dark-row hues lifted, or light-row hues deepened, until they clear 4.5:1 on
+# the other ground. These exist so every hue has a counterpart in both schemes.
+tints:
+  indigo-lt:     {hex: "#7fb3cc", ink: "#3b1a18"}
+  ochre-dk:      {hex: "#8a6116", ink: "#ffffff"}
+  olive-dp:      {hex: "#2c3419", ink: "#ffffff"}
+  indigo-dp:     {hex: "#0d2331", ink: "#ffffff"}
+  indigo-dk:     {hex: "#14333f", ink: "#ffffff"}
+  terracotta-lt: {hex: "#e09980", ink: "#3b1a18"}
+  plum-lt:       {hex: "#b79bb8", ink: "#3b1a18"}
+
+# ── grounds ────────────────────────────────────────────────────────────────
+grounds:
+  paper:      "#fbf8f3"   # light-mode page
+  paper-tint: "#f2ece1"   # code blocks, hovered rows
+  slate:      "#29221e"   # dark-mode page, derived by Material from --md-hue
+
+# ── which hue plays which part, per scheme ─────────────────────────────────
+# Every value must name a key in `hues`, `tints` or `grounds`.
+roles:
+  light:
+    primary:      indigo        # header and footer bars
+    primary-dark: indigo-dk
+    primary-light: indigo-lt
+    accent:       rust          # hover, focus, active nav
+    link:         rust
+    ink:          rust          # foreground accent that is legible on this ground
+    ink-strong:   indigo        # structural rules, section underlines
+    footer:       indigo-dk
+    ground:       paper
+    ground-tint:  paper-tint
+    lvl-1:        olive         # introductory
+    lvl-2:        rust          # intermediate
+    lvl-3:        plum          # advanced
+  dark:
+    primary:      indigo
+    primary-dark: indigo-dk
+    primary-light: indigo-lt
+    accent:       ochre
+    link:         ochre
+    ink:          ochre
+    ink-strong:   indigo-lt
+    footer:       indigo-dk
+    ground:       slate
+    ground-tint:  slate
+    lvl-1:        sage
+    lvl-2:        ochre
+    lvl-3:        plum-lt
+
+# ── diagram chips ──────────────────────────────────────────────────────────
+# Flowchart nodes are filled shapes, so the fill carries the label contrast and
+# the stroke carries the shape's edge against the page. Terracotta is the one
+# hue that clears 3:1 against BOTH grounds (3.0 on paper, 4.9 on slate), so it
+# is the universal edge for dark-row chips; light-row chips take burnt umber.
+diagram:
+  stroke-on-dark-fill: terracotta
+  stroke-on-light-fill: burnt-umber
+  stroke-width: 1.5px
+
+# ── named colour sets ──────────────────────────────────────────────────────
+# A set is an ordered list of hues. Position is what a diagram or figure refers
+# to (c1, c2, ...), so swapping the set recolours everything that uses it.
+#
+# `min_de` is the worst-case perceptual separation (CIE76 ΔE) across
+# deuteranope, protanope and tritanope simulation, computed by
+# `python hooks/palette.py --check`. Treat it as the ceiling on how many
+# series the set can carry on colour alone:
+#   >= 25  colour alone is fine
+#   15-25  add line style, marker shape or direct labels
+#   < 15   do not rely on colour; this set is decorative at that length
+sets:
+  default:                          # greedy-optimal for CVD separation
+    hues: [indigo, ochre, burnt-sienna, sage]
+    note: Use this unless you have a reason not to.
+  process:                          # stages of a pipeline, cool to warm
+    hues: [indigo, sage, ochre, rust]
+    note: Reads as a progression. Good for step-by-step flowcharts.
+  earth:                            # soil and foliage; biology, agronomy
+    hues: [burnt-sienna, ochre, olive, sage]
+    note: Warmest set. Lowest separation - check min_de before using it for data.
+  contrast:                         # two-way splits, comparisons, before/after
+    hues: [indigo, rust]
+    note: The strongest pair in the palette. Use for anything binary.
+
+# ── continuous scales ──────────────────────────────────────────────────────
+# Sequential and diverging ramps built from the hues above. They are generated
+# in CIELAB with the lightness overwritten by a straight sweep between `lightness`
+# ends, so L* carries the data and the hues only tint it. That is what makes them
+# safe: lightness survives every kind of colour vision deficiency, hue does not.
+#
+# `uv run python hooks/palette.py --scales` prints the reversal check. A reversal
+# is a step where lightness goes backwards; anything above ~2% of span is a
+# visible band. These sit at 0 because the sweep is imposed, not interpolated.
+#
+# Rule of thumb: sequential for magnitude, diverging for signed anomalies about
+# a meaningful zero, discrete (`sets`, above) for categories.
+scales:
+  sequential:
+    ember:
+      stops: [paper, ochre, rust, burnt-umber]
+      lightness: [96, 16]
+      note: Warm. The default for magnitude.
+    moss:
+      stops: [paper, sage, olive, olive-dp]
+      lightness: [96, 20]
+      note: Green. Vegetation, density, growth.
+    depth:
+      stops: [paper, indigo-lt, indigo, indigo-dp]
+      lightness: [96, 15]
+      note: Blue. Water, depth, cold, probability.
+  diverging:
+    tide:
+      low: indigo
+      high: rust
+      note: The strongest pair in the palette. Default for anomalies.
+    kiln:
+      low: indigo
+      high: ochre
+      note: Blue to gold, when rust reads too close to the page.
+    hearth:
+      low: rust
+      high: plum
+      note: Warm-only. Weaker separation; use when both ends must stay warm.
+  # Diverging ramps run from `lightness[0]` at each end up to `lightness[1]` at
+  # the neutral centre, symmetrically, so equal magnitudes read equally strong.
+  diverging_lightness: [30, 96]

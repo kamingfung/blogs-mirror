@@ -1,0 +1,80 @@
+---
+title: "Physics of Everyday Things"
+description: "Ordinary things explained from first principles, with the maths kept on a leash."
+---
+
+<dl class="syl-meta">
+<div><dt>Level</dt><dd>Introductory to advanced</dd></div>
+<div><dt>Parts</dt><dd>9</dd></div>
+<div><dt>Modules</dt><dd>5 of 24 written</dd></div>
+<div class="wide"><dt>Assumes</dt><dd>Curiosity. School physics helps.</dd></div>
+</dl>
+
+## Part 1 · Gravity
+
+<ul class="syl">
+<li class="w"><a href="/blogs/gravitational-well.html">Gravitational wells</a><span class="m">Intermediate</span></li>
+<li class="g">Why orbits don&#x27;t fall<span class="m">Introductory · not written</span></li>
+<li class="g">Tides<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 2 · Solids
+
+<ul class="syl">
+<li class="w"><a href="/blogs/atomic-cohesion-and-fracture.html">Why broken solids cannot re-bond</a><span class="m">Intermediate</span></li>
+<li class="g">Why glass is transparent<span class="m">Introductory · not written</span></li>
+<li class="g">Why metals are shiny<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 3 · Friction
+
+<ul class="syl">
+<li class="w"><a href="/blogs/why-static-friction-beats-kinetic.html">Why static friction beats kinetic friction</a><span class="m">Intermediate</span></li>
+<li class="w"><a href="/blogs/how-wheels-cheat-friction.html">How wheels cheat friction</a><span class="m">Intermediate</span></li>
+</ul>
+
+## Part 4 · Heat
+
+<ul class="syl">
+<li class="g">Why a metal spoon feels cold<span class="m">Introductory · not written</span></li>
+<li class="g">How a fridge works<span class="m">Introductory · not written</span></li>
+<li class="g">Why ice floats<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 5 · Light and colour
+
+<ul class="syl">
+<li class="g">Why the sky is blue<span class="m">Introductory · not written</span></li>
+<li class="g">Rainbows<span class="m">Introductory · not written</span></li>
+<li class="g">Why soap bubbles are coloured<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 6 · Fluids
+
+<ul class="syl">
+<li class="g">Why the shower curtain moves in<span class="m">Introductory · not written</span></li>
+<li class="g">How aeroplanes stay up<span class="m">Introductory · not written</span></li>
+<li class="g">Why honey is thick<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 7 · Electricity and magnets
+
+<ul class="syl">
+<li class="g">How a battery works<span class="m">Introductory · not written</span></li>
+<li class="g">Why magnets stick to fridges<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 8 · Information and energy
+
+<ul class="syl">
+<li class="w"><a href="/blogs/information-vs-energy.html">Information exchange versus energy</a><span class="m">Advanced</span></li>
+<li class="g">Landauer&#x27;s limit<span class="m">Intermediate · not written</span></li>
+<li class="g">Why computers get hot<span class="m">Introductory · not written</span></li>
+</ul>
+
+## Part 9 · Time
+
+<ul class="syl">
+<li class="g">Why satellite clocks drift<span class="m">Intermediate · not written</span></li>
+<li class="g">Entropy and the arrow of time<span class="m">Intermediate · not written</span></li>
+</ul>

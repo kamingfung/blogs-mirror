@@ -1,0 +1,82 @@
+---
+title: Reading a nutrition study without being fooled
+description: Most nutrition headlines come from food questionnaires that cannot be trusted, in populations where the healthy do everything else right too. Five checks that take two minutes and remove most of the noise.
+date: 2026-09-05
+categories:
+- nutrition
+- statistics
+- evidence
+- epidemiology
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/training/index.html">Train to be a scientist</a><span class="sep">·</span>Part 1 · Looking after the machine you think with</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <span class="unwritten" title="not written yet">What a p-value is not</span> and <span class="unwritten" title="not written yet">Controls and randomisation</span>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Nutrition science has a signal-to-noise problem that other fields would not tolerate. In one audit, 40 of 50 common ingredients had a published association with cancer, most of them contradicted elsewhere. Two thirds of the dietary intake data in the largest US survey is physiologically implausible. Five checks handle most of it: what was the design, how was intake measured, who ate that way and why, is the risk absolute or relative, and is the outcome something that matters or a number that stands in for it.
+:::
+
+*Personal record with sources attached. Not medical, dietary or fitness advice.*
+
+This module is the one that makes the previous five checkable. Everything I claimed there came from randomised trials or meta-analyses of them, and I chose those on purpose, because the alternative literature is in worse shape than most people realise.
+
+## Where nutrition claims come from
+
+Most nutrition headlines come from prospective cohort studies: recruit tens of thousands of people, ask them what they eat, wait a decade, see who gets sick. The tool for asking is the food frequency questionnaire, which asks how often over the past year you ate each of about 150 items.
+
+Nobody can answer that accurately. When researchers compared self-reported energy intake in the US National Health and Nutrition Examination Survey against the energy the respondents would have needed to stay alive at their recorded weight, 67 percent of women and 59 percent of men reported intakes that were physiologically implausible, over a 39-year span of surveys.[^1] The measurement instrument at the base of the field cannot be trusted to within the size of the effects it is used to detect.
+
+The consequence was made concrete in 2013. Two researchers took the first fifty ingredients from random recipes in a cookbook and searched the literature for each. Forty of the fifty had at least one published study linking them to cancer risk, up or down.[^2] Individual studies reported effect sizes that were mostly weak, frequently contradicted by other studies of the same ingredient, and shrank sharply in meta-analysis. The field's leading methodologist has since argued that the whole approach of nutritional epidemiology needs reform rather than more studies.[^3]
+
+This is not an argument that nothing is known. It is an argument that most of what is published is noise, and that a reader needs a filter.
+
+## Five checks
+
+**Design.** A randomised controlled trial assigns the diet; a cohort study observes people who chose it. Only the first can separate the food from the kind of person who eats it. If the headline says "linked to" or "associated with," it is a cohort study, and the effect it reports is an upper bound on what a trial would find, usually a loose one.
+
+**Measurement.** How was intake measured? A questionnaire once a decade, a weighed diet in a ward, or a biomarker in blood? The first is the default and is the problem described above. Trials in metabolic wards, like the ones in the calorie module, exist precisely because they can measure what people actually ate.
+
+**Who, and why.** People who take supplements, eat vegetables and avoid processed meat also exercise, do not smoke, see doctors and have higher incomes. Observational studies of any preventive behaviour inherit all of that, and adjusting for the variables the researchers thought of does not remove the ones they did not. This is the healthy-user bias, and it produced the observational finding that hormone replacement therapy prevented heart disease, which a trial then reversed.[^4] When a food "protects" against everything, suspect the eater rather than the food.
+
+**Absolute or relative.** A 50 percent increase in risk sounds large. If the baseline risk is 2 in 10,000 it is an increase of 1 in 10,000. Relative risks are what get reported because they are large numbers; absolute risks are what you need to decide anything. A study that does not let you recover the absolute numbers is not giving you enough to act on, and the way health statistics are presented is a known source of misjudgement by patients and doctors alike.[^5]
+
+**Endpoint.** Did the study measure something that matters, such as heart attacks, fractures or deaths, or a surrogate that is supposed to predict it, such as cholesterol, blood pressure or a hormone level? Surrogates fail. Niacin raises HDL cholesterol, and HDL is protective in observational data, so niacin should prevent heart attacks. A trial of 3,414 patients found it raised HDL exactly as expected and prevented nothing.[^6] A supplement that "raises testosterone" or "improves markers" has cleared a surrogate, not an outcome.
+
+## The five checks against a headline
+
+Take a hypothetical but typical headline: "Eating eggs daily linked to 27 percent higher risk of heart disease."
+
+Design: "linked to," so observational. Measurement: almost certainly a food frequency questionnaire. Who: in most Western cohorts, daily egg eaters skew toward higher intake of processed meat, lower income and lower diet quality overall, which is the confounding that adjustment partly handles. Relative or absolute: 27 percent relative to a baseline that is not in the headline; if the baseline over ten years is 5 percent, the absolute increase is about 1.3 percentage points, and the confidence interval on a cohort estimate of that size usually includes zero. Endpoint: heart disease events, which is a real outcome. Score: one out of five for the headline, which is where most of them land, and the correct update to your beliefs is small.
+
+Now the reverse. "Protein supplementation increased lean mass in a meta-analysis of 49 randomised trials." Design: randomised. Measurement: intake controlled by the trial. Who: randomisation handles it. Effect: reported as an absolute 0.3 kg. Endpoint: lean mass, measured directly. Five out of five, and it is the study the protein module is built on.
+
+## How I read a headline now
+
+Two minutes, in order. Find the paper, not the press release. Read the abstract's methods sentence for the design word: randomised, cohort, case-control, cross-sectional. Find the effect size and check whether it is relative or absolute; if only relative, find the baseline in the results. Find the endpoint and ask whether I would care about it if it were the only thing that changed. If it is a cohort study with a questionnaire, a relative risk under about 2, and a surrogate endpoint, I stop.
+
+That filter removes most nutrition news. What passes is a short list, and it is the list this part of the series has been built on.
+
+## Key takeaways
+
+- The food frequency questionnaire underlying most nutrition epidemiology produces physiologically implausible intake data in a majority of respondents.
+- Forty of fifty random cookbook ingredients have a published association with cancer. The field produces associations faster than it can confirm them.
+- Randomised design, direct measurement, and a hard endpoint are the three features that separate a finding worth acting on from noise.
+- Convert every relative risk to an absolute one before reacting. A 50 percent increase on a rare outcome is a small number.
+- A surrogate endpoint is a hypothesis about an outcome, not the outcome. Niacin raised HDL and prevented nothing.
+
+## References
+
+[^1]: Archer, E., Hand, G. A. & Blair, S. N. Validity of U.S. nutritional surveillance: National Health and Nutrition Examination Survey caloric energy intake data, 1971–2010. *PLoS ONE* **8**, e76632 (2013). https://doi.org/10.1371/journal.pone.0076632
+[^2]: Schoenfeld, J. D. & Ioannidis, J. P. A. Is everything we eat associated with cancer? A systematic cookbook review. *Am. J. Clin. Nutr.* **97**, 127–134 (2013). https://doi.org/10.3945/ajcn.112.047142
+[^3]: Ioannidis, J. P. A. The challenge of reforming nutritional epidemiologic research. *JAMA* **320**, 969–970 (2018). https://doi.org/10.1001/jama.2018.11025
+[^4]: Shrank, W. H., Patrick, A. R. & Brookhart, M. A. Healthy user and related biases in observational studies of preventive interventions: a primer for physicians. *J. Gen. Intern. Med.* **26**, 546–550 (2011). https://doi.org/10.1007/s11606-010-1609-1
+[^5]: Gigerenzer, G., Gaissmaier, W., Kurz-Milcke, E., Schwartz, L. M. & Woloshin, S. Helping doctors and patients make sense of health statistics. *Psychol. Sci. Public Interest* **8**, 53–96 (2007). https://doi.org/10.1111/j.1539-6053.2008.00033.x
+[^6]: AIM-HIGH Investigators. Niacin in patients with low HDL cholesterol levels receiving intensive statin therapy. *N. Engl. J. Med.* **365**, 2255–2267 (2011). https://doi.org/10.1056/NEJMoa1107579
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/sleep-is-not-optional.html"><span>Previous</span>Sleep is not optional</a><a class="mf-up" href="/series/training/index.html"><span>Series</span>Train to be a scientist</a><a class="mf-next" href="/blogs/why-the-theory-never-stuck.html"><span>Next</span>Why the theory never stuck</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

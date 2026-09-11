@@ -1,0 +1,131 @@
+---
+title: Why static friction beats kinetic friction
+description: A block resists starting to slide harder than it resists continuing to slide, because the microscopic welds holding two surfaces together get stronger the longer they sit still.
+date: 2026-09-07
+categories:
+- physics
+- friction
+- tribology
+- mechanics
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/everyday-physics/index.html">Physics of Everyday Things</a><span class="sep">·</span>Part 3 · Friction</p><p class="mh-facts"><span class="lvl lvl-intermediate">Intermediate</span></p><p class="mh-assumes">Assumes <a href="/blogs/atomic-cohesion-and-fracture.html">Why broken solids cannot re-bond</a>.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Pushing a heavy box, the hardest moment is the instant before it starts to move. Once it's sliding, less force keeps it going. The reason is time: two stationary surfaces touch at microscopic points that behave like tiny cold welds, and those welds strengthen the longer they sit undisturbed. Sliding keeps breaking and remaking them too fast for that strengthening to happen, so kinetic friction is almost always weaker than static friction, for the same two surfaces.
+:::
+
+## Contact is a handful of welds, not a surface
+
+However flat two surfaces look, they touch only at the tips of microscopic bumps, asperities, and the [module on why broken solids cannot re-bond](atomic-cohesion-and-fracture.qmd) already gives the number: the real contact area is $A_{\text{real}} = F_N / H$, the normal force divided by the material's hardness, typically under $0.01\%$ of what the surfaces appear to cover. Everywhere else, the surfaces are tens to hundreds of nanometres apart, held apart by their own roughness.
+
+At those few real contact points (Figure 1), the local pressure is enormous, close to the material's yield strength, because all of the applied force is funnelled through a tiny area. Under that pressure the asperity tips deform plastically and, for many material pairs, form genuine adhesive junctions: small, cold-welded bridges, exactly the mechanism the cold-welding module describes at full scale in vacuum, happening in miniature on every surface you touch. Friction, in this picture, is the force needed to shear those junctions apart. The classical adhesion theory of friction, developed by Bowden and Tabor, puts it plainly: friction force is proportional to real contact area times the shear strength of the junction material, not to the surfaces' apparent size, which is exactly why Amontons' observation that friction is independent of apparent contact area and proportional to normal force holds up so well.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 330" style="width:100%;max-width:720px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Cross-section of two rough surfaces pressed together. They touch at only three asperity tips, marked in magenta, while the rest of the interface remains tens of nanometres apart.">
+  <defs>
+    <marker id="frN" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+    <marker id="frT" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--md-default-fg-color--light)"/></marker>
+  </defs>
+  <line x1="130" y1="18" x2="130" y2="54" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#frN)"/>
+  <line x1="265" y1="18" x2="265" y2="54" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#frN)"/>
+  <line x1="400" y1="18" x2="400" y2="54" stroke="var(--ink-rust)" stroke-width="2.4" marker-end="url(#frN)"/>
+  <text x="418" y="38" fill="var(--ink-rust)" font-size="15" font-weight="600">F</text>
+  <text x="429" y="43" fill="var(--ink-rust)" font-size="11" font-weight="600">N</text>
+  <path d="M 60 62 L 470 62 L 470 112 L 440 118 L 410 126 L 380 146 L 350 126 L 310 116 L 270 122 L 236 148 L 200 124 L 166 116 L 130 124 L 104 146 L 80 124 L 60 116 Z" fill="var(--md-default-fg-color--light)" fill-opacity="0.30" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <path d="M 60 208 L 80 196 L 104 150 L 130 192 L 166 202 L 200 194 L 236 152 L 270 192 L 310 200 L 350 194 L 380 150 L 410 192 L 440 200 L 470 206 L 470 258 L 60 258 Z" fill="var(--md-default-fg-color--light)" fill-opacity="0.30" stroke="var(--md-default-fg-color)" stroke-width="2"/>
+  <circle cx="104" cy="148" r="7.5" fill="var(--ink-rust)" fill-opacity="0.55" stroke="var(--ink-rust)" stroke-width="2"/>
+  <circle cx="236" cy="150" r="7.5" fill="var(--ink-rust)" fill-opacity="0.55" stroke="var(--ink-rust)" stroke-width="2"/>
+  <circle cx="380" cy="148" r="7.5" fill="var(--ink-rust)" fill-opacity="0.55" stroke="var(--ink-rust)" stroke-width="2"/>
+  <line x1="497" y1="150" x2="396" y2="149" stroke="var(--md-default-fg-color--light)" stroke-width="1.4" marker-end="url(#frT)"/>
+  <text x="60" y="88" fill="var(--md-default-fg-color--light)" font-size="13">upper solid</text>
+  <text x="60" y="242" fill="var(--md-default-fg-color--light)" font-size="13">lower solid</text>
+  <text x="503" y="146" fill="var(--ink-rust)" font-size="14" font-weight="600">the whole load</text>
+  <text x="503" y="165" fill="var(--ink-rust)" font-size="14" font-weight="600">goes through here</text>
+  <text x="503" y="196" fill="var(--md-default-fg-color)" font-size="13.5">A_real = F_N / H</text>
+  <text x="503" y="215" fill="var(--md-default-fg-color--light)" font-size="12.5">under 0.01% of A_app</text>
+  <text x="503" y="243" fill="var(--md-default-fg-color--light)" font-size="12.5">everywhere else the gap</text>
+  <text x="503" y="260" fill="var(--md-default-fg-color--light)" font-size="12.5">is 10 to 100 nm</text>
+  <line x1="60" y1="286" x2="470" y2="286" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <line x1="60" y1="280" x2="60" y2="292" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <line x1="470" y1="280" x2="470" y2="292" stroke="var(--md-default-fg-color--light)" stroke-width="1.4"/>
+  <rect x="99" y="282" width="10" height="8" fill="var(--ink-rust)"/>
+  <rect x="231" y="282" width="10" height="8" fill="var(--ink-rust)"/>
+  <rect x="375" y="282" width="10" height="8" fill="var(--ink-rust)"/>
+  <text x="265" y="310" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">apparent area A_app (magenta blocks: real contact, drawn far larger than true scale)</text>
+</svg>
+<figcaption><strong>Figure 1 | Two solids pressed together touch at a handful of points, and those points carry the entire load.</strong> However flat the surfaces look, roughness means contact happens only at the tips of the tallest asperities (magenta). The real contact area follows $A_{\text{real}} = F_N/H$, normal force over hardness, and for ordinary surfaces under ordinary loads it is under $0.01\%$ of the apparent area — far smaller than the magenta blocks along the lower scale bar, which are drawn oversized to stay visible. Because all the force funnels through so little area, the local pressure at each tip reaches the material's yield strength, the tips deform plastically, and adhesive junctions form. Friction is the force needed to shear those junctions; everywhere else the two solids are simply not in contact.</figcaption>
+</figure>
+```
+
+
+## Standing still lets the welds cure
+
+A junction that has just formed is weak. Left alone under load, it gets stronger: the asperity tips continue to creep and flow plastically for a period after first contact, growing the real contact area, and for many materials the adhesive bond itself strengthens as more atoms settle into intimate contact, not unlike letting glue cure rather than testing it the instant it's applied. This time-dependence is well documented in friction experiments, most systematically in rock mechanics, where Dieterich showed that the peak static friction of two rock surfaces increases roughly logarithmically with how long they've been held in stationary contact before being forced to slip. Wait longer before pushing, and it takes more force to get the same two surfaces moving.
+
+
+## Sliding never lets a junction age
+
+Once the applied force exceeds the maximum static friction, $F_{s,\max} = \mu_s F_N$, the aged junctions shear apart and the surfaces begin to slide. From that point on, the physics changes. A moving surface is constantly bringing fresh, unweathered asperities into contact and shearing them apart again within microseconds, far too quickly for the creep and adhesion strengthening described above to take hold. The average junction the sliding surface encounters is younger and weaker than the aged junctions that had to be broken to start the motion, so less force is needed to sustain the sliding, $F_k = \mu_k F_N$, than was needed to start it: $\mu_k < \mu_s$. Figure 2 puts the whole sequence on one plot.
+
+```{=html}
+<figure markdown="span">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 390" style="width:100%;max-width:720px;height:auto;font-family:system-ui,-apple-system,sans-serif;" role="img" aria-label="Graph of friction force against applied force. Friction rises along a 45 degree line while the block stays still, peaks at maximum static friction, then drops abruptly to a lower constant kinetic value once sliding begins.">
+  <defs>
+    <marker id="fgA" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--md-default-fg-color)"/></marker>
+    <marker id="fgD" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--ink-rust)"/></marker>
+  </defs>
+  <rect x="100" y="60" width="220" height="260" fill="var(--ink-indigo)" fill-opacity="0.09"/>
+  <rect x="320" y="60" width="300" height="260" fill="var(--ink-olive)" fill-opacity="0.09"/>
+  <line x1="100" y1="100" x2="320" y2="100" stroke="var(--md-default-fg-color--light)" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="100" y1="151" x2="320" y2="151" stroke="var(--md-default-fg-color--light)" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="100" y1="320" x2="100" y2="52" stroke="var(--md-default-fg-color)" stroke-width="1.8" marker-end="url(#fgA)"/>
+  <line x1="100" y1="320" x2="662" y2="320" stroke="var(--md-default-fg-color)" stroke-width="1.8" marker-end="url(#fgA)"/>
+  <path d="M 100 320 L 320 100" fill="none" stroke="var(--ink-indigo)" stroke-width="3"/>
+  <path d="M 320 151 L 620 151" fill="none" stroke="var(--ink-olive)" stroke-width="3"/>
+  <line x1="320" y1="104" x2="320" y2="145" stroke="var(--ink-rust)" stroke-width="2.6" stroke-dasharray="6 4" marker-end="url(#fgD)"/>
+  <circle cx="320" cy="100" r="5.5" fill="var(--ink-rust)"/>
+  <text x="92" y="105" text-anchor="end" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">F_s,max</text>
+  <text x="92" y="156" text-anchor="end" fill="var(--md-default-fg-color)" font-size="13.5" font-weight="600">F_k</text>
+  <text x="338" y="96" fill="var(--md-default-fg-color)" font-size="13.5">= μ_s F_N   (363 N)</text>
+  <text x="338" y="176" fill="var(--md-default-fg-color)" font-size="13.5">= μ_k F_N   (279 N)</text>
+  <text x="334" y="132" fill="var(--ink-rust)" font-size="13" font-weight="600">the give you feel</text>
+  <text x="210" y="248" text-anchor="middle" fill="var(--ink-indigo)" font-size="13.5" font-weight="600">nothing moves</text>
+  <text x="210" y="268" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">friction matches you exactly</text>
+  <text x="470" y="248" text-anchor="middle" fill="var(--ink-sage)" font-size="13.5" font-weight="600">sliding</text>
+  <text x="470" y="268" text-anchor="middle" fill="var(--md-default-fg-color--light)" font-size="12.5">friction is fixed and lower</text>
+  <text x="100" y="45" fill="var(--md-default-fg-color--light)" font-size="13">friction force</text>
+  <text x="640" y="345" text-anchor="end" fill="var(--md-default-fg-color--light)" font-size="13">force you apply</text>
+  <text x="100" y="372" fill="var(--md-default-fg-color--light)" font-size="12.5">Drawn to scale for a 50 kg steel block on steel: μ_s = 0.74, μ_k = 0.57.</text>
+</svg>
+<figcaption><strong>Figure 2 | Static friction is not a fixed number; it is whatever it needs to be, up to a ceiling, and the ceiling is higher than kinetic friction.</strong> While the block stays put, friction rises to match the applied force exactly, tracing the blue $45^\circ$ line — push twice as hard, get twice the resistance, and nothing moves. That can only continue up to $F_{s,\max} = \mu_s F_N$, where the aged junctions shear. The instant they do, resistance falls to $F_k = \mu_k F_N$ and stays there regardless of how hard you push (green). The magenta drop is the discontinuity your hand registers as the object suddenly giving way, and it is why a block that needed $363\text{ N}$ to break loose then accelerates if you keep pushing that hard: it only needs $279\text{ N}$ to keep moving.</figcaption>
+</figure>
+```
+
+
+Textbook tables put rough numbers on the gap. Dry steel on steel is commonly listed around $\mu_s \approx 0.74$ and $\mu_k \approx 0.57$; dry rubber on concrete around $\mu_s \approx 1.0$ and $\mu_k \approx 0.8$. For a $50\text{ kg}$ steel block on a steel floor, that's the difference between needing about $363\text{ N}$ to break it loose and only about $280\text{ N}$ to keep it sliding, a drop of roughly $23\%$ the instant it starts moving. Push with exactly the force that kept it sliding a moment ago, applied to a block still at rest, and it won't move at all; that jump between the two regimes is exactly what your hand feels as the "give" the instant a stuck object breaks free.
+
+It's worth being honest about the limits of this picture. Amontons' and Coulomb's friction "laws," including $\mu_k < \mu_s$, are excellent approximations for many everyday material pairs, dry metals, wood, most rubbers on hard surfaces, but they are empirical rules, not exact physics. The gap between static and kinetic friction depends on surface finish, contamination, humidity and temperature, and it shrinks or occasionally vanishes for some material pairs and lubrication conditions. When it doesn't vanish, and the static-to-kinetic transition happens repeatedly and rapidly, you get stick-slip: the surface sticks while a driving force builds toward $F_{s,\max}$, breaks free and slides until it slows enough to stick again, over and over. That's the mechanism behind a squeaking door hinge, a bowed violin string, and brake squeal.
+
+## Key takeaways
+
+- Two surfaces touch only at microscopic asperity tips; friction is the force needed to shear the adhesive junctions those tips form, not a property of the visible surface.
+- Junctions strengthen the longer two surfaces sit in stationary contact, through continued plastic creep and adhesion; static friction rises with contact time.
+- Sliding constantly replaces junctions faster than they can age, so kinetic friction is set by fresh, weak junctions rather than aged, strong ones, giving $\mu_k < \mu_s$.
+- This asymmetry is an empirical regularity, not a universal law; it varies by material pair and can produce stick-slip motion when a surface repeatedly catches and releases.
+
+### References and further reading
+
+1. **Bowden, F. P., & Tabor, D.** (2001). *The Friction and Lubrication of Solids*. Oxford University Press.
+2. **Dieterich, J. H.** (1979). *Modeling of rock friction: 1. Experimental results and constitutive equations*. Journal of Geophysical Research, 84(B5), 2161–2168.
+3. **Greenwood, J. A., & Williamson, J. B. P.** (1966). *Contact of nominally flat surfaces*. Proceedings of the Royal Society of London. Series A, 295(1442), 300–319. [doi:10.1098/rspa.1966.0242](https://doi.org/10.1098/rspa.1966.0242)
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-prev" href="/blogs/atomic-cohesion-and-fracture.html"><span>Previous</span>Why broken solids cannot re-bond</a><a class="mf-up" href="/series/everyday-physics/index.html"><span>Series</span>Physics of Everyday Things</a><a class="mf-next" href="/blogs/how-wheels-cheat-friction.html"><span>Next</span>How wheels cheat friction</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

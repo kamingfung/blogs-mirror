@@ -1,0 +1,69 @@
+---
+title: Photosynthesis, in one leaf
+description: Light hits a thylakoid membrane and ends as sugar, through two coupled reactions and one enzyme that also works against itself. The mechanism this whole series runs on.
+date: 2026-09-06
+categories:
+- plant biology
+- photosynthesis
+- biochemistry
+---
+
+<!-- CURRICULUM_HEADER_START -->
+<div class="mh"><p class="mh-crumb"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a><span class="sep">·</span>Part 1 · What a plant is doing all day</p><p class="mh-facts"><span class="lvl lvl-introductory">Introductory</span></p><p class="mh-assumes">School biology. The forecasting series models this crop&#x27;s data; this series explains where the data comes from.</p></div>
+<!-- CURRICULUM_HEADER_END -->
+
+::: {.callout-note appearance="simple" icon=false}
+## TL;DR
+
+Photosynthesis is two reactions in series, not one. The light reactions split water and turn sunlight into ATP and NADPH; the Calvin cycle spends that energy fixing $\text{CO}_2$ into sugar, using an enzyme, RuBisCO, that also reacts with oxygen and wastes a fifth of what it fixes. Every carbon a blueberry bush ever turns into fruit passed through this leaf first.
+:::
+
+## The light reactions: splitting water for electrons
+
+In the thylakoid membrane, a photon strikes photosystem II and knocks an electron loose. The gap left behind is filled by ripping a water molecule apart:
+
+$$2\text{H}_2\text{O} \xrightarrow{\text{light}} \text{O}_2 + 4\text{H}^+ + 4e^-$$
+
+The oxygen you breathe is a waste product of this step. The freed electrons run downhill through an electron transport chain to photosystem I, get re-energised by a second photon, and end up reducing $\text{NADP}^+$ to $\text{NADPH}$. The proton gradient built up along the way drives ATP synthase, the same rotary mechanism that runs mitochondrial respiration in reverse. Two products leave the thylakoid membrane: $\text{ATP}$ and $\text{NADPH}$, both spent in the next step, neither storable for later.
+
+```{mermaid}
+flowchart LR
+    L["Sunlight"] --> PSII["Photosystem II<br/>splits H₂O → O₂"]
+    PSII --> ETC["Electron transport chain<br/>builds H⁺ gradient"]
+    ETC --> PSI["Photosystem I<br/>re-energises electron"]
+    PSI --> Products["ATP + NADPH"]
+    Products --> Calvin["Calvin cycle<br/>fixes CO₂ into sugar"]
+    Calvin -->|"RuBP regenerated"| Calvin
+
+    class L ochre
+    class PSII indigo
+    class ETC plum
+    class PSI indigo
+    class Products olive
+    class Calvin sage
+    classDef indigo fill:#1d4a62,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef plum fill:#48304a,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef olive fill:#5b6e34,stroke:#c97d62,stroke-width:1.5px,color:#ffffff
+    classDef ochre fill:#d69a2e,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+    classDef sage fill:#95a87f,stroke:#3b1a18,stroke-width:1.5px,color:#3b1a18
+```
+
+## The Calvin cycle: an enzyme that fixes carbon, and sometimes doesn't
+
+In the stroma, the enzyme RuBisCO attaches a $\text{CO}_2$ molecule to a five-carbon sugar, RuBP, producing two molecules of a three-carbon compound. Spending the ATP and NADPH from the light reactions turns those into G3P, the sugar the plant actually uses; most of the G3P cycles back to regenerate RuBP, and one in six leaves the cycle to become glucose, starch or sucrose.
+
+$$6\text{CO}_2 + 6\text{H}_2\text{O} \xrightarrow{\text{light reactions}} \text{C}_6\text{H}_{12}\text{O}_6 + 6\text{O}_2$$
+
+RuBisCO is the least selective enzyme a plant depends on. It cannot fully distinguish $\text{CO}_2$ from $\text{O}_2$, and on a hot, dry day, when stomata close to save water and $\text{CO}_2$ inside the leaf runs low relative to oxygen, RuBisCO increasingly grabs $\text{O}_2$ instead. That side reaction, photorespiration, consumes energy and releases $\text{CO}_2$ the plant just fixed, with no sugar to show for it. Blueberries, like most temperate crops, run this pathway unmodified, called $\text{C}_3$ photosynthesis for the three-carbon compound RuBisCO produces. Under typical conditions photorespiration burns off somewhere around a fifth of what the Calvin cycle fixes. It is not a defect to be designed around later in this series; it is the tax every $\text{C}_3$ leaf already pays, and it is why closing stomata under heat or drought costs more than just lost $\text{CO}_2$.
+
+## Key takeaways
+
+- The light reactions split water, releasing oxygen as a byproduct, and convert light energy into ATP and NADPH.
+- The Calvin cycle spends that ATP and NADPH to fix $\text{CO}_2$ into sugar, using the enzyme RuBisCO.
+- RuBisCO also reacts with oxygen instead of $\text{CO}_2$, a wasteful side reaction called photorespiration that intensifies when stomata close under heat or drought.
+- Every gram of fruit a bush grows is downstream of this leaf-level chemistry; the next module turns it into a whole-plant carbon budget.
+
+<!-- CURRICULUM_FOOTER_START -->
+<div class="mf"><a class="mf-up" href="/series/plants/index.html"><span>Series</span>Plant biology, one blueberry at a time</a><a class="mf-next" href="/blogs/the-carbon-budget-of-a-bush.html"><span>Next</span>The carbon budget of a bush</a></div>
+<!-- CURRICULUM_FOOTER_END -->
+

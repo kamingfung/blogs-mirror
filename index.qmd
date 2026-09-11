@@ -1,0 +1,50 @@
+---
+pagetitle: "Ka Ming Fung"
+---
+
+::: {.profile-hero}
+::: {.profile-photo}
+![Ka Ming Fung](assets/img/avatar.jpg)
+:::
+
+::: {.profile-text}
+# Ka Ming Fung
+
+### Notes on atmospheric science, forecasting, and scientific computing
+
+::: {.social-bar}
+[GitHub](https://github.com/kamingfung){.social-btn target="_blank" rel="noopener"}
+[LinkedIn](https://www.linkedin.com/in/kamingfung/){.social-btn target="_blank" rel="noopener"}
+[X / Twitter](https://twitter.com/kamingfung){.social-btn target="_blank" rel="noopener"}
+[Academic Archive](https://kamingfung.github.io/academic){.social-btn target="_blank" rel="noopener"}
+:::
+
+I'm Victor, a data scientist. I write these as the course notes I wish I'd had: short
+modules, in an order, each one saying what it assumes you already know. Atmospheric and
+climate science first, because that was the Ph.D. at CUHK and the postdoc at MIT, then
+forecasting and the tooling that makes either bearable. Older research papers live on my
+[academic archive](https://kamingfung.github.io/academic).
+:::
+:::
+
+<!-- SERIES_CATALOGUE_START -->
+## Series
+
+<div class="cat"><a class="cat-item" href="/series/cloud-formation/index.html"><span class="cat-title">How clouds form</span><span class="cat-about">Water vapour to raindrop: what has to happen, in order, and why each step needs the one before it.</span><span class="cat-facts">Introductory to intermediate · 6 parts · 12 written</span></a><a class="cat-item" href="/series/aerosols-climate/index.html"><span class="cat-title">Aerosols and climate</span><span class="cat-about">What the particles in the air do to cloud brightness, and why that is still the largest uncertainty in climate forcing.</span><span class="cat-facts">Introductory to advanced · 3 parts · 2 written</span></a><a class="cat-item" href="/series/air-land-climate/index.html"><span class="cat-title">Air, Land and Climate</span><span class="cat-about">Air pollution, the nitrogen cycle, farming, and how land and atmosphere feed back on each other in Earth system models.</span><span class="cat-facts">Introductory to advanced · 14 parts · 6 written</span></a><a class="cat-item" href="/series/plants/index.html"><span class="cat-title">Plant biology, one blueberry at a time</span><span class="cat-about">How a plant works, followed through a single crop: what a blueberry bush is doing from bud to harvest, and why every yield question starts in the leaf.</span><span class="cat-facts">Introductory to intermediate · 6 parts · 5 written</span></a><a class="cat-item" href="/series/prediction/index.html"><span class="cat-title">Weather, Climate and Prediction</span><span class="cat-about">What can and cannot be predicted about the atmosphere, and the statistics you need to tell the difference.</span><span class="cat-facts">Introductory to advanced · 11 parts · 4 written</span></a><a class="cat-item" href="/series/statistics/index.html"><span class="cat-title">Statistics</span><span class="cat-about">The statistics the other series lean on, kept short and separate so any module can point here.</span><span class="cat-facts">Introductory to intermediate · 8 parts · 1 written</span></a><a class="cat-item" href="/series/forecasting/index.html"><span class="cat-title">Forecasting with Machine Learning</span><span class="cat-about">Tabular machine learning for time series, from framing the problem to shipping a model, with agricultural data throughout.</span><span class="cat-facts">Introductory to advanced · 15 parts · 7 written</span></a><a class="cat-item" href="/series/earth-data/index.html"><span class="cat-title">Earth Data in Python and R</span><span class="cat-about">The tools for gridded, vector and image data in the Earth sciences, and how to plot the result without lying.</span><span class="cat-facts">Introductory to intermediate · 11 parts · 11 written</span></a><a class="cat-item" href="/series/waves/index.html"><span class="cat-title">Waves, Sound and Imaging</span><span class="cat-about">One idea, the wave, followed from a plucked string through Fourier analysis to a brain scan.</span><span class="cat-facts">Introductory to intermediate · 11 parts · 8 written</span></a><a class="cat-item" href="/series/everyday-physics/index.html"><span class="cat-title">Physics of Everyday Things</span><span class="cat-about">Ordinary things explained from first principles, with the maths kept on a leash.</span><span class="cat-facts">Introductory to advanced · 9 parts · 5 written</span></a><a class="cat-item" href="/series/engineering/index.html"><span class="cat-title">Engineering in Action</span><span class="cat-about">Building things that work, from Python tooling and AI agents to a 3D-printed cast.</span><span class="cat-facts">Introductory to intermediate · 6 parts · 4 written</span></a><a class="cat-item" href="/series/teaching-leading/index.html"><span class="cat-title">Teaching and Leading</span><span class="cat-about">What a teaching certificate taught a scientist, and how the same tools run a team: briefs, feedback, reviews, and explaining things to people who are busy.</span><span class="cat-facts">Introductory to intermediate · 14 parts · 4 written</span></a><a class="cat-item" href="/series/training/index.html"><span class="cat-title">Train to be a scientist</span><span class="cat-about">The parts of the training nobody examines you on: keeping the body that runs your mind in working order, explaining what you found, giving the work back to the field, and relearning something from scratch to prove you still can.</span><span class="cat-facts">Introductory to intermediate · 4 parts · 7 written</span></a></div>
+
+[Every series, including what is not written yet](/series/index.html)
+<!-- SERIES_CATALOGUE_END -->
+
+<!-- RECENT_POSTS_START -->
+## Recently written
+
+<ul class="recent">
+<li><a class="r-t" href="/blogs/why-static-friction-beats-kinetic.html">Why static friction beats kinetic friction</a><span class="r-m"><a href="/series/everyday-physics/index.html">Physics of Everyday Things</a> · Sep 2026</span><span class="r-d">A block resists starting to slide harder than it resists continuing to slide, because the microscopic welds holding two surfaces together get…</span></li>
+<li><a class="r-t" href="/blogs/how-wheels-cheat-friction.html">How wheels cheat friction</a><span class="r-m"><a href="/series/everyday-physics/index.html">Physics of Everyday Things</a> · Sep 2026</span><span class="r-d">A rolling wheel&#x27;s contact point isn&#x27;t sliding at all, which sidesteps sliding friction almost entirely, and the small resistance left over, plus…</span></li>
+<li><a class="r-t" href="/blogs/the-growth-curve-of-a-berry.html">The growth curve of a berry</a><span class="r-m"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a> · Sep 2026</span><span class="r-d">A blueberry&#x27;s weight over time traces a single, well-behaved sigmoid, not because growth is simple but because the two mechanisms behind it,…</span></li>
+<li><a class="r-t" href="/blogs/the-carbon-budget-of-a-bush.html">The carbon budget of a bush</a><span class="r-m"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a> · Sep 2026</span><span class="r-d">A bush spends carbon before it earns it back, on roots, wood, next year&#x27;s flower buds, and this year&#x27;s fruit, all competing for the same pool.…</span></li>
+<li><a class="r-t" href="/blogs/pollination-and-fruit-set.html">Pollination and fruit set</a><span class="r-m"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a> · Sep 2026</span><span class="r-d">A blueberry flower hides its pollen behind two pores that only release it under vibration, and most cultivars need pollen from a genetically…</span></li>
+<li><a class="r-t" href="/blogs/photosynthesis-in-one-leaf.html">Photosynthesis, in one leaf</a><span class="r-m"><a href="/series/plants/index.html">Plant biology, one blueberry at a time</a> · Sep 2026</span><span class="r-d">Light hits a thylakoid membrane and ends as sugar, through two coupled reactions and one enzyme that also works against itself. The mechanism this…</span></li>
+</ul>
+<!-- RECENT_POSTS_END -->
+
